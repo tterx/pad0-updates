@@ -1,5 +1,5 @@
 {
-  "release": 19,
-  "sha256": "68454b181be4176d52304cf06c89d35cc9f0907e508937260a05d473d7539100",
-  "source_url": "https://raw.githubusercontent.com/tterx/pad0-updates/main/releases/v101.19/pad0_overlay.py"
+  "release": 20,
+  "sha256": "9ca0f87001b37d49fcb290eb704ba8603910328b1b7964994e34fda9143cbec7",
+  "source_url": "https://raw.githubusercontent.com/tterx/pad0-updates/main/releases/v101.20/pad0_overlay.py"
 }
