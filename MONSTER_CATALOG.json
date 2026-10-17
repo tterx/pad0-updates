@@ -4178,7 +4178,7 @@
       "number": 300,
       "name_ja": "カーリー",
       "source": "https://gamerch.com/puzdra0/925225",
-      "attributes": "闇木",
+      "attributes": "闇木闇",
       "skill_ja": "全ドロップを火水木光闇回復ドロップに変化。 バインドと覚醒無効状態を3ターン回復。",
       "awakenings_ja": "バインド耐性 / 2体攻撃 / ガードブレイク",
       "cooldown": 3,
@@ -4186,7 +4186,9 @@
       "name_ko_status": "game_confirmed",
       "skill_ko": "모든 드롭을 불·물·나무·빛·어둠·회복 드롭으로 변환. 바인드와 각성 무효 상태를 3턴 회복.",
       "awakenings_ko": "바인드 내성 / 2마리 공격 / 가드 브레이크",
-      "attributes_ko": "어둠 / 나무"
+      "attributes_ko": "어둠 / 나무 / 어둠",
+      "attributes_ja_original": "闇木",
+      "attributes_source": "game_confirmed"
     },
     {
       "number": 301,
