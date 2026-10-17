@@ -1,0 +1,4596 @@
+{
+  "source": "https://gamerch.com/puzdra0/924159",
+  "retrieved": "2026-10-17",
+  "monsters": [
+    {
+      "number": 1,
+      "name_ja": "ルビリット",
+      "source": "https://gamerch.com/puzdra0/924272",
+      "attributes": "火",
+      "skill_ja": "1ターンの間、攻撃力が1.2倍。",
+      "awakenings_ja": "なし",
+      "cooldown": 3
+    },
+    {
+      "number": 2,
+      "name_ja": "サファリット",
+      "source": "https://gamerch.com/puzdra0/924273",
+      "attributes": "水",
+      "skill_ja": "1ターンの間、操作時間を5秒延長。",
+      "awakenings_ja": "なし",
+      "cooldown": 3
+    },
+    {
+      "number": 3,
+      "name_ja": "エメリット",
+      "source": "https://gamerch.com/puzdra0/924274",
+      "attributes": "木",
+      "skill_ja": "1ターンの間、2コンボ加算。",
+      "awakenings_ja": "なし",
+      "cooldown": 3
+    },
+    {
+      "number": 4,
+      "name_ja": "トパリット",
+      "source": "https://gamerch.com/puzdra0/924276",
+      "attributes": "光",
+      "skill_ja": "1ターンの間、回復力が1.5倍。",
+      "awakenings_ja": "なし",
+      "cooldown": 3
+    },
+    {
+      "number": 5,
+      "name_ja": "アメリット",
+      "source": "https://gamerch.com/puzdra0/924707",
+      "attributes": "闇",
+      "skill_ja": "1ターンの間、ダメージを30%軽減。",
+      "awakenings_ja": "なし",
+      "cooldown": 3
+    },
+    {
+      "number": 6,
+      "name_ja": "ホノりん",
+      "source": "https://gamerch.com/puzdra0/924277",
+      "attributes": "火",
+      "skill_ja": "1ターンの間、攻撃力が1.5倍。",
+      "awakenings_ja": "2体攻撃",
+      "cooldown": 4
+    },
+    {
+      "number": 7,
+      "name_ja": "アワりん",
+      "source": "https://gamerch.com/puzdra0/924278",
+      "attributes": "水",
+      "skill_ja": "1ターンの間、攻撃力が1.5倍。",
+      "awakenings_ja": "2体攻撃",
+      "cooldown": 4
+    },
+    {
+      "number": 8,
+      "name_ja": "モリりん",
+      "source": "https://gamerch.com/puzdra0/924279",
+      "attributes": "木",
+      "skill_ja": "1ターンの間、攻撃力が1.5倍。",
+      "awakenings_ja": "2体攻撃",
+      "cooldown": 4
+    },
+    {
+      "number": 9,
+      "name_ja": "ヒカりん",
+      "source": "https://gamerch.com/puzdra0/924280",
+      "attributes": "光",
+      "skill_ja": "4ターンの間、操作時間を3秒延長。",
+      "awakenings_ja": "2体攻撃",
+      "cooldown": 4
+    },
+    {
+      "number": 10,
+      "name_ja": "ワルりん",
+      "source": "https://gamerch.com/puzdra0/924396",
+      "attributes": "闇",
+      "skill_ja": "4ターンの間、操作時間を3秒延長。",
+      "awakenings_ja": "2体攻撃",
+      "cooldown": 4
+    },
+    {
+      "number": 11,
+      "name_ja": "レッドカーバンクル",
+      "source": "https://gamerch.com/puzdra0/924208",
+      "attributes": "火",
+      "skill_ja": "HPを40%回復。",
+      "awakenings_ja": "回復強化",
+      "cooldown": 4
+    },
+    {
+      "number": 12,
+      "name_ja": "ブルーカーバンクル",
+      "source": "https://gamerch.com/puzdra0/924209",
+      "attributes": "水",
+      "skill_ja": "HPを40%回復。",
+      "awakenings_ja": "回復強化",
+      "cooldown": 4
+    },
+    {
+      "number": 13,
+      "name_ja": "グリーンカーバンクル",
+      "source": "https://gamerch.com/puzdra0/924210",
+      "attributes": "木",
+      "skill_ja": "HPを40%回復。",
+      "awakenings_ja": "回復強化",
+      "cooldown": 4
+    },
+    {
+      "number": 14,
+      "name_ja": "イエローカーバンクル",
+      "source": "https://gamerch.com/puzdra0/924281",
+      "attributes": "光",
+      "skill_ja": "バインド状態を3ターン回復。 回復ドロップを3個生成。",
+      "awakenings_ja": "バインド耐性",
+      "cooldown": 4
+    },
+    {
+      "number": 15,
+      "name_ja": "パープルカーバンクル",
+      "source": "https://gamerch.com/puzdra0/924398",
+      "attributes": "闇",
+      "skill_ja": "バインド状態を3ターン回復。 回復ドロップを3個生成。",
+      "awakenings_ja": "バインド耐性",
+      "cooldown": 4
+    },
+    {
+      "number": 16,
+      "name_ja": "レッドシードラ",
+      "source": "https://gamerch.com/puzdra0/924213",
+      "attributes": "火",
+      "skill_ja": "1ターンの間、ダメージを40％軽減。",
+      "awakenings_ja": "スキルブースト",
+      "cooldown": 3
+    },
+    {
+      "number": 17,
+      "name_ja": "ブルーシードラ",
+      "source": "https://gamerch.com/puzdra0/924214",
+      "attributes": "水",
+      "skill_ja": "1ターンの間、ダメージを40％軽減。",
+      "awakenings_ja": "スキルブースト",
+      "cooldown": 3
+    },
+    {
+      "number": 18,
+      "name_ja": "グリーンシードラ",
+      "source": "https://gamerch.com/puzdra0/924215",
+      "attributes": "木",
+      "skill_ja": "1ターンの間、ダメージを40％軽減。",
+      "awakenings_ja": "スキルブースト",
+      "cooldown": 3
+    },
+    {
+      "number": 19,
+      "name_ja": "イエローシードラ",
+      "source": "https://gamerch.com/puzdra0/924282",
+      "attributes": "光",
+      "skill_ja": "1ターンの間、ダメージを20%軽減。 1ターンの間、回復力が1.5倍。",
+      "awakenings_ja": "スキルブースト",
+      "cooldown": 3
+    },
+    {
+      "number": 20,
+      "name_ja": "パープルシードラ",
+      "source": "https://gamerch.com/puzdra0/924402",
+      "attributes": "闇",
+      "skill_ja": "1ターンの間、ダメージを20%軽減。 1ターンの間、回復力が1.5倍。",
+      "awakenings_ja": "スキルブースト",
+      "cooldown": 3
+    },
+    {
+      "number": 21,
+      "name_ja": "フレイ ムファイター",
+      "source": "https://gamerch.com/puzdra0/924426",
+      "attributes": "火",
+      "skill_ja": "左端1列を火ドロップに変化。",
+      "awakenings_ja": "L字消し攻撃",
+      "cooldown": 3
+    },
+    {
+      "number": 22,
+      "name_ja": "アクアファイター",
+      "source": "https://gamerch.com/puzdra0/924412",
+      "attributes": "水",
+      "skill_ja": "左端1列を水ドロップに変化。",
+      "awakenings_ja": "L字消し攻撃",
+      "cooldown": 3
+    },
+    {
+      "number": 23,
+      "name_ja": "アースファイター",
+      "source": "https://gamerch.com/puzdra0/924439",
+      "attributes": "木",
+      "skill_ja": "左端1列を木ドロップに変化。",
+      "awakenings_ja": "L字消し攻撃",
+      "cooldown": 3
+    },
+    {
+      "number": 24,
+      "name_ja": "ホワイトファイター",
+      "source": "https://gamerch.com/puzdra0/924457",
+      "attributes": "光",
+      "skill_ja": "左端1列を光ドロップに変化。",
+      "awakenings_ja": "L字消し攻撃",
+      "cooldown": 3
+    },
+    {
+      "number": 25,
+      "name_ja": "ブラックファイター",
+      "source": "https://gamerch.com/puzdra0/924473",
+      "attributes": "闇",
+      "skill_ja": "左端1列を闇ドロップに変化。",
+      "awakenings_ja": "L字消し攻撃",
+      "cooldown": 3
+    },
+    {
+      "number": 26,
+      "name_ja": "火の下忍",
+      "source": "https://gamerch.com/puzdra0/924709",
+      "attributes": "火",
+      "skill_ja": "木ドロップを火ドロップに変化。 1ターンの間、2コンボ加算。",
+      "awakenings_ja": "スキルブースト",
+      "cooldown": 3
+    },
+    {
+      "number": 27,
+      "name_ja": "水の下忍",
+      "source": "https://gamerch.com/puzdra0/924710",
+      "attributes": "水",
+      "skill_ja": "火ドロップを水ドロップに変化。 1ターンの間、2コンボ加算。",
+      "awakenings_ja": "スキルブースト",
+      "cooldown": 3
+    },
+    {
+      "number": 28,
+      "name_ja": "木の下忍",
+      "source": "https://gamerch.com/puzdra0/924711",
+      "attributes": "木",
+      "skill_ja": "水ドロップを木ドロップに変化。 1ターンの間に、2コンボ加算。",
+      "awakenings_ja": "スキルブースト",
+      "cooldown": 3
+    },
+    {
+      "number": 29,
+      "name_ja": "光の下忍",
+      "source": "https://gamerch.com/puzdra0/924712",
+      "attributes": "光",
+      "skill_ja": "闇ドロップを光ドロップに変化。 1ターンの間、2コンボ加算。",
+      "awakenings_ja": "スキルブースト",
+      "cooldown": 3
+    },
+    {
+      "number": 30,
+      "name_ja": "闇の下忍",
+      "source": "https://gamerch.com/puzdra0/924714",
+      "attributes": "闇",
+      "skill_ja": "光ドロップを闇ドロップを変化。 １ターンの間、2コンボ加算。",
+      "awakenings_ja": "スキルブースト",
+      "cooldown": 3
+    },
+    {
+      "number": 31,
+      "name_ja": "ダブ ルビリット",
+      "source": "https://gamerch.com/puzdra0/924715",
+      "attributes": "火火",
+      "skill_ja": "毒ドロップを破壊。 1ターンの間、攻撃力が1.2倍。",
+      "awakenings_ja": "お邪魔耐性",
+      "cooldown": 3
+    },
+    {
+      "number": 32,
+      "name_ja": "ダブ サファリット",
+      "source": "https://gamerch.com/puzdra0/924718",
+      "attributes": "水水",
+      "skill_ja": "毒ドロップを破壊。 1ターンの間、操作時間を5秒延長。",
+      "awakenings_ja": "お邪魔耐性",
+      "cooldown": 3
+    },
+    {
+      "number": 33,
+      "name_ja": "ダブ エメリット",
+      "source": "https://gamerch.com/puzdra0/924719",
+      "attributes": "木木",
+      "skill_ja": "毒ドロップを破壊。 1ターンの間、2コンボ加算。",
+      "awakenings_ja": "お邪魔耐性",
+      "cooldown": 3
+    },
+    {
+      "number": 34,
+      "name_ja": "ダブ トパリット",
+      "source": "https://gamerch.com/puzdra0/924720",
+      "attributes": "光光",
+      "skill_ja": "毒ドロップを破壊。 1ターンの間、回復力が1.5倍。",
+      "awakenings_ja": "お邪魔耐性",
+      "cooldown": 3
+    },
+    {
+      "number": 35,
+      "name_ja": "ダブ アメリット",
+      "source": "https://gamerch.com/puzdra0/924749",
+      "attributes": "闇闇",
+      "skill_ja": "毒ドロップを破壊。 1ターンの間、ダメージを30%軽減。",
+      "awakenings_ja": "お邪魔耐性",
+      "cooldown": 3
+    },
+    {
+      "number": 36,
+      "name_ja": "炎翼龍・ボルブラス",
+      "source": "https://gamerch.com/puzdra0/924152",
+      "attributes": "火",
+      "skill_ja": "左端1列を火ドロップに、右端1列を回復ドロップに変化。 1ターンの間、1コンボ加算。",
+      "awakenings_ja": "コンボ強化",
+      "cooldown": 4
+    },
+    {
+      "number": 37,
+      "name_ja": "深海龍・ディプシオール",
+      "source": "https://gamerch.com/puzdra0/924164",
+      "attributes": "水",
+      "skill_ja": "最下段1列を水ドロップに変化。 1ターンの間、1コンボ加算。",
+      "awakenings_ja": "水つなげ消し",
+      "cooldown": 4
+    },
+    {
+      "number": 38,
+      "name_ja": "萌種龍・シルドラン",
+      "source": "https://gamerch.com/puzdra0/924165",
+      "attributes": "木",
+      "skill_ja": "全ドロップを火水木回復ドロップに変化。 1ターンの間、1コンボ加算。",
+      "awakenings_ja": "3色攻撃強化",
+      "cooldown": 4
+    },
+    {
+      "number": 39,
+      "name_ja": "キング ホノりん",
+      "source": "https://gamerch.com/puzdra0/924219",
+      "attributes": "火火",
+      "skill_ja": "1ターンの間、攻撃力が2倍。",
+      "awakenings_ja": "2体攻撃",
+      "cooldown": 4
+    },
+    {
+      "number": 40,
+      "name_ja": "キング アワりん",
+      "source": "https://gamerch.com/puzdra0/924220",
+      "attributes": "水水",
+      "skill_ja": "1ターンの間、攻撃力が2倍。",
+      "awakenings_ja": "2体攻撃",
+      "cooldown": 4
+    },
+    {
+      "number": 41,
+      "name_ja": "キング モリりん",
+      "source": "https://gamerch.com/puzdra0/924221",
+      "attributes": "木木",
+      "skill_ja": "1ターンの間、攻撃力が2倍。",
+      "awakenings_ja": "2体攻撃",
+      "cooldown": 4
+    },
+    {
+      "number": 42,
+      "name_ja": "キング ヒカりん",
+      "source": "https://gamerch.com/puzdra0/924283",
+      "attributes": "光光",
+      "skill_ja": "4ターンの間、操作時間を5秒延長。 1ターンの間、攻撃力が1.5倍。",
+      "awakenings_ja": "2体攻撃",
+      "cooldown": 4
+    },
+    {
+      "number": 43,
+      "name_ja": "キング ワルりん",
+      "source": "https://gamerch.com/puzdra0/924404",
+      "attributes": "闇闇",
+      "skill_ja": "4ターンの間、操作時間を5秒延長。 1ターンの間、攻撃力が1.5倍。",
+      "awakenings_ja": "2体攻撃",
+      "cooldown": 4
+    },
+    {
+      "number": 44,
+      "name_ja": "ルビーカーバンクル",
+      "source": "https://gamerch.com/puzdra0/924222",
+      "attributes": "火火",
+      "skill_ja": "HPを40％回復。 バインド状態を2ターン回復。",
+      "awakenings_ja": "バインド耐性",
+      "cooldown": 4
+    },
+    {
+      "number": 45,
+      "name_ja": "サファイアカーバンクル",
+      "source": "https://gamerch.com/puzdra0/924223",
+      "attributes": "水水",
+      "skill_ja": "HPを40％回復。 バインド状態を2ターン回復。",
+      "awakenings_ja": "バインド耐性",
+      "cooldown": 4
+    },
+    {
+      "number": 46,
+      "name_ja": "エメラルドカーバンクル",
+      "source": "https://gamerch.com/puzdra0/924224",
+      "attributes": "木木",
+      "skill_ja": "HPを40％回復。 バインド状態を2ターン回復。",
+      "awakenings_ja": "バインド耐性",
+      "cooldown": 4
+    },
+    {
+      "number": 47,
+      "name_ja": "トパーズカーバンクル",
+      "source": "https://gamerch.com/puzdra0/924284",
+      "attributes": "光光",
+      "skill_ja": "バインド状態を3ターン回復。 回復ドロップを5個生成。",
+      "awakenings_ja": "バインド耐性",
+      "cooldown": 4
+    },
+    {
+      "number": 48,
+      "name_ja": "アメジストカーバンクル",
+      "source": "https://gamerch.com/puzdra0/924406",
+      "attributes": "闇闇",
+      "skill_ja": "バインド状態を3ターン回復。 回復ドロップを5個生成。",
+      "awakenings_ja": "バインド耐性",
+      "cooldown": 4
+    },
+    {
+      "number": 49,
+      "name_ja": "フレイ ムゴーレム",
+      "source": "https://gamerch.com/puzdra0/924255",
+      "attributes": "火",
+      "skill_ja": "3ターンの間、ダメージを30%軽減。 3ターンの間、1コンボ加算。",
+      "awakenings_ja": "スキルブースト",
+      "cooldown": 6
+    },
+    {
+      "number": 50,
+      "name_ja": "アイスゴーレム",
+      "source": "https://gamerch.com/puzdra0/924376",
+      "attributes": "水",
+      "skill_ja": "3ターンの間、ダメージを30%軽減。 3ターンの間、1コンボ加算。",
+      "awakenings_ja": "スキルブースト",
+      "cooldown": 6
+    },
+    {
+      "number": 51,
+      "name_ja": "アースゴーレム",
+      "source": "https://gamerch.com/puzdra0/924260",
+      "attributes": "木",
+      "skill_ja": "3ターンの間、ダメージを30％軽減。 3ターンの間、1コンボ加算。",
+      "awakenings_ja": "スキルブースト",
+      "cooldown": 6
+    },
+    {
+      "number": 52,
+      "name_ja": "マシンゴーレム",
+      "source": "https://gamerch.com/puzdra0/924394",
+      "attributes": "光",
+      "skill_ja": "3ターンの間、ダメージを30%軽減。 3ターンの間、回復力が1.2倍。",
+      "awakenings_ja": "スキルブースト",
+      "cooldown": 6
+    },
+    {
+      "number": 53,
+      "name_ja": "ダークゴーレム",
+      "source": "https://gamerch.com/puzdra0/924408",
+      "attributes": "闇",
+      "skill_ja": "3ターンの間、ダメージを30%軽減。 3ターンの間、回復力が1.2倍。",
+      "awakenings_ja": "スキルブースト",
+      "cooldown": 6
+    },
+    {
+      "number": 54,
+      "name_ja": "キングルビードラゴン",
+      "source": "https://gamerch.com/puzdra0/924762",
+      "attributes": "火火",
+      "skill_ja": "ドロップロックを解除。 回復ドロップを火ドロップに変化。",
+      "awakenings_ja": "ダンジョンボーナス",
+      "cooldown": 3
+    },
+    {
+      "number": 55,
+      "name_ja": "キングサファイアドラゴン",
+      "source": "https://gamerch.com/puzdra0/924414",
+      "attributes": "水水",
+      "skill_ja": "ドロップロックを解除。 回復ドロップを水ドロップに変化。",
+      "awakenings_ja": "ダンジョンボーナス",
+      "cooldown": 3
+    },
+    {
+      "number": 56,
+      "name_ja": "キングエメラルドドラゴン",
+      "source": "https://gamerch.com/puzdra0/924444",
+      "attributes": "木木",
+      "skill_ja": "ドロップロックを解除。 回復ドロップを木ドロップに変化。",
+      "awakenings_ja": "ダンジョンボーナス",
+      "cooldown": 3
+    },
+    {
+      "number": 57,
+      "name_ja": "キングゴールドドラゴン",
+      "source": "https://gamerch.com/puzdra0/924454",
+      "attributes": "光光",
+      "skill_ja": "ドロップロックを解除。 回復ドロップを光ドロップに変化。",
+      "awakenings_ja": "ダンジョンボーナス",
+      "cooldown": 3
+    },
+    {
+      "number": 58,
+      "name_ja": "キングメタルドラゴン",
+      "source": "https://gamerch.com/puzdra0/924393",
+      "attributes": "闇闇",
+      "skill_ja": "ドロップロックを解除。 回復ドロップを闇ドロップに変化。",
+      "awakenings_ja": "ダンジョンボーナス",
+      "cooldown": 3
+    },
+    {
+      "number": 59,
+      "name_ja": "フレイ ムナイト",
+      "source": "https://gamerch.com/puzdra0/924462",
+      "attributes": "火火",
+      "skill_ja": "ドロップロックを解除。左端1列を火ドロップに変化。 1ターンの間、2コンボ加算。",
+      "awakenings_ja": "L字消し攻撃",
+      "cooldown": 4
+    },
+    {
+      "number": 60,
+      "name_ja": "アクアナイト",
+      "source": "https://gamerch.com/puzdra0/924463",
+      "attributes": "水水",
+      "skill_ja": "ドロップロック解除。左端1列を水ドロップに変化。 1ターンの間、2コンボ加算。",
+      "awakenings_ja": "L字消し攻撃",
+      "cooldown": 4
+    },
+    {
+      "number": 61,
+      "name_ja": "アースナイト",
+      "source": "https://gamerch.com/puzdra0/924471",
+      "attributes": "木木",
+      "skill_ja": "ドロップロックを解除。左端1列を木ドロップに変化。 1ターンの間、2コンボ加算。",
+      "awakenings_ja": "L字消し攻撃",
+      "cooldown": 4
+    },
+    {
+      "number": 62,
+      "name_ja": "ホワイトナイト",
+      "source": "https://gamerch.com/puzdra0/924458",
+      "attributes": "光光",
+      "skill_ja": "ドロップロックを解除。左端1列を光ドロップに変化。 1ターンの間、2コンボ加算。",
+      "awakenings_ja": "L字消し攻撃",
+      "cooldown": 4
+    },
+    {
+      "number": 63,
+      "name_ja": "ブラックナイト",
+      "source": "https://gamerch.com/puzdra0/924387",
+      "attributes": "闇闇",
+      "skill_ja": "ドロップロックを解除。左端1列を闇ドロップに変化。 1ターンの間、2コンボ加算。",
+      "awakenings_ja": "L字消し攻撃",
+      "cooldown": 4
+    },
+    {
+      "number": 64,
+      "name_ja": "炎の魔剣士",
+      "source": "https://gamerch.com/puzdra0/924429",
+      "attributes": "火",
+      "skill_ja": "水毒ドロップを火ドロップに変化。",
+      "awakenings_ja": "火つなげ消し",
+      "cooldown": 3
+    },
+    {
+      "number": 65,
+      "name_ja": "氷の魔剣士",
+      "source": "https://gamerch.com/puzdra0/924413",
+      "attributes": "水",
+      "skill_ja": "木毒ドロップを水ドロップに変化。",
+      "awakenings_ja": "水つなげ消し",
+      "cooldown": 3
+    },
+    {
+      "number": 66,
+      "name_ja": "岩の魔剣士",
+      "source": "https://gamerch.com/puzdra0/924449",
+      "attributes": "木",
+      "skill_ja": "火毒ドロップを木ドロップに変化。",
+      "awakenings_ja": "木つなげ消し",
+      "cooldown": 3
+    },
+    {
+      "number": 67,
+      "name_ja": "光の魔剣士",
+      "source": "https://gamerch.com/puzdra0/924459",
+      "attributes": "光",
+      "skill_ja": "闇毒ドロップを光ドロップに変化",
+      "awakenings_ja": "光つなげ消し",
+      "cooldown": 3
+    },
+    {
+      "number": 68,
+      "name_ja": "闇の魔剣士",
+      "source": "https://gamerch.com/puzdra0/924384",
+      "attributes": "闇",
+      "skill_ja": "光毒ドロップを闇ドロップに変化。",
+      "awakenings_ja": "闇つなげ消し",
+      "cooldown": 3
+    },
+    {
+      "number": 69,
+      "name_ja": "キング ティラ ノス",
+      "source": "https://gamerch.com/puzdra0/924229",
+      "attributes": "火火",
+      "skill_ja": "火ドロップを6個生成。 1ターンの間、2コンボ加算。",
+      "awakenings_ja": "火つなげ消し",
+      "cooldown": 4
+    },
+    {
+      "number": 70,
+      "name_ja": "キングプレシオス",
+      "source": "https://gamerch.com/puzdra0/924231",
+      "attributes": "水水",
+      "skill_ja": "水ドロップを6個生成。 1ターンの間、2コンボ加算。",
+      "awakenings_ja": "水つなげ消し",
+      "cooldown": 4
+    },
+    {
+      "number": 71,
+      "name_ja": "キングブラキオス",
+      "source": "https://gamerch.com/puzdra0/924232",
+      "attributes": "木木",
+      "skill_ja": "木ドロップを6個生成。 1ターンの間、2コンボ加算。",
+      "awakenings_ja": "木つなげ消し",
+      "cooldown": 4
+    },
+    {
+      "number": 72,
+      "name_ja": "ボルケーノドラゴン",
+      "source": "https://gamerch.com/puzdra0/924233",
+      "attributes": "火火",
+      "skill_ja": "光お邪魔ドロップを火ドロップに変化。",
+      "awakenings_ja": "コンボ強化",
+      "cooldown": 3
+    },
+    {
+      "number": 73,
+      "name_ja": "オーロラドラゴン",
+      "source": "https://gamerch.com/puzdra0/924234",
+      "attributes": "水水",
+      "skill_ja": "光お邪魔ドロップを水ドロップに変化。",
+      "awakenings_ja": "コンボ強化",
+      "cooldown": 3
+    },
+    {
+      "number": 74,
+      "name_ja": "アースドラゴン",
+      "source": "https://gamerch.com/puzdra0/924235",
+      "attributes": "木木",
+      "skill_ja": "光お邪魔ドロップを木ドロップに変化。",
+      "awakenings_ja": "コンボ強化",
+      "cooldown": 3
+    },
+    {
+      "number": 75,
+      "name_ja": "ホーリードラゴン",
+      "source": "https://gamerch.com/puzdra0/924386",
+      "attributes": "光光",
+      "skill_ja": "闇お邪魔ドロップを光ドロップに変化。",
+      "awakenings_ja": "コンボ強化",
+      "cooldown": 3
+    },
+    {
+      "number": 76,
+      "name_ja": "デビルドラゴン",
+      "source": "https://gamerch.com/puzdra0/924425",
+      "attributes": "闇闇",
+      "skill_ja": "光お邪魔ドロップを闇ドロップに変化。",
+      "awakenings_ja": "コンボ強化",
+      "cooldown": 3
+    },
+    {
+      "number": 77,
+      "name_ja": "サラマンダー",
+      "source": "https://gamerch.com/puzdra0/924373",
+      "attributes": "火",
+      "skill_ja": "右端1列を火ドロップに変化。 2ターンの間、火ドロップが落ちやすくなる。",
+      "awakenings_ja": "スキルブースト",
+      "cooldown": 4
+    },
+    {
+      "number": 78,
+      "name_ja": "シーサーペント",
+      "source": "https://gamerch.com/puzdra0/924375",
+      "attributes": "水",
+      "skill_ja": "右端1列を水ドロップに変化。 2ターンの間、水ドロップが落ちやすくなる。",
+      "awakenings_ja": "スキルブースト",
+      "cooldown": 4
+    },
+    {
+      "number": 79,
+      "name_ja": "ドラゴネット",
+      "source": "https://gamerch.com/puzdra0/924768",
+      "attributes": "木",
+      "skill_ja": "右端1列を木ドロップに変化。 2ターンの間、木ドロップが落ちやすくなる。",
+      "awakenings_ja": "スキルブースト",
+      "cooldown": 4
+    },
+    {
+      "number": 80,
+      "name_ja": "白龍",
+      "source": "https://gamerch.com/puzdra0/924392",
+      "attributes": "光",
+      "skill_ja": "右端1列を光ドロップに変化。 2ターンの間、光ドロップが落ちやすくなる。",
+      "awakenings_ja": "スキルブースト",
+      "cooldown": 4
+    },
+    {
+      "number": 81,
+      "name_ja": "バジリスク",
+      "source": "https://gamerch.com/puzdra0/924390",
+      "attributes": "闇",
+      "skill_ja": "右端1列を闇ドロップに変化。 2ターンの間、闇ドロップが落ちやすくなる。",
+      "awakenings_ja": "スキルブースト",
+      "cooldown": 4
+    },
+    {
+      "number": 82,
+      "name_ja": "ナーガ",
+      "source": "https://gamerch.com/puzdra0/924252",
+      "attributes": "火",
+      "skill_ja": "1ターンの間、ダメージを100％軽減。 1ターンの間、5コンボ加算。",
+      "awakenings_ja": "回復強化",
+      "cooldown": 10
+    },
+    {
+      "number": 83,
+      "name_ja": "マーメイド",
+      "source": "https://gamerch.com/puzdra0/924253",
+      "attributes": "水",
+      "skill_ja": "火ドロップを回復ドロップに変化。",
+      "awakenings_ja": "回復強化",
+      "cooldown": 3
+    },
+    {
+      "number": 84,
+      "name_ja": "ドリヤード",
+      "source": "https://gamerch.com/puzdra0/924254",
+      "attributes": "木",
+      "skill_ja": "1ターンの間、回復力が2倍。 覚醒無効状態を3ターン回復。",
+      "awakenings_ja": "回復強化",
+      "cooldown": 3
+    },
+    {
+      "number": 85,
+      "name_ja": "炎のアイスオーガ",
+      "source": "https://gamerch.com/puzdra0/924465",
+      "attributes": "水火",
+      "skill_ja": "1ターンの間、攻撃力が1.5倍。 全ドロップを火水木光回復ドロップに変化。",
+      "awakenings_ja": "3色攻撃強化",
+      "cooldown": 5
+    },
+    {
+      "number": 86,
+      "name_ja": "樹のサムライオーガ",
+      "source": "https://gamerch.com/puzdra0/924433",
+      "attributes": "火木",
+      "skill_ja": "1ターンの間、攻撃力が1.5倍。 全ドロップを火水木闇回復ドロップに変化。",
+      "awakenings_ja": "3色攻撃強化",
+      "cooldown": 5
+    },
+    {
+      "number": 87,
+      "name_ja": "赤の妖火",
+      "source": "https://gamerch.com/puzdra0/924757",
+      "attributes": "火",
+      "skill_ja": "回復ドロップ以外から火ドロップを4個生成。 1ターンの間、回復力が1.5倍。",
+      "awakenings_ja": "回復強化",
+      "cooldown": 3
+    },
+    {
+      "number": 88,
+      "name_ja": "青の妖火",
+      "source": "https://gamerch.com/puzdra0/924770",
+      "attributes": "水",
+      "skill_ja": "回復ドロップ以外から水ドロップを4個生成。 1ターンの間、回復力が1.5倍。",
+      "awakenings_ja": "回復強化",
+      "cooldown": 3
+    },
+    {
+      "number": 89,
+      "name_ja": "緑の妖火",
+      "source": "https://gamerch.com/puzdra0/924771",
+      "attributes": "木",
+      "skill_ja": "回復ドロップ以外から木ドロップを4個生成。 1ターンの間、回復力が1.5倍。",
+      "awakenings_ja": "回復強化",
+      "cooldown": 3
+    },
+    {
+      "number": 90,
+      "name_ja": "黄の妖火",
+      "source": "https://gamerch.com/puzdra0/924772",
+      "attributes": "光",
+      "skill_ja": "回復ドロップ以外から光ドロップを4個生成。 1ターンの間、回復力が1.5倍。",
+      "awakenings_ja": "回復強化",
+      "cooldown": 3
+    },
+    {
+      "number": 91,
+      "name_ja": "紫の妖火",
+      "source": "https://gamerch.com/puzdra0/924774",
+      "attributes": "闇",
+      "skill_ja": "回復ドロップ以外から闇ドロップを4個生成。 1ターンの間、回復力が1.5倍。",
+      "awakenings_ja": "回復強化",
+      "cooldown": 3
+    },
+    {
+      "number": 92,
+      "name_ja": "ホノシバマル",
+      "source": "https://gamerch.com/puzdra0/924776",
+      "attributes": "火",
+      "skill_ja": "水ドロップを火ドロップに、光ドロップを回復ドロップに変化。",
+      "awakenings_ja": "追加攻撃",
+      "cooldown": 3
+    },
+    {
+      "number": 93,
+      "name_ja": "ミズシバマル",
+      "source": "https://gamerch.com/puzdra0/924778",
+      "attributes": "水",
+      "skill_ja": "闇ドロップを水ドロップに、火ドロップを回復ドロップに変化。",
+      "awakenings_ja": "追加攻撃",
+      "cooldown": 3
+    },
+    {
+      "number": 94,
+      "name_ja": "モクシバマル",
+      "source": "https://gamerch.com/puzdra0/924780",
+      "attributes": "木",
+      "skill_ja": "光ドロップを木ドロップに、闇ドロップを回復ドロップに変化。",
+      "awakenings_ja": "追加攻撃",
+      "cooldown": 3
+    },
+    {
+      "number": 95,
+      "name_ja": "ヒカシバマル",
+      "source": "https://gamerch.com/puzdra0/924781",
+      "attributes": "光",
+      "skill_ja": "水ドロップを光ドロップに、木ドロップを回復ドロップに変化。",
+      "awakenings_ja": "追加攻撃",
+      "cooldown": 3
+    },
+    {
+      "number": 96,
+      "name_ja": "ヤミシバマル",
+      "source": "https://gamerch.com/puzdra0/924784",
+      "attributes": "闇",
+      "skill_ja": "火ドロップを闇ドロップに、水ドロップを回復ドロップに変化。",
+      "awakenings_ja": "追加攻撃",
+      "cooldown": 3
+    },
+    {
+      "number": 97,
+      "name_ja": "火の中忍",
+      "source": "https://gamerch.com/puzdra0/924786",
+      "attributes": "火",
+      "skill_ja": "ドロップロックを解除。木ドロップを火ドロップに変化。 1ターンの間、2コンボ加算。",
+      "awakenings_ja": "毒耐性",
+      "cooldown": 3
+    },
+    {
+      "number": 98,
+      "name_ja": "水の中忍",
+      "source": "https://gamerch.com/puzdra0/924787",
+      "attributes": "水",
+      "skill_ja": "ドロップロックを解除。火ドロップを水ドロップに変化。 1ターンの間、2コンボ加算。",
+      "awakenings_ja": "雲耐性",
+      "cooldown": 3
+    },
+    {
+      "number": 99,
+      "name_ja": "木の中忍",
+      "source": "https://gamerch.com/puzdra0/924788",
+      "attributes": "木",
+      "skill_ja": "ドロップロックを解除。水ドロップを木ドロップに変化。 1ターンの間、2コンボ加算。",
+      "awakenings_ja": "お邪魔耐性",
+      "cooldown": 3
+    },
+    {
+      "number": 100,
+      "name_ja": "光の中忍",
+      "source": "https://gamerch.com/puzdra0/924789",
+      "attributes": "光",
+      "skill_ja": "ドロップロックを解除。闇ドロップを光ドロップに変化。 1ターンの間、2コンボ加算。",
+      "awakenings_ja": "暗闇耐性",
+      "cooldown": 3
+    },
+    {
+      "number": 101,
+      "name_ja": "闇の中忍",
+      "source": "https://gamerch.com/puzdra0/924791",
+      "attributes": "闇",
+      "skill_ja": "ドロップロックを解除。光ドロップを闇ドロップに変化。 1ターンの間、2コンボ加算。",
+      "awakenings_ja": "封印耐性",
+      "cooldown": 3
+    },
+    {
+      "number": 102,
+      "name_ja": "パイロデビル",
+      "source": "https://gamerch.com/puzdra0/924751",
+      "attributes": "火",
+      "skill_ja": "水毒ドロップを破壊。 火ドロップを5個生成。",
+      "awakenings_ja": "火つなげ消し",
+      "cooldown": 4
+    },
+    {
+      "number": 103,
+      "name_ja": "フロストデビル",
+      "source": "https://gamerch.com/puzdra0/924752",
+      "attributes": "水",
+      "skill_ja": "木毒ドロップを破壊。 水ドロップを5個生成。",
+      "awakenings_ja": "水つなげ消し",
+      "cooldown": 4
+    },
+    {
+      "number": 104,
+      "name_ja": "タウロスデビル",
+      "source": "https://gamerch.com/puzdra0/924753",
+      "attributes": "木",
+      "skill_ja": "火毒ドロップを破壊。 木ドロップを5個生成。",
+      "awakenings_ja": "木つなげ消し",
+      "cooldown": 4
+    },
+    {
+      "number": 105,
+      "name_ja": "ハーピィデビル",
+      "source": "https://gamerch.com/puzdra0/924754",
+      "attributes": "光",
+      "skill_ja": "闇毒ドロップを破壊。 光ドロップを5個生成。",
+      "awakenings_ja": "光つなげ消し",
+      "cooldown": 4
+    },
+    {
+      "number": 106,
+      "name_ja": "ブラッドデビル",
+      "source": "https://gamerch.com/puzdra0/924755",
+      "attributes": "闇",
+      "skill_ja": "光毒ドロップを破壊。 闇ドロップを5個生成。",
+      "awakenings_ja": "闇つなげ消し",
+      "cooldown": 4
+    },
+    {
+      "number": 107,
+      "name_ja": "朱膏の秘輝蛙",
+      "source": "https://gamerch.com/puzdra0/924767",
+      "attributes": "火",
+      "skill_ja": "ドロップロックを解除。火回復ドロップを3個ずつ生成。 1ターンの間、属性吸収を無効化。",
+      "awakenings_ja": "ダンジョンボーナス",
+      "cooldown": 4
+    },
+    {
+      "number": 108,
+      "name_ja": "蒼膏の秘輝蛙",
+      "source": "https://gamerch.com/puzdra0/924759",
+      "attributes": "水",
+      "skill_ja": "ドロップロックを解除。水回復ドロップを3個ずつ生成。 1ターンの間、属性吸収を無効化。",
+      "awakenings_ja": "ダンジョンボーナス",
+      "cooldown": 4
+    },
+    {
+      "number": 109,
+      "name_ja": "幻忍の秘輝蛙",
+      "source": "https://gamerch.com/puzdra0/924761",
+      "attributes": "木",
+      "skill_ja": "ドロップロックを解除。木回復ドロップを3個ずつ生成。 1ターンの間、属性吸収を無効化。",
+      "awakenings_ja": "ダンジョンボーナス",
+      "cooldown": 4
+    },
+    {
+      "number": 110,
+      "name_ja": "黄膏の秘輝蛙",
+      "source": "https://gamerch.com/puzdra0/924765",
+      "attributes": "光",
+      "skill_ja": "ドロップロックを解除。光回復ドロップを3個ずつ生成。 1ターンの間、属性吸収を無効化。",
+      "awakenings_ja": "ダンジョンボーナス",
+      "cooldown": 4
+    },
+    {
+      "number": 111,
+      "name_ja": "紫膏の秘輝蛙",
+      "source": "https://gamerch.com/puzdra0/924769",
+      "attributes": "闇",
+      "skill_ja": "ドロップロックを解除。闇回復ドロップを3個ずつ生成。 1ターンの間、属性吸収を無効化。",
+      "awakenings_ja": "ダンジョンボーナス",
+      "cooldown": 4
+    },
+    {
+      "number": 112,
+      "name_ja": "マドゥの魔帽子・オム",
+      "source": "https://gamerch.com/puzdra0/925382",
+      "attributes": "火",
+      "skill_ja": "最下段1列を火ドロップに変化。 HPを40%回復。",
+      "awakenings_ja": "回復強化",
+      "cooldown": 4
+    },
+    {
+      "number": 113,
+      "name_ja": "リーチェの魔帽子・フロウ",
+      "source": "https://gamerch.com/puzdra0/925383",
+      "attributes": "水",
+      "skill_ja": "最下段1列を水ドロップに変化。 覚醒無効状態を4ターン回復。",
+      "awakenings_ja": "回復強化",
+      "cooldown": 4
+    },
+    {
+      "number": 114,
+      "name_ja": "ゼラの魔帽子・スモック",
+      "source": "https://gamerch.com/puzdra0/925384",
+      "attributes": "木",
+      "skill_ja": "最下段1列を木ドロップに変化。 3ターンの間、木回復ドロップがロック状態で落ちてくる。",
+      "awakenings_ja": "回復強化",
+      "cooldown": 4
+    },
+    {
+      "number": 115,
+      "name_ja": "サレーネの魔帽子・コーザ",
+      "source": "https://gamerch.com/puzdra0/925386",
+      "attributes": "光",
+      "skill_ja": "最下段1列を光ドロップに変化。 光ドロップ以外から回復ドロップを4個生成。",
+      "awakenings_ja": "回復強化",
+      "cooldown": 4
+    },
+    {
+      "number": 116,
+      "name_ja": "ヴェロアの魔帽子・シャズ",
+      "source": "https://gamerch.com/puzdra0/924805",
+      "attributes": "闇",
+      "skill_ja": "最下段1列を闇ドロップに変化。 1ターンの間、回復力が2倍。",
+      "awakenings_ja": "回復強化",
+      "cooldown": 4
+    },
+    {
+      "number": 117,
+      "name_ja": "グリーンガチャドラ",
+      "source": "https://gamerch.com/puzdra0/924251",
+      "attributes": "木",
+      "skill_ja": "7ターンの間、操作時間を3秒延長。 自分以外の味方スキルが1ターン溜まる。",
+      "awakenings_ja": "ダンジョンボーナス",
+      "cooldown": 7
+    },
+    {
+      "number": 118,
+      "name_ja": "シルバーガチャドラ",
+      "source": "https://gamerch.com/puzdra0/924775",
+      "attributes": "水",
+      "skill_ja": "2ターンの間、回復力が2倍。 自分以外の味方スキルが1ターン溜まる。",
+      "awakenings_ja": "ダンジョンボーナス / スキルブースト",
+      "cooldown": 7
+    },
+    {
+      "number": 119,
+      "name_ja": "ゴールドガチャドラ",
+      "source": "https://gamerch.com/puzdra0/924792",
+      "attributes": "光",
+      "skill_ja": "2ターンの間、攻撃力が2倍。 自分以外の味方スキルが1ターン溜まる。",
+      "awakenings_ja": "ダンジョンボーナス / スキルブースト",
+      "cooldown": 7
+    },
+    {
+      "number": 120,
+      "name_ja": "メタルガチャドラ",
+      "source": "https://gamerch.com/puzdra0/924794",
+      "attributes": "闇闇",
+      "skill_ja": "3ターンの間、属性吸収を無効化。 自分以外の味方スキルが1ターン溜まる。",
+      "awakenings_ja": "ダンジョンボーナス / ダンジョンボーナス / スキルブースト",
+      "cooldown": 7
+    },
+    {
+      "number": 121,
+      "name_ja": "紅翼龍・ボルフィード",
+      "source": "https://gamerch.com/puzdra0/924256",
+      "attributes": "火闇",
+      "skill_ja": "左端1列を火ドロップに、右端1列を回復ドロップに変化。 1ターンの間、2コンボ加算。",
+      "awakenings_ja": "コンボ強化 / コンボ強化",
+      "cooldown": 4
+    },
+    {
+      "number": 122,
+      "name_ja": "溟海龍・グラシオス",
+      "source": "https://gamerch.com/puzdra0/924257",
+      "attributes": "水木",
+      "skill_ja": "最下段1列を水ドロップに変化。 1ターンの間、2コンボ加算。",
+      "awakenings_ja": "水つなげ消し / 水つなげ消し",
+      "cooldown": 4
+    },
+    {
+      "number": 123,
+      "name_ja": "豊樹龍・シルヴァ",
+      "source": "https://gamerch.com/puzdra0/924258",
+      "attributes": "木光",
+      "skill_ja": "全ドロップを火水木光回復ドロップに変化。 1ターンの間、2コンボ加算。",
+      "awakenings_ja": "3色攻撃強化 / 3色攻撃強化",
+      "cooldown": 4
+    },
+    {
+      "number": 124,
+      "name_ja": "烈空の紅龍喚士・ソニア",
+      "source": "https://gamerch.com/puzdra0/924250",
+      "attributes": "火闇",
+      "skill_ja": "ドロップロックを解除。火闇ドロップを8個ずつ生成。 HPを50％回復。",
+      "awakenings_ja": "コンボ強化 / 火つなげ消し",
+      "cooldown": 5
+    },
+    {
+      "number": 125,
+      "name_ja": "青龍喚士・ソニア=クレア",
+      "source": "https://gamerch.com/puzdra0/924374",
+      "attributes": "水闇",
+      "skill_ja": "ドロップロックを解除。水闇ドロップを8個ずつ生成。 HPを50%回復。",
+      "awakenings_ja": "コンボ強化 / 水つなげ消し",
+      "cooldown": 5
+    },
+    {
+      "number": 126,
+      "name_ja": "緑龍喚士・ソニア=フィオ",
+      "source": "https://gamerch.com/puzdra0/924380",
+      "attributes": "木闇",
+      "skill_ja": "ドロップロックを解除。木闇ドロップを8個ずつ生成。 HPを50%回復。",
+      "awakenings_ja": "コンボ強化 / 木つなげ消し",
+      "cooldown": 5
+    },
+    {
+      "number": 127,
+      "name_ja": "水彩幻画師・アトリ",
+      "source": "https://gamerch.com/puzdra0/924451",
+      "attributes": "木水",
+      "skill_ja": "ドロップロックを解除。全ドロップを火水木光闇回復ドロップに変化。 3ターンの間、1コンボ加算。",
+      "awakenings_ja": "4色攻撃強化 / 2体攻撃",
+      "cooldown": 5
+    },
+    {
+      "number": 128,
+      "name_ja": "デジタル幻画師・プリム",
+      "source": "https://gamerch.com/puzdra0/924470",
+      "attributes": "水火",
+      "skill_ja": "ドロップロックを解除。 光ドロップを水ドロップに変化。",
+      "awakenings_ja": "スキルブースト / L字消し攻撃",
+      "cooldown": 3
+    },
+    {
+      "number": 129,
+      "name_ja": "幻画修正師・イライザ",
+      "source": "https://gamerch.com/puzdra0/924811",
+      "attributes": "光光",
+      "skill_ja": "全ドロップを破壊。 1ターンの間、操作時間を2秒延長。",
+      "awakenings_ja": "超コンボ強化 / 追加攻撃",
+      "cooldown": 4
+    },
+    {
+      "number": 130,
+      "name_ja": "デッサン幻画師・ディジー",
+      "source": "https://gamerch.com/puzdra0/924409",
+      "attributes": "木闇",
+      "skill_ja": "1ターンの間、3コンボ加算。 全ドロップを木闇回復ドロップに変化。",
+      "awakenings_ja": "スキルブースト / 木つなげ消し",
+      "cooldown": 5
+    },
+    {
+      "number": 131,
+      "name_ja": "サンドアート幻画師・ライル",
+      "source": "https://gamerch.com/puzdra0/924436",
+      "attributes": "火光",
+      "skill_ja": "3ターンの間、火ドロップが落ちやすくなる。 火光回復ドロップを4個ずつ生成。",
+      "awakenings_ja": "L字消し攻撃 / 追加攻撃",
+      "cooldown": 4
+    },
+    {
+      "number": 132,
+      "name_ja": "弦龍楽士・テオール",
+      "source": "https://gamerch.com/puzdra0/924488",
+      "attributes": "火火",
+      "skill_ja": "全ドロップを火水木光闇回復ドロップに変化。 1ターンの間、操作時間を5秒延長。",
+      "awakenings_ja": "スキルブースト / 4色攻撃強化",
+      "cooldown": 4
+    },
+    {
+      "number": 133,
+      "name_ja": "琴龍楽士・ルティナ",
+      "source": "https://gamerch.com/puzdra0/924379",
+      "attributes": "水水",
+      "skill_ja": "ドロップロックを解除。 1ターンの間、水ドロップが落ちやすくなる。",
+      "awakenings_ja": "スキルブースト / ダメージ無効貫通",
+      "cooldown": 2
+    },
+    {
+      "number": 134,
+      "name_ja": "奏龍楽士・ミオン",
+      "source": "https://gamerch.com/puzdra0/924694",
+      "attributes": "水水",
+      "skill_ja": "ドロップロックを解除。火光ドロップを水ドロップに変化。 2ターンの間、2コンボ加算。",
+      "awakenings_ja": "スキルブースト / コンボ強化",
+      "cooldown": 5
+    },
+    {
+      "number": 135,
+      "name_ja": "箏龍楽士・ミナカ",
+      "source": "https://gamerch.com/puzdra0/924687",
+      "attributes": "水水",
+      "skill_ja": "ドロップロックを解除。木ドロップを水ドロップに、光ドロップを回復ドロップに変化。 2ターンの間、ダメージを40%軽減。",
+      "awakenings_ja": "回復強化 / 封印耐性",
+      "cooldown": 5
+    },
+    {
+      "number": 136,
+      "name_ja": "笛龍楽士・エファ",
+      "source": "https://gamerch.com/puzdra0/924383",
+      "attributes": "木木",
+      "skill_ja": "ドロップロックを解除。右端1列を回復ドロップに変化。 4ターンの間、操作時間を3秒延長。",
+      "awakenings_ja": "追加攻撃 / 暗闇耐性",
+      "cooldown": 4
+    },
+    {
+      "number": 137,
+      "name_ja": "管龍楽士・マリエル",
+      "source": "https://gamerch.com/puzdra0/924391",
+      "attributes": "光光",
+      "skill_ja": "全ドロップを火水木光回復ドロップに変化。 2ターンの間、ダメージを25%軽減。",
+      "awakenings_ja": "回復強化 / 4色攻撃強化",
+      "cooldown": 4
+    },
+    {
+      "number": 138,
+      "name_ja": "電龍楽士・マルシス",
+      "source": "https://gamerch.com/puzdra0/924249",
+      "attributes": "光光",
+      "skill_ja": "2ターンの間、攻撃力と回復力が1.5倍。 覚醒無効状態を4ターン回復。",
+      "awakenings_ja": "2体攻撃 / 2体攻撃",
+      "cooldown": 4
+    },
+    {
+      "number": 139,
+      "name_ja": "吹龍楽士・フェノン",
+      "source": "https://gamerch.com/puzdra0/924389",
+      "attributes": "闇闇",
+      "skill_ja": "最下段1列を闇ドロップに変化。 覚醒無効状態を3ターン回復。",
+      "awakenings_ja": "闇つなげ消し / ダメージ無効貫通",
+      "cooldown": 4
+    },
+    {
+      "number": 140,
+      "name_ja": "流焔の鬼龍契士・スオウ",
+      "source": "https://gamerch.com/puzdra0/924377",
+      "attributes": "水火",
+      "skill_ja": "ドロップロックを解除。全ドロップを火水回復ドロップに変化。 3ターンの間、ダメージを30%軽減。",
+      "awakenings_ja": "コンボ強化 / スキルブースト",
+      "cooldown": 6
+    },
+    {
+      "number": 141,
+      "name_ja": "黒鋏の断龍喚士・ロシェ",
+      "source": "https://gamerch.com/puzdra0/924381",
+      "attributes": "木闇",
+      "skill_ja": "火ドロップを木ドロップに、水ドロップを回復ドロップに変化。 1ターンの間、属性吸収を無効化。",
+      "awakenings_ja": "2体攻撃 / 2体攻撃",
+      "cooldown": 4
+    },
+    {
+      "number": 142,
+      "name_ja": "朱雀の化身・レイラン",
+      "source": "https://gamerch.com/puzdra0/924467",
+      "attributes": "火光",
+      "skill_ja": "ドロップロックを解除。 全ドロップを火木光ドロップに変化。",
+      "awakenings_ja": "3色攻撃強化 / お邪魔耐性",
+      "cooldown": 4
+    },
+    {
+      "number": 143,
+      "name_ja": "青龍の化身・カリン",
+      "source": "https://gamerch.com/puzdra0/924424",
+      "attributes": "水木",
+      "skill_ja": "ドロップロックを解除。 全ドロップを水木闇ドロップに変化。",
+      "awakenings_ja": "3色攻撃強化 / 暗闇耐性",
+      "cooldown": 4
+    },
+    {
+      "number": 144,
+      "name_ja": "玄武の化身・メイメイ",
+      "source": "https://gamerch.com/puzdra0/924415",
+      "attributes": "木闇",
+      "skill_ja": "ドロップロックを解除。 全ドロップを木光闇ドロップに変化。",
+      "awakenings_ja": "3色攻撃強化 / 封印耐性",
+      "cooldown": 4
+    },
+    {
+      "number": 145,
+      "name_ja": "白虎の化身・ハク",
+      "source": "https://gamerch.com/puzdra0/924678",
+      "attributes": "闇火",
+      "skill_ja": "ドロップロックを解除。 全ドロップを火水闇ドロップに変化。",
+      "awakenings_ja": "3色攻撃強化 / 毒耐性",
+      "cooldown": 4
+    },
+    {
+      "number": 146,
+      "name_ja": "ニーズヘッグ",
+      "source": "https://gamerch.com/puzdra0/924695",
+      "attributes": "火闇",
+      "skill_ja": "最上段1列を火ドロップに変化。 覚醒無効状態を4ターン回復。",
+      "awakenings_ja": "スキルブースト / 火つなげ消し",
+      "cooldown": 4
+    },
+    {
+      "number": 147,
+      "name_ja": "ケツァルコアトル",
+      "source": "https://gamerch.com/puzdra0/924442",
+      "attributes": "木火",
+      "skill_ja": "2ターンの間、1コンボ加算。 2ターンの間、ダメージを30%軽減。",
+      "awakenings_ja": "ダメージ無効貫通 / 木つなげ消し",
+      "cooldown": 4
+    },
+    {
+      "number": 148,
+      "name_ja": "ザッハーク",
+      "source": "https://gamerch.com/puzdra0/924401",
+      "attributes": "闇光",
+      "skill_ja": "最上段1列を闇ドロップに、最下段1列を光ドロップに変化。 2ターンの間、闇ドロップが落ちやすくなる。",
+      "awakenings_ja": "スキルブースト / 闇つなげ消し",
+      "cooldown": 4
+    },
+    {
+      "number": 149,
+      "name_ja": "龍帝王・シェリアス",
+      "source": "https://gamerch.com/puzdra0/924388",
+      "attributes": "光水",
+      "skill_ja": "全ドロップを火水木光闇回復ドロップに変化。",
+      "awakenings_ja": "4色攻撃強化 / 追加攻撃",
+      "cooldown": 3
+    },
+    {
+      "number": 150,
+      "name_ja": "ハイビスカスの星光華",
+      "source": "https://gamerch.com/puzdra0/924697",
+      "attributes": "火木",
+      "skill_ja": "HPを30%回復。 バインドと覚醒無効状態を3ターン回復。",
+      "awakenings_ja": "バインド耐性 / 追加攻撃",
+      "cooldown": 4
+    },
+    {
+      "number": 151,
+      "name_ja": "アジサイの星光華",
+      "source": "https://gamerch.com/puzdra0/924485",
+      "attributes": "水木",
+      "skill_ja": "HPを30%回復。 バインドと覚醒無効状態を3ターン回復。",
+      "awakenings_ja": "バインド耐性 / 追加攻撃",
+      "cooldown": 4
+    },
+    {
+      "number": 152,
+      "name_ja": "スズランの星光華",
+      "source": "https://gamerch.com/puzdra0/924416",
+      "attributes": "木木",
+      "skill_ja": "HPを30％回復。 バインドと覚醒無効状態を3ターン回復。",
+      "awakenings_ja": "バインド耐性 / 追加攻撃",
+      "cooldown": 4
+    },
+    {
+      "number": 153,
+      "name_ja": "ダリアの星光華",
+      "source": "https://gamerch.com/puzdra0/924407",
+      "attributes": "光木",
+      "skill_ja": "ドロップロックを解除。回復ドロップを5個生成。 バインドと覚醒無効状態を3ターン回復。",
+      "awakenings_ja": "バインド耐性 / 追加攻撃",
+      "cooldown": 4
+    },
+    {
+      "number": 154,
+      "name_ja": "黒薔薇の邪影華",
+      "source": "https://gamerch.com/puzdra0/924395",
+      "attributes": "闇木",
+      "skill_ja": "ドロップロックを解除。回復ドロップを5個生成。 バインドと覚醒無効状態を3ターン回復。",
+      "awakenings_ja": "バインド耐性 / 追加攻撃",
+      "cooldown": 4
+    },
+    {
+      "number": 155,
+      "name_ja": "火の精霊王・ボーマ",
+      "source": "https://gamerch.com/puzdra0/924461",
+      "attributes": "火火",
+      "skill_ja": "1ターンの間、攻撃力が2倍。 1ターンの間、属性吸収を無効化。",
+      "awakenings_ja": "コンボ強化 / 封印耐性",
+      "cooldown": 4
+    },
+    {
+      "number": 156,
+      "name_ja": "水の精霊王・ザパン",
+      "source": "https://gamerch.com/puzdra0/924685",
+      "attributes": "水水",
+      "skill_ja": "1ターンの間、攻撃力が2倍。 2ターンの間、水ドロップが落ちやすくなる。",
+      "awakenings_ja": "コンボ強化 / 毒耐性",
+      "cooldown": 4
+    },
+    {
+      "number": 157,
+      "name_ja": "木の精霊王・ビュート",
+      "source": "https://gamerch.com/puzdra0/924813",
+      "attributes": "木木",
+      "skill_ja": "1ターンの間、攻撃力が2倍。 1ターンの間、2コンボ加算。",
+      "awakenings_ja": "超コンボ強化 / 雲耐性",
+      "cooldown": 4
+    },
+    {
+      "number": 158,
+      "name_ja": "光の精霊王・キーラ",
+      "source": "https://gamerch.com/puzdra0/924476",
+      "attributes": "光光",
+      "skill_ja": "1ターンの間、攻撃力が2倍。 4ターンの間、操作時間を1秒延長。",
+      "awakenings_ja": "コンボ強化 / お邪魔耐性",
+      "cooldown": 4
+    },
+    {
+      "number": 159,
+      "name_ja": "闇の精霊王・モワ",
+      "source": "https://gamerch.com/puzdra0/924403",
+      "attributes": "闇闇",
+      "skill_ja": "1ターンの間、攻撃力が2倍。 全ドロップを破壊。",
+      "awakenings_ja": "コンボ強化 / 暗闇耐性",
+      "cooldown": 4
+    },
+    {
+      "number": 160,
+      "name_ja": "青龍契士・リューネ",
+      "source": "https://gamerch.com/puzdra0/924690",
+      "attributes": "水闇",
+      "skill_ja": "ドロップロックを解除。全ドロップを水闇回復ドロップに変化。 自分以外の味方スキルが1ターン溜まる。",
+      "awakenings_ja": "スキルブースト / 水つなげ消し",
+      "cooldown": 7
+    },
+    {
+      "number": 161,
+      "name_ja": "緑龍契士・シルヴィ",
+      "source": "https://gamerch.com/puzdra0/924815",
+      "attributes": "木光",
+      "skill_ja": "ドロップロックを解除。全ドロップを木光回復ドロップに変化。 自分以外の味方スキルが1ターン溜まる。",
+      "awakenings_ja": "スキルブースト / 木つなげ消し",
+      "cooldown": 7
+    },
+    {
+      "number": 162,
+      "name_ja": "ドワーフの戦士・グリゴリー",
+      "source": "https://gamerch.com/puzdra0/924817",
+      "attributes": "火木",
+      "skill_ja": "全ドロップを火木回復ドロップに変化。",
+      "awakenings_ja": "2体攻撃 / 2体攻撃",
+      "cooldown": 4
+    },
+    {
+      "number": 163,
+      "name_ja": "兎人の武闘家・ディーナ",
+      "source": "https://gamerch.com/puzdra0/924819",
+      "attributes": "水水",
+      "skill_ja": "ドロップロックを解除。回復ドロップ以外から水ドロップを3個生成。 1ターンの間、攻撃力と回復力が1.5倍。",
+      "awakenings_ja": "スキルブースト / ダメージ無効貫通",
+      "cooldown": 3
+    },
+    {
+      "number": 164,
+      "name_ja": "エルフの使者・アリナ",
+      "source": "https://gamerch.com/puzdra0/924821",
+      "attributes": "木光",
+      "skill_ja": "HPを30％回復。最下段1列を木ドロップに変化。 覚醒無効状態を4ターン回復。",
+      "awakenings_ja": "回復強化 / スキルブースト",
+      "cooldown": 4
+    },
+    {
+      "number": 165,
+      "name_ja": "旅立ちの冒険者・ダイヤ",
+      "source": "https://gamerch.com/puzdra0/924405",
+      "attributes": "光光",
+      "skill_ja": "1ターンの間、1コンボ加算。 1ターンの間、ダメージを30％軽減。",
+      "awakenings_ja": "コンボ強化 / コンボ強化",
+      "cooldown": 3
+    },
+    {
+      "number": 166,
+      "name_ja": "黒衣の魔法使い・エレメイ",
+      "source": "https://gamerch.com/puzdra0/924824",
+      "attributes": "闇闇",
+      "skill_ja": "1ターンの間、攻撃力が2倍、操作時間を5秒延長。 1ターンの間、2コンボ加算。",
+      "awakenings_ja": "スキルブースト / L字消し攻撃",
+      "cooldown": 4
+    },
+    {
+      "number": 167,
+      "name_ja": "騎士王・アルトリウス",
+      "source": "https://gamerch.com/puzdra0/924825",
+      "attributes": "火光",
+      "skill_ja": "ドロップロックを解除。闇ドロップを火ドロップに、水ドロップを回復ドロップに変化。 1ターンの間、攻撃力が2倍、2コンボ加算。",
+      "awakenings_ja": "スキルブースト / 火つなげ消し",
+      "cooldown": 5
+    },
+    {
+      "number": 168,
+      "name_ja": "氷雪王・ミアーダ",
+      "source": "https://gamerch.com/puzdra0/924480",
+      "attributes": "水木",
+      "skill_ja": "回復ドロップ以外から水ドロップを6個生成。 1ターンの間、1コンボ加算、操作時間を4秒延長。",
+      "awakenings_ja": "スキルブースト / 水つなげ消し",
+      "cooldown": 4
+    },
+    {
+      "number": 169,
+      "name_ja": "妖精王・アルバート",
+      "source": "https://gamerch.com/puzdra0/924827",
+      "attributes": "木光",
+      "skill_ja": "全ドロップを木回復ドロップに変化。 2ターンの間、ダメージを50％軽減。",
+      "awakenings_ja": "スキルブースト / ダメージ無効貫通",
+      "cooldown": 6
+    },
+    {
+      "number": 170,
+      "name_ja": "聖賢王・サフィーラ",
+      "source": "https://gamerch.com/puzdra0/924828",
+      "attributes": "光闇",
+      "skill_ja": "ドロップロックを解除。火水ドロップを光ドロップに変化。 1ターンの間、2コンボ加算。",
+      "awakenings_ja": "スキルブースト / ダメージ無効貫通",
+      "cooldown": 4
+    },
+    {
+      "number": 171,
+      "name_ja": "孔雀王・ユリシャ",
+      "source": "https://gamerch.com/puzdra0/924832",
+      "attributes": "闇火",
+      "skill_ja": "闇回復ドロップを4個ずつ生成。 2ターンの間、闇回復ドロップが落ちやすくなる。",
+      "awakenings_ja": "スキルブースト / L字消し攻撃",
+      "cooldown": 4
+    },
+    {
+      "number": 172,
+      "name_ja": "霊龍契士・ラジョア",
+      "source": "https://gamerch.com/puzdra0/924410",
+      "attributes": "闇闇",
+      "skill_ja": "ドロップロックを解除。闇回復ドロップを6個ずつ生成。 バインド状態を3ターン回復。",
+      "awakenings_ja": "バインド耐性 / 闇つなげ消し",
+      "cooldown": 5
+    },
+    {
+      "number": 173,
+      "name_ja": "避邪の武身・チィリン",
+      "source": "https://gamerch.com/puzdra0/924837",
+      "attributes": "水光",
+      "skill_ja": "左端1列を水ドロップに変化。 2ターンの間、属性吸収を無効化。",
+      "awakenings_ja": "コンボ強化 / 回復強化",
+      "cooldown": 4
+    },
+    {
+      "number": 174,
+      "name_ja": "宿意の堕龍契士・レーヴェン",
+      "source": "https://gamerch.com/puzdra0/924696",
+      "attributes": "火闇",
+      "skill_ja": "左端1列を火ドロップに変化。 2ターンの間、属性吸収を無効化。",
+      "awakenings_ja": "2体攻撃 / 2体攻撃",
+      "cooldown": 4
+    },
+    {
+      "number": 175,
+      "name_ja": "博愛の彩龍喚士・イデアル",
+      "source": "https://gamerch.com/puzdra0/924839",
+      "attributes": "光闇",
+      "skill_ja": "全ドロップを火水木光闇回復ドロップに変化。 1ターンの間、1コンボ加算、属性吸収を無効化。",
+      "awakenings_ja": "コンボ強化 / コンボ強化",
+      "cooldown": 4
+    },
+    {
+      "number": 176,
+      "name_ja": "勇炎の鷹騎士・ガウェイン",
+      "source": "https://gamerch.com/puzdra0/924842",
+      "attributes": "火木",
+      "skill_ja": "3ターンの間、ダメージを30％軽減。 5ターンの間、火ドロップが落ちやすくなる。",
+      "awakenings_ja": "スキルブースト / ダメージ無効貫通",
+      "cooldown": 6
+    },
+    {
+      "number": 177,
+      "name_ja": "獣人の戦士・ガルフ",
+      "source": "https://gamerch.com/puzdra0/924843",
+      "attributes": "闇闇",
+      "skill_ja": "1ターンの間、攻撃力が2倍。 2ターンの間、回復力が75％減少。",
+      "awakenings_ja": "2体攻撃 / 2体攻撃",
+      "cooldown": 2
+    },
+    {
+      "number": 178,
+      "name_ja": "回想の時女神・プレーナ",
+      "source": "https://gamerch.com/puzdra0/925116",
+      "attributes": "火闇",
+      "skill_ja": "ドロップロックを解除。全ドロップを火木光闇回復ドロップに変化。 2ターンの間、2コンボ加算。",
+      "awakenings_ja": "コンボ強化 / 追加攻撃",
+      "cooldown": 5
+    },
+    {
+      "number": 179,
+      "name_ja": "転戦の師龍喚士・ヴァレリア",
+      "source": "https://gamerch.com/puzdra0/925401",
+      "attributes": "光火",
+      "skill_ja": "1ターンの間、攻撃力と回復力が2倍。 全ドロップを破壊。",
+      "awakenings_ja": "スキルブースト / スキルブースト",
+      "cooldown": 5
+    },
+    {
+      "number": 180,
+      "name_ja": "療龍喚士・ハイレン",
+      "source": "https://gamerch.com/puzdra0/925400",
+      "attributes": "火水",
+      "skill_ja": "全ドロップを火水回復ドロップに変化。 1ターンの間、回復力が2倍。",
+      "awakenings_ja": "コンボ強化 / コンボ強化",
+      "cooldown": 5
+    },
+    {
+      "number": 181,
+      "name_ja": "凄艶の幻術士・サンドラ",
+      "source": "https://gamerch.com/puzdra0/925399",
+      "attributes": "火水",
+      "skill_ja": "1ターンの間、属性吸収を無効化。 1ターンの間、攻撃力が1.5倍。",
+      "awakenings_ja": "3色攻撃強化 / 3色攻撃強化",
+      "cooldown": 3
+    },
+    {
+      "number": 182,
+      "name_ja": "水華の喜女神・ウルカ",
+      "source": "https://gamerch.com/puzdra0/925397",
+      "attributes": "水闇",
+      "skill_ja": "全ドロップを火水木光闇回復ドロップに変化。 2ターンの間、属性吸収を無効化。",
+      "awakenings_ja": "コンボ強化 / 3色攻撃強化",
+      "cooldown": 5
+    },
+    {
+      "number": 183,
+      "name_ja": "賞金稼ぎの銃士・リズレット",
+      "source": "https://gamerch.com/puzdra0/925179",
+      "attributes": "木木",
+      "skill_ja": "木回復ドロップを6個ずつ生成。 1ターンの間、回復力が1.5倍。",
+      "awakenings_ja": "木つなげ消し / 木つなげ消し",
+      "cooldown": 4
+    },
+    {
+      "number": 184,
+      "name_ja": "白幻魔・イルム",
+      "source": "https://gamerch.com/puzdra0/925132",
+      "attributes": "光火",
+      "skill_ja": "ドロップロックを解除。火光回復ドロップを4個ずつ生成。 1ターンの間、攻撃力が2.5倍。",
+      "awakenings_ja": "超コンボ強化 / 封印耐性",
+      "cooldown": 4
+    },
+    {
+      "number": 185,
+      "name_ja": "氷原の案内人・ユウリ",
+      "source": "https://gamerch.com/puzdra0/924680",
+      "attributes": "水水",
+      "skill_ja": "ドロップロックを解除。左端1列を水ドロップに、右端1列を回復ドロップに変化。 2ターンの間、回復力が2倍。",
+      "awakenings_ja": "L字消し攻撃 / 追加攻撃",
+      "cooldown": 5
+    },
+    {
+      "number": 186,
+      "name_ja": "エンシェントドラゴンナイト",
+      "source": "https://gamerch.com/puzdra0/925398",
+      "attributes": "木木",
+      "skill_ja": "お邪魔毒ドロップを木ドロップに変化。 1ターンの間、操作時間を3秒延長。",
+      "awakenings_ja": "2体攻撃 / 2体攻撃",
+      "cooldown": 2
+    },
+    {
+      "number": 187,
+      "name_ja": "エキドナ",
+      "source": "https://gamerch.com/puzdra0/924796",
+      "attributes": "火火",
+      "skill_ja": "1ターンの間、ダメージを100%軽減。 2ターンの間、5コンボ加算、属性吸収を無効化。",
+      "awakenings_ja": "回復強化 / 超コンボ強化",
+      "cooldown": 10
+    },
+    {
+      "number": 188,
+      "name_ja": "龍刃機・バルディン",
+      "source": "https://gamerch.com/puzdra0/925402",
+      "attributes": "火闇",
+      "skill_ja": "1ターンの間、攻撃力が2.5倍。 光お邪魔ドロップを火ドロップに、水毒ドロップを闇ドロップに変化。",
+      "awakenings_ja": "2体攻撃 / 2体攻撃",
+      "cooldown": 4
+    },
+    {
+      "number": 189,
+      "name_ja": "麒麟の化身・サクヤ",
+      "source": "https://gamerch.com/puzdra0/925136",
+      "attributes": "光水",
+      "skill_ja": "敵のHP20%分のダメージ。 バインドと覚醒無効状態を5ターン回復。",
+      "awakenings_ja": "バインド耐性 / 4色攻撃強化",
+      "cooldown": 5
+    },
+    {
+      "number": 190,
+      "name_ja": "真紅の機神王・グランディス",
+      "source": "https://gamerch.com/puzdra0/925403",
+      "attributes": "火火",
+      "skill_ja": "最下段１列を火ドロップに変化。 1ターンの間、1コンボ加算。",
+      "awakenings_ja": "コンボ強化 / ダメージ無効貫通",
+      "cooldown": 3
+    },
+    {
+      "number": 191,
+      "name_ja": "ネプチューン",
+      "source": "https://gamerch.com/puzdra0/924818",
+      "attributes": "水水",
+      "skill_ja": "1ターンの間、攻撃力が1.5倍。 最下段1列を水ドロップに変化。",
+      "awakenings_ja": "スキルブースト / ダメージ無効貫通",
+      "cooldown": 3
+    },
+    {
+      "number": 192,
+      "name_ja": "無天の幻龍王・ゼローグ",
+      "source": "https://gamerch.com/puzdra0/924477",
+      "attributes": "光水",
+      "skill_ja": "全ドロップを火水木光闇回復ドロップに変化。",
+      "awakenings_ja": "3色攻撃強化 / 4色攻撃強化",
+      "cooldown": 2
+    },
+    {
+      "number": 193,
+      "name_ja": "静観の穏龍契士・リクウ",
+      "source": "https://gamerch.com/puzdra0/924793",
+      "attributes": "火闇",
+      "skill_ja": "ドロップロックを解除。全ドロップを火水木光闇回復ドロップに変化。 5ターンの間、操作時間を5秒延長。",
+      "awakenings_ja": "スキルブースト / L字消し攻撃",
+      "cooldown": 5
+    },
+    {
+      "number": 194,
+      "name_ja": "伝承・ エンシェントドラゴンナイト",
+      "source": "https://gamerch.com/puzdra0/926032",
+      "attributes": "木木",
+      "skill_ja": "お邪魔毒ドロップを木ドロップに変化。 1ターンの間、操作時間を5秒延長。",
+      "awakenings_ja": "2体攻撃 / 2体攻撃 / コンボ強化",
+      "cooldown": 2
+    },
+    {
+      "number": 195,
+      "name_ja": "紅蓮華の女帝・ エキドナ",
+      "source": "https://gamerch.com/puzdra0/925166",
+      "attributes": "火火",
+      "skill_ja": "1ターンの間、ダメージを100%軽減。 2ターンの間、6コンボ加算、属性吸収を無効化。",
+      "awakenings_ja": "回復強化 / 超コンボ強化 / 封印耐性",
+      "cooldown": 10
+    },
+    {
+      "number": 196,
+      "name_ja": "ラグナロク=ドラゴン",
+      "source": "https://gamerch.com/puzdra0/925124",
+      "attributes": "木闇",
+      "skill_ja": "ドロップロックを解除。全ドロップを火水木光闇回復ドロップに変化。 2ターンの間、属性吸収を無効化。",
+      "awakenings_ja": "4色攻撃強化 / 4色攻撃強化 / 封印耐性",
+      "cooldown": 4
+    },
+    {
+      "number": 197,
+      "name_ja": "妖桜精・ニルオーカム",
+      "source": "https://gamerch.com/puzdra0/925155",
+      "attributes": "闇闇",
+      "skill_ja": "3ターンの間、闇回復ドロップが落ちやすくなる。 2ターンの間、属性吸収を無効化。",
+      "awakenings_ja": "コンボ強化 / コンボ強化 / 毒耐性",
+      "cooldown": 4
+    },
+    {
+      "number": 198,
+      "name_ja": "妖樹精・ニルヴォーク",
+      "source": "https://gamerch.com/puzdra0/925180",
+      "attributes": "木木",
+      "skill_ja": "2ターンの間、攻撃力と回復力が1.5倍。 2ターンの間、属性吸収を無効化。",
+      "awakenings_ja": "超コンボ強化 / 回復強化 / 回復強化",
+      "cooldown": 4
+    },
+    {
+      "number": 199,
+      "name_ja": "ネプチューン =ドラゴン",
+      "source": "https://gamerch.com/puzdra0/924823",
+      "attributes": "水火",
+      "skill_ja": "最上段1列を水ドロップに変化。 1ターンの間、攻撃力と回復力が1.5倍。",
+      "awakenings_ja": "水つなげ消し / 水つなげ消し / ダメージ無効貫通",
+      "cooldown": 3
+    },
+    {
+      "number": 200,
+      "name_ja": "火の案内人・ミツキ",
+      "source": "https://gamerch.com/puzdra0/925362",
+      "attributes": "火火",
+      "skill_ja": "木光毒ドロップを回復ドロップに変化。 バインド状態を4ターン回復。",
+      "awakenings_ja": "バインド耐性 / 回復強化",
+      "cooldown": 4
+    },
+    {
+      "number": 201,
+      "name_ja": "木の案内人・カノ",
+      "source": "https://gamerch.com/puzdra0/925361",
+      "attributes": "木木",
+      "skill_ja": "水光毒ドロップを回復ドロップに変化。 バインド状態を4ターン回復。",
+      "awakenings_ja": "バインド耐性 / 回復強化",
+      "cooldown": 4
+    },
+    {
+      "number": 202,
+      "name_ja": "闇の案内人・クロネ",
+      "source": "https://gamerch.com/puzdra0/925359",
+      "attributes": "闇闇",
+      "skill_ja": "火光毒ドロップを回復ドロップに変化。 バインド状態を4ターン回復。",
+      "awakenings_ja": "バインド耐性 / 回復強化",
+      "cooldown": 4
+    },
+    {
+      "number": 203,
+      "name_ja": "水の小鬼",
+      "source": "https://gamerch.com/puzdra0/925364",
+      "attributes": "水水",
+      "skill_ja": "1ターンの間、ダメージを50%軽減。 闇回復ドロップを水ドロップに変化。",
+      "awakenings_ja": "スキルブースト / 雲耐性",
+      "cooldown": 4
+    },
+    {
+      "number": 204,
+      "name_ja": "雷の小鬼",
+      "source": "https://gamerch.com/puzdra0/925358",
+      "attributes": "光光",
+      "skill_ja": "1ターンの間、ダメージを50%軽減。 闇回復ドロップを光ドロップに変化。",
+      "awakenings_ja": "スキルブースト / 雲耐性",
+      "cooldown": 4
+    },
+    {
+      "number": 205,
+      "name_ja": "陰陽省の薬師・イズナ",
+      "source": "https://gamerch.com/puzdra0/925356",
+      "attributes": "木木",
+      "skill_ja": "ドロップロックを解除。1ターンの間、攻撃力が1.5倍。 バインドと覚醒無効状態を3ターン回復。",
+      "awakenings_ja": "バインド耐性 / L字消し攻撃",
+      "cooldown": 5
+    },
+    {
+      "number": 206,
+      "name_ja": "真田幸村",
+      "source": "https://gamerch.com/puzdra0/925355",
+      "attributes": "火木",
+      "skill_ja": "ドロップロックを解除。水ドロップを火ドロップに、光ドロップを回復ドロップに変化。 1ターンの間、2コンボ加算。",
+      "awakenings_ja": "スキルブースト / 超コンボ強化",
+      "cooldown": 4
+    },
+    {
+      "number": 207,
+      "name_ja": "稲姫",
+      "source": "https://gamerch.com/puzdra0/925351",
+      "attributes": "火木",
+      "skill_ja": "バインドと覚醒無効状態を3ターン回復。 全ドロップを火木回復ドロップに変化。",
+      "awakenings_ja": "バインド耐性 / 暗闇耐性",
+      "cooldown": 5
+    },
+    {
+      "number": 208,
+      "name_ja": "前田慶次",
+      "source": "https://gamerch.com/puzdra0/925353",
+      "attributes": "光木",
+      "skill_ja": "3ターンの間、ダメージを30%軽減。 全ドロップを破壊。",
+      "awakenings_ja": "4色攻撃強化 / 毒耐性",
+      "cooldown": 5
+    },
+    {
+      "number": 209,
+      "name_ja": "濃姫",
+      "source": "https://gamerch.com/puzdra0/925350",
+      "attributes": "闇火",
+      "skill_ja": "ドロップロックを解除。全ドロップを火水木闇回復ドロップに変化。 2ターンの間、回復力が2倍。",
+      "awakenings_ja": "3色攻撃強化 / 3色攻撃強化",
+      "cooldown": 5
+    },
+    {
+      "number": 210,
+      "name_ja": "毛利元就",
+      "source": "https://gamerch.com/puzdra0/925366",
+      "attributes": "水火",
+      "skill_ja": "ドロップロックを解除。全ドロップを火水ドロップに変化。 2ターンの間、ダメージを75%軽減。",
+      "awakenings_ja": "水つなげ消し / お邪魔耐性",
+      "cooldown": 7
+    },
+    {
+      "number": 211,
+      "name_ja": "立花ぎん千代",
+      "source": "https://gamerch.com/puzdra0/925349",
+      "attributes": "光水",
+      "skill_ja": "ドロップロックを解除。全ドロップを火水木光回復ドロップに変化。 1ターンの間、ダメージを75%軽減。",
+      "awakenings_ja": "4色攻撃強化 / お邪魔耐性",
+      "cooldown": 5
+    },
+    {
+      "number": 212,
+      "name_ja": "明智光秀",
+      "source": "https://gamerch.com/puzdra0/925346",
+      "attributes": "闇光",
+      "skill_ja": "ドロップロックを解除。 火ドロップを闇ドロップに、水ドロップを回復ドロップに変化。HPを50%回復。",
+      "awakenings_ja": "超コンボ強化 / 雲耐性",
+      "cooldown": 4
+    },
+    {
+      "number": 213,
+      "name_ja": "石田三成",
+      "source": "https://gamerch.com/puzdra0/925344",
+      "attributes": "木闇",
+      "skill_ja": "ドロップロックを解除。全ドロップを木闇回復ドロップに変化。 1ターンの間、ダメージを60%軽減。",
+      "awakenings_ja": "コンボ強化 / L字消し攻撃",
+      "cooldown": 5
+    },
+    {
+      "number": 214,
+      "name_ja": "焔纏の紅龍刀士・アキネ",
+      "source": "https://gamerch.com/puzdra0/925369",
+      "attributes": "火水",
+      "skill_ja": "ドロップロックを解除。全ドロップを火水木光闇回復ドロップに変化。 2ターンの間、ダメージを50%軽減。",
+      "awakenings_ja": "スキルブースト / 4色攻撃強化",
+      "cooldown": 5
+    },
+    {
+      "number": 215,
+      "name_ja": "空裂の蒼龍刀士・キョウリ",
+      "source": "https://gamerch.com/puzdra0/925367",
+      "attributes": "水光",
+      "skill_ja": "ドロップロックを解除。水ドロップを3個生成。 1ターンの間、操作時間を1秒延長。",
+      "awakenings_ja": "L字消し攻撃 / 封印耐性",
+      "cooldown": 2
+    },
+    {
+      "number": 216,
+      "name_ja": "山断の翠龍刀士・セリカ",
+      "source": "https://gamerch.com/puzdra0/925341",
+      "attributes": "木火",
+      "skill_ja": "ドロップロックを解除。木ドロップを3個生成。 1ターンの間、操作時間を1秒延長。",
+      "awakenings_ja": "L字消し攻撃 / 封印耐性",
+      "cooldown": 2
+    },
+    {
+      "number": 217,
+      "name_ja": "雷咬の明龍刀士・キオ",
+      "source": "https://gamerch.com/puzdra0/925338",
+      "attributes": "光木",
+      "skill_ja": "ドロップロックを解除。光ドロップを3個生成。 1ターンの間、操作時間を1秒延長。",
+      "awakenings_ja": "L字消し攻撃 / 封印耐性",
+      "cooldown": 2
+    },
+    {
+      "number": 218,
+      "name_ja": "雲散の暗龍刀士・イナ",
+      "source": "https://gamerch.com/puzdra0/925336",
+      "attributes": "闇水",
+      "skill_ja": "ドロップロックを解除。闇ドロップを3個生成。 1ターンの間、操作時間を1秒延長。",
+      "awakenings_ja": "L字消し攻撃 / 封印耐性",
+      "cooldown": 2
+    },
+    {
+      "number": 219,
+      "name_ja": "紅龍刀士の一派・クレハ",
+      "source": "https://gamerch.com/puzdra0/925266",
+      "attributes": "光火",
+      "skill_ja": "回復ドロップ以外から光ドロップを6個生成。 2ターンの間、属性吸収を無効化。",
+      "awakenings_ja": "光つなげ消し / 光つなげ消し",
+      "cooldown": 5
+    },
+    {
+      "number": 220,
+      "name_ja": "水墨幻画師・カイシュウ",
+      "source": "https://gamerch.com/puzdra0/925265",
+      "attributes": "闇光",
+      "skill_ja": "火ドロップを光ドロップに、木ドロップを闇ドロップに変化。 1ターンの間、1コンボ加算。",
+      "awakenings_ja": "2体攻撃 / 2体攻撃",
+      "cooldown": 3
+    },
+    {
+      "number": 221,
+      "name_ja": "風龍喚士・カエデ",
+      "source": "https://gamerch.com/puzdra0/925264",
+      "attributes": "木光",
+      "skill_ja": "木回復ドロップを4個ずつ生成。 3ターンの間、木回復ドロップが落ちやすくなる。",
+      "awakenings_ja": "スキルブースト / 2体攻撃",
+      "cooldown": 5
+    },
+    {
+      "number": 222,
+      "name_ja": "神門の狛犬姫・センリ",
+      "source": "https://gamerch.com/puzdra0/925370",
+      "attributes": "火火",
+      "skill_ja": "ドロップロックを解除。光ドロップを火ドロップに、木ドロップを回復ドロップに変化。 1ターンの間、操作時間を４秒延長。",
+      "awakenings_ja": "コンボ強化 / 追加攻撃",
+      "cooldown": 4
+    },
+    {
+      "number": 223,
+      "name_ja": "クシナダヒメ",
+      "source": "https://gamerch.com/puzdra0/925181",
+      "attributes": "木木",
+      "skill_ja": "1ターンの間、ダメージを80%軽減。 2ターンの間、3コンボ加算。",
+      "awakenings_ja": "超コンボ強化 / 封印耐性",
+      "cooldown": 5
+    },
+    {
+      "number": 224,
+      "name_ja": "ヤマタノオロチ",
+      "source": "https://gamerch.com/puzdra0/926031",
+      "attributes": "水闇",
+      "skill_ja": "火木光お邪魔毒ドロップを破壊。ドロップロックを解除。 2ターンの間、属性吸収を無効化。",
+      "awakenings_ja": "2体攻撃 / 2体攻撃",
+      "cooldown": 4
+    },
+    {
+      "number": 225,
+      "name_ja": "ヤマトタケル",
+      "source": "https://gamerch.com/puzdra0/924809",
+      "attributes": "火水",
+      "skill_ja": "お邪魔毒ドロップを破壊。木ドロップを火ドロップに、闇ドロップを回復ドロップに変化。 1ターンの間、攻撃力が2倍。",
+      "awakenings_ja": "コンボ強化 / 封印耐性",
+      "cooldown": 4
+    },
+    {
+      "number": 226,
+      "name_ja": "イザナギ",
+      "source": "https://gamerch.com/puzdra0/925147",
+      "attributes": "光火",
+      "skill_ja": "2ターンの間、攻撃力と回復力が2倍。 2ターンの間、操作時間を5秒延長。",
+      "awakenings_ja": "スキルブースト / L字消し攻撃",
+      "cooldown": 5
+    },
+    {
+      "number": 227,
+      "name_ja": "スサノオノミコト",
+      "source": "https://gamerch.com/puzdra0/925131",
+      "attributes": "木木",
+      "skill_ja": "3ターンの間、ダメージを40%軽減。 自分以外の味方スキルが1ターン溜まる。",
+      "awakenings_ja": "スキルブースト / 暗闇耐性",
+      "cooldown": 7
+    },
+    {
+      "number": 228,
+      "name_ja": "アメノウズメ",
+      "source": "https://gamerch.com/puzdra0/924812",
+      "attributes": "火木",
+      "skill_ja": "2ターンの間、回復力が1.5倍。 バインドと覚醒無効状態を4ターン回復。",
+      "awakenings_ja": "バインド耐性 / 回復強化",
+      "cooldown": 4
+    },
+    {
+      "number": 229,
+      "name_ja": "オオクニヌシ",
+      "source": "https://gamerch.com/puzdra0/925162",
+      "attributes": "闇光",
+      "skill_ja": "1ターンの間、攻撃力が2倍。 1ターンの間、ダメージを50%軽減。",
+      "awakenings_ja": "超コンボ強化 / 雲耐性",
+      "cooldown": 4
+    },
+    {
+      "number": 230,
+      "name_ja": "ウミサチヤマサチ",
+      "source": "https://gamerch.com/puzdra0/924838",
+      "attributes": "水木",
+      "skill_ja": "火お邪魔ドロップを水ドロップに、闇毒ドロップを回復ドロップに変化。 1ターンの間、回復力が2倍。",
+      "awakenings_ja": "コンボ強化 / L字消し攻撃",
+      "cooldown": 3
+    },
+    {
+      "number": 231,
+      "name_ja": "ヒノカグツチ",
+      "source": "https://gamerch.com/puzdra0/924808",
+      "attributes": "火闇",
+      "skill_ja": "ドロップロックを解除。水光ドロップを火ドロップに変化。 2ターンの間、ダメージを30%軽減。",
+      "awakenings_ja": "2体攻撃 / 2体攻撃",
+      "cooldown": 4
+    },
+    {
+      "number": 232,
+      "name_ja": "ツクヨミ",
+      "source": "https://gamerch.com/puzdra0/925159",
+      "attributes": "闇光",
+      "skill_ja": "ドロップロックを解除。覚醒無効状態を4ターン回復。 3ターンの間、操作時間を3秒延長。",
+      "awakenings_ja": "コンボ強化 / コンボ強化",
+      "cooldown": 3
+    },
+    {
+      "number": 233,
+      "name_ja": "アマテラスオオカミ",
+      "source": "https://gamerch.com/puzdra0/925148",
+      "attributes": "光火",
+      "skill_ja": "HPを50%回復。 バインドと覚醒無効状態を4ターン回復。",
+      "awakenings_ja": "バインド耐性 / 回復強化",
+      "cooldown": 4
+    },
+    {
+      "number": 234,
+      "name_ja": "火車の式神使い・セイナ",
+      "source": "https://gamerch.com/puzdra0/924804",
+      "attributes": "火水",
+      "skill_ja": "ドロップロックを解除。火水回復ドロップを3個ずつ生成。 1ターンの間、操作時間を3秒延長。",
+      "awakenings_ja": "コンボ強化 / コンボ強化",
+      "cooldown": 3
+    },
+    {
+      "number": 235,
+      "name_ja": "赫龍の式神使い・リュウメイ",
+      "source": "https://gamerch.com/puzdra0/925146",
+      "attributes": "光火",
+      "skill_ja": "ドロップロックを解除。火光回復ドロップを3個ずつ生成。 1ターンの間、2コンボ加算。",
+      "awakenings_ja": "コンボ強化 / L字消し攻撃",
+      "cooldown": 3
+    },
+    {
+      "number": 236,
+      "name_ja": "陰陽省の宗主・ミカゲ",
+      "source": "https://gamerch.com/puzdra0/925158",
+      "attributes": "闇木",
+      "skill_ja": "最上段1列を闇ドロップに変化。 4ターンの間、操作時間を5秒延長。",
+      "awakenings_ja": "コンボ強化 / コンボ強化",
+      "cooldown": 4
+    },
+    {
+      "number": 237,
+      "name_ja": "凶鵺の式神使い・トウカ",
+      "source": "https://gamerch.com/puzdra0/925130",
+      "attributes": "木闇",
+      "skill_ja": "ドロップロックを解除。全ドロップを火木光闇回復ドロップに変化。 1ターンの間、攻撃力が2倍。",
+      "awakenings_ja": "4色攻撃強化 / 追加攻撃",
+      "cooldown": 5
+    },
+    {
+      "number": 238,
+      "name_ja": "秘輝蛙の幻忍・児雷也",
+      "source": "https://gamerch.com/puzdra0/925129",
+      "attributes": "木火",
+      "skill_ja": "ドロップロックを解除。水ドロップを木ドロップに変化。 4ターンの間、木ドロップが落ちやすくなる。",
+      "awakenings_ja": "超コンボ強化 / お邪魔耐性",
+      "cooldown": 4
+    },
+    {
+      "number": 239,
+      "name_ja": "銀雪の雪女・ユキネ",
+      "source": "https://gamerch.com/puzdra0/924835",
+      "attributes": "水水",
+      "skill_ja": "ドロップロックを解除。水回復ドロップを6個ずつ生成。 3ターンの間、2コンボ加算。",
+      "awakenings_ja": "超コンボ強化 / 雲耐性",
+      "cooldown": 5
+    },
+    {
+      "number": 240,
+      "name_ja": "始祖の鬼龍契士・クロトビ",
+      "source": "https://gamerch.com/puzdra0/924836",
+      "attributes": "水闇",
+      "skill_ja": "1ターンの間、2コンボ加算。ドロップロックを解除。 水闇回復ドロップを4個ずつ生成。",
+      "awakenings_ja": "超コンボ強化 / 封印耐性",
+      "cooldown": 3
+    },
+    {
+      "number": 241,
+      "name_ja": "青陰龍・リュウウンサイ",
+      "source": "https://gamerch.com/puzdra0/925263",
+      "attributes": "水水",
+      "skill_ja": "ドロップロックを解除。水ドロップを9個生成。 1ターンの間、攻撃力が2倍、操作時間を2秒延長。",
+      "awakenings_ja": "水つなげ消し / ダメージ無効貫通 / 雲耐性",
+      "cooldown": 4
+    },
+    {
+      "number": 242,
+      "name_ja": "赤陽龍・キョザンサイ",
+      "source": "https://gamerch.com/puzdra0/925381",
+      "attributes": "火火",
+      "skill_ja": "ドロップロックを解除。火ドロップを9個生成。 1ターンの間、攻撃力が2倍、操作時間を2秒延長。",
+      "awakenings_ja": "火つなげ消し / ダメージ無効貫通 / 雲耐性",
+      "cooldown": 4
+    },
+    {
+      "number": 243,
+      "name_ja": "米磨龍・ダイギンジョー",
+      "source": "https://gamerch.com/puzdra0/925262",
+      "attributes": "水木",
+      "skill_ja": "2ターンの間、ダメージを30%軽減。 バインドと覚醒無効状態を4ターン回復。",
+      "awakenings_ja": "バインド耐性 / 暗闇耐性 / ダメージ無効貫通",
+      "cooldown": 4
+    },
+    {
+      "number": 245,
+      "name_ja": "翠角姫・風神",
+      "source": "https://gamerch.com/puzdra0/926030",
+      "attributes": "木火",
+      "skill_ja": "ドロップロックを解除。木ドロップを6個生成。 2ターンの間、属性吸収を無効化。",
+      "awakenings_ja": "スキルブースト / コンボ強化 / 十字消し攻撃",
+      "cooldown": 4
+    },
+    {
+      "number": 246,
+      "name_ja": "黄角姫・雷神",
+      "source": "https://gamerch.com/puzdra0/925380",
+      "attributes": "光闇",
+      "skill_ja": "全ドロップを火水木光闇回復ドロップに変化。 1ターンの間、ダメージ無効を貫通。",
+      "awakenings_ja": "2体攻撃 / 2体攻撃 / コンボ強化",
+      "cooldown": 3
+    },
+    {
+      "number": 247,
+      "name_ja": "暗澹の鬼龍契士・クロトビ",
+      "source": "https://gamerch.com/puzdra0/926805",
+      "attributes": "水闇",
+      "skill_ja": "1ターンの間、3コンボ加算。ドロップロックを解除。 水闇回復ドロップを4個ずつ生成。",
+      "awakenings_ja": "超コンボ強化 / 封印耐性 / 追加攻撃",
+      "cooldown": 3
+    },
+    {
+      "number": 248,
+      "name_ja": "カミムスビ",
+      "source": "https://gamerch.com/puzdra0/925394",
+      "attributes": "闇火",
+      "skill_ja": "ドロップロックを解除。闇ドロップ以外から回復ドロップを5個生成。 バインドと覚醒無効状態を3ターン回復。",
+      "awakenings_ja": "バインド耐性 / 十字消し攻撃 / 追加攻撃",
+      "cooldown": 3
+    },
+    {
+      "number": 249,
+      "name_ja": "アメノミナカヌシ",
+      "source": "https://gamerch.com/puzdra0/926622",
+      "attributes": "水水",
+      "skill_ja": "ドロップロックを解除。全ドロップを水光闇ドロップに変化。 3ターンの間、ダメージを35％軽減。",
+      "awakenings_ja": "コンボ強化 / ダメージ無効貫通 / 雲耐性",
+      "cooldown": 5
+    },
+    {
+      "number": 250,
+      "name_ja": "火炎獄・パイロデーモン",
+      "source": "https://gamerch.com/puzdra0/925259",
+      "attributes": "火火",
+      "skill_ja": "水木光闇お邪魔毒ドロップを破壊。 中央横1列を火ドロップに変化。",
+      "awakenings_ja": "火つなげ消し / 火つなげ消し",
+      "cooldown": 4
+    },
+    {
+      "number": 251,
+      "name_ja": "氷結獄・フロストデーモン",
+      "source": "https://gamerch.com/puzdra0/925260",
+      "attributes": "水水",
+      "skill_ja": "火木光闇お邪魔毒ドロップを破壊。 中央横1列を水ドロップに変化。",
+      "awakenings_ja": "水つなげ消し / 水つなげ消し",
+      "cooldown": 4
+    },
+    {
+      "number": 252,
+      "name_ja": "樹海獄・タウロスデーモン",
+      "source": "https://gamerch.com/puzdra0/925258",
+      "attributes": "木木",
+      "skill_ja": "火水光闇お邪魔毒ドロップを破壊。 中央横1列を木ドロップに変化。",
+      "awakenings_ja": "木つなげ消し / 木つなげ消し",
+      "cooldown": 4
+    },
+    {
+      "number": 253,
+      "name_ja": "光天獄・ハーピィデーモン",
+      "source": "https://gamerch.com/puzdra0/925256",
+      "attributes": "光光",
+      "skill_ja": "火水木闇お邪魔毒ドロップを破壊。 中央横1列を光ドロップに変化。",
+      "awakenings_ja": "光つなげ消し / 光つなげ消し",
+      "cooldown": 4
+    },
+    {
+      "number": 254,
+      "name_ja": "闇地獄・ブラッドデーモン",
+      "source": "https://gamerch.com/puzdra0/925255",
+      "attributes": "闇闇",
+      "skill_ja": "火水木光お邪魔毒ドロップを破壊。 中央横1列を闇ドロップに変化。",
+      "awakenings_ja": "闇つなげ消し / 闇つなげ消し",
+      "cooldown": 4
+    },
+    {
+      "number": 255,
+      "name_ja": "大魔女の弟子・チェルン",
+      "source": "https://gamerch.com/puzdra0/925254",
+      "attributes": "水水",
+      "skill_ja": "水回復ドロップを6個ずつ生成。 2ターンの間、ダメージ無効を貫通。",
+      "awakenings_ja": "追加攻撃 / スキルブースト",
+      "cooldown": 5
+    },
+    {
+      "number": 256,
+      "name_ja": "大魔女の弟子・チャコル",
+      "source": "https://gamerch.com/puzdra0/925248",
+      "attributes": "木木",
+      "skill_ja": "バインドと覚醒無効状態を3ターン回復。 2ターンの間、ダメージ無効を貫通。",
+      "awakenings_ja": "バインド耐性 / スキルブースト",
+      "cooldown": 5
+    },
+    {
+      "number": 257,
+      "name_ja": "大魔女の弟子・ドーナ",
+      "source": "https://gamerch.com/puzdra0/925247",
+      "attributes": "光光",
+      "skill_ja": "2ターンの間、3コンボ加算。 2ターンの間、ダメージ無効を貫通。",
+      "awakenings_ja": "光つなげ消し / スキルブースト",
+      "cooldown": 5
+    },
+    {
+      "number": 258,
+      "name_ja": "炎鎖の大魔女・マドゥ",
+      "source": "https://gamerch.com/puzdra0/925245",
+      "attributes": "火火",
+      "skill_ja": "1ターンの間、3コンボ加算。 1ターンの間、ダメージを60%軽減。",
+      "awakenings_ja": "ダメージ無効貫通 / 封印耐性",
+      "cooldown": 4
+    },
+    {
+      "number": 259,
+      "name_ja": "氷華の大魔女・リーチェ",
+      "source": "https://gamerch.com/puzdra0/925252",
+      "attributes": "水水",
+      "skill_ja": "ドロップロックを解除。全ドロップを火水木光闇回復ドロップに変化。 3ターンの間、属性吸収を無効化。",
+      "awakenings_ja": "4色攻撃強化 / 封印耐性",
+      "cooldown": 6
+    },
+    {
+      "number": 260,
+      "name_ja": "岩拳の大魔女・ゼラ",
+      "source": "https://gamerch.com/puzdra0/925243",
+      "attributes": "木木",
+      "skill_ja": "木回復ドロップを6個ずつ生成。 1ターンの間、3コンボ加算。",
+      "awakenings_ja": "追加攻撃 / 雲耐性",
+      "cooldown": 4
+    },
+    {
+      "number": 261,
+      "name_ja": "輝門の大魔女・サレーネ",
+      "source": "https://gamerch.com/puzdra0/925241",
+      "attributes": "光光",
+      "skill_ja": "ドロップロックを解除。最上段2列を光ドロップに変化。 自分以外の味方スキルが1ターン溜まる。",
+      "awakenings_ja": "ダンジョンボーナス / スキルブースト",
+      "cooldown": 8
+    },
+    {
+      "number": 262,
+      "name_ja": "幻命の大魔女・ヴェロア",
+      "source": "https://gamerch.com/puzdra0/925240",
+      "attributes": "闇闇",
+      "skill_ja": "ドロップロックを解除。火水ドロップを闇ドロップに変化。 1ターンの間、回復力が2倍。",
+      "awakenings_ja": "ダメージ無効貫通 / 封印耐性",
+      "cooldown": 4
+    },
+    {
+      "number": 263,
+      "name_ja": "降三世明王",
+      "source": "https://gamerch.com/puzdra0/925239",
+      "attributes": "火闇",
+      "skill_ja": "ドロップロックを解除。全ドロップを火光闇ドロップに変化。 敵のHP20%分のダメージ。",
+      "awakenings_ja": "雲耐性 / ダンジョンボーナス",
+      "cooldown": 5
+    },
+    {
+      "number": 264,
+      "name_ja": "軍荼利明王",
+      "source": "https://gamerch.com/puzdra0/925238",
+      "attributes": "水木",
+      "skill_ja": "ドロップロックを解除。 火ドロップを水ドロップに、お邪魔毒ドロップを回復ドロップに変化。HPを75%回復。",
+      "awakenings_ja": "暗闇耐性 / ダンジョンボーナス",
+      "cooldown": 4
+    },
+    {
+      "number": 265,
+      "name_ja": "不動明王",
+      "source": "https://gamerch.com/puzdra0/925236",
+      "attributes": "木火",
+      "skill_ja": "ドロップロックを解除。下から2段目の1列を木ドロップに変化。 2ターンの間、3コンボ加算。",
+      "awakenings_ja": "毒耐性 / ダンジョンボーナス",
+      "cooldown": 5
+    },
+    {
+      "number": 266,
+      "name_ja": "金剛夜叉明王",
+      "source": "https://gamerch.com/puzdra0/925196",
+      "attributes": "光水",
+      "skill_ja": "ドロップロックを解除。回復ドロップ以外から光ドロップを8個生成。 1ターンの間、攻撃力が2.5倍。",
+      "awakenings_ja": "封印耐性 / ダンジョンボーナス",
+      "cooldown": 5
+    },
+    {
+      "number": 267,
+      "name_ja": "大威徳明王",
+      "source": "https://gamerch.com/puzdra0/925235",
+      "attributes": "闇光",
+      "skill_ja": "ドロップロックを解除。回復ドロップ以外から闇ドロップを8個生成。 1ターンの間、攻撃力が2.5倍。",
+      "awakenings_ja": "お邪魔耐性 / ダンジョンボーナス",
+      "cooldown": 5
+    },
+    {
+      "number": 268,
+      "name_ja": "魔導書の幻魔・イルミナ",
+      "source": "https://gamerch.com/puzdra0/925168",
+      "attributes": "火光",
+      "skill_ja": "HPを75%回復。 3ターンの間、属性吸収を無効化。",
+      "awakenings_ja": "スキルブースト / 回復強化",
+      "cooldown": 5
+    },
+    {
+      "number": 269,
+      "name_ja": "パールヴァティー",
+      "source": "https://gamerch.com/puzdra0/925185",
+      "attributes": "木火",
+      "skill_ja": "ドロップロックを解除。水ドロップを回復ドロップに変化。 回復ドロップ以外から木ドロップを5個生成。",
+      "awakenings_ja": "ダメージ無効貫通 / 毒耐性",
+      "cooldown": 4
+    },
+    {
+      "number": 270,
+      "name_ja": "クリシュナ",
+      "source": "https://gamerch.com/puzdra0/925173",
+      "attributes": "火火",
+      "skill_ja": "3ターンの間、火ドロップが落ちやすくなる。 ドロップロックを解除。右端1列を火ドロップに変化。",
+      "awakenings_ja": "スキルブースト / 超コンボ強化",
+      "cooldown": 4
+    },
+    {
+      "number": 271,
+      "name_ja": "ドゥルガー",
+      "source": "https://gamerch.com/puzdra0/925223",
+      "attributes": "闇木",
+      "skill_ja": "1ターンの間、攻撃力が1.5倍。 1ターンの間、操作時間を4秒延長。",
+      "awakenings_ja": "4色攻撃強化 / 4色攻撃強化",
+      "cooldown": 3
+    },
+    {
+      "number": 272,
+      "name_ja": "ラクシュミー",
+      "source": "https://gamerch.com/puzdra0/925234",
+      "attributes": "水木",
+      "skill_ja": "ドロップロックを解除。HPを50%回復。 水ドロップ以外から回復ドロップを5個生成。",
+      "awakenings_ja": "回復強化 / お邪魔耐性",
+      "cooldown": 4
+    },
+    {
+      "number": 273,
+      "name_ja": "ガネーシャ",
+      "source": "https://gamerch.com/puzdra0/925149",
+      "attributes": "光光",
+      "skill_ja": "ドロップロックを解除。 1ターンの間、ダメージを40%軽減。",
+      "awakenings_ja": "ダンジョンボーナス / ダンジョンボーナス",
+      "cooldown": 3
+    },
+    {
+      "number": 274,
+      "name_ja": "シヴァ",
+      "source": "https://gamerch.com/puzdra0/924814",
+      "attributes": "火火",
+      "skill_ja": "1ターンの間、攻撃力と回復力が2倍。 1ターンの間、ダメージを75%軽減。",
+      "awakenings_ja": "超コンボ強化 / 毒耐性",
+      "cooldown": 5
+    },
+    {
+      "number": 275,
+      "name_ja": "ヴィシュヌ",
+      "source": "https://gamerch.com/puzdra0/925186",
+      "attributes": "木木",
+      "skill_ja": "ドロップロックを解除。右端1列を木ドロップに変化。 2ターンの間、攻撃力が1.5倍。",
+      "awakenings_ja": "2体攻撃 / 2体攻撃",
+      "cooldown": 4
+    },
+    {
+      "number": 276,
+      "name_ja": "インドラ",
+      "source": "https://gamerch.com/puzdra0/925220",
+      "attributes": "光水",
+      "skill_ja": "2ターンの間、ダメージを50%軽減。 2ターンの間、回復力が2倍。",
+      "awakenings_ja": "2体攻撃 / 超コンボ強化",
+      "cooldown": 5
+    },
+    {
+      "number": 277,
+      "name_ja": "ヴリトラ",
+      "source": "https://gamerch.com/puzdra0/925230",
+      "attributes": "闇木",
+      "skill_ja": "火水木光毒ドロップを破壊。 1ターンの間、ダメージ無効を貫通。",
+      "awakenings_ja": "闇つなげ消し / 闇つなげ消し",
+      "cooldown": 3
+    },
+    {
+      "number": 278,
+      "name_ja": "アスタロト",
+      "source": "https://gamerch.com/puzdra0/925183",
+      "attributes": "木闇",
+      "skill_ja": "火水お邪魔毒ドロップを破壊。 2ターンの間、回復力が2倍。",
+      "awakenings_ja": "ダメージ無効貫通 / 木つなげ消し",
+      "cooldown": 4
+    },
+    {
+      "number": 279,
+      "name_ja": "ベレト",
+      "source": "https://gamerch.com/puzdra0/925233",
+      "attributes": "水火",
+      "skill_ja": "バインドと覚醒無効状態を4ターン回復。 4ターンの間、1コンボ加算。",
+      "awakenings_ja": "バインド耐性 / コンボ強化",
+      "cooldown": 4
+    },
+    {
+      "number": 280,
+      "name_ja": "アモン",
+      "source": "https://gamerch.com/puzdra0/925232",
+      "attributes": "水水",
+      "skill_ja": "火木お邪魔毒ドロップを破壊。 1ターンの間、攻撃力が1.5倍、3コンボ加算。",
+      "awakenings_ja": "ダメージ無効貫通 / 水つなげ消し",
+      "cooldown": 4
+    },
+    {
+      "number": 281,
+      "name_ja": "ベリアル",
+      "source": "https://gamerch.com/puzdra0/925169",
+      "attributes": "火闇",
+      "skill_ja": "木お邪魔毒ドロップを火ドロップに変化。 1ターンの間、ダメージ無効を貫通。",
+      "awakenings_ja": "超コンボ強化 / 雲耐性",
+      "cooldown": 3
+    },
+    {
+      "number": 282,
+      "name_ja": "バアル",
+      "source": "https://gamerch.com/puzdra0/925201",
+      "attributes": "光光",
+      "skill_ja": "水闇お邪魔毒ドロップを破壊。 1ターンの間、ダメージ無効を貫通。",
+      "awakenings_ja": "超コンボ強化 / 暗闇耐性",
+      "cooldown": 3
+    },
+    {
+      "number": 283,
+      "name_ja": "グレモリー",
+      "source": "https://gamerch.com/puzdra0/925222",
+      "attributes": "闇木",
+      "skill_ja": "左端1列を闇ドロップに、右端1列を回復ドロップに変化。 HPを60%回復。",
+      "awakenings_ja": "L字消し攻撃 / 追加攻撃",
+      "cooldown": 4
+    },
+    {
+      "number": 284,
+      "name_ja": "ダンタリオン",
+      "source": "https://gamerch.com/puzdra0/925170",
+      "attributes": "火水",
+      "skill_ja": "ドロップロックを解除。火回復ドロップを3個ずつ生成。 2ターンの間、2コンボ加算。",
+      "awakenings_ja": "超コンボ強化 / 追加攻撃",
+      "cooldown": 4
+    },
+    {
+      "number": 285,
+      "name_ja": "パイモン",
+      "source": "https://gamerch.com/puzdra0/925199",
+      "attributes": "光闇",
+      "skill_ja": "ドロップロックを解除。光闇ドロップを5個ずつ生成。 2ターンの間、属性吸収を無効化。",
+      "awakenings_ja": "十字消し攻撃 / 毒耐性",
+      "cooldown": 4
+    },
+    {
+      "number": 286,
+      "name_ja": "ヌト",
+      "source": "https://gamerch.com/puzdra0/925375",
+      "attributes": "水光",
+      "skill_ja": "ドロップロックを解除。左端1列を水ドロップに変化。 1ターンの間、操作時間を6秒延長。",
+      "awakenings_ja": "お邪魔耐性 / 暗闇耐性",
+      "cooldown": 4
+    },
+    {
+      "number": 287,
+      "name_ja": "ハトホル",
+      "source": "https://gamerch.com/puzdra0/925195",
+      "attributes": "光闇",
+      "skill_ja": "ドロップロックを解除。火お邪魔毒ドロップを光ドロップに変化。 覚醒無効状態を5ターン回復。",
+      "awakenings_ja": "十字消し攻撃 / 雲耐性",
+      "cooldown": 4
+    },
+    {
+      "number": 288,
+      "name_ja": "オシリス",
+      "source": "https://gamerch.com/puzdra0/925378",
+      "attributes": "木火",
+      "skill_ja": "ドロップロックを解除。左端1列を木ドロップに変化。 1ターンの間、2コンボ加算。",
+      "awakenings_ja": "2体攻撃 / 毒耐性",
+      "cooldown": 4
+    },
+    {
+      "number": 289,
+      "name_ja": "ホルス",
+      "source": "https://gamerch.com/puzdra0/925379",
+      "attributes": "火光",
+      "skill_ja": "1ターンの間、1コンボ加算。ドロップロックを解除。 2ターンの間、操作時間を3秒延長。",
+      "awakenings_ja": "ガードブレイク / 雲耐性",
+      "cooldown": 2
+    },
+    {
+      "number": 290,
+      "name_ja": "イシス",
+      "source": "https://gamerch.com/puzdra0/925175",
+      "attributes": "水光",
+      "skill_ja": "バインドと覚醒無効状態を3ターン回復。 1ターンの間、ダメージを30%軽減。",
+      "awakenings_ja": "バインド耐性 / ガードブレイク",
+      "cooldown": 3
+    },
+    {
+      "number": 291,
+      "name_ja": "バステト",
+      "source": "https://gamerch.com/puzdra0/925231",
+      "attributes": "木木",
+      "skill_ja": "1ターンの間、操作時間を5秒延長。 1ターンの間、ダメージ無効を貫通。",
+      "awakenings_ja": "コンボ強化 / 雲耐性",
+      "cooldown": 3
+    },
+    {
+      "number": 292,
+      "name_ja": "ラー",
+      "source": "https://gamerch.com/puzdra0/925190",
+      "attributes": "光闇",
+      "skill_ja": "ドロップロックを解除。全ドロップを火水木光闇ドロップに変化。 5ターンの間、操作時間を3秒延長。",
+      "awakenings_ja": "ガードブレイク / 暗闇耐性",
+      "cooldown": 5
+    },
+    {
+      "number": 293,
+      "name_ja": "アヌビス",
+      "source": "https://gamerch.com/puzdra0/925228",
+      "attributes": "闇闇",
+      "skill_ja": "ドロップロックを解除。木お邪魔毒ドロップを闇ドロップに変化。 1ターンの間、3コンボ加算。",
+      "awakenings_ja": "超コンボ強化 / 追加攻撃",
+      "cooldown": 4
+    },
+    {
+      "number": 294,
+      "name_ja": "夢獣の大魔女・レムゥ",
+      "source": "https://gamerch.com/puzdra0/925167",
+      "attributes": "火木",
+      "skill_ja": "全ドロップを火回復ドロップに変化。 1ターンの間、回復力が1.5倍。",
+      "awakenings_ja": "スキルブースト / ダメージ無効貫通",
+      "cooldown": 5
+    },
+    {
+      "number": 295,
+      "name_ja": "溟怪の大魔女・ノルザ",
+      "source": "https://gamerch.com/puzdra0/926029",
+      "attributes": "水光",
+      "skill_ja": "全ドロップを水回復ドロップに変化。 1ターンの間、2コンボ加算。",
+      "awakenings_ja": "コンボ強化 / ダメージ無効貫通",
+      "cooldown": 5
+    },
+    {
+      "number": 296,
+      "name_ja": "森衣の大魔女・アルジェ",
+      "source": "https://gamerch.com/puzdra0/925177",
+      "attributes": "木光",
+      "skill_ja": "全ドロップを火水木光闇ドロップに変化。 HPを50%回復。",
+      "awakenings_ja": "4色攻撃強化 / 4色攻撃強化",
+      "cooldown": 4
+    },
+    {
+      "number": 297,
+      "name_ja": "光翼の大魔女・ファスカ",
+      "source": "https://gamerch.com/puzdra0/925192",
+      "attributes": "光木",
+      "skill_ja": "2ターンの間、操作時間を7秒延長。 バインドと覚醒無効状態を4ターン回復。",
+      "awakenings_ja": "バインド耐性 / 超コンボ強化",
+      "cooldown": 5
+    },
+    {
+      "number": 298,
+      "name_ja": "謎獣の大魔女・ネレ",
+      "source": "https://gamerch.com/puzdra0/925226",
+      "attributes": "闇水",
+      "skill_ja": "光お邪魔毒ドロップを破壊。 左端1列を闇ドロップに、右端1列を回復ドロップに変化。",
+      "awakenings_ja": "闇つなげ消し / ダメージ無効貫通",
+      "cooldown": 5
+    },
+    {
+      "number": 299,
+      "name_ja": "シヴァ =ドラゴン",
+      "source": "https://gamerch.com/puzdra0/924816",
+      "attributes": "火火",
+      "skill_ja": "ドロップロックを解除。 最上段1列を火ドロップに変化。",
+      "awakenings_ja": "コンボ強化 / コンボ強化 / 火つなげ消し",
+      "cooldown": 2
+    },
+    {
+      "number": 300,
+      "name_ja": "カーリー",
+      "source": "https://gamerch.com/puzdra0/925225",
+      "attributes": "闇木",
+      "skill_ja": "全ドロップを火水木光闇回復ドロップに変化。 バインドと覚醒無効状態を3ターン回復。",
+      "awakenings_ja": "バインド耐性 / 2体攻撃 / ガードブレイク",
+      "cooldown": 3
+    },
+    {
+      "number": 301,
+      "name_ja": "画炎魔・アルヴァニス",
+      "source": "https://gamerch.com/puzdra0/925171",
+      "attributes": "火火",
+      "skill_ja": "全ドロップを火回復毒ドロップに変化。 1ターンの間、1コンボ加算。",
+      "awakenings_ja": "スキルブースト / コンボ強化 / 超コンボ強化",
+      "cooldown": 3
+    },
+    {
+      "number": 302,
+      "name_ja": "画蝕魔・アルシオン",
+      "source": "https://gamerch.com/puzdra0/925396",
+      "attributes": "光光",
+      "skill_ja": "ドロップロックを解除。 全ドロップを光回復お邪魔ドロップに変化。",
+      "awakenings_ja": "コンボ強化 / 超コンボ強化 / 雲耐性",
+      "cooldown": 4
+    },
+    {
+      "number": 303,
+      "name_ja": "天極の黄龍帝・ファガン",
+      "source": "https://gamerch.com/puzdra0/926345",
+      "attributes": "光光",
+      "skill_ja": "2ターンの間、3コンボ加算。 2ターンの間、攻撃力が2.5倍。",
+      "awakenings_ja": "スキルブースト / 超コンボ強化 / 超コンボ強化",
+      "cooldown": 6
+    },
+    {
+      "number": 304,
+      "name_ja": "元始の大魔女・ラフィーネ",
+      "source": "https://gamerch.com/puzdra0/925392",
+      "attributes": "闇火",
+      "skill_ja": "全ドロップを破壊。 2ターンの間、2コンボ加算、ダメージ無効を貫通。",
+      "awakenings_ja": "スキルブースト / 4色攻撃強化 / ガードブレイク",
+      "cooldown": 4
+    },
+    {
+      "number": 305,
+      "name_ja": "ルシャナ",
+      "source": "https://gamerch.com/puzdra0/926628",
+      "attributes": "木光",
+      "skill_ja": "1ターンの間、操作時間を5秒延長。 1ターンの間、回復力が2倍、ダメージ無効を貫通。",
+      "awakenings_ja": "十字消し攻撃 / 追加攻撃 / 暗闇耐性",
+      "cooldown": 3
+    },
+    {
+      "number": 306,
+      "name_ja": "ラー =ドラゴン",
+      "source": "https://gamerch.com/puzdra0/925373",
+      "attributes": "光水",
+      "skill_ja": "ドロップロックを解除。 全ドロップを火水木光闇回復ドロップに変化。",
+      "awakenings_ja": "4色攻撃強化 / ガードブレイク / 暗闇耐性",
+      "cooldown": 3
+    },
+    {
+      "number": 307,
+      "name_ja": "アテン",
+      "source": "https://gamerch.com/puzdra0/925391",
+      "attributes": "光火",
+      "skill_ja": "全ドロップを火水木光闇回復お邪魔ドロップに変化。 1ターンの間、操作時間を3秒延長。",
+      "awakenings_ja": "バインド耐性 / ガードブレイク / ガードブレイク",
+      "cooldown": 2
+    },
+    {
+      "number": 308,
+      "name_ja": "アレキサンダー大王",
+      "source": "https://gamerch.com/puzdra0/925390",
+      "attributes": "木光",
+      "skill_ja": "ドロップロックを解除。全ドロップを火水木光闇回復ドロップに変化。 1ターンの間、攻撃力と回復力が2倍。",
+      "awakenings_ja": "スキルブースト / 4色攻撃強化 / ガードブレイク",
+      "cooldown": 4
+    },
+    {
+      "number": 309,
+      "name_ja": "灼鉄の機神帝・グランディス",
+      "source": "https://gamerch.com/puzdra0/926343",
+      "attributes": "火水",
+      "skill_ja": "ドロップロックを解除。最下段1列を火ドロップに変化。 1ターンの間、2コンボ加算。",
+      "awakenings_ja": "コンボ強化 / ダメージ無効貫通 / 雲耐性",
+      "cooldown": 3
+    },
+    {
+      "number": 310,
+      "name_ja": "彩妖精の 水彩幻画師・アトリ",
+      "source": "https://gamerch.com/puzdra0/925127",
+      "attributes": "木水",
+      "skill_ja": "ドロップロックを解除。全ドロップを火水木光闇回復ドロップに変化。 3ターンの間、2コンボ加算。",
+      "awakenings_ja": "ガードブレイク / 2体攻撃",
+      "cooldown": 5
+    },
+    {
+      "number": 311,
+      "name_ja": "多角龍の デジタル幻画師・プリム",
+      "source": "https://gamerch.com/puzdra0/924834",
+      "attributes": "水火",
+      "skill_ja": "ドロップロックを解除。光ドロップを水ドロップに変化。 1ターンの間、ダメージ無効を貫通。",
+      "awakenings_ja": "スキルブースト / L字消し攻撃",
+      "cooldown": 3
+    },
+    {
+      "number": 312,
+      "name_ja": "白妙の 幻画修正師・イライザ",
+      "source": "https://gamerch.com/puzdra0/925145",
+      "attributes": "光光",
+      "skill_ja": "全ドロップを破壊。 2ターンの間、操作時間を2秒延長。",
+      "awakenings_ja": "超コンボ強化 / 追加攻撃",
+      "cooldown": 3
+    },
+    {
+      "number": 313,
+      "name_ja": "鉛筆画の デッサン幻画師・ディジー",
+      "source": "https://gamerch.com/puzdra0/925128",
+      "attributes": "木闇",
+      "skill_ja": "2ターンの間、3コンボ加算。ドロップロックを解除。 全ドロップを木闇回復ドロップに変化。",
+      "awakenings_ja": "スキルブースト / 木つなげ消し",
+      "cooldown": 5
+    },
+    {
+      "number": 314,
+      "name_ja": "煌砂の サンドアート幻画師・ライル",
+      "source": "https://gamerch.com/puzdra0/924799",
+      "attributes": "火光",
+      "skill_ja": "3ターンの間、火ドロップが落ちやすくなる。 ドロップロックを解除。火光回復ドロップを5個ずつ生成。",
+      "awakenings_ja": "L字消し攻撃 / 追加攻撃",
+      "cooldown": 4
+    },
+    {
+      "number": 315,
+      "name_ja": "墨猛虎の 水墨幻画師・カイシュウ",
+      "source": "https://gamerch.com/puzdra0/925157",
+      "attributes": "闇光",
+      "skill_ja": "火ドロップを光ドロップに、木ドロップを闇ドロップに変化。 1ターンの間、2コンボ加算。",
+      "awakenings_ja": "2体攻撃 / 超コンボ強化",
+      "cooldown": 3
+    },
+    {
+      "number": 316,
+      "name_ja": "貴紳の 弦龍楽士・テオール",
+      "source": "https://gamerch.com/puzdra0/924797",
+      "attributes": "火闇",
+      "skill_ja": "ドロップロックを解除。全ドロップを火水木光闇回復ドロップに変化。 2ターンの間、操作時間を5秒延長。",
+      "awakenings_ja": "スキルブースト / 4色攻撃強化",
+      "cooldown": 4
+    },
+    {
+      "number": 317,
+      "name_ja": "清麗の 琴龍楽士・ルティナ",
+      "source": "https://gamerch.com/puzdra0/924829",
+      "attributes": "水木",
+      "skill_ja": "ドロップロックを解除。水ドロップを2個生成。 1ターンの間、水ドロップが落ちやすくなる。",
+      "awakenings_ja": "スキルブースト / ダメージ無効貫通",
+      "cooldown": 2
+    },
+    {
+      "number": 318,
+      "name_ja": "旋律の 奏龍楽士・ミオン",
+      "source": "https://gamerch.com/puzdra0/924830",
+      "attributes": "水水",
+      "skill_ja": "ドロップロックを解除。火光ドロップを水ドロップに変化。 2ターンの間、3コンボ加算。",
+      "awakenings_ja": "コンボ強化 / ダメージ無効貫通",
+      "cooldown": 5
+    },
+    {
+      "number": 319,
+      "name_ja": "寛雅の 箏龍楽士・ミナカ",
+      "source": "https://gamerch.com/puzdra0/924822",
+      "attributes": "水闇",
+      "skill_ja": "ドロップロックを解除。木ドロップを水ドロップに、光ドロップを回復ドロップに変化。 2ターンの間、ダメージを45%軽減。",
+      "awakenings_ja": "回復強化 / 封印耐性",
+      "cooldown": 5
+    },
+    {
+      "number": 320,
+      "name_ja": "優美の 笛龍楽士・エファ",
+      "source": "https://gamerch.com/puzdra0/925122",
+      "attributes": "木火",
+      "skill_ja": "ドロップロック解除。右端1列を回復ドロップに変化。 4ターンの間、操作時間を5秒延長。",
+      "awakenings_ja": "追加攻撃 / 暗闇耐性",
+      "cooldown": 4
+    },
+    {
+      "number": 321,
+      "name_ja": "清心の 管龍楽士・マリエル",
+      "source": "https://gamerch.com/puzdra0/925137",
+      "attributes": "光水",
+      "skill_ja": "全ドロップを火水木光回復ドロップに変化。 2ターンの間、ダメージを30%軽減。",
+      "awakenings_ja": "回復強化 / 4色攻撃強化",
+      "cooldown": 4
+    },
+    {
+      "number": 322,
+      "name_ja": "雷弾の 電龍楽士・マルシス",
+      "source": "https://gamerch.com/puzdra0/925140",
+      "attributes": "光火",
+      "skill_ja": "2ターンの間、攻撃力と回復力が1.5倍。 覚醒無効状態を5ターン回復。",
+      "awakenings_ja": "2体攻撃 / 2体攻撃",
+      "cooldown": 4
+    },
+    {
+      "number": 323,
+      "name_ja": "静淑の 吹龍楽士・フェノン",
+      "source": "https://gamerch.com/puzdra0/925150",
+      "attributes": "闇光",
+      "skill_ja": "最下段1列を闇ドロップに変化。 覚醒無効状態を5ターン回復。",
+      "awakenings_ja": "闇つなげ消し / ダメージ無効貫通",
+      "cooldown": 4
+    },
+    {
+      "number": 324,
+      "name_ja": "焔猛龍の戦士・グリゴリー",
+      "source": "https://gamerch.com/puzdra0/924800",
+      "attributes": "火木",
+      "skill_ja": "全ドロップを火木回復ドロップに変化。 1ターンの間、ダメージ無効を貫通。",
+      "awakenings_ja": "2体攻撃 / 2体攻撃",
+      "cooldown": 4
+    },
+    {
+      "number": 325,
+      "name_ja": "氷戒龍の武闘家・ディーナ",
+      "source": "https://gamerch.com/puzdra0/924826",
+      "attributes": "水火",
+      "skill_ja": "ドロップロックを解除。水回復ドロップを3個ずつ生成。 1ターンの間、攻撃力と回復力が1.5倍。",
+      "awakenings_ja": "スキルブースト / ダメージ無効貫通",
+      "cooldown": 3
+    },
+    {
+      "number": 326,
+      "name_ja": "樹望龍の癒し手・アリナ",
+      "source": "https://gamerch.com/puzdra0/924841",
+      "attributes": "木光",
+      "skill_ja": "HPを40%回復。最下段1列を木ドロップに変化。 覚醒無効状態を4ターン回復。",
+      "awakenings_ja": "回復強化 / スキルブースト",
+      "cooldown": 4
+    },
+    {
+      "number": 327,
+      "name_ja": "聖輝龍の勇者・ダイヤ",
+      "source": "https://gamerch.com/puzdra0/925134",
+      "attributes": "光火",
+      "skill_ja": "1ターンの間、2コンボ加算。 1ターンの間、ダメージを40%軽減。",
+      "awakenings_ja": "超コンボ強化 / 毒耐性",
+      "cooldown": 3
+    },
+    {
+      "number": 328,
+      "name_ja": "魔滅龍の魔法使い・エレメイ",
+      "source": "https://gamerch.com/puzdra0/925154",
+      "attributes": "闇光",
+      "skill_ja": "1ターンの間、攻撃力が2倍、操作時間を5秒延長。 1ターンの間、2コンボ加算、属性吸収を無効化。",
+      "awakenings_ja": "スキルブースト / L字消し攻撃",
+      "cooldown": 4
+    },
+    {
+      "number": 329,
+      "name_ja": "誉望の 騎士王・アルトリウス",
+      "source": "https://gamerch.com/puzdra0/924798",
+      "attributes": "火光",
+      "skill_ja": "ドロップロックを解除。闇ドロップを火ドロップに、水ドロップを回復ドロップに変化。 1ターンの間、攻撃力が2倍、3コンボ加算。",
+      "awakenings_ja": "火つなげ消し / 火つなげ消し",
+      "cooldown": 5
+    },
+    {
+      "number": 330,
+      "name_ja": "冷菓の 氷雪王・ミアーダ",
+      "source": "https://gamerch.com/puzdra0/924831",
+      "attributes": "水木",
+      "skill_ja": "ドロップロックを解除。回復ドロップ以外から水ドロップを6個生成。 1ターンの間、1コンボ加算、操作時間を4秒延長。",
+      "awakenings_ja": "水つなげ消し / コンボ強化",
+      "cooldown": 4
+    },
+    {
+      "number": 331,
+      "name_ja": "眩惑の 妖精王・アルバート",
+      "source": "https://gamerch.com/puzdra0/925126",
+      "attributes": "木光",
+      "skill_ja": "ドロップロックを解除。全ドロップを木回復ドロップに変化。 2ターンの間、ダメージを50%軽減。",
+      "awakenings_ja": "ダメージ無効貫通 / コンボ強化",
+      "cooldown": 6
+    },
+    {
+      "number": 332,
+      "name_ja": "論究の 聖賢王・サフィーラ",
+      "source": "https://gamerch.com/puzdra0/925143",
+      "attributes": "光闇",
+      "skill_ja": "ドロップロックを解除。火水ドロップを光ドロップに変化。 1ターンの間、攻撃力が1.5倍、2コンボ加算。",
+      "awakenings_ja": "ダメージ無効貫通 / 追加攻撃",
+      "cooldown": 4
+    },
+    {
+      "number": 333,
+      "name_ja": "破毒の 孔雀王・ユリシャ",
+      "source": "https://gamerch.com/puzdra0/925151",
+      "attributes": "闇火",
+      "skill_ja": "ドロップロックを解除。闇回復ドロップを4個ずつ生成。 2ターンの間、闇回復ドロップが落ちやすくなる。",
+      "awakenings_ja": "L字消し攻撃 / 追加攻撃",
+      "cooldown": 4
+    },
+    {
+      "number": 334,
+      "name_ja": "感激の魔帽子・スモック",
+      "source": "https://gamerch.com/puzdra0/925372",
+      "attributes": "光",
+      "skill_ja": "最下段1列を光ドロップに変化。 3ターンの間、2コンボ加算。",
+      "awakenings_ja": "スキルブースト / 光つなげ消し",
+      "cooldown": 5
+    },
+    {
+      "number": 335,
+      "name_ja": "ノルザの使い魔",
+      "source": "https://gamerch.com/puzdra0/926623",
+      "attributes": "水",
+      "skill_ja": "3ターンの間、攻撃力が2.5倍。 自分以外の味方スキルが2ターン溜まる。",
+      "awakenings_ja": "水つなげ消し / 水つなげ消し",
+      "cooldown": 12
+    },
+    {
+      "number": 336,
+      "name_ja": "孤峰の花嫁・ゼラ",
+      "source": "https://gamerch.com/puzdra0/925371",
+      "attributes": "光木",
+      "skill_ja": "光回復ドロップを6個ずつ生成。 2ターンの間、3コンボ加算。",
+      "awakenings_ja": "封印耐性 / 超コンボ強化 / 追加攻撃",
+      "cooldown": 5
+    },
+    {
+      "number": 337,
+      "name_ja": "輝鋏の花嫁・断龍喚士ロシェ",
+      "source": "https://gamerch.com/puzdra0/926626",
+      "attributes": "木光",
+      "skill_ja": "ドロップロックを解除。火ドロップを木ドロップに、水ドロップを回復ドロップに変化。 2ターンの間、属性吸収を無効化。",
+      "awakenings_ja": "2体攻撃 / 2体攻撃",
+      "cooldown": 4
+    },
+    {
+      "number": 338,
+      "name_ja": "冷刀の花嫁・ユウリ",
+      "source": "https://gamerch.com/puzdra0/926028",
+      "attributes": "水光",
+      "skill_ja": "ドロップロックを解除。左端1列を水ドロップに、右端1列を回復ドロップに変化。 2ターンの間、回復力が2.5倍。",
+      "awakenings_ja": "追加攻撃 / 超コンボ強化 / お邪魔耐性",
+      "cooldown": 4
+    },
+    {
+      "number": 339,
+      "name_ja": "交響の花嫁・吹龍楽士フェノン",
+      "source": "https://gamerch.com/puzdra0/926624",
+      "attributes": "光闇",
+      "skill_ja": "ドロップロックを解除。最上段1列を光ドロップに変化。 覚醒無効状態を5ターン回復。",
+      "awakenings_ja": "光つなげ消し / 光つなげ消し / ダメージ無効貫通",
+      "cooldown": 3
+    },
+    {
+      "number": 340,
+      "name_ja": "慈海の花嫁・ノルザ",
+      "source": "https://gamerch.com/puzdra0/926625",
+      "attributes": "水水",
+      "skill_ja": "全ドロップを水回復ドロップに変化。 1ターンの間、3コンボ加算。",
+      "awakenings_ja": "コンボ強化 / ダメージ無効貫通 / 毒耐性",
+      "cooldown": 5
+    },
+    {
+      "number": 341,
+      "name_ja": "純鋏の花嫁・断龍喚士ロシェ",
+      "source": "https://gamerch.com/puzdra0/927867",
+      "attributes": "水水",
+      "skill_ja": "ドロップロックを解除。火木ドロップを水ドロップに変化。 2ターンの間、属性吸収を無効化。",
+      "awakenings_ja": "2体攻撃 / 超コンボ強化 / ダンジョンボーナス",
+      "cooldown": 4
+    },
+    {
+      "number": 342,
+      "name_ja": "真紅の花嫁・ユウリ",
+      "source": "https://gamerch.com/puzdra0/927866",
+      "attributes": "火闇",
+      "skill_ja": "2ターンの間、攻撃力と回復力が2倍。 2ターンの間、2コンボ加算、ダメージ無効を貫通。",
+      "awakenings_ja": "十字消し攻撃 / 追加攻撃 / ダンジョンボーナス",
+      "cooldown": 4
+    },
+    {
+      "number": 343,
+      "name_ja": "協奏の花嫁・吹龍楽士フェノン",
+      "source": "https://gamerch.com/puzdra0/926627",
+      "attributes": "木光",
+      "skill_ja": "3ターンの間、木光回復ドロップが落ちやすくなる。 全ドロップを破壊。木光回復ドロップを4個ずつ生成。",
+      "awakenings_ja": "超コンボ強化 / 毒耐性 / 雲耐性",
+      "cooldown": 4
+    },
+    {
+      "number": 344,
+      "name_ja": "淑やかな花嫁・ハク",
+      "source": "https://gamerch.com/puzdra0/927865",
+      "attributes": "闇光",
+      "skill_ja": "ドロップロックを解除。全ドロップを木光闇回復ドロップに変化。 2ターンの間、ダメージを30%軽減。",
+      "awakenings_ja": "お邪魔耐性 / 暗闇耐性",
+      "cooldown": 4
+    },
+    {
+      "number": 345,
+      "name_ja": "穿弾龍の銃士・リズレット",
+      "source": "https://gamerch.com/puzdra0/929387",
+      "attributes": "木木",
+      "skill_ja": "ドロップロックを解除。木回復ドロップを6個ずつ生成。 1ターンの間、回復力が2倍。",
+      "awakenings_ja": "木つなげ消し / ダメージ無効貫通",
+      "cooldown": 4
+    },
+    {
+      "number": 346,
+      "name_ja": "錯鳥龍の幻術士・サンドラ",
+      "source": "https://gamerch.com/puzdra0/929386",
+      "attributes": "火水",
+      "skill_ja": "1ターンの間、属性吸収を無効化。 1ターンの間、攻撃力と回復力が1.5倍。",
+      "awakenings_ja": "3色攻撃強化 / ガードブレイク",
+      "cooldown": 3
+    },
+    {
+      "number": 347,
+      "name_ja": "邪狂龍の狂戦士・ガルフ",
+      "source": "https://gamerch.com/puzdra0/927872",
+      "attributes": "闇闇",
+      "skill_ja": "1ターンの間、攻撃力が2.5倍。 2ターンの間、回復力が75%減少。",
+      "awakenings_ja": "2体攻撃 / 2体攻撃",
+      "cooldown": 2
+    },
+    {
+      "number": 348,
+      "name_ja": "醸造魔・ワインリィ",
+      "source": "https://gamerch.com/puzdra0/934872",
+      "attributes": "火闇",
+      "skill_ja": "2ターンの間、ダメージ無効を貫通。 全ドロップを火闇回復ドロップに変化。",
+      "awakenings_ja": "超コンボ強化 / 暗闇耐性",
+      "cooldown": 5
+    },
+    {
+      "number": 349,
+      "name_ja": "焼麹龍・シャオチューフ",
+      "source": "https://gamerch.com/puzdra0/934873",
+      "attributes": "水火",
+      "skill_ja": "2ターンの間、水ドロップが落ちやすくなる。 1ターンの間、3コンボ加算、ダメージ無効を貫通。",
+      "awakenings_ja": "スキルブースト / 超コンボ強化",
+      "cooldown": 5
+    },
+    {
+      "number": 350,
+      "name_ja": "酒宴神・バッカス",
+      "source": "https://gamerch.com/puzdra0/929388",
+      "attributes": "木光",
+      "skill_ja": "ドロップロックを解除。木光回復ドロップを4個ずつ生成。 1ターンの間、攻撃力が2.5倍。",
+      "awakenings_ja": "スキルブースト / 超コンボ強化",
+      "cooldown": 4
+    },
+    {
+      "number": 351,
+      "name_ja": "麦芽龍・ビアードン",
+      "source": "https://gamerch.com/puzdra0/934874",
+      "attributes": "光水",
+      "skill_ja": "1ターンの間、回復力が99％減少。 光ドロップを9個生成。",
+      "awakenings_ja": "ダメージ無効貫通 / お邪魔耐性",
+      "cooldown": 2
+    },
+    {
+      "number": 352,
+      "name_ja": "穀糖龍・ウィスキール",
+      "source": "https://gamerch.com/puzdra0/934875",
+      "attributes": "闇光",
+      "skill_ja": "3ターンの間、光闇回復お邪魔ドロップが落ちやすくなる。 全ドロップを破壊。",
+      "awakenings_ja": "十字消し攻撃 / 暗闇耐性",
+      "cooldown": 3
+    },
+    {
+      "number": 358,
+      "name_ja": "破壊龍・アポカリプス",
+      "source": "https://gamerch.com/puzdra0/927767",
+      "attributes": "光光",
+      "skill_ja": "ドロップロックを解除。全ドロップを光闇回復ドロップに変化。 2ターンの間、光ドロップが落ちやすくなる。",
+      "awakenings_ja": "超コンボ強化 / 超コンボ強化 / お邪魔耐性",
+      "cooldown": 4
+    },
+    {
+      "number": 359,
+      "name_ja": "守護龍・アヴァロンドレイク",
+      "source": "https://gamerch.com/puzdra0/927766",
+      "attributes": "木光",
+      "skill_ja": "ドロップロックを解除。全ドロップを木光ドロップに変化。 2ターンの間、3コンボ加算。",
+      "awakenings_ja": "木つなげ消し / 木つなげ消し / ダメージ無効貫通",
+      "cooldown": 5
+    },
+    {
+      "number": 360,
+      "name_ja": "赤龍契士・ガディウス",
+      "source": "https://gamerch.com/puzdra0/927762",
+      "attributes": "火光",
+      "skill_ja": "ドロップロックを解除。全ドロップを火光闇回復ドロップに変化。 2ターンの間、ダメージ無効を貫通。",
+      "awakenings_ja": "2体攻撃 / 2体攻撃 / 2体攻撃",
+      "cooldown": 4
+    },
+    {
+      "number": 361,
+      "name_ja": "黒龍契士・ティフォン",
+      "source": "https://gamerch.com/puzdra0/927768",
+      "attributes": "闇火",
+      "skill_ja": "ドロップロックを解除。全ドロップを火水闇回復ドロップに変化。 2ターンの間、ダメージ無効を貫通。",
+      "awakenings_ja": "コンボ強化 / コンボ強化 / コンボ強化",
+      "cooldown": 4
+    },
+    {
+      "number": 362,
+      "name_ja": "時龍契士・ミル",
+      "source": "https://gamerch.com/puzdra0/927868",
+      "attributes": "光木",
+      "skill_ja": "ドロップロックを解除。光回復ドロップを8個ずつ生成。 1ターンの間、攻撃力が2倍、操作時間を8秒延長。",
+      "awakenings_ja": "コンボ強化 / 十字消し攻撃 / 追加攻撃",
+      "cooldown": 4
+    },
+    {
+      "number": 367,
+      "name_ja": "オルファリオン",
+      "source": "https://gamerch.com/puzdra0/926344",
+      "attributes": "光光",
+      "skill_ja": "ドロップロックを解除。光回復ドロップを4個ずつ生成。 1ターンの間、2コンボ加算、ダメージ無効を貫通。",
+      "awakenings_ja": "2体攻撃 / 2体攻撃 / 2体攻撃",
+      "cooldown": 3
+    },
+    {
+      "number": 368,
+      "name_ja": "デスファリオン",
+      "source": "https://gamerch.com/puzdra0/926800",
+      "attributes": "闇闇",
+      "skill_ja": "ドロップロックを解除。闇回復ドロップを4個ずつ生成。 1ターンの間、2コンボ加算、ダメージ無効を貫通。",
+      "awakenings_ja": "2体攻撃 / 2体攻撃 / 2体攻撃",
+      "cooldown": 3
+    },
+    {
+      "number": 369,
+      "name_ja": "死天龍・アークヴェルザ",
+      "source": "https://gamerch.com/puzdra0/931020",
+      "attributes": "闇闇",
+      "skill_ja": "ドロップロックを解除。闇ドロップを9個生成。 1ターンの間、攻撃力が2倍、操作時間を3秒延長。",
+      "awakenings_ja": "超コンボ強化 / 超コンボ強化 / 暗闇耐性",
+      "cooldown": 3
+    },
+    {
+      "number": 370,
+      "name_ja": "命天龍・ゼルクレア",
+      "source": "https://gamerch.com/puzdra0/931214",
+      "attributes": "光光",
+      "skill_ja": "HPを50％回復。光回復ドロップを6個ずつ生成。 バインドと覚醒無効状態を6ターン回復。",
+      "awakenings_ja": "バインド耐性 / 超コンボ強化 / 超コンボ強化",
+      "cooldown": 4
+    },
+    {
+      "number": 371,
+      "name_ja": "無二の漢道・ アモン",
+      "source": "https://gamerch.com/puzdra0/931360",
+      "attributes": "水水",
+      "skill_ja": "火木お邪魔毒ドロップを破壊。水ドロップを6個生成。 2ターンの間、攻撃力が2倍、4コンボ加算。",
+      "awakenings_ja": "ダメージ無効貫通 / 水つなげ消し / コンボ強化",
+      "cooldown": 5
+    },
+    {
+      "number": 372,
+      "name_ja": "満悦の魔帽子・シャズ",
+      "source": "https://gamerch.com/puzdra0/934530",
+      "attributes": "水",
+      "skill_ja": "木光ドロップを水ドロップに変化。 1ターンの間、攻撃力が2倍。",
+      "awakenings_ja": "水つなげ消し / ダンジョンボーナス",
+      "cooldown": 4
+    },
+    {
+      "number": 373,
+      "name_ja": "蒼海の魔女・ドーナ",
+      "source": "https://gamerch.com/puzdra0/934532",
+      "attributes": "水光",
+      "skill_ja": "2ターンの間、操作時間を5秒延長。 2ターンの間、攻撃力と回復力が2倍。",
+      "awakenings_ja": "スキルブースト / 十字消し攻撃 / お邪魔耐性",
+      "cooldown": 6
+    },
+    {
+      "number": 374,
+      "name_ja": "夏祭りの時女神・プレーナ",
+      "source": "https://gamerch.com/puzdra0/934533",
+      "attributes": "水火",
+      "skill_ja": "1ターンの間、3コンボ加算。 1ターンの間、操作時間を5秒延長。",
+      "awakenings_ja": "超コンボ強化 / 暗闇耐性",
+      "cooldown": 3
+    },
+    {
+      "number": 375,
+      "name_ja": "浜辺の大魔女・ヴェロア",
+      "source": "https://gamerch.com/puzdra0/934528",
+      "attributes": "水闇",
+      "skill_ja": "ドロップロックを解除。木光ドロップを水ドロップに変化。 1ターンの間、攻撃力が2倍。",
+      "awakenings_ja": "ダンジョンボーナス / ダンジョンボーナス / 水つなげ消し",
+      "cooldown": 4
+    },
+    {
+      "number": 376,
+      "name_ja": "納涼の 箏龍楽士・ミナカ",
+      "source": "https://gamerch.com/puzdra0/936444",
+      "attributes": "水光",
+      "skill_ja": "ドロップロックを解除。火木ドロップを水ドロップに、闇ドロップを回復ドロップに変化。 2ターンの間、ダメージを45％軽減。",
+      "awakenings_ja": "2体攻撃 / 2体攻撃 / 封印耐性",
+      "cooldown": 4
+    },
+    {
+      "number": 377,
+      "name_ja": "波際の 管龍楽士・マリエル",
+      "source": "https://gamerch.com/puzdra0/934529",
+      "attributes": "水光",
+      "skill_ja": "ドロップロックを解除。全ドロップを火水木光回復ドロップに変化。 3ターンの間、ダメージ無効を貫通。",
+      "awakenings_ja": "4色攻撃強化 / 4色攻撃強化 / 毒耐性",
+      "cooldown": 5
+    },
+    {
+      "number": 378,
+      "name_ja": "夜祭りの時女神・プレーナ",
+      "source": "https://gamerch.com/puzdra0/939097",
+      "attributes": "火闇",
+      "skill_ja": "ドロップロックを解除。回復ドロップ以外から火闇ドロップを6個ずつ生成。 2ターンの間、属性吸収を無効化。",
+      "awakenings_ja": "十字消し攻撃 / 暗闇耐性 / 雲耐性",
+      "cooldown": 4
+    },
+    {
+      "number": 379,
+      "name_ja": "汀渚の 管龍楽士・マリエル",
+      "source": "https://gamerch.com/puzdra0/939098",
+      "attributes": "光火",
+      "skill_ja": "1ターンの間、3コンボ加算。ドロップロックを解除。 3ターンの間、操作時間を4秒延長。",
+      "awakenings_ja": "スキルブースト / ガードブレイク / 雲耐性",
+      "cooldown": 3
+    },
+    {
+      "number": 380,
+      "name_ja": "夜涼みの 箏龍楽士・ミナカ",
+      "source": "https://gamerch.com/puzdra0/936445",
+      "attributes": "闇水",
+      "skill_ja": "2ターンの間、属性吸収を無効化。 2ターンの間、ダメージ無効を貫通。",
+      "awakenings_ja": "暗闇耐性 / 封印耐性 / ダンジョンボーナス",
+      "cooldown": 4
+    },
+    {
+      "number": 381,
+      "name_ja": "進化の赤仮面",
+      "source": "https://gamerch.com/puzdra0/935118",
+      "attributes": "火",
+      "skill_ja": "1ターンの間、ダメージ無効を貫通。",
+      "awakenings_ja": "スキルブースト",
+      "cooldown": 3
+    },
+    {
+      "number": 382,
+      "name_ja": "進化の青仮面",
+      "source": "https://gamerch.com/puzdra0/935121",
+      "attributes": "水",
+      "skill_ja": "1ターンの間、ダメージ無効を貫通。",
+      "awakenings_ja": "スキルブースト",
+      "cooldown": 3
+    },
+    {
+      "number": 383,
+      "name_ja": "進化の緑仮面",
+      "source": "https://gamerch.com/puzdra0/935120",
+      "attributes": "木",
+      "skill_ja": "1ターンの間、ダメージ無効を貫通。",
+      "awakenings_ja": "スキルブースト",
+      "cooldown": 3
+    },
+    {
+      "number": 384,
+      "name_ja": "進化の黄仮面",
+      "source": "https://gamerch.com/puzdra0/935123",
+      "attributes": "光",
+      "skill_ja": "1ターンの間、ダメージ無効を貫通。",
+      "awakenings_ja": "スキルブースト",
+      "cooldown": 3
+    },
+    {
+      "number": 385,
+      "name_ja": "進化の紫仮面",
+      "source": "https://gamerch.com/puzdra0/935124",
+      "attributes": "闇",
+      "skill_ja": "1ターンの間、ダメージ無効を貫通。",
+      "awakenings_ja": "スキルブースト",
+      "cooldown": 3
+    },
+    {
+      "number": 386,
+      "name_ja": "炎の鍵の継承者・グレオン",
+      "source": "https://gamerch.com/puzdra0/935125",
+      "attributes": "火",
+      "skill_ja": "全ドロップを火回復お邪魔ドロップに変化。 2ターンの間、2コンボ加算。",
+      "awakenings_ja": "ダンジョンボーナス",
+      "cooldown": 5
+    },
+    {
+      "number": 387,
+      "name_ja": "氷の鍵の継承者・メニット",
+      "source": "https://gamerch.com/puzdra0/940352",
+      "attributes": "水",
+      "skill_ja": "右端1列を回復ドロップに変化。 1ターンの間、回復力が1.5倍。",
+      "awakenings_ja": "ダンジョンボーナス",
+      "cooldown": 3
+    },
+    {
+      "number": 388,
+      "name_ja": "森の鍵の継承者・アムリネア",
+      "source": "https://gamerch.com/puzdra0/935127",
+      "attributes": "木",
+      "skill_ja": "お邪魔毒ドロップを破壊。ドロップロックを解除。 1ターンの間、操作時間を3秒延長。",
+      "awakenings_ja": "ダンジョンボーナス",
+      "cooldown": 3
+    },
+    {
+      "number": 389,
+      "name_ja": "星の鍵の継承者・フェルル",
+      "source": "https://gamerch.com/puzdra0/935129",
+      "attributes": "光",
+      "skill_ja": "最下段1列を光ドロップに変化。 1ターンの間、光ドロップが落ちやすくなる。",
+      "awakenings_ja": "ダンジョンボーナス",
+      "cooldown": 3
+    },
+    {
+      "number": 390,
+      "name_ja": "月の鍵の継承者・ユークス",
+      "source": "https://gamerch.com/puzdra0/935130",
+      "attributes": "闇",
+      "skill_ja": "光お邪魔毒ドロップを闇ドロップに変化。 1ターンの間、ダメージを25％軽減。",
+      "awakenings_ja": "ダンジョンボーナス",
+      "cooldown": 3
+    },
+    {
+      "number": 391,
+      "name_ja": "ホノタン",
+      "source": "https://gamerch.com/puzdra0/935132",
+      "attributes": "火",
+      "skill_ja": "全ドロップを火ドロップに変化。 自分以外の味方スキルが1ターン溜まる。",
+      "awakenings_ja": "封印耐性",
+      "cooldown": 10
+    },
+    {
+      "number": 392,
+      "name_ja": "ミズタン",
+      "source": "https://gamerch.com/puzdra0/935134",
+      "attributes": "水",
+      "skill_ja": "全ドロップを水ドロップに変化。 自分以外の味方スキルが1ターン溜まる。",
+      "awakenings_ja": "封印耐性",
+      "cooldown": 10
+    },
+    {
+      "number": 393,
+      "name_ja": "モクタン",
+      "source": "https://gamerch.com/puzdra0/935135",
+      "attributes": "木",
+      "skill_ja": "全ドロップを木ドロップに変化。 自分以外の味方スキルが1ターン溜まる。",
+      "awakenings_ja": "封印耐性",
+      "cooldown": 10
+    },
+    {
+      "number": 394,
+      "name_ja": "ヒカタン",
+      "source": "https://gamerch.com/puzdra0/935136",
+      "attributes": "光",
+      "skill_ja": "全ドロップを光ドロップに変化。 自分以外の味方スキルが1ターン溜まる。",
+      "awakenings_ja": "封印耐性",
+      "cooldown": 10
+    },
+    {
+      "number": 395,
+      "name_ja": "ヤミタン",
+      "source": "https://gamerch.com/puzdra0/935137",
+      "attributes": "闇",
+      "skill_ja": "全ドロップを闇ドロップに変化。 自分以外の味方スキルが1ターン溜まる。",
+      "awakenings_ja": "封印耐性",
+      "cooldown": 10
+    },
+    {
+      "number": 396,
+      "name_ja": "灼魔鍵の勇者・グレオン",
+      "source": "https://gamerch.com/puzdra0/935138",
+      "attributes": "火光",
+      "skill_ja": "全ドロップを火回復お邪魔ドロップに変化。 5ターンの間、2コンボ加算。",
+      "awakenings_ja": "超コンボ強化 / ダンジョンボーナス",
+      "cooldown": 5
+    },
+    {
+      "number": 397,
+      "name_ja": "蒼氷鍵の勇者・メニット",
+      "source": "https://gamerch.com/puzdra0/935126",
+      "attributes": "水闇",
+      "skill_ja": "右端1列を回復ドロップに変化。 3ターンの間、回復力が1.5倍。",
+      "awakenings_ja": "超コンボ強化 / ダンジョンボーナス",
+      "cooldown": 3
+    },
+    {
+      "number": 398,
+      "name_ja": "恵風鍵の勇者・アムリ＆リネア",
+      "source": "https://gamerch.com/puzdra0/935139",
+      "attributes": "木火",
+      "skill_ja": "お邪魔毒ドロップを破壊。ドロップロックを解除。 3ターンの間、操作時間を3秒延長。",
+      "awakenings_ja": "超コンボ強化 / ダンジョンボーナス",
+      "cooldown": 3
+    },
+    {
+      "number": 399,
+      "name_ja": "煌星鍵の勇者・フェルル",
+      "source": "https://gamerch.com/puzdra0/935140",
+      "attributes": "光水",
+      "skill_ja": "最下段1列を光ドロップに変化。 3ターンの間、光ドロップが落ちやすくなる。",
+      "awakenings_ja": "光つなげ消し / ダンジョンボーナス",
+      "cooldown": 3
+    },
+    {
+      "number": 400,
+      "name_ja": "暗月鍵の勇者・ユークス",
+      "source": "https://gamerch.com/puzdra0/935141",
+      "attributes": "闇木",
+      "skill_ja": "光お邪魔毒ドロップを闇ドロップに変化。 3ターンの間、ダメージを25％軽減。",
+      "awakenings_ja": "闇つなげ消し / ダンジョンボーナス",
+      "cooldown": 3
+    },
+    {
+      "number": 401,
+      "name_ja": "ウリエル",
+      "source": "https://gamerch.com/puzdra0/935142",
+      "attributes": "火火",
+      "skill_ja": "ドロップロックを解除。光ドロップを火ドロップに、闇ドロップを回復ドロップに変化。 1ターンの間、回復力が2倍。",
+      "awakenings_ja": "毒耐性 / 暗闇耐性",
+      "cooldown": 4
+    },
+    {
+      "number": 402,
+      "name_ja": "ガブリエル",
+      "source": "https://gamerch.com/puzdra0/935144",
+      "attributes": "水水",
+      "skill_ja": "ドロップロックを解除。光ドロップを水ドロップに、闇ドロップを回復ドロップに変化。 1ターンの間、回復力が2倍。",
+      "awakenings_ja": "お邪魔耐性 / 毒耐性",
+      "cooldown": 4
+    },
+    {
+      "number": 403,
+      "name_ja": "ミカエル",
+      "source": "https://gamerch.com/puzdra0/935145",
+      "attributes": "木木",
+      "skill_ja": "ドロップロックを解除。光ドロップを木ドロップに、闇ドロップを回復ドロップに変化。 1ターンの間、回復力が2倍。",
+      "awakenings_ja": "お邪魔耐性 / 封印耐性",
+      "cooldown": 4
+    },
+    {
+      "number": 404,
+      "name_ja": "ラファエル",
+      "source": "https://gamerch.com/puzdra0/935146",
+      "attributes": "光火",
+      "skill_ja": "1ターンの間、ダメージを75％軽減。 2ターンの間、ダメージ無効を貫通。",
+      "awakenings_ja": "雲耐性 / 封印耐性",
+      "cooldown": 5
+    },
+    {
+      "number": 405,
+      "name_ja": "ルミエル",
+      "source": "https://gamerch.com/puzdra0/935148",
+      "attributes": "闇闇",
+      "skill_ja": "ドロップロックを解除。全ドロップを火水木闇ドロップに変化。 HPを50％回復。",
+      "awakenings_ja": "暗闇耐性 / 雲耐性",
+      "cooldown": 4
+    },
+    {
+      "number": 406,
+      "name_ja": "日龍喚士・カンナ",
+      "source": "https://gamerch.com/puzdra0/931478",
+      "attributes": "光光",
+      "skill_ja": "4ターンの間、攻撃力が2倍、属性吸収を無効化。 自分以外の味方スキルが1ターン溜まる。",
+      "awakenings_ja": "スキルブースト / 暗闇耐性",
+      "cooldown": 7
+    },
+    {
+      "number": 407,
+      "name_ja": "魔法と旅する者・ドロシー",
+      "source": "https://gamerch.com/puzdra0/931026",
+      "attributes": "光木",
+      "skill_ja": "4ターンの間、回復力が2倍、ダメージ無効を貫通。 自分以外の味方スキルが1ターン溜まる。",
+      "awakenings_ja": "スキルブースト / 毒耐性",
+      "cooldown": 7
+    },
+    {
+      "number": 408,
+      "name_ja": "ヴィーナス",
+      "source": "https://gamerch.com/puzdra0/935159",
+      "attributes": "光光",
+      "skill_ja": "ドロップロックを解除。闇お邪魔毒ドロップを回復ドロップに変化。 1ターンの間、回復力が2倍。",
+      "awakenings_ja": "追加攻撃 / L字消し攻撃",
+      "cooldown": 3
+    },
+    {
+      "number": 409,
+      "name_ja": "アンドロメダ",
+      "source": "https://gamerch.com/puzdra0/935160",
+      "attributes": "水木",
+      "skill_ja": "お邪魔毒ドロップを破壊。火ドロップを水ドロップに、光ドロップを回復ドロップに変化。 1ターンの間、回復力が2倍、ダメージ無効を貫通。",
+      "awakenings_ja": "雲耐性 / 封印耐性",
+      "cooldown": 4
+    },
+    {
+      "number": 410,
+      "name_ja": "ミネルヴァ",
+      "source": "https://gamerch.com/puzdra0/935161",
+      "attributes": "火火",
+      "skill_ja": "ドロップロックを解除。闇お邪魔ドロップを火ドロップに変化。 バインドと覚醒無効状態を3ターン回復。",
+      "awakenings_ja": "バインド耐性 / 毒耐性",
+      "cooldown": 3
+    },
+    {
+      "number": 411,
+      "name_ja": "パンドラ",
+      "source": "https://gamerch.com/puzdra0/931025",
+      "attributes": "闇闇",
+      "skill_ja": "ドロップロックを解除。全ドロップを闇回復ドロップに変化。 自分以外の味方スキルが1ターン溜まる。",
+      "awakenings_ja": "闇つなげ消し / 闇つなげ消し",
+      "cooldown": 7
+    },
+    {
+      "number": 412,
+      "name_ja": "セレス",
+      "source": "https://gamerch.com/puzdra0/940547",
+      "attributes": "木光",
+      "skill_ja": "HPを30％回復。 バインドと覚醒無効状態を5ターン回復。",
+      "awakenings_ja": "バインド耐性 / 回復強化",
+      "cooldown": 4
+    },
+    {
+      "number": 413,
+      "name_ja": "ペルセウス",
+      "source": "https://gamerch.com/puzdra0/940548",
+      "attributes": "木闇",
+      "skill_ja": "お邪魔毒ドロップを破壊。 水ドロップを木ドロップに、火ドロップを回復ドロップに変化。",
+      "awakenings_ja": "2体攻撃 / 超コンボ強化",
+      "cooldown": 3
+    },
+    {
+      "number": 414,
+      "name_ja": "エリス",
+      "source": "https://gamerch.com/puzdra0/940549",
+      "attributes": "闇火",
+      "skill_ja": "ドロップロックを解除。最上段1列を闇ドロップに変化。 バインドと覚醒無効状態を4ターン回復。",
+      "awakenings_ja": "バインド耐性 / お邪魔耐性",
+      "cooldown": 4
+    },
+    {
+      "number": 415,
+      "name_ja": "ペルセポネ",
+      "source": "https://gamerch.com/puzdra0/940550",
+      "attributes": "闇木",
+      "skill_ja": "ドロップロックを解除。 光回復ドロップを闇ドロップに変化。HPを50％回復。",
+      "awakenings_ja": "スキルブースト / 封印耐性",
+      "cooldown": 3
+    },
+    {
+      "number": 416,
+      "name_ja": "ヘルメス",
+      "source": "https://gamerch.com/puzdra0/940552",
+      "attributes": "水光",
+      "skill_ja": "ドロップロックを解除。闇回復お邪魔ドロップを水ドロップに変化。 3ターンの間、水ドロップが落ちやすくなる。",
+      "awakenings_ja": "ダメージ無効貫通 / ダメージ無効貫通",
+      "cooldown": 3
+    },
+    {
+      "number": 417,
+      "name_ja": "ハーデス",
+      "source": "https://gamerch.com/puzdra0/940553",
+      "attributes": "闇闇",
+      "skill_ja": "敵のHP25%分のダメージ。 7ターンの間、1コンボ加算、操作時間を2秒延長。",
+      "awakenings_ja": "2体攻撃 / 2体攻撃",
+      "cooldown": 7
+    },
+    {
+      "number": 418,
+      "name_ja": "アレス",
+      "source": "https://gamerch.com/puzdra0/940554",
+      "attributes": "火闇",
+      "skill_ja": "ドロップロックを解除。木回復お邪魔ドロップを火ドロップに変化。 3ターンの間、火ドロップが落ちやすくなる。",
+      "awakenings_ja": "ダメージ無効貫通 / ダメージ無効貫通",
+      "cooldown": 3
+    },
+    {
+      "number": 419,
+      "name_ja": "アルテミス",
+      "source": "https://gamerch.com/puzdra0/940556",
+      "attributes": "木闇",
+      "skill_ja": "ドロップロックを解除。火水お邪魔毒ドロップを木ドロップに変化。 3ターンの間、2コンボ加算、ダメージ無効を貫通。",
+      "awakenings_ja": "超コンボ強化 / 暗闇耐性",
+      "cooldown": 5
+    },
+    {
+      "number": 420,
+      "name_ja": "アポロン",
+      "source": "https://gamerch.com/puzdra0/940557",
+      "attributes": "光火",
+      "skill_ja": "光回復ドロップを4個ずつ生成。 2ターンの間、光ドロップが落ちやすくなる。",
+      "awakenings_ja": "光つなげ消し / お邪魔耐性",
+      "cooldown": 2
+    },
+    {
+      "number": 421,
+      "name_ja": "フレイ ヤ",
+      "source": "https://gamerch.com/puzdra0/940558",
+      "attributes": "木闇",
+      "skill_ja": "ドロップロックを解除。木回復ドロップを6個ずつ生成。 5ターンの間、攻撃力と回復力が1.5倍。",
+      "awakenings_ja": "スキルブースト / 木つなげ消し",
+      "cooldown": 5
+    },
+    {
+      "number": 422,
+      "name_ja": "イズン＆イズーナ",
+      "source": "https://gamerch.com/puzdra0/940559",
+      "attributes": "水闇",
+      "skill_ja": "ドロップロックを解除。水回復ドロップを6個ずつ生成。 5ターンの間、攻撃力と回復力が1.5倍。",
+      "awakenings_ja": "スキルブースト / 水つなげ消し",
+      "cooldown": 5
+    },
+    {
+      "number": 423,
+      "name_ja": "フレイ",
+      "source": "https://gamerch.com/puzdra0/940560",
+      "attributes": "火水",
+      "skill_ja": "ドロップロックを解除。火回復ドロップを6個ずつ生成。 5ターンの間、攻撃力と回復力が1.5倍。",
+      "awakenings_ja": "スキルブースト / 火つなげ消し",
+      "cooldown": 5
+    },
+    {
+      "number": 424,
+      "name_ja": "ヴィーザル",
+      "source": "https://gamerch.com/puzdra0/940561",
+      "attributes": "木火",
+      "skill_ja": "ドロップロックを解除。回復ドロップ以外から木ドロップを9個生成。 1ターンの間、4コンボ加算、操作時間を6秒延長。",
+      "awakenings_ja": "ダメージ無効貫通 / ダメージ無効貫通",
+      "cooldown": 4
+    },
+    {
+      "number": 425,
+      "name_ja": "バルドル",
+      "source": "https://gamerch.com/puzdra0/941941",
+      "attributes": "光水",
+      "skill_ja": "3ターンの間、操作時間を3秒延長。 3ターンの間、光回復ドロップがロック状態で落ちてくる。",
+      "awakenings_ja": "暗闇耐性 / 雲耐性",
+      "cooldown": 3
+    },
+    {
+      "number": 426,
+      "name_ja": "ロキ",
+      "source": "https://gamerch.com/puzdra0/941943",
+      "attributes": "闇光",
+      "skill_ja": "2ターンの間、攻撃力と回復力が2.5倍。 自分以外の味方スキルが1ターン溜まる。",
+      "awakenings_ja": "闇つなげ消し / ダメージ無効貫通",
+      "cooldown": 7
+    },
+    {
+      "number": 427,
+      "name_ja": "トール",
+      "source": "https://gamerch.com/puzdra0/941944",
+      "attributes": "光水",
+      "skill_ja": "2ターンの間、攻撃力が2倍、ダメージ無効を貫通。 自分以外の味方スキルが1ターン溜まる。",
+      "awakenings_ja": "スキルブースト / 封印耐性",
+      "cooldown": 7
+    },
+    {
+      "number": 428,
+      "name_ja": "スクルド",
+      "source": "https://gamerch.com/puzdra0/941945",
+      "attributes": "水木",
+      "skill_ja": "ドロップロックを解除。全ドロップを水木回復ドロップに変化。 2ターンの間、ダメージ無効を貫通。",
+      "awakenings_ja": "L字消し攻撃 / L字消し攻撃",
+      "cooldown": 5
+    },
+    {
+      "number": 429,
+      "name_ja": "ヴァルキリー",
+      "source": "https://gamerch.com/puzdra0/941946",
+      "attributes": "光光",
+      "skill_ja": "ドロップロックを解除。闇お邪魔毒ドロップを光ドロップに変化。 1ターンの間、1コンボ加算、ダメージ無効を貫通。",
+      "awakenings_ja": "スキルブースト / 暗闇耐性",
+      "cooldown": 3
+    },
+    {
+      "number": 430,
+      "name_ja": "滅手神・モリグー",
+      "source": "https://gamerch.com/puzdra0/941947",
+      "attributes": "闇水",
+      "skill_ja": "2ターンの間、攻撃力が2倍、3コンボ加算。 5ターンの間、闇回復ドロップがロック状態で落ちてくる。",
+      "awakenings_ja": "ダメージ無効貫通 / お邪魔耐性",
+      "cooldown": 5
+    },
+    {
+      "number": 431,
+      "name_ja": "灼手神・マッハ",
+      "source": "https://gamerch.com/puzdra0/941948",
+      "attributes": "火闇",
+      "skill_ja": "4ターンの間、3コンボ加算、ダメージ無効を貫通。 自分以外の味方スキルが1ターン溜まる。",
+      "awakenings_ja": "スキルブースト / スキルブースト",
+      "cooldown": 8
+    },
+    {
+      "number": 432,
+      "name_ja": "熾天使ルシファー",
+      "source": "https://gamerch.com/puzdra0/941950",
+      "attributes": "闇光",
+      "skill_ja": "左端1列を闇ドロップに、右端1列を回復ドロップに変化。 2ターンの間、2コンボ加算。",
+      "awakenings_ja": "十字消し攻撃 / 追加攻撃",
+      "cooldown": 4
+    },
+    {
+      "number": 433,
+      "name_ja": "執行者・メタトロン",
+      "source": "https://gamerch.com/puzdra0/941951",
+      "attributes": "闇闇",
+      "skill_ja": "ドロップロックを解除。全ドロップを闇回復ドロップに変化。 3ターンの間、属性吸収を無効化。",
+      "awakenings_ja": "スキルブースト / ダメージ無効貫通 / ダメージ無効貫通",
+      "cooldown": 5
+    },
+    {
+      "number": 434,
+      "name_ja": "大罪の化身・ゴルフェイス",
+      "source": "https://gamerch.com/puzdra0/931362",
+      "attributes": "光光",
+      "skill_ja": "回復ドロップ以外から光ドロップを7個生成。 1ターンの間、攻撃力と回復力が1.5倍。",
+      "awakenings_ja": "コンボ強化 / コンボ強化 / 光つなげ消し",
+      "cooldown": 3
+    },
+    {
+      "number": 435,
+      "name_ja": "滅亡の化身・ゴルケイオス",
+      "source": "https://gamerch.com/puzdra0/931081",
+      "attributes": "闇闇",
+      "skill_ja": "回復ドロップ以外から闇ドロップを7個生成。 1ターンの間、攻撃力と回復力が1.5倍。",
+      "awakenings_ja": "コンボ強化 / コンボ強化 / 闇つなげ消し",
+      "cooldown": 3
+    },
+    {
+      "number": 436,
+      "name_ja": "アテナ",
+      "source": "https://gamerch.com/puzdra0/931365",
+      "attributes": "光光",
+      "skill_ja": "闇ドロップを光ドロップに、水ドロップを回復ドロップに変化。 バインドと覚醒無効状態を4ターン回復。",
+      "awakenings_ja": "バインド耐性 / 2体攻撃 / 2体攻撃",
+      "cooldown": 3
+    },
+    {
+      "number": 437,
+      "name_ja": "ヘラ",
+      "source": "https://gamerch.com/puzdra0/941954",
+      "attributes": "闇闇",
+      "skill_ja": "敵のHP30%分のダメージ。 火水木光お邪魔毒ドロップを破壊。",
+      "awakenings_ja": "闇つなげ消し / 闇つなげ消し / 闇つなげ消し",
+      "cooldown": 7
+    },
+    {
+      "number": 438,
+      "name_ja": "ゼウス",
+      "source": "https://gamerch.com/puzdra0/931084",
+      "attributes": "光光",
+      "skill_ja": "敵のHP35%分のダメージ。 両端1列ずつ光ドロップに変化。",
+      "awakenings_ja": "光つなげ消し / 光つなげ消し / 光つなげ消し",
+      "cooldown": 9
+    },
+    {
+      "number": 439,
+      "name_ja": "フェンリル",
+      "source": "https://gamerch.com/puzdra0/931363",
+      "attributes": "光闇",
+      "skill_ja": "ドロップロックを解除。回復ドロップ以外から光お邪魔ドロップを3個ずつ生成。 1ターンの間、1コンボ加算、操作時間を3秒延長。",
+      "awakenings_ja": "超コンボ強化 / 超コンボ強化 / 雲耐性",
+      "cooldown": 2
+    },
+    {
+      "number": 440,
+      "name_ja": "地母神・フリッグ",
+      "source": "https://gamerch.com/puzdra0/931361",
+      "attributes": "木光",
+      "skill_ja": "ドロップロックを解除。木回復ドロップを5個ずつ生成。 3ターンの間、1コンボ加算、木ドロップが落ちやすくなる。",
+      "awakenings_ja": "超コンボ強化 / 超コンボ強化 / 毒耐性",
+      "cooldown": 3
+    },
+    {
+      "number": 441,
+      "name_ja": "オーディン",
+      "source": "https://gamerch.com/puzdra0/931480",
+      "attributes": "木光",
+      "skill_ja": "バインドと覚醒無効状態を5ターン回復。 1ターンの間、3コンボ加算、攻撃力が2倍。",
+      "awakenings_ja": "バインド耐性 / スキルブースト / 雲耐性",
+      "cooldown": 4
+    },
+    {
+      "number": 442,
+      "name_ja": "衛瓶神・シェアト",
+      "source": "https://gamerch.com/puzdra0/931356",
+      "attributes": "水火",
+      "skill_ja": "ドロップロックを解除。水回復ドロップを4個ずつ生成。 1ターンの間、操作時間を2秒延長。",
+      "awakenings_ja": "スキルブースト / 2体攻撃 / 2体攻撃",
+      "cooldown": 2
+    },
+    {
+      "number": 443,
+      "name_ja": "裁秤神・エスカマリ",
+      "source": "https://gamerch.com/puzdra0/931367",
+      "attributes": "闇光",
+      "skill_ja": "ドロップロックを解除。木お邪魔毒ドロップを闇ドロップに変化。 3ターンの間、闇ドロップが落ちやすくなる。",
+      "awakenings_ja": "スキルブースト / 闇つなげ消し / 闇つなげ消し",
+      "cooldown": 3
+    },
+    {
+      "number": 444,
+      "name_ja": "神創の雫龍・シ ロキ セイリュウ",
+      "source": "https://gamerch.com/puzdra0/931104",
+      "attributes": "光光",
+      "skill_ja": "ドロップロックを解除。全ドロップを木光回復ドロップに変化。 3ターンの間、回復力が2倍、ダメージ無効を貫通。",
+      "awakenings_ja": "スキルブースト / 十字消し攻撃 / 十字消し攻撃",
+      "cooldown": 6
+    },
+    {
+      "number": 445,
+      "name_ja": "滅亡の権化・ゴルケイオス",
+      "source": "https://gamerch.com/puzdra0/931082",
+      "attributes": "闇光",
+      "skill_ja": "お邪魔毒ドロップを破壊。ドロップロックを解除。 闇ドロップを7個生成。",
+      "awakenings_ja": "コンボ強化 / コンボ強化 / コンボ強化",
+      "cooldown": 2
+    },
+    {
+      "number": 446,
+      "name_ja": "オーディン ＝ドラゴン",
+      "source": "https://gamerch.com/puzdra0/931103",
+      "attributes": "木水",
+      "skill_ja": "バインドと覚醒無効状態を6ターン回復。 4ターンの間、1コンボ加算、操作時間を2秒延長。",
+      "awakenings_ja": "バインド耐性 / 超コンボ強化 / 超コンボ強化",
+      "cooldown": 4
+    },
+    {
+      "number": 449,
+      "name_ja": "ティラ",
+      "source": "https://gamerch.com/puzdra0/931013",
+      "attributes": "火",
+      "skill_ja": "水ドロップを火ドロップに変化。 4ターンの間、操作時間を3秒延長。",
+      "awakenings_ja": "スキルブースト / ダンジョンボーナス",
+      "cooldown": 4
+    },
+    {
+      "number": 450,
+      "name_ja": "プレシィ",
+      "source": "https://gamerch.com/puzdra0/931014",
+      "attributes": "水",
+      "skill_ja": "木ドロップを水ドロップに変化。 4ターンの間、操作時間を3秒延長。",
+      "awakenings_ja": "スキルブースト / ダンジョンボーナス",
+      "cooldown": 4
+    },
+    {
+      "number": 451,
+      "name_ja": "ブラッキィ",
+      "source": "https://gamerch.com/puzdra0/931015",
+      "attributes": "木",
+      "skill_ja": "火ドロップを木ドロップに変化。 4ターンの間、操作時間を3秒延長。",
+      "awakenings_ja": "スキルブースト / ダンジョンボーナス",
+      "cooldown": 4
+    },
+    {
+      "number": 452,
+      "name_ja": "ノヴァ",
+      "source": "https://gamerch.com/puzdra0/931016",
+      "attributes": "光水",
+      "skill_ja": "ドロップロックを解除。光回復ドロップを5個ずつ生成。 1ターンの間、回復力が2倍、操作時間を3秒延長。",
+      "awakenings_ja": "光つなげ消し / 光つなげ消し / ダンジョンボーナス",
+      "cooldown": 4
+    },
+    {
+      "number": 453,
+      "name_ja": "ゴウテン",
+      "source": "https://gamerch.com/puzdra0/931017",
+      "attributes": "闇火",
+      "skill_ja": "ドロップロックを解除。水ドロップを闇ドロップに、木ドロップを回復ドロップに変化。 1ターンの間、攻撃力が2倍、操作時間を3秒延長。",
+      "awakenings_ja": "闇つなげ消し / 闇つなげ消し / ダンジョンボーナス",
+      "cooldown": 4
+    },
+    {
+      "number": 454,
+      "name_ja": "偏愛の凶龍喚士・イデアル",
+      "source": "https://gamerch.com/puzdra0/931019",
+      "attributes": "闇光",
+      "skill_ja": "ドロップロックを解除。全ドロップを火水木光闇回復ドロップに変化。 2ターンの間、ダメージ無効を貫通。",
+      "awakenings_ja": "4色攻撃強化 / ガードブレイク / ダンジョンボーナス",
+      "cooldown": 5
+    },
+    {
+      "number": 455,
+      "name_ja": "衛生神・ヒュギエイア",
+      "source": "https://gamerch.com/puzdra0/931216",
+      "attributes": "火水",
+      "skill_ja": "木毒ドロップを破壊。火ドロップを3個生成。 1ターンの間、1コンボ加算、操作時間を2秒延長。",
+      "awakenings_ja": "スキルブースト / お邪魔耐性 / 封印耐性",
+      "cooldown": 2
+    },
+    {
+      "number": 456,
+      "name_ja": "聡明神・メティス",
+      "source": "https://gamerch.com/puzdra0/931218",
+      "attributes": "水木",
+      "skill_ja": "バインドと覚醒無効状態を4ターン回復。 2ターンの間、回復力が2倍、ダメージ無効を貫通。",
+      "awakenings_ja": "バインド耐性 / 毒耐性 / 雲耐性",
+      "cooldown": 5
+    },
+    {
+      "number": 457,
+      "name_ja": "芸術神・ミューズ",
+      "source": "https://gamerch.com/puzdra0/931217",
+      "attributes": "木光",
+      "skill_ja": "回復ドロップ以外から木ドロップを5個生成。 1ターンの間、攻撃力が2倍、ダメージ無効を貫通。",
+      "awakenings_ja": "2体攻撃 / 2体攻撃 / ダンジョンボーナス",
+      "cooldown": 3
+    },
+    {
+      "number": 458,
+      "name_ja": "正掟神・テミス",
+      "source": "https://gamerch.com/puzdra0/931358",
+      "attributes": "光光",
+      "skill_ja": "ドロップロックを解除。光回復ドロップを5個ずつ生成。 1ターンの間、攻撃力と回復力が1.5倍。",
+      "awakenings_ja": "コンボ強化 / 十字消し攻撃 / 封印耐性",
+      "cooldown": 3
+    },
+    {
+      "number": 459,
+      "name_ja": "神魔王ルシファー",
+      "source": "https://gamerch.com/puzdra0/934522",
+      "attributes": "闇闇",
+      "skill_ja": "ドロップロックを解除。光ドロップを闇ドロップに、水ドロップを回復ドロップに変化。 1ターンの間、ダメージ無効を貫通。",
+      "awakenings_ja": "スキルブースト / 十字消し攻撃 / 十字消し攻撃",
+      "cooldown": 3
+    },
+    {
+      "number": 460,
+      "name_ja": "暴乱の極悪生命体・ゴクレグス",
+      "source": "https://gamerch.com/puzdra0/940354",
+      "attributes": "火闇",
+      "skill_ja": "全ドロップを火闇回復ドロップに変化。 1ターンの間、攻撃力が3倍、ダメージ無効を貫通。",
+      "awakenings_ja": "火つなげ消し / 超コンボ強化 / 超コンボ強化",
+      "cooldown": 3
+    },
+    {
+      "number": 461,
+      "name_ja": "刈魂の蟷螂機・ヘルマンティス",
+      "source": "https://gamerch.com/puzdra0/940353",
+      "attributes": "水闇",
+      "skill_ja": "ドロップロックを解除。両端1列ずつ水ドロップに変化。 2ターンの間、2コンボ加算、ダメージ無効を貫通。",
+      "awakenings_ja": "L字消し攻撃 / L字消し攻撃 / L字消し攻撃",
+      "cooldown": 3
+    },
+    {
+      "number": 463,
+      "name_ja": "繋想の彩龍喚士・イデアル",
+      "source": "https://gamerch.com/puzdra0/931095",
+      "attributes": "光火",
+      "skill_ja": "ドロップロックを解除。全ドロップを火水木光闇回復ドロップに変化。 2ターンの間、2コンボ加算、操作時間を3秒延長。",
+      "awakenings_ja": "ガードブレイク / ガードブレイク / 毒耐性",
+      "cooldown": 4
+    },
+    {
+      "number": 472,
+      "name_ja": "奇譚・ エンシェントドラゴンナイト",
+      "source": "https://gamerch.com/puzdra0/942080",
+      "attributes": "水光",
+      "skill_ja": "ドロップロックを解除。お邪魔毒ドロップを水ドロップに変化。 1ターンの間、操作時間を5秒延長。",
+      "awakenings_ja": "L字消し攻撃 / L字消し攻撃 / 暗闇耐性",
+      "cooldown": 2
+    },
+    {
+      "number": 473,
+      "name_ja": "金冥華の女帝・ エキドナ",
+      "source": "https://gamerch.com/puzdra0/942079",
+      "attributes": "光闇",
+      "skill_ja": "1ターンの間、ダメージを100%軽減。 5ターンの間、3コンボ加算、ダメージ無効を貫通。",
+      "awakenings_ja": "超コンボ強化 / 毒耐性 / 封印耐性",
+      "cooldown": 10
+    },
+    {
+      "number": 474,
+      "name_ja": "翠鋼の機神帝・グランディス",
+      "source": "https://gamerch.com/puzdra0/942078",
+      "attributes": "木火",
+      "skill_ja": "ドロップロックを解除。最下段1列を木ドロップに変化。 1ターンの間、3コンボ加算。",
+      "awakenings_ja": "木つなげ消し / 木つなげ消し / 木つなげ消し",
+      "cooldown": 2
+    },
+    {
+      "number": 475,
+      "name_ja": "悪戯の魔帽子・オム",
+      "source": "https://gamerch.com/puzdra0/944143",
+      "attributes": "闇",
+      "skill_ja": "最下段1列を闇ドロップに変化。 4ターンの間、1コンボ加算。",
+      "awakenings_ja": "闇つなげ消し / 闇つなげ消し",
+      "cooldown": 4
+    },
+    {
+      "number": 476,
+      "name_ja": "探訪の猫魔女・ネレ",
+      "source": "https://gamerch.com/puzdra0/945377",
+      "attributes": "闇",
+      "skill_ja": "HPを60%回復。 1ターンの間、ダメージ無効を貫通。",
+      "awakenings_ja": "スキルブースト / スキルブースト",
+      "cooldown": 3
+    },
+    {
+      "number": 477,
+      "name_ja": "キョウリの仮装だるま",
+      "source": "https://gamerch.com/puzdra0/945378",
+      "attributes": "闇",
+      "skill_ja": "8ターンの間、属性吸収を無効化。 自分以外の味方スキルが2ターン溜まる。",
+      "awakenings_ja": "雲耐性 / ダンジョンボーナス",
+      "cooldown": 12
+    },
+    {
+      "number": 478,
+      "name_ja": "パンプキンヘッド ゼウス",
+      "source": "https://gamerch.com/puzdra0/946810",
+      "attributes": "闇光",
+      "skill_ja": "6ターンの間、ダメージ無効を貫通。 自分以外の味方スキルが2ターン溜まる。",
+      "awakenings_ja": "スキルブースト / 回復強化",
+      "cooldown": 12
+    },
+    {
+      "number": 479,
+      "name_ja": "城下の大魔女・マドゥ",
+      "source": "https://gamerch.com/puzdra0/944166",
+      "attributes": "闇火",
+      "skill_ja": "2ターンの間、3コンボ加算。 2ターンの間、属性吸収を無効化。",
+      "awakenings_ja": "ダメージ無効貫通 / 毒耐性 / ダンジョンボーナス",
+      "cooldown": 5
+    },
+    {
+      "number": 480,
+      "name_ja": "仮装祭の魔女・チャコル",
+      "source": "https://gamerch.com/puzdra0/944164",
+      "attributes": "闇木",
+      "skill_ja": "5ターンの間、ダメージを25％軽減。 覚醒無効状態を6ターン回復。",
+      "awakenings_ja": "スキルブースト / お邪魔耐性 / 暗闇耐性",
+      "cooldown": 5
+    },
+    {
+      "number": 481,
+      "name_ja": "嬉戯の鬼龍契士・スオウ",
+      "source": "https://gamerch.com/puzdra0/944156",
+      "attributes": "火闇",
+      "skill_ja": "ドロップロックを解除。全ドロップを火回復ドロップに変化。 6ターンの間、ダメージを25％軽減。",
+      "awakenings_ja": "スキルブースト / スキルブースト",
+      "cooldown": 6
+    },
+    {
+      "number": 482,
+      "name_ja": "行燈の蒼龍刀士・キョウリ",
+      "source": "https://gamerch.com/puzdra0/945380",
+      "attributes": "闇水",
+      "skill_ja": "2ターンの間、ダメージを40%軽減。 2ターンの間、属性吸収を無効化。",
+      "awakenings_ja": "超コンボ強化 / 毒耐性",
+      "cooldown": 4
+    },
+    {
+      "number": 492,
+      "name_ja": "ミスリット",
+      "source": "https://gamerch.com/puzdra0/939083",
+      "attributes": "闇",
+      "skill_ja": "全ドロップを火水木光闇ドロップに変化。 自分以外の味方スキルが1ターン溜まる。",
+      "awakenings_ja": "スキルブースト",
+      "cooldown": 7
+    },
+    {
+      "number": 493,
+      "name_ja": "ダブ ミスリット",
+      "source": "https://gamerch.com/puzdra0/939084",
+      "attributes": "闇闇",
+      "skill_ja": "ドロップロックを解除。全ドロップを火水木光闇ドロップに変化。 自分以外の味方スキルが1ターン溜まる。",
+      "awakenings_ja": "スキルブースト",
+      "cooldown": 7
+    },
+    {
+      "number": 494,
+      "name_ja": "神秘の仮面",
+      "source": "https://gamerch.com/puzdra0/939085",
+      "attributes": "光光",
+      "skill_ja": "全ドロップを光ドロップに変化。 3ターンの間、属性吸収を無効化。",
+      "awakenings_ja": "スキルブースト",
+      "cooldown": 8
+    },
+    {
+      "number": 495,
+      "name_ja": "ド ラー ル",
+      "source": "https://gamerch.com/puzdra0/939087",
+      "attributes": "火",
+      "skill_ja": "木ドロップを回復ドロップに変化。 1ターンの間、回復力が1.5倍。",
+      "awakenings_ja": "スキルブースト / 火つなげ消し",
+      "cooldown": 2
+    },
+    {
+      "number": 496,
+      "name_ja": "シャードラ",
+      "source": "https://gamerch.com/puzdra0/939088",
+      "attributes": "水",
+      "skill_ja": "火ドロップを回復ドロップに変化。 1ターンの間、回復力が1.5倍。",
+      "awakenings_ja": "スキルブースト / 水つなげ消し",
+      "cooldown": 2
+    },
+    {
+      "number": 497,
+      "name_ja": "トイトプス",
+      "source": "https://gamerch.com/puzdra0/939090",
+      "attributes": "木",
+      "skill_ja": "水ドロップを回復ドロップに変化。 1ターンの間、回復力が1.5倍。",
+      "awakenings_ja": "スキルブースト / 木つなげ消し",
+      "cooldown": 2
+    },
+    {
+      "number": 498,
+      "name_ja": "フェリオ",
+      "source": "https://gamerch.com/puzdra0/939091",
+      "attributes": "光",
+      "skill_ja": "闇ドロップを回復ドロップに変化。 1ターンの間、回復力が1.5倍。",
+      "awakenings_ja": "スキルブースト / 光つなげ消し",
+      "cooldown": 2
+    },
+    {
+      "number": 499,
+      "name_ja": "ピエドラ",
+      "source": "https://gamerch.com/puzdra0/939093",
+      "attributes": "闇",
+      "skill_ja": "光ドロップを回復ドロップに変化。 1ターンの間、回復力が1.5倍。",
+      "awakenings_ja": "スキルブースト / 闇つなげ消し",
+      "cooldown": 2
+    },
+    {
+      "number": 500,
+      "name_ja": "フレア ドラール",
+      "source": "https://gamerch.com/puzdra0/939096",
+      "attributes": "火火",
+      "skill_ja": "ドロップロックを解除。木ドロップを回復ドロップに変化。 1ターンの間、回復力が1.5倍、1コンボ加算。",
+      "awakenings_ja": "スキルブースト / 回復強化",
+      "cooldown": 2
+    },
+    {
+      "number": 501,
+      "name_ja": "メガロドラン",
+      "source": "https://gamerch.com/puzdra0/939168",
+      "attributes": "水水",
+      "skill_ja": "ドロップロックを解除。火ドロップを回復ドロップに変化。 1ターンの間、回復力が1.5倍、1コンボ加算。",
+      "awakenings_ja": "スキルブースト / 回復強化",
+      "cooldown": 2
+    },
+    {
+      "number": 502,
+      "name_ja": "フォート トイトプス",
+      "source": "https://gamerch.com/puzdra0/939169",
+      "attributes": "木木",
+      "skill_ja": "ドロップロックを解除。水ドロップを回復ドロップに変化。 1ターンの間、回復力が1.5倍、1コンボ加算。",
+      "awakenings_ja": "スキルブースト / 回復強化",
+      "cooldown": 2
+    },
+    {
+      "number": 503,
+      "name_ja": "エンジェリオン",
+      "source": "https://gamerch.com/puzdra0/939170",
+      "attributes": "光光",
+      "skill_ja": "ドロップロックを解除。闇ドロップを回復ドロップに変化。 1ターンの間、回復力が1.5倍、1コンボ加算。",
+      "awakenings_ja": "スキルブースト / 回復強化",
+      "cooldown": 2
+    },
+    {
+      "number": 504,
+      "name_ja": "ドラウンジョーカー",
+      "source": "https://gamerch.com/puzdra0/939314",
+      "attributes": "闇闇",
+      "skill_ja": "ドロップロックを解除。光ドロップを回復ドロップに変化。 1ターンの間、回復力が1.5倍、1コンボ加算。",
+      "awakenings_ja": "スキルブースト / 回復強化",
+      "cooldown": 2
+    },
+    {
+      "number": 505,
+      "name_ja": "冥 龍帝王・シェリアス",
+      "source": "https://gamerch.com/puzdra0/939664",
+      "attributes": "闇火",
+      "skill_ja": "全ドロップを火水木光闇回復ドロップに変化。 1ターンの間、2コンボ加算。",
+      "awakenings_ja": "3色攻撃強化 / ガードブレイク / 追加攻撃",
+      "cooldown": 3
+    },
+    {
+      "number": 506,
+      "name_ja": "業炎の 霊龍契士・ラジョア",
+      "source": "https://gamerch.com/puzdra0/939668",
+      "attributes": "火火",
+      "skill_ja": "ドロップロックを解除。火回復ドロップを6個ずつ生成。 バインドと覚醒無効状態を4ターン回復。",
+      "awakenings_ja": "バインド耐性 / 火つなげ消し / 暗闇耐性",
+      "cooldown": 5
+    },
+    {
+      "number": 507,
+      "name_ja": "愛憎の断龍喚士・ロシェ",
+      "source": "https://gamerch.com/puzdra0/939445",
+      "attributes": "光闇",
+      "skill_ja": "火ドロップを光ドロップに、水ドロップを回復ドロップに変化。 2ターンの間、2コンボ加算、属性吸収を無効化。",
+      "awakenings_ja": "2体攻撃 / 2体攻撃 / お邪魔耐性",
+      "cooldown": 4
+    },
+    {
+      "number": 508,
+      "name_ja": "崩滅の堕龍契士・レーヴェン",
+      "source": "https://gamerch.com/puzdra0/939666",
+      "attributes": "木闇",
+      "skill_ja": "ドロップロックを解除。左端1列を木ドロップに変化。 2ターンの間、ダメージ無効を貫通。",
+      "awakenings_ja": "コンボ強化 / 十字消し攻撃 / 毒耐性",
+      "cooldown": 4
+    },
+    {
+      "number": 509,
+      "name_ja": "神算の 療龍喚士・ハイレン",
+      "source": "https://gamerch.com/puzdra0/939667",
+      "attributes": "水火",
+      "skill_ja": "ドロップロックを解除。全ドロップを火水回復ドロップに変化。 2ターンの間、回復力が2倍。",
+      "awakenings_ja": "コンボ強化 / コンボ強化 / 追加攻撃",
+      "cooldown": 5
+    },
+    {
+      "number": 510,
+      "name_ja": "絶天の幻龍王・ゼローグ",
+      "source": "https://gamerch.com/puzdra0/939733",
+      "attributes": "闇闇",
+      "skill_ja": "全ドロップを火水木光闇回復ドロップに変化。 1ターンの間、攻撃力が1.5倍、属性吸収を無効化。",
+      "awakenings_ja": "ガードブレイク / ガードブレイク / 毒耐性",
+      "cooldown": 3
+    },
+    {
+      "number": 511,
+      "name_ja": "冥斧の武闘姫・ユウリ",
+      "source": "https://gamerch.com/puzdra0/939708",
+      "attributes": "闇火",
+      "skill_ja": "ドロップロックを解除。左端1列を闇ドロップに、右端1列を回復ドロップに変化。 2ターンの間、回復力が2.5倍。",
+      "awakenings_ja": "L字消し攻撃 / L字消し攻撃 / 追加攻撃",
+      "cooldown": 5
+    },
+    {
+      "number": 512,
+      "name_ja": "灼鋼の破神機・ラグナロク＝ドラゴン",
+      "source": "https://gamerch.com/puzdra0/939683",
+      "attributes": "火光",
+      "skill_ja": "ドロップロックを解除。全ドロップを火水木光闇回復ドロップに変化。 2ターンの間、回復力が1.5倍、属性吸収を無効化。",
+      "awakenings_ja": "4色攻撃強化 / ガードブレイク / 封印耐性",
+      "cooldown": 4
+    },
+    {
+      "number": 513,
+      "name_ja": "清澄の海王神龍・ ネプチューン ＝ドラゴン",
+      "source": "https://gamerch.com/puzdra0/939681",
+      "attributes": "光水",
+      "skill_ja": "ドロップロックを解除。最上段1列を光ドロップに変化。 1ターンの間、攻撃力と回復力が2.5倍。",
+      "awakenings_ja": "光つなげ消し / 光つなげ消し / ダメージ無効貫通",
+      "cooldown": 3
+    },
+    {
+      "number": 514,
+      "name_ja": "紅鼬の式神使い・イズナ",
+      "source": "https://gamerch.com/puzdra0/939446",
+      "attributes": "火木",
+      "skill_ja": "ドロップロックを解除。1ターンの間、攻撃力が2倍。 バインドと覚醒無効状態を5ターン回復。",
+      "awakenings_ja": "バインド耐性 / L字消し攻撃 / 回復強化",
+      "cooldown": 5
+    },
+    {
+      "number": 515,
+      "name_ja": "葵 風龍喚士・カエデ",
+      "source": "https://gamerch.com/puzdra0/939665",
+      "attributes": "闇木",
+      "skill_ja": "闇回復ドロップを7個ずつ生成。 4ターンの間、闇回復ドロップが落ちやすくなる。",
+      "awakenings_ja": "スキルブースト / 2体攻撃 / 2体攻撃",
+      "cooldown": 5
+    },
+    {
+      "number": 516,
+      "name_ja": "無心の退魔師・セイナ",
+      "source": "https://gamerch.com/puzdra0/939692",
+      "attributes": "水水",
+      "skill_ja": "水ドロップを5個生成。 1ターンの間、2コンボ加算、操作時間を3秒延長。",
+      "awakenings_ja": "コンボ強化 / コンボ強化 / コンボ強化",
+      "cooldown": 2
+    },
+    {
+      "number": 519,
+      "name_ja": "心火の陰陽師・トウカ",
+      "source": "https://gamerch.com/puzdra0/939730",
+      "attributes": "火闇",
+      "skill_ja": "ドロップロックを解除。全ドロップを火闇回復毒ドロップに変化。 4ターンの間、操作時間を3秒延長。",
+      "awakenings_ja": "コンボ強化 / コンボ強化 / L字消し攻撃",
+      "cooldown": 4
+    },
+    {
+      "number": 520,
+      "name_ja": "孫悟空",
+      "source": "https://gamerch.com/puzdra0/939694",
+      "attributes": "光光",
+      "skill_ja": "HPを80％回復。火水ドロップを光ドロップに、闇お邪魔ドロップを回復ドロップに変化。 自分以外の味方スキルが1ターン溜まる。",
+      "awakenings_ja": "光つなげ消し / 光つなげ消し / ダンジョンボーナス",
+      "cooldown": 7
+    },
+    {
+      "number": 521,
+      "name_ja": "耀雪の雪女・ユキネ",
+      "source": "https://gamerch.com/puzdra0/939709",
+      "attributes": "光水",
+      "skill_ja": "ドロップロックを解除。光回復ドロップを6個ずつ生成。 3ターンの間、2コンボ加算、操作時間を2秒延長。",
+      "awakenings_ja": "超コンボ強化 / 超コンボ強化 / 毒耐性",
+      "cooldown": 5
+    },
+    {
+      "number": 522,
+      "name_ja": "蒼月の夜刻神龍・ ツクヨミ ＝ドラゴン",
+      "source": "https://gamerch.com/puzdra0/939734",
+      "attributes": "水闇",
+      "skill_ja": "ドロップロックを解除。水回復ドロップを5個ずつ生成。 1ターンの間、攻撃力と回復力が2.5倍。",
+      "awakenings_ja": "コンボ強化 / L字消し攻撃 / L字消し攻撃",
+      "cooldown": 3
+    },
+    {
+      "number": 523,
+      "name_ja": "大魔女の弟子・マール",
+      "source": "https://gamerch.com/puzdra0/939428",
+      "attributes": "水光",
+      "skill_ja": "ドロップロックを解除。全ドロップを水光回復ドロップに変化。 1ターンの間、5コンボ加算、属性吸収を無効化。",
+      "awakenings_ja": "スキルブースト / スキルブースト / 十字消し攻撃",
+      "cooldown": 5
+    },
+    {
+      "number": 524,
+      "name_ja": "静夜の語り手・シェ ヘラ ザード",
+      "source": "https://gamerch.com/puzdra0/939421",
+      "attributes": "光闇",
+      "skill_ja": "ドロップロックを解除。右端2列を光ドロップに変化。 2ターンの間、2コンボ加算、属性吸収を無効化。",
+      "awakenings_ja": "スキルブースト / L字消し攻撃 / L字消し攻撃",
+      "cooldown": 5
+    },
+    {
+      "number": 525,
+      "name_ja": "ブラフマー",
+      "source": "https://gamerch.com/puzdra0/939422",
+      "attributes": "水火",
+      "skill_ja": "1ターンの間、攻撃力が3倍、属性吸収を無効化。 1ターンの間、4コンボ加算、ダメージ無効を貫通。",
+      "awakenings_ja": "スキルブースト / コンボ強化 / 超コンボ強化",
+      "cooldown": 5
+    },
+    {
+      "number": 526,
+      "name_ja": "ネフティス",
+      "source": "https://gamerch.com/puzdra0/939424",
+      "attributes": "闇光",
+      "skill_ja": "ドロップロックを解除。最上段2列を闇ドロップに変化。 2ターンの間、攻撃力が1.5倍。",
+      "awakenings_ja": "闇つなげ消し / コンボ強化 / ダメージ無効貫通",
+      "cooldown": 5
+    },
+    {
+      "number": 527,
+      "name_ja": "風公爵・ ダンタリオン",
+      "source": "https://gamerch.com/puzdra0/939691",
+      "attributes": "木火",
+      "skill_ja": "木回復ドロップを4個ずつ生成。 1ターンの間、1コンボ加算、木ドロップが落ちやすくなる。",
+      "awakenings_ja": "コンボ強化 / コンボ強化 / 追加攻撃",
+      "cooldown": 2
+    },
+    {
+      "number": 528,
+      "name_ja": "冥魔王・ パイモン",
+      "source": "https://gamerch.com/puzdra0/939706",
+      "attributes": "闇水",
+      "skill_ja": "ドロップロックを解除。水闇ドロップを5個ずつ生成。 2ターンの間、攻撃力が1.5倍、属性吸収を無効化。",
+      "awakenings_ja": "十字消し攻撃 / 毒耐性 / 雲耐性",
+      "cooldown": 4
+    },
+    {
+      "number": 529,
+      "name_ja": "碧魔爵・ グレモリー",
+      "source": "https://gamerch.com/puzdra0/939423",
+      "attributes": "水木",
+      "skill_ja": "ドロップロックを解除。全ドロップを水木ドロップに変化。 3ターンの間、ダメージ無効を貫通。",
+      "awakenings_ja": "コンボ強化 / L字消し攻撃 / L字消し攻撃",
+      "cooldown": 5
+    },
+    {
+      "number": 530,
+      "name_ja": "ヨグ＝ソトース",
+      "source": "https://gamerch.com/puzdra0/939420",
+      "attributes": "光光",
+      "skill_ja": "ドロップロックを解除。全ドロップを光回復ドロップに変化。 1ターンの間、4コンボ加算。",
+      "awakenings_ja": "光つなげ消し / コンボ強化 / ダメージ無効貫通",
+      "cooldown": 5
+    },
+    {
+      "number": 531,
+      "name_ja": "獄焔の破壊神龍・ シヴァ ＝ドラゴン",
+      "source": "https://gamerch.com/puzdra0/939419",
+      "attributes": "闇火",
+      "skill_ja": "ドロップロックを解除。最上段1列を闇ドロップに変化。 1ターンの間、3コンボ加算。",
+      "awakenings_ja": "コンボ強化 / 超コンボ強化 / 闇つなげ消し",
+      "cooldown": 2
+    },
+    {
+      "number": 532,
+      "name_ja": "凄女神・ カーリー",
+      "source": "https://gamerch.com/puzdra0/939418",
+      "attributes": "火水",
+      "skill_ja": "全ドロップを火水木光闇回復ドロップに変化。 覚醒無効状態を6ターン回復。",
+      "awakenings_ja": "スキルブースト / 4色攻撃強化 / 十字消し攻撃",
+      "cooldown": 2
+    },
+    {
+      "number": 533,
+      "name_ja": "冥黒神・ ラー ＝ドラゴン",
+      "source": "https://gamerch.com/puzdra0/939315",
+      "attributes": "闇光",
+      "skill_ja": "ドロップロックを解除。 全ドロップを火水木光闇回復ドロップに変化。",
+      "awakenings_ja": "スキルブースト / ガードブレイク / ガードブレイク",
+      "cooldown": 2
+    },
+    {
+      "number": 536,
+      "name_ja": "黒鉄の銀機士・クラウディア",
+      "source": "https://gamerch.com/puzdra0/939670",
+      "attributes": "闇光",
+      "skill_ja": "ドロップロックを解除。全ドロップを火水木光闇回復ドロップに変化。 2ターンの間、回復力が2倍、操作時間を3秒延長。",
+      "awakenings_ja": "ガードブレイク / ガードブレイク / 暗闇耐性",
+      "cooldown": 4
+    },
+    {
+      "number": 537,
+      "name_ja": "天境の白霹竜・ ノヴァ",
+      "source": "https://gamerch.com/puzdra0/939674",
+      "attributes": "光水",
+      "skill_ja": "ドロップロックを解除。全ドロップを水光回復ドロップに変化。 1ターンの間、回復力が3倍、操作時間を5秒延長。",
+      "awakenings_ja": "スキルブースト / 超コンボ強化 / 超コンボ強化",
+      "cooldown": 4
+    },
+    {
+      "number": 538,
+      "name_ja": "冥境の黒熾龍・ ゴウテン",
+      "source": "https://gamerch.com/puzdra0/939679",
+      "attributes": "闇火",
+      "skill_ja": "ドロップロックを解除。全ドロップを火闇ドロップに変化。 1ターンの間、攻撃力が3倍、操作時間を5秒延長。",
+      "awakenings_ja": "スキルブースト / コンボ強化 / ダメージ無効貫通",
+      "cooldown": 4
+    },
+    {
+      "number": 539,
+      "name_ja": "歴世の雫龍・ク ロキ レイリュウ",
+      "source": "https://gamerch.com/puzdra0/939443",
+      "attributes": "木光",
+      "skill_ja": "ドロップロックを解除。火水ドロップを木ドロップに変化。 1ターンの間、4コンボ加算。",
+      "awakenings_ja": "木つなげ消し / ダメージ無効貫通 / ダメージ無効貫通",
+      "cooldown": 2
+    },
+    {
+      "number": 540,
+      "name_ja": "堕落した英明王・ソロモン",
+      "source": "https://gamerch.com/puzdra0/939685",
+      "attributes": "闇闇",
+      "skill_ja": "火光お邪魔毒ドロップを破壊。闇回復ドロップを6個ずつ生成。 1ターンの間、攻撃力と回復力が2倍。",
+      "awakenings_ja": "スキルブースト / 超コンボ強化 / 超コンボ強化",
+      "cooldown": 3
+    },
+    {
+      "number": 541,
+      "name_ja": "六天の星霜龍・ヘキサゼオン",
+      "source": "https://gamerch.com/puzdra0/939689",
+      "attributes": "光水",
+      "skill_ja": "ドロップロックを解除。全ドロップを火水木光闇ドロップに変化。 2ターンの間、2コンボ加算、操作時間を4秒延長。",
+      "awakenings_ja": "3色攻撃強化 / 4色攻撃強化 / ガードブレイク",
+      "cooldown": 2
+    },
+    {
+      "number": 542,
+      "name_ja": "灼月夜の魔王・ジル＝レガート",
+      "source": "https://gamerch.com/puzdra0/940445",
+      "attributes": "闇光",
+      "skill_ja": "ドロップロックを解除。回復お邪魔毒ドロップを闇ドロップに変化。 1ターンの間、3コンボ加算。",
+      "awakenings_ja": "L字消し攻撃 / L字消し攻撃 / L字消し攻撃",
+      "cooldown": 1
+    },
+    {
+      "number": 543,
+      "name_ja": "究毒の魔学者・ガスロ",
+      "source": "https://gamerch.com/puzdra0/940355",
+      "attributes": "闇火",
+      "skill_ja": "1ターンの間、回復毒ドロップが落ちやすくなる。 水木光ドロップを破壊。闇回復毒ドロップを3個ずつ生成。",
+      "awakenings_ja": "2体攻撃 / 2体攻撃 / 封印耐性",
+      "cooldown": 1
+    },
+    {
+      "number": 544,
+      "name_ja": "発泡精・シャンペリオス",
+      "source": "https://gamerch.com/puzdra0/940356",
+      "attributes": "光光",
+      "skill_ja": "2ターンの間、光ドロップが凄く落ちやすくなる。 火闇お邪魔毒ドロップを破壊。光回復ドロップを5個ずつ生成。",
+      "awakenings_ja": "L字消し攻撃 / L字消し攻撃 / L字消し攻撃",
+      "cooldown": 4
+    }
+  ]
+}
