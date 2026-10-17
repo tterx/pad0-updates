@@ -31,7 +31,7 @@ HTTPS로 접근 가능한 배포 서버에 아래 두 파일을 올립니다.
 }
 ```
 
-`release`는 매 배포마다 증가시키는 정수입니다. 동봉된 v101.27 패키지는 release 27입니다.
+`release`는 매 배포마다 증가시키는 정수입니다. 동봉된 v101.28 패키지는 release 28입니다.
 SHA-256 값은 Windows PowerShell에서 다음과 같이 구합니다.
 
 ```powershell
