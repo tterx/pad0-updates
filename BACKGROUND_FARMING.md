@@ -151,3 +151,10 @@ DB: ledger.json과 같은 사용자 데이터 폴더의 stage_db.json 및 stage_
 원본: https://github.com/Genymobile/scrcpy/tree/v3.1 (Copyright (C) 2018 Genymobile, Apache-2.0). 라이선스 전문은 소스와 로컬 도구 폴더의 LICENSE.txt에 포함됩니다.
 
 자동파밍 중 확인한 최근 원본은 별도 RAM 스냅샷으로 유지합니다. F10 후 인식판 오류저장을 누르면 메인 표시판과 달라도 해당 원본 및 계산 경로를 저장합니다. 새 파밍을 시작하면 이전 세션 스냅샷은 지웁니다.
+
+
+## v101.81 오류 ZIP 및 게임 반영 확인
+
+오류저장은 debug/manual_errors 아래에 ZIP 하나를 바로 생성합니다. board.png와 확보된 game.png, 이동 대조 화면 after.png, report.json만 담으며 재생성 가능한 그림 파일은 생략합니다. report.json에는 판과 경로, 입력 해상도, 전송 오류와 실제 판 대조 결과를 남깁니다.
+
+F10은 작업이 종료된 뒤에도 마지막 입력 장치에 Android 표준 CANCEL을 보냅니다. 실제 이동은 첫 변경과 마지막 판을 캡처하여 대조하며, 고속캡처일 때에는 중간 지점도 확인합니다. 명령 전송 완료와 게임의 이동 반영·콤보 성공을 구분합니다.
