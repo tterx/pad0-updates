@@ -81,3 +81,9 @@ v101.34는 MuMu에 설치된 ADB를 사용합니다. Python 추가 의존성은 
 ## Google ADB 설치 폴더와 업데이트
 
 v101.50부터 파밍 연결 설정의 **Google 공식 ADB로 강제 교체**로 설치할 수 있습니다. 도구는 프로그램 옆 `platform-tools` 폴더에 남으며 설정은 `.\platform-tools\adb.exe` 상대 경로를 사용합니다. 자동 업데이트는 이 폴더를 삭제·교체하지 않습니다. 수동으로 프로그램을 다른 폴더에 옮길 때는 platform-tools를 함께 복사하세요. 개인 파티·재료 DB는 기존 LocalAppData 위치를 계속 사용합니다. Google ADB 파일은 프로그램 ZIP에 포함하지 않고 사용자가 버튼을 눌렀을 때 공식 저장소에서 받습니다.
+
+
+## v101.75 AI 관리와 로컬 확인 데이터
+메인창 AI 관리에서 원본/인식 판을 비교하고 드롭·가시·잠금·경로조건·행동을 확인합니다. 조건 미달/판독 실패 등에는 자동으로 열리며 설정에서 자동 열기를 끌 수 있습니다. 정상 경로 판단도 미확인으로 저장하며 현재 판 추가로 직접 검토할 수 있습니다. 수정은 게임에 입력하지 않습니다.
+
+저장 위치: `%LOCALAPPDATA%\Pad0Overlay\ai_review\cases`. 폴더별 record.json/원본 PNG는 원본이며 feedback.json은 최신 확인, feedback_*.json은 확인 변경 이력입니다. pending과 unknown은 정답이 아닙니다. 학습 시에는 최신 feedback의 human_confirmed와 image_training_eligible을 확인하고 가시/잠금 null은 제외해야 합니다. 실제 결과(outcome)는 판단 정답과 분리합니다. 학습/업로드 기능은 아직 없고 유료 API를 사용하지 않습니다. 파일은 자동 삭제하지 않으며 관리창은 최근 200건을 표시합니다. 원본 게임 화면이 있는 기록은 전체 화면으로 확대할 수 있습니다.
