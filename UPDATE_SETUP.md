@@ -86,7 +86,7 @@ v101.50부터 파밍 연결 설정의 **Google 공식 ADB로 강제 교체**로 
 ## v101.75 AI 관리와 로컬 확인 데이터
 메인창 AI 관리에서 원본/인식 판을 비교하고 드롭·가시·잠금·경로조건·행동을 확인합니다. 조건 미달/판독 실패 등에는 자동으로 열리며 설정에서 자동 열기를 끌 수 있습니다. 정상 경로 판단도 미확인으로 저장하며 현재 판 추가로 직접 검토할 수 있습니다. 수정은 게임에 입력하지 않습니다.
 
-저장 위치: `%LOCALAPPDATA%\Pad0Overlay\ai_review\cases`. 폴더별 record.json/원본 PNG는 원본이며 feedback.json은 최신 확인, feedback_*.json은 확인 변경 이력입니다. pending과 unknown은 정답이 아닙니다. 학습 시에는 최신 feedback의 human_confirmed와 image_training_eligible을 확인하고 가시/잠금 null은 제외해야 합니다. 실제 결과(outcome)는 판단 정답과 분리합니다. 학습/업로드 기능은 아직 없고 유료 API를 사용하지 않습니다. 파일은 자동 삭제하지 않으며 관리창은 최근 200건을 표시합니다. 원본 게임 화면이 있는 기록은 전체 화면으로 확대할 수 있습니다.
+저장 위치: `%LOCALAPPDATA%\Pad0Overlay\ai_review\cases`. 폴더별 record.json/원본 PNG는 원본이며 feedback.json은 최신 확인, feedback_*.json은 확인 변경 이력입니다. pending과 unknown은 정답이 아닙니다. 학습 시에는 최신 feedback의 human_confirmed와 image_training_eligible을 확인하고 가시/잠금 null은 제외해야 합니다. 실제 결과(outcome)는 판단 정답과 분리합니다. 이 문단은 v101.75 기준입니다. 이후 로컬 학습과 v101.122 업데이트 시 공유가 추가됐으며 유료 API는 사용하지 않습니다. 파일은 자동 삭제하지 않으며 관리창은 최근 200건을 표시합니다. 원본 게임 화면이 있는 기록은 전체 화면으로 확대할 수 있습니다.
 
 
 ## v101.76 실제 로컬 이미지 신경망
@@ -94,4 +94,18 @@ v101.50부터 파밍 연결 설정의 **Google 공식 ADB로 강제 교체**로 
 
 AI 관리 → 이미지 AI 사용에서 켜거나 끄고, 서로 다른 드롭 배치의 정답 5판 이상을 확인한 뒤 확인 데이터로 학습을 누릅니다. 최신 human_confirmed 피드백과 원본 이미지가 있는 기록만 사용하며 미확인/unknown은 제외합니다. 최근 원본 최대 100개를 이용하고 데이터 파일은 삭제하지 않습니다. 검증에 통과한 헤드만 교체하며 실패 시 기존 모델을 유지합니다. F10은 학습과 늦은 적용도 취소합니다.
 
-모델 저장: `%LOCALAPPDATA%\Pad0Overlay\ai_review\models\visual_model.npz`, 이전 모델 `visual_model_previous.npz`. 이전 모델 복구 버튼을 지원합니다. 네트워크 업로드는 하지 않습니다. 초기 검증은 3판 학습/2판 60칸 독립 검증으로 드롭 100%, 잠금 약 98.3%이며 작은 MuMu 자료에 한정한 결과입니다. 확률·거리 기준을 통과하지 못하면 기존 판독을 사용합니다. 추론 약 5~7ms는 이 환경의 워밍업 측정으로 게임/캡처/탐색 전체 속도가 아닙니다.
+모델 저장: `%LOCALAPPDATA%\Pad0Overlay\ai_review\models\visual_model.npz`, 이전 모델 `visual_model_previous.npz`. 이전 모델 복구 버튼을 지원합니다. v101.76에서는 네트워크 업로드를 하지 않습니다. v101.122의 선택된 공유 설정은 아래를 참고하세요. 초기 검증은 3판 학습/2판 60칸 독립 검증으로 드롭 100%, 잠금 약 98.3%이며 작은 MuMu 자료에 한정한 결과입니다. 확률·거리 기준을 통과하지 못하면 기존 판독을 사용합니다. 추론 약 5~7ms는 이 환경의 워밍업 측정으로 게임/캡처/탐색 전체 속도가 아닙니다.
+
+
+## v101.122 업데이트 시 학습 자료 자동 공유 설정
+
+1. https://github.com/new 에서 `pad0-learning-data` 저장소를 **Private**, **Add a README file**로 만듭니다. 기본 목적지는 `tterx/pad0-learning-data`이며 다른 계정이면 소유자를 바꿉니다.
+2. https://github.com/settings/personal-access-tokens 에서 **Generate new token**을 누릅니다. Resource owner는 저장소 소유자, Repository access는 **Only select repositories**로 방금 만든 저장소만 선택합니다. Repository permissions의 **Contents: Read and write**를 허용합니다. 토큰 만료 시 새 토큰으로 갱신해야 합니다.
+3. PAD0 **AI 관리 → 공유 설정**에서 저장소, 기준 수(기본 50건), 업데이트 때 자동 업로드를 설정합니다. 토큰을 입력하고 **연결 설정 저장**을 누릅니다. 토큰은 채팅에 보내지 않습니다. Windows 인증 정보 관리자에 저장하며 설정 JSON이나 전송 ZIP에는 넣지 않습니다. 기존 gh 로그인이나 GH_TOKEN/GITHUB_TOKEN이 있으면 입력을 생략할 수 있습니다.
+4. 개발에서 자료를 읽으려면 ChatGPT/Codex의 GitHub 연결 설정에서도 새 비공개 저장소에 대한 접근을 추가합니다. 앱의 업로드 토큰과 Codex의 저장소 접근 권한은 별개입니다.
+
+**새 버전 첫 실행**에서 아직 공유하지 않은 정답/수정 확인 자료가 기준 수 이상일 때 업로드합니다. 평소 정답 저장이나 기준 수 도달만으로 전송하지 않습니다. 인증/통신 문제로 중단한 업데이트 전송은 이후 실행에서 이어 처리합니다. 업로드 버튼은 없습니다.
+
+공유 대상은 실제 퍼즐판 이미지가 있는 사람 확인 자료(수정 정답 포함), 해당 참고 게임 이미지/기록/최신 피드백, 로컬 모델 파일입니다. 미확인·비퍼즐 자료, 개인 설정과 토큰은 제외합니다. GitHub 저장소의 **Releases**에 최대 24MiB 단위 ZIP으로 저장하며 git 이력에는 데이터를 추가하지 않습니다. 로컬 원본과 모델은 유지합니다. 전송 ZIP과 진행 상태는 `%LOCALAPPDATA%\Pad0Overlay\ai_review` 아래 exports와 github_sync.json에 남습니다.
+
+업로드된 자료는 PAD0 개발·검증에 활용하기 위한 자료입니다. 업로드만으로 ChatGPT 자체가 학습되거나 원격 모델이 자동 배포되지는 않습니다. 공유 설정 저장 직후 기준 미달이면 다음 프로그램 업데이트 때 다시 확인합니다. 실제 개인 저장소 업로드는 사용자 연결 후 확인해야 합니다.
