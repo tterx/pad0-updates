@@ -29,7 +29,7 @@ import mss
 import numpy as np
 from PIL import Image, ImageDraw
 
-APP_VERSION = "v101.122"
+APP_VERSION = "v101.127"
 APP_TITLE = f"퍼드0 경로 오버레이 {APP_VERSION}"
 ROWS, COLS = 5, 6
 # Approximate hue prototypes in degrees; per-cell colors are classified by nearest circular hue.
@@ -539,6 +539,26 @@ def _batch_match_features(bits):
    frontier=spread&remaining;remaining^=frontier
  return marked,groups
 
+def _batch_known_gravity_features(boards,marked):
+ """First known gravity wave only; return its distinct colour count/mask.
+
+ Unknown top cells are 255 and cannot produce matches. Distinct colours give
+ a safe combo lower bound even when arbitrary refill merges same-colour groups.
+ """
+ cleared=np.bitwise_or.reduce(marked,axis=1)
+ live=(cleared[:,None]&(np.uint32(1)<<np.arange(30,dtype=np.uint32)))==0
+ known=np.full(boards.shape,255,np.uint8)
+ for col in range(6):
+  present=live[:,col::6]
+  destinations=5-np.cumsum(present[:,::-1],axis=1)[:,::-1]
+  rows,source=np.nonzero(present)
+  known[rows,destinations[rows,source]*6+col]=boards[rows,source*6+col]
+ powers=np.uint32(1)<<np.arange(30,dtype=np.uint32)
+ masks=np.stack([np.sum((known==c)*powers,axis=1,dtype=np.uint32) for c in range(8)],axis=1)
+ found=((masks&(masks>>np.uint32(1))&(masks>>np.uint32(2))&_BATCH_HSTART)|(masks&(masks>>np.uint32(6))&(masks>>np.uint32(12))))!=0
+ return found.sum(axis=1),((found[:,:5])*(1<<np.arange(5))).sum(axis=1)
+
+
 def _batch_three_distance(b):
  """Vector equivalent of the scalar three-orb Manhattan completion distance."""
  positions=[];b=b.copy()
@@ -553,6 +573,74 @@ def _batch_three_distance(b):
 
 def _solve_master_batch_round(board,budget,cap,width,seed,mode,required_total,combo_bonus,cancel_event=None):
  """Evaluate candidates in arrays and reserve a beam quota per held colour.
+
+ A rare carried orb must not crowd out common-colour routes needed to arrange
+ several separate groups. Full replay and a one-wave lower bound gate success.
+ """
+ deadline=time.perf_counter()+budget;encoded=np.array([COLOR_ORDER.index(c) for c in board],np.uint8)
+ rare=[i for i in range(5) if board.count(COLOR_ORDER[i])==3]
+ mask=np.array([sum(1<<i for i,v in enumerate(encoded) if v==c) for c in range(8)],np.uint32)
+ boards=np.repeat(encoded[None,:],30,axis=0);masks=np.repeat(mask[None,:],30,axis=0);cursor=np.arange(30,dtype=np.int16);previous=np.full(30,-1,np.int16)
+ paths=np.full((30,cap+1),255,np.uint8);paths[:,0]=cursor;best=[0];bestscore=-1e9
+ weights=np.random.default_rng(seed).uniform(.7,1.4,8)
+ for depth in range(1,cap+1):
+  if time.perf_counter()>deadline or cancel_event is not None and cancel_event.is_set():break
+  parent=np.repeat(np.arange(len(cursor)),4);nxt=_BATCH_ADJ[cursor].reshape(-1)
+  valid=(nxt>=0)&(nxt!=np.repeat(previous,4));parent=parent[valid];nxt=nxt[valid];old=cursor[parent]
+  nb=boards[parent].copy();held=nb[np.arange(len(nxt)),old].copy();displaced=nb[np.arange(len(nxt)),nxt].copy()
+  nb[np.arange(len(nxt)),old]=displaced;nb[np.arange(len(nxt)),nxt]=held
+  nm=masks[parent].copy();swap=(np.uint32(1)<<old.astype(np.uint32))|(np.uint32(1)<<nxt.astype(np.uint32))
+  nm[np.arange(len(nxt)),held]^=swap;nm[np.arange(len(nxt)),displaced]^=swap
+  # Deduplicate equal boards/cursor regardless of prior edge.
+  _,ix=np.unique(np.column_stack([nb,nxt.astype(np.uint8)]),axis=0,return_index=True)
+  nb=nb[ix];nm=nm[ix];old=old[ix];nxt=nxt[ix];parent=parent[ix]
+  marked,groups=_batch_match_features(nm);count=groups.sum(axis=1);attrmask=((marked[:,:5]!=0)*(1<<np.arange(5))).sum(axis=1);attrs=_batch_popcount(attrmask.astype(np.uint32))
+  next_count,next_attrmask=_batch_known_gravity_features(nb,marked)
+  final_count=count+next_count;final_attrs=_batch_popcount((attrmask|next_attrmask).astype(np.uint32))
+  needed=max(6,required_total)-combo_bonus
+  good=np.flatnonzero((final_attrs==5)&(final_count>=needed))
+  good=good[np.argsort(-(final_attrs[good]*10+final_count[good]))]
+  for i in good[:120]:
+   if time.perf_counter()>deadline or cancel_event is not None and cancel_event.is_set():break
+   after=[COLOR_ORDER[int(x)] for x in nb[i]]
+   goals=combo_condition_goals(master_multicolor_goals(),required_total,combo_bonus)
+   if board_goal_metrics(after,goals)['all_met']:
+    path=list(map(int,paths[parent[i],:depth]))+[int(nxt[i])]
+    # Replay is authoritative; batched bookkeeping alone cannot arm input.
+    if board_goal_metrics(board_after_drag(board,path),goals)['all_met']:return path,depth
+  # Pair/gap completion and excess matched cells, including hearts.
+  loose=nm&~marked
+  near=_batch_popcount(loose&(loose>>np.uint32(1))&_BATCH_HPAIR)+_batch_popcount(loose&(loose>>np.uint32(2))&_BATCH_HSTART)+_batch_popcount(loose&(loose>>np.uint32(6)))+_batch_popcount(loose&(loose>>np.uint32(12)))
+  potential=(near*weights).sum(axis=1)
+  distances=np.zeros(len(nxt),float)
+  for c in rare:distances+=_batch_three_distance(nm[:,c])*weights[c]
+  excess=(_batch_popcount(marked)-groups*3).sum(axis=1)
+  if mode==0:score=final_attrs*25+final_count*17+potential*.8-distances*3-excess*2
+  elif mode==1:score=final_attrs*15+final_count*12+potential*.7-distances*4-excess*3
+  else:score=final_attrs*20+final_count*20+potential*.6-distances*2-excess*4
+  order=np.argsort(-score,kind='stable')
+  held_codes=nb[np.arange(len(nb)),nxt]
+  # Preserve routes with different carried colours AND different matched
+  # attribute sets. Pure global ranking quickly loses all four-colour setups
+  # whose fifth colour will match only after gravity.
+  chosen=[];seen=set();quota=max(1,width//50);buckets={}
+  for i in order:
+   key=int(held_codes[i])*32+int(attrmask[i]);buckets[key]=buckets.get(key,0)+1
+   if buckets[key]<=quota:chosen.append(int(i));seen.add(int(i))
+   if len(chosen)>=width:break
+  for i in order:
+   if len(chosen)>=width:break
+   if int(i) not in seen:chosen.append(int(i));seen.add(int(i))
+  top=order[0]
+  if score[top]>bestscore:
+   bestscore=float(score[top]);best=list(map(int,paths[parent[top],:depth]))+[int(nxt[top])]
+  chosen=np.array(chosen,np.int32);boards=nb[chosen];masks=nm[chosen];previous=old[chosen];cursor=nxt[chosen]
+  paths=paths[parent[chosen]].copy();paths[:,depth]=cursor
+ return best,None
+
+
+def _solve_master_direct_batch_round(board,budget,cap,width,seed,mode,required_total,combo_bonus,cancel_event=None):
+ """Direct-match beam retained for dense eight-combo layouts.
 
  A rare carried orb must not crowd out common-colour routes needed to arrange
  several separate groups. Full replay and a one-wave lower bound gate success.
@@ -635,8 +723,11 @@ def solve_master_batch(board,time_budget,max_moves,required_total,combo_bonus=0,
     attempt=0
     while time.perf_counter()-started<time_budget and not (cancel_event is not None and cancel_event.is_set()):
         remaining=max(0,time_budget-(time.perf_counter()-started))
-        path,_=_solve_master_batch_round(board,remaining,max_moves,700,seed_offset+attempt,
-            (seed_offset+attempt)%3,required_total,combo_bonus,cancel_event)
+        # Dense eight-combo layouts retain the direct beam first; alternate
+        # with gravity-aware ranking when that beam cannot satisfy the goal.
+        run=_solve_master_direct_batch_round if max(6,required_total)-combo_bonus>=8 and attempt%2==0 else _solve_master_batch_round
+        path,_=run(board,remaining,max_moves,700,seed_offset+attempt,
+            0 if attempt<4 else (attempt-4)%3,required_total,combo_bonus,cancel_event)
         after=board_after_drag(board,path);metrics=board_goal_metrics(after,goals)
         if metrics['all_met']:return path,metrics['combos'],metrics['matched'],after
         if (metrics['attr_count'],metrics['final_combos'])>(best_metrics['attr_count'],best_metrics['final_combos']):
@@ -647,7 +738,7 @@ def solve_master_batch(board,time_budget,max_moves,required_total,combo_bonus=0,
 
 
 def solve_master_attack(board,time_budget,max_moves,spikes=None,avoid_skull=True,required_total=6,combo_bonus=0,cancel_event=None,seed_offset=0):
-    if max(6,int(required_total))-int(combo_bonus)>=8 and not any(spikes or ()) and 'S' not in board:
+    if max(6,int(required_total))-int(combo_bonus)>=7 and not any(spikes or ()) and 'S' not in board:
         return solve_master_batch(board,time_budget,max_moves,required_total,combo_bonus,cancel_event,seed_offset)
     started=time.perf_counter();budget=max(0,float(time_budget))
     goals=combo_condition_goals(master_multicolor_goals(),required_total,combo_bonus)
@@ -790,6 +881,158 @@ def classify_board(image: Image.Image) -> tuple[list[str], list[list[float]]]:
     result=visual_apply_colors(image,result)
     return result, hues
 
+
+
+def cloud_cell_mask(image: Image.Image) -> list[bool]:
+    """Mark opaque white cloud cells; the red duration digit is never a drop.
+
+    Use broad pale coverage in several quadrants rather than white highlights
+    in a normal orb or the small white face of a poison drop. This only locates
+    unreadable cells; it does not infer their hidden colours.
+    """
+    arr=np.asarray(image.convert('RGB'))
+    height,width=arr.shape[:2]
+    if width<COLS*8 or height<ROWS*8:return [False]*(ROWS*COLS)
+    result=[]
+    for index in range(ROWS*COLS):
+        row,col=divmod(index,COLS)
+        tile=arr[round((row+.12)*height/ROWS):round((row+.88)*height/ROWS),
+                 round((col+.12)*width/COLS):round((col+.88)*width/COLS)]
+        _,sat,value=rgb_to_hsv_np(tile)
+        pale=(sat<.16)&(value>.82)
+        hh,ww=pale.shape
+        quadrants=[float(pale[y0:y1,x0:x1].mean()) for y0,y1 in ((0,hh//2),(hh//2,hh))
+                   for x0,x1 in ((0,ww//2),(ww//2,ww))]
+        result.append(float(pale.mean())>=.64 and sum(score>=.48 for score in quadrants)>=3)
+    return result
+
+
+def cloud_visible_board_valid(image,board,mask=None):
+    """Validate a partly obscured live grid using only the visible orb cells.
+
+    An all-white panel cannot pass this gate. Hidden cells may contain None;
+    callers must reconstruct them before using any puzzle solver.
+    """
+    if len(board)!=ROWS*COLS:return False
+    mask=cloud_cell_mask(image) if mask is None else list(mask)
+    if len(mask)!=ROWS*COLS:return False
+    width,height=image.size
+    if min(width,height)<80 or not .95<=width/height<=1.5:return False
+    visible=[index for index,hidden in enumerate(mask) if not hidden]
+    if len(visible)<12 or any(board[index] not in COLOR_ORDER for index in visible):return False
+    arr=np.asarray(image.convert('RGB'))
+    hue,sat,value=rgb_to_hsv_np(arr)
+    prototypes=np.asarray([COLOR_INFO[color][2] for color in COLOR_HUE_ORDER])
+    offsets=((- .29,0),(.29,0),(0,-.29),(0,.29),(-.205,-.205),(.205,-.205),(-.205,.205),(.205,.205))
+    texture=[];coverage=[];consistency=[];normal=0
+    for index in visible:
+        row,col=divmod(index,COLS)
+        tile=arr[round(row*height/ROWS):round((row+1)*height/ROWS),
+                 round(col*width/COLS):round((col+1)*width/COLS)]
+        texture.append(float(tile.astype(np.float32).std(axis=(0,1)).mean()/255)>=.045)
+        if board[index] not in COLOR_HUE_ORDER:continue
+        normal+=1;votes=[]
+        for dx,dy in offsets:
+            x=min(width-1,round((col+.5+dx)*width/COLS));y=min(height-1,round((row+.5+dy)*height/ROWS))
+            if sat[y,x]<.32 or value[y,x]<.24:continue
+            distance=np.abs(prototypes-hue[y,x]);chosen=int(np.argmin(np.minimum(distance,360-distance)))
+            votes.append(COLOR_HUE_ORDER[chosen])
+        coverage.append(len(votes)/len(offsets))
+        consistency.append(sum(code==board[index] for code in votes)/len(votes) if len(votes)>=3 else 0.0)
+    return (normal>=8 and len({board[index] for index in visible if board[index] in COLOR_HUE_ORDER})>=3
+            and float(np.mean(texture))>=.75 and float(np.mean(coverage))>=.45
+            and float(np.mean(consistency))>=.80)
+
+
+class CloudBoardMemory:
+    """Short-lived observations, invalidated after every board-changing action.
+
+    Reusing a hidden value requires the same epoch, at least twelve unchanged
+    visible cells, and the original observation's freshness. Repeated cloud
+    frames never refresh the age of a hidden value. New drops after gravity
+    remain unknown until actually observed; callers invalidate on every drag,
+    skill use, screen transition, and F10.
+    """
+    def __init__(self,max_age=2.0):
+        self.max_age=max(0.0,float(max_age));self.invalidate()
+    def invalidate(self):
+        self.board=[None]*(ROWS*COLS);self.seen=[float('-inf')]*(ROWS*COLS);self.epoch=None
+    def certify(self,board,mask=None,now=None,epoch=None):
+        """Store colours physically revealed by the caller's stationary probes.
+
+        The caller must verify that visible cells and the cloud mask did not
+        change throughout probing. This method accepts only a complete board;
+        missing or guessed values cannot become trusted memory.
+        """
+        if len(board)!=ROWS*COLS or any(code not in COLOR_ORDER for code in board):return False
+        if mask is not None and (len(mask)!=ROWS*COLS or sum(not hidden for hidden in mask)<12):return False
+        now=time.monotonic() if now is None else float(now)
+        self.board=list(board);self.seen=[now]*(ROWS*COLS);self.epoch=epoch
+        return True
+    def observe(self,board,mask,now=None,epoch=None,valid=True):
+        now=time.monotonic() if now is None else float(now)
+        if len(board)!=ROWS*COLS or len(mask)!=ROWS*COLS or not valid:
+            self.invalidate()
+            return dict(board=[None]*(ROWS*COLS),mask=[True]*(ROWS*COLS),missing=list(range(ROWS*COLS)),reused=[])
+        mask=list(map(bool,mask));visible=[index for index,hidden in enumerate(mask) if not hidden]
+        if any(board[index] not in COLOR_ORDER for index in visible):
+            return self.observe([],[],now,epoch,False)
+        agrees=(self.epoch==epoch and len(visible)>=12 and
+                all(self.board[index]==board[index] for index in visible))
+        if not agrees:self.invalidate()
+        restored=[None]*(ROWS*COLS);reused=[]
+        for index,hidden in enumerate(mask):
+            if not hidden:
+                restored[index]=board[index];self.board[index]=board[index];self.seen[index]=now
+            elif agrees and self.board[index] in COLOR_ORDER and 0<=now-self.seen[index]<=self.max_age:
+                restored[index]=self.board[index];reused.append(index)
+            else:
+                self.board[index]=None;self.seen[index]=float('-inf')
+        self.epoch=epoch
+        return dict(board=restored,mask=mask,missing=[index for index,code in enumerate(restored) if code is None],reused=reused)
+
+
+def cloud_revealed_drop(image,index,before_image=None):
+    """Read a newly lifted coloured drop, without moving it or guessing a colour.
+
+    Comparing the held frame with the preceding cloud frame prevents an
+    unchanged neighbouring orb from being mistaken for the selected drop.
+    Unreliable reveals, including jammer/poison art, return None.
+    """
+    if before_image is None or image.size!=before_image.size or not isinstance(index,int) or not 0<=index<ROWS*COLS:return None
+    if not cloud_cell_mask(before_image)[index]:return None
+    arr=np.asarray(image.convert('RGB'));before=np.asarray(before_image.convert('RGB'))
+    height,width=arr.shape[:2];cw,ch=width/COLS,height/ROWS;row,col=divmod(index,COLS)
+    cx,cy=(col+.5)*cw,(row+.5)*ch
+    left,right=max(0,round(cx-.40*cw)),min(width,round(cx+.40*cw))
+    top,bottom=max(0,round(cy-.85*ch)),min(height,round(cy+.20*ch))
+    tile=arr[top:bottom,left:right];old=before[top:bottom,left:right]
+    if not tile.size:return None
+    _,sat,value=rgb_to_hsv_np(tile)
+    changed=(np.max(np.abs(tile.astype(np.int16)-old.astype(np.int16)),axis=2)>=32)
+    candidates=changed&(sat>=.30)&(value>=.28)
+    # The lifted orb body should occupy a coherent coloured area; tiny moving
+    # turn digits, cursor edges, and unrelated sparkle pixels are insufficient.
+    visited=np.zeros(candidates.shape,dtype=bool);largest=[]
+    for sy,sx in zip(*np.nonzero(candidates)):
+        if visited[sy,sx]:continue
+        pending=[(int(sy),int(sx))];visited[sy,sx]=True;component=[]
+        while pending:
+            y,x=pending.pop();component.append((y,x))
+            for ny,nx in ((y-1,x),(y+1,x),(y,x-1),(y,x+1)):
+                if 0<=ny<candidates.shape[0] and 0<=nx<candidates.shape[1] and candidates[ny,nx] and not visited[ny,nx]:
+                    visited[ny,nx]=True;pending.append((ny,nx))
+        if len(component)>len(largest):largest=component
+    if len(largest)<cw*ch*.035:return None
+    ys,xs=np.asarray(largest).T
+    if xs.max()-xs.min()<cw*.22 or ys.max()-ys.min()<ch*.18:return None
+    if abs(float(xs.mean())+left-cx)>cw*.28 or float(ys.mean())+top>cy-ch*.03:return None
+    isolated=np.zeros_like(tile);isolated[ys,xs]=tile[ys,xs]
+    code,_=classify_cell(isolated)
+    if code not in COLOR_HUE_ORDER:return None
+    hues,_,_=rgb_to_hsv_np(tile)
+    distance=np.abs(hues[ys,xs]-COLOR_INFO[code][2]);distance=np.minimum(distance,360-distance)
+    return code if float(np.mean(distance<=60))>=.75 else None
 
 
 def detect_spike_cells(image: Image.Image) -> list[bool]:
@@ -1385,7 +1628,9 @@ def combo_status_candidates(image):
             # Reject bright multicoloured character art: UI badge has dark backing.
             outer=rgb[cy-15:cy+16,cx-15:cx+16]
             if np.mean(outer.max(axis=2)<140)<.20: continue
-            box=(cx-6,cy-10,cx+7,cy+10)
+            # Include small vertical/scale offsets of the icon's own digit.
+            # Even this expanded centre ends before the duration at cx+20+.
+            box=(cx-8,cy-12,cx+9,cy+12)
             if any(abs(cx-(b[0]+b[2])/2)<18 and abs(cy-(b[1]+b[3])/2)<18 for b in enemy): break
             enemy.append(box);break
     # Buff icons lie below the board. Require THREE similar white beads first.
@@ -1443,6 +1688,18 @@ def combo_digit_views(image, yellow=False):
     return [first,first.resize((round(first.width*1.3),round(first.height*1.3)),Image.Resampling.LANCZOS)]
 
 
+def combo_digit_retry_views(image, yellow=False):
+    """Alternate glyph-preserving views of the icon centre, never its duration."""
+    views=combo_digit_views(image,yellow)
+    if not views:return []
+    # The usual magnifications use antialiasing twice. A crisp binary edge and
+    # inverted polarity supply distinct evidence for tiny outlined UI digits.
+    gray=views[0].convert('L')
+    binary=gray.point(lambda value:0 if value<150 else 255).convert('RGB')
+    inverse=Image.fromarray(255-np.asarray(binary)).convert('RGB')
+    return [binary,inverse]
+
+
 def certified_next_wave(board,groups=None):
     """One known gravity wave only; unknown new orbs are never invented.
 
@@ -1464,7 +1721,7 @@ def certified_next_wave(board,groups=None):
 
 
 def board_goal_metrics(board: list[str], goals: tuple[bool, ...]) -> dict:
-    """Measure direct matches plus a certified single known gravity wave for high master goals.
+    """Measure direct matches plus a certified single known gravity wave for master goals.
 
     Direct goals: 10 combos, 8 connected, five colours, legacy
     recovery, exact four-orb TPA, five-orb cross, and five-orb L respectively.
@@ -1475,7 +1732,7 @@ def board_goal_metrics(board: list[str], goals: tuple[bool, ...]) -> dict:
     combo_bonus = int(goals[8]) if len(goals) > 8 else 0
     final_combos = combos + combo_bonus
     cascade=dict(minimum=0,colors=set(),known_board=None)
-    if master_multicolor(goals) and required_total>=8 and groups:
+    if master_multicolor(goals) and required_total>=6 and groups:
         cascade=certified_next_wave(board,groups)
         final_combos+=cascade['minimum']
     combo_met = final_combos >= required_total
@@ -1556,6 +1813,47 @@ def timer_badge_boxes(image):
         if float(teal.mean())<.04: continue
         boxes.append((max(0,x-2),max(0,y-2),min(width,x+w+2),min(height,y+h+2)))
     return boxes
+
+
+def timer_badge_obscured(image):
+    """A yellow time-loss arrow overlays the centre of the white timer badge."""
+    rgb=np.asarray(image.convert('RGB'),dtype=np.int16)
+    h,w=rgb.shape[:2];core=rgb[round(h*.3):round(h*.85),round(w*.25):round(w*.75)]
+    if not core.size:return False
+    yellow=(core[...,0]>170)&(core[...,1]>145)&(core[...,2]<155)&(core[...,0]>core[...,2]+45)
+    return float(yellow.mean())>.12
+
+
+def timer_digit_retry_view(image):
+    """Isolate the teal timer glyph for one bounded extra recognition pass.
+
+    Keep the original two-view confidence requirement. This third view is only
+    useful when one ordinary crop is blurred; scenery and the white circle are
+    removed before recognition. A yellow decrease arrow is never repaired.
+    """
+    if timer_badge_obscured(image):return None
+    rgb=np.asarray(image.convert('RGB'),dtype=np.int16)
+    h,w=rgb.shape[:2]
+    inset=max(3,round(min(h,w)*.13))
+    core=rgb[inset:h-inset,inset:w-inset]
+    if core.size==0:return None
+    mask=((core[...,1]>core[...,0]+25)&(core[...,2]>core[...,0]+20)
+          &(core[...,1]>110)&(core[...,2]>100))
+    ys,xs=np.where(mask)
+    if len(xs)<12 or int(ys.max()-ys.min()+1)<max(8,h*.25):return None
+    glyph=Image.fromarray(np.where(mask,0,255).astype('uint8')).crop(
+        (int(xs.min()),int(ys.min()),int(xs.max())+1,int(ys.max())+1)).convert('RGB')
+    scale=64/glyph.height
+    glyph=glyph.resize((max(1,round(glyph.width*scale)),64),Image.Resampling.NEAREST)
+    view=Image.new('RGB',(glyph.width+24,glyph.height+24),'white');view.paste(glyph,(12,12))
+    return view
+
+
+def confirmed_icon_number(readings, minimum_score=.85, maximum=30):
+    """Two strong independent views must agree; a conflicting strong vote holds."""
+    votes=[int(value) for value,score,_ in readings
+           if value is not None and 1<=value<=maximum and score>=minimum_score]
+    return votes[0] if len(votes)>=2 and len(set(votes))==1 else None
 
 
 def route_search_budget(seconds, default_budget):
@@ -6083,10 +6381,11 @@ class _MuMuNativeCapture:
         if self.touch_active:raise RuntimeError('MuMu SDK 기본 손가락 해제 실패: '+str(results))
         return dict(ready=True,released=True,fingers=list(range(1,11)),release_results=results,all_fingers_confirmed=not any(results),single_touch_release_result=single_result)
 
-    def play_input(self,points,hold,limit,cancel):
+    def play_input(self,points,hold,limit,cancel,probe=False):
         if not self.input_supported:raise RuntimeError('MuMu SDK 손가락 입력 API가 없습니다.')
         if not points or len(points)>66 or any(len(pt)!=2 or any(type(v) is not int for v in pt) or not (0<=pt[0]<self.size[0] and 0<=pt[1]<self.size[1]) for pt in points):raise ValueError('MuMu 입력 좌표가 잘못됐습니다.')
         if not .01<=hold<=1 or not .1<=limit<=15:raise ValueError('MuMu 입력 시간 범위가 잘못됐습니다.')
+        if probe and len(points)!=1:raise ValueError('구름 확인은 한 위치의 누름만 허용합니다.')
         trace=[];started=time.perf_counter();error=None;released=False;held=False
         pacer=AndroidTouchPacer(cancel)
         def down(x,y,action):
@@ -6099,6 +6398,7 @@ class _MuMuNativeCapture:
             if time.perf_counter()-started>limit-.08:raise RuntimeError('MuMu 입력 시간 한도 초과')
         try:
             down(*points[0],0);wait(hold)
+            if probe:self.capture();held=True
             for one,two in zip(points,points[1:]):
                 for part in range(1,5):
                     wait(.01875);down(round(one[0]+(two[0]-one[0])*part/4),round(one[1]+(two[1]-one[1])*part/4),2)
@@ -6141,7 +6441,8 @@ def _mumu_capture_worker(connection,root,dll,index,package,size,shared_name,inpu
             if isinstance(command,dict):
                 try:
                     if command.get('op')=='release':result=native.release_fingers(command.get('require_active',False))
-                    elif command.get('op')=='input':result=native.play_input(command['points'],command['hold'],command['limit'],input_cancel)
+                    elif command.get('op')=='input':
+                        result=native.play_input(command['points'],command['hold'],command['limit'],input_cancel,probe=True) if command.get('probe') else native.play_input(command['points'],command['hold'],command['limit'],input_cancel)
                     else:raise RuntimeError('지원하지 않는 MuMu 입력 요청')
                 except Exception as exc:result=dict(error=str(exc))
                 connection.send(result);continue
@@ -6702,10 +7003,12 @@ class MuMuSDKTouch(PersistentAndroidTouch):
         # owns no pressed finger; idle-finger UP rejection must not block startup.
         self.device.input_diagnostics=dict(input_transport='mumu_native_sdk',input_size=list(self.device.native_size),finger_id=1)
         return self
-    def _execute(self,points,hold,limit):
+    def _execute(self,points,hold,limit,probe=False):
         if self.device.cancel.is_set():raise RuntimeError('재료 파밍을 중지했습니다.')
         self.pressed=True;started=time.perf_counter()
-        result=self.client.input_request(dict(op='input',points=[list(pt) for pt in points],hold=hold,limit=limit))
+        request=dict(op='input',points=[list(pt) for pt in points],hold=hold,limit=limit)
+        if probe:request['probe']=True
+        result=self.client.input_request(request)
         self.pressed=not result.get('released',False);self.last=tuple(points[-1]);self.last_up_at=time.monotonic() if not self.pressed else None
         for event in result.get('events',[]):
             self.device.input_trace.append(dict(event,seconds=round(started-self.device._input_trace_started+event['seconds'],6),transport='mumu_native_sdk',finger_id=1))
@@ -6717,6 +7020,10 @@ class MuMuSDKTouch(PersistentAndroidTouch):
     def drag(self,points,checkpoint=None,max_seconds=None,hold_seconds=.20):
         if checkpoint is not None:raise RuntimeError('MuMu SDK 경로 중 PC 캡처를 허용하지 않습니다.')
         self._execute(points,hold_seconds,float(max_seconds or 5))
+    def probe(self,x,y):
+        self._execute([(int(x),int(y))],.18,1.0,probe=True)
+        if self.pressed:raise RuntimeError('구름 확인 후 손가락 해제를 확인하지 못했습니다.')
+        return self.device.last_before_up_frame
     def repeat_release(self,cancel=False):
         client=self.client
         if client is None or client.closed:
@@ -6954,6 +7261,16 @@ class BackgroundADB:
         elapsed=time.perf_counter()-started
         self.input_trace.append(dict(action='ui_tap',native=[x,y],input_size=list(self.native_size),transport='android_input_touchscreen',seconds=round(started-self._input_trace_started,6),duration_seconds=round(elapsed,6)))
         if len(self.input_trace)>1024:del self.input_trace[:-1024]
+
+    def probe_cell(self,rect,index):
+        if type(index) is not int or not 0<=index<30:raise ValueError('구름 확인 셀이 올바르지 않습니다.')
+        self.guard(force=True)
+        if not isinstance(self._touch,MuMuSDKTouch) or self._touch.closed:
+            raise RuntimeError('구름 아래 드롭 확인에는 MuMu SDK 연결이 필요합니다.')
+        x,y,w,h=rect;row,col=divmod(index,6)
+        point=self.point(x+(col+.5)*w/6,y+(row+.5)*h/5)
+        try:return self._touch.probe(*point)
+        finally:self._touch.release(cancel=self.cancel.is_set())
 
     def skill_drag(self,slot,target):
         if type(slot) is not int or not 0<=slot<6:raise ValueError('스킬 슬롯이 올바르지 않습니다.')
@@ -7498,10 +7815,96 @@ def background_battle_intro(frame):
 def background_board(frame):
     rect=(882,255,692,572)
     crop=frame.crop((rect[0],rect[1],rect[0]+rect[2],rect[1]+rect[3]))
+    if any(cloud_cell_mask(crop)):return None
     board,_=classify_board(crop)
     if not _live_board_grid_is_visible(crop,board):return None
     spikes=[flag and code not in ('J','S') for flag,code in zip(detect_spike_cells(crop),board)]
     return dict(board=board,spikes=spikes,rect=rect,crop=crop,visual_model=dict(visual_infer(crop) or {}))
+
+
+def background_skill_board_sample(frame):
+    """Check skill animation settling without guessing cloud-covered colours.
+
+    Partial samples are only for UI readiness, never for path calculation.
+    Unknown cells remain None and cannot prove a board-changing skill worked.
+    """
+    observed=background_board(frame)
+    if observed is not None:return observed
+    rect=(882,255,692,572);x,y,w,h=rect;crop=frame.crop((x,y,x+w,y+h))
+    mask=cloud_cell_mask(crop)
+    if not any(mask):return None
+    raw,_=classify_board(crop)
+    if not cloud_visible_board_valid(crop,raw,mask):return None
+    return dict(board=[None if mask[i] else raw[i] for i in range(30)],
+                spikes=[False]*30,cloud_mask=mask,rect=rect,crop=crop,partial=True)
+
+
+def sdk_held_board_verification(frame,board,path,observed,trace,diagnostics,rect=(882,255,692,572),cloud_mask=None):
+    """Validate an SDK layout without treating the lifted final orb as its cell.
+
+    A lifted orb is only provisional evidence. The caller must still observe
+    the existing post-UP game reaction before marking the move successful.
+    """
+    result=dict(confirmed=False,mismatch_cells=[],occluded_cell=None)
+    if observed is None or len(observed)!=30 or len(board)!=30 or not manual_route_supported(path):
+        result['reason']='board_unavailable';return result
+    expected=board_after_drag(board,path);hidden=[False]*30
+    if cloud_mask is not None and any(cloud_mask):
+        if len(cloud_mask)!=30 or any(type(value) is not bool for value in cloud_mask):
+            result['reason']='cloud_mask_unconfirmed';return result
+        x,y,w,h=rect;crop=frame.crop((x,y,x+w,y+h));physical=cloud_cell_mask(crop)
+        if any(physical[i] and not cloud_mask[i] for i in range(30)) or not cloud_visible_board_valid(crop,observed,physical):
+            result['reason']='cloud_visible_grid_unconfirmed';return result
+        hidden=[bool(physical[i] and cloud_mask[i]) for i in range(30)]
+    mismatch=[i for i,(a,b) in enumerate(zip(observed,expected)) if a!=b and not hidden[i]]
+    result['mismatch_cells']=mismatch
+    result['cloud_cells_unverified']=[i for i,value in enumerate(hidden) if value]
+    if not mismatch and not any(hidden):
+        result.update(confirmed=True,reason='exact_layout');return result
+    cursor=path[-1];held=board[path[0]]
+    if mismatch not in ([],[cursor]) or (mismatch and (held not in ('R','B','G','Y','P','H') or expected[cursor]!=held)):
+        result['reason']='layout_mismatch';return result
+    if not isinstance(diagnostics,dict) or diagnostics.get('sdk_dispatch_confirmed') is not True or diagnostics.get('sdk_release_confirmed') is not True:
+        result['reason']='sdk_delivery_unconfirmed';return result
+    size=diagnostics.get('input_size')
+    if not isinstance(size,(tuple,list)) or len(size)!=2 or any(type(v) is not int or v<=0 for v in size):
+        result['reason']='sdk_size_unavailable';return result
+    # Validate only the most recent complete gesture; earlier turns share this log.
+    starts=[i for i,event in enumerate(trace) if event.get('action')==0]
+    events=trace[starts[-1]:] if starts else []
+    x,y,w,h=rect
+    points=[(min(size[0]-1,round((x+(i%6+.5)*w/6)*size[0]/1600)),
+             min(size[1]-1,round((y+(i//6+.5)*h/5-40)*size[1]/900))) for i in path]
+    samples=[points[0]]
+    for one,two in zip(points,points[1:]):
+        samples.extend((round(one[0]+(two[0]-one[0])*part/4),round(one[1]+(two[1]-one[1])*part/4)) for part in range(1,5))
+    samples.append(points[-1]);actions=[0]+[2]*(len(samples)-2)+[1]
+    valid=len(events)==len(samples)
+    if valid:
+        for event,point,action in zip(events,samples,actions):
+            native=event.get('native')
+            if (event.get('action')!=action or event.get('finger_id')!=1 or event.get('transport')!='mumu_native_sdk'
+                    or not isinstance(native,(list,tuple)) or len(native)!=2
+                    or any(type(value) is not int or abs(value-wanted)>1 for value,wanted in zip(native,point))):
+                valid=False;break
+    if not valid:
+        result['reason']='sdk_path_unconfirmed';return result
+    if not mismatch:
+        result.update(confirmed=True,reason='cloud_visible_layout');return result
+    # The game's lifted orb floats above the cursor. Require both central crops
+    # to show the held colour; merely ignoring the final cell can hide an error.
+    cw,ch=w/6,h/5;cx=x+(cursor%6+.5)*cw;cy=y+(cursor//6+.5)*ch
+    codes=[]
+    for offset in (.25,.30):
+        box=(round(cx-cw*.22),round(cy-ch*(offset+.22)),round(cx+cw*.22),round(cy-ch*(offset-.22)))
+        if box[0]<0 or box[1]<0 or box[2]>frame.width or box[3]>frame.height:
+            result['reason']='held_orb_outside_capture';return result
+        codes.append(classify_cell(np.asarray(frame.convert('RGB').crop(box)))[0])
+    result.update(held_color=held,floating_codes=codes)
+    if codes!=[held,held]:
+        result['reason']='held_orb_unconfirmed';return result
+    result.update(confirmed=True,reason='cloud_visible_layout' if any(hidden) else 'lifted_final_orb',occluded_cell=cursor)
+    return result
 
 
 def background_entry_card_rects(frame):
@@ -8222,6 +8625,7 @@ def background_skill_decision(profiles,ready,state,used=()):
         ('low_hp','shield',45),('recovery_down','recovery',65),('damage_absorb','absorb',100),
         ('attribute_absorb','attribute_absorb',100),('poison','poison_clear',50)):
         if state.get(condition):needs[effect]=weight
+    critical=['time'] if state.get('time_critical') else [effect for flag,effect in (('void_shield','void_pierce'),('damage_absorb','absorb'),('attribute_absorb','attribute_absorb'),('bound','bind_clear'),('awoken_void','awoken_clear')) if state.get(flag)]
     candidates=[]
     for slot in ready:
         if slot in used or not 0<=slot<len(profiles):continue
@@ -8233,6 +8637,12 @@ def background_skill_decision(profiles,ready,state,used=()):
         if policy=='time_only' and not state.get('short_time'):continue
         if policy=='cleanse_only' and not (state.get('bound') or state.get('awoken_void')):continue
         effects=set(p.get('effects',[]))
+        if critical:
+            direct=bool(effects.intersection(critical) or 'cleanse' in effects and any(e in critical for e in ('bind_clear','awoken_clear')))
+            haste='haste' in effects and (state.get('counter_haste_slots') is None or slot in state['counter_haste_slots'])
+            score=3000 if direct else 1 if haste else 0
+            if score:candidates.append((score,int(p.get('priority',0)),-int(p.get('cooldown') or 99),-slot,slot))
+            continue
         score=sum(weight for effect,weight in needs.items() if effect in effects)
         if 'cleanse' in effects and (state.get('bound') or state.get('awoken_void')):score+=120
         if state.get('shortage') and 'refresh' in effects and 'five_board' not in effects:score+=35
@@ -8409,6 +8819,7 @@ AI_REVIEW_ACTIONS=('경로 계산','스킬 사용 후 재계산','6콤보 생존
 def ai_board_image_valid(image):
     if not isinstance(image,Image.Image):return False
     try:
+        if any(cloud_cell_mask(image)):return False
         board,_=classify_board(image)
         return _live_board_grid_is_visible(image,board)
     except (ValueError,OSError,TypeError):return False
@@ -8941,7 +9352,8 @@ class App:
             if isinstance(previous,dict) and previous.get('path'):
                 snapshot=dict(previous,next_observed_board=snapshot.get('board'),next_observed_phase=snapshot.get('phase'))
         background=isinstance(snapshot,dict) and snapshot.get('source')=='adb_background'
-        if not snapshot or (not background and tuple(snapshot['board'])!=getattr(self,'_displayed_board_signature',None)):
+        cloud_probe=isinstance(snapshot,dict) and snapshot.get('source')=='manual_cloud' and snapshot.get('phase')=='cloud_probe'
+        if not snapshot or (not background and not cloud_probe and tuple(snapshot['board'])!=getattr(self,'_displayed_board_signature',None)):
             self.set_status('현재 표시된 퍼즐판의 원본이 없습니다. 퍼즐판을 인식한 뒤 오류 저장을 눌러 주세요.')
             return
         if self.busy or self.playback_active or (getattr(self,'_background_running',False) is True and not getattr(self,'_all_actions_stopped',False)):
@@ -9119,6 +9531,12 @@ class App:
             self.set_status('자동파밍 중입니다. F10으로 중지한 뒤 수동 계산을 사용할 수 있습니다.');return
         self._background_failure_hold=False
         resume_actions(self)
+        pending=getattr(self,'_manual_cloud_pending',None)
+        if isinstance(pending,dict) and not (self.busy or self.playback_active):
+            self._prefind_cancel();self.play_cancel.clear();self.busy=True
+            self.set_status('구름 아래 드롭을 이동 없이 확인합니다 · F10 중지')
+            threading.Thread(target=self._manual_cloud_worker,args=(pending['rect'],getattr(self,'_stop_epoch',0)),daemon=True).start()
+            return
         self._last_manual_route_request_at = time.monotonic()
         self._v66_log("F6 route triggered")
         self._force_next_search = bool(force) if not (self.busy or self.playback_active) else False
@@ -9138,6 +9556,7 @@ class App:
             if getattr(self,'_prefind_result',None) is None or not isinstance(getattr(self,'_prefind_master_plan',None),dict):
                 if getattr(self,'_prefind_process',None) is None:
                     self._prefind_cancel();self._prefind_paused_key=None;self._prefind_failed_key=None
+                    self._prefind_condition_wait=None
                     self._prefind_probe_next=0.0
                 self.set_status('달인 다속 · 경로 미리 계산 중입니다. 준비 완료 후 버튼을 누르면 실행합니다.')
                 return
@@ -12703,8 +13122,172 @@ class App:
         except Exception:
             return 900
 
+    def _invalidate_cloud_board(self):
+        for entry in getattr(self,'_cloud_memories',{}).values():entry['memory'].invalidate()
+        self._cloud_memories={}
+        self._manual_cloud_pending=None
+
+    def _cloud_capture_crop(self,rect,device=None):
+        if device is not None:
+            frame=device.capture();x,y,w,h=rect
+            return frame.crop((x,y,x+w,y+h))
+        x,y,w,h=map(int,rect)
+        with mss.mss() as grab:
+            shot=grab.grab(dict(left=x,top=y,width=w,height=h))
+            return Image.frombytes('RGB',shot.size,shot.rgb)
+
+    def _cloud_probe_crop(self,rect,index,device=None):
+        assert_action_active(self)
+        if device is not None:
+            held=device.probe_cell(rect,index)
+            if not isinstance(held,Image.Image):raise RuntimeError('구름 드롭을 잡은 화면을 확인하지 못했습니다.')
+            x,y,w,h=rect
+            return held.crop((x,y,x+w,y+h)),self._cloud_capture_crop(rect,device)
+        if sys.platform!='win32':raise RuntimeError('수동 구름 확인은 Windows에서 지원합니다.')
+        info=self._reward_game_window_info()
+        if not self._attribute_probe_game_visible(rect,info):raise RuntimeError('구름 확인 중 게임 창이 가려졌습니다.')
+        x,y,w,h=rect;row,col=divmod(index,6)
+        mouse=WindowsDragInput();self._active_drag_input=mouse
+        try:
+            mouse.start()
+            # Position while UP. There are no MOVE events between DOWN and UP.
+            mouse.move(round(x+(col+.5)*w/6),round(y+(row+.5)*h/5))
+            assert_action_active(self);mouse.down()
+            if self.play_cancel.wait(.18):raise RuntimeError('구름 확인을 중지했습니다.')
+            assert_action_active(self)
+            held=self._cloud_capture_crop(rect)
+        finally:
+            mouse.close()
+            if getattr(self,'_active_drag_input',None) is mouse:self._active_drag_input=None
+        assert_action_active(self)
+        return held,self._cloud_capture_crop(rect)
+
+    def _cloud_resolve_crop(self,image,allow_probe=False,rect=None,device=None,observe_spikes=True):
+        mask=cloud_cell_mask(image);raw,_=classify_board(image)
+        if any(mask):
+            if not cloud_visible_board_valid(image,raw,mask):return None
+        elif not _live_board_grid_is_visible(image,raw):return None
+        key=(tuple(rect or (0,0,*image.size)),'android' if device is not None else 'mouse',getattr(self,'_stop_epoch',0))
+        memories=getattr(self,'_cloud_memories',{})
+        if key not in memories:
+            if len(memories)>=4:memories={}
+            memories[key]=dict(memory=CloudBoardMemory(max_age=15.0),spikes=None)
+            self._cloud_memories=memories
+        entry=memories[key];memory=entry['memory']
+        result=memory.observe(raw,mask,epoch=key)
+        spikes=([bool(flag) and code not in ('J','S') for code,flag in zip(raw,detect_spike_cells(image))]
+                if observe_spikes else list(entry.get('spikes') or [False]*30))
+        if not any(mask):
+            if observe_spikes:entry['spikes']=list(spikes)
+            return dict(board=list(raw),spikes=spikes,crop=image,cloud_mask=list(mask),cloud_observation='visible')
+        values=result['board'];missing=list(result['missing'])
+        if missing and not allow_probe:return None
+        observations=[]
+        if missing:
+            assert_action_active(self)
+            if rect is None:raise RuntimeError('구름 확인 영역이 없습니다.')
+            probe_snapshot=dict(board=[],cloud_unresolved_board=list(values),board_image=image.copy(),
+                board_rect=list(rect),path=[],cloud_mask=list(mask),cloud_probes=observations,
+                source='adb_background' if device is not None else 'manual_cloud',phase='cloud_probe',
+                version=APP_VERSION,captured_local=time.strftime('%Y-%m-%d %H:%M:%S'))
+            self._manual_error_snapshot=probe_snapshot
+            if device is not None:self._farming_error_snapshot=probe_snapshot
+            cancel=device.cancel if device is not None else self.play_cancel
+            if cancel.wait(.06):raise RuntimeError('구름 확인을 중지했습니다.')
+            stable=self._cloud_capture_crop(rect,device);stable_mask=cloud_cell_mask(stable);stable_raw,_=classify_board(stable)
+            if stable_mask!=mask or not cloud_visible_board_valid(stable,stable_raw,stable_mask) or any(stable_raw[i]!=raw[i] for i in range(30) if not mask[i]):
+                memory.invalidate();raise RuntimeError('구름 확인 전 판이 움직여 다시 확인해야 합니다.')
+            before=stable
+            for index in missing:
+                assert_action_active(self)
+                colour=None
+                for retry in range(2):
+                    held,after=self._cloud_probe_crop(rect,index,device)
+                    assert_action_active(self)
+                    # UP may be acknowledged while a captured frame still has
+                    # the lifted orb. Wait for two restored frames, with no new
+                    # touch, instead of treating that animation as a new board.
+                    restored=0
+                    for settle in range(8):
+                        after_mask=cloud_cell_mask(after);after_raw,_=classify_board(after)
+                        unchanged=(after_mask==mask and cloud_visible_board_valid(after,after_raw,mask)
+                                   and all(after_raw[i]==raw[i] for i in range(30) if not mask[i]))
+                        restored=restored+1 if unchanged else 0
+                        if restored>=2:break
+                        if cancel.wait(.05):raise RuntimeError('구름 확인을 중지했습니다.')
+                        assert_action_active(self)
+                        after=self._cloud_capture_crop(rect,device)
+                    if restored<2:
+                        memory.invalidate();raise RuntimeError('구름 드롭 확인 중 판이 바뀌어 입력을 멈췄습니다.')
+                    colour=cloud_revealed_drop(held,index,before_image=before)
+                    observations.append(dict(cell=index,attempt=retry+1,colour=colour,stationary=True,released=True,release_settle_frames=settle+1))
+                    probe_snapshot.update(input_before_up_image=held.copy(),input_observed_image=after.copy())
+                    before=after
+                    if colour is not None:break
+                if colour is None:
+                    memory.invalidate();raise RuntimeError(f'구름 아래 {index+1}번째 드롭 종류를 확인하지 못했습니다.')
+                values[index]=colour
+                probe_snapshot['cloud_unresolved_board']=list(values)
+            assert_action_active(self)
+            if not memory.certify(values,mask,epoch=key):raise RuntimeError('구름 판의 확인 정보가 완성되지 않았습니다.')
+        known_spikes=entry.get('spikes')
+        unknown_spikes=[]
+        for i,hidden in enumerate(mask):
+            if hidden:
+                spikes[i]=bool(known_spikes[i]) if known_spikes is not None else True
+                if known_spikes is None:unknown_spikes.append(i)
+        details=dict(mask=list(mask),probes=observations,reused=list(result['reused']),spikes_unconfirmed=unknown_spikes)
+        self._last_cloud_diagnostics=details
+        return dict(board=list(values),spikes=spikes,crop=image,cloud_mask=list(mask),cloud_observation='stationary_probe' if observations else 'recent_confirmed_board',cloud_diagnostics=details)
+
+    def _background_observed(self,frame,device=None,allow_probe=False):
+        rect=(882,255,692,572);x,y,w,h=rect;crop=frame.crop((x,y,x+w,y+h))
+        if not any(cloud_cell_mask(crop)):
+            result=background_board(frame)
+            if result is not None:self._cloud_resolve_crop(crop,rect=rect,device=device)
+            return result
+        result=self._cloud_resolve_crop(crop,allow_probe=allow_probe,rect=rect,device=device)
+        if result is not None:result.update(rect=rect,visual_model={})
+        return result
+
+    def _manual_cloud_worker(self,rect,epoch=None):
+        epoch=getattr(self,'_stop_epoch',0) if epoch is None else epoch
+        previous=tuple(getattr(ACTION_LOCAL,k,None) for k in ('app','epoch','passive_display'))
+        ACTION_LOCAL.app=self;ACTION_LOCAL.epoch=epoch;ACTION_LOCAL.passive_display=False
+        try:
+            assert_action_active(self)
+            image=self._cloud_capture_crop(rect)
+            result=self._cloud_resolve_crop(image,True,rect=rect)
+            if result is None:raise RuntimeError('구름이 있는 퍼즐판을 확인하지 못했습니다.')
+            def ready():
+                self.busy=False;self._manual_cloud_pending=None
+                self.board=list(result['board']);self.spikes=list(result['spikes']);self.update_board_view()
+                self._remember_manual_error_board(result['crop'],self.board,self.spikes)
+                self._manual_error_snapshot.update(source='manual_cloud',cloud_mask=result['cloud_mask'],cloud_diagnostics=result.get('cloud_diagnostics'))
+                self._attribute_probe_candidate=tuple(self.board);self._attribute_probe_repeats=2
+                self._live_board_ready=True;self._live_board_seen_at=time.monotonic()
+                self._prefind_probe_next=0.0
+                self.set_status('구름 드롭 확인 완료 · 경로 준비 후 버튼으로 실행하세요.')
+                self._set_attribute_status('구름 드롭 확인 완료 · 경로 준비 중')
+                self.toolbar.button.configure(text='▶ 경로 계산')
+            post_action_result(self,epoch,ready)
+        except Exception as exc:
+            message=str(exc)
+            def failed():
+                self.busy=False;self._set_attribute_status('구름 드롭 미확인 · 다시 확인','#ffb2a9');self.set_status(message)
+                self.toolbar.button.configure(text='구름 다시 확인')
+            post_action_result(self,epoch,failed)
+        finally:ACTION_LOCAL.app,ACTION_LOCAL.epoch,ACTION_LOCAL.passive_display=previous
+
     def capture_and_classify(self, show_preview=True) -> list[str]:
         img = self.grab_board()
+        if any(cloud_cell_mask(img)):
+            self._ai_last_capture=None
+            resolved=self._cloud_resolve_crop(img,rect=self.board_rect)
+            if resolved is None:raise RuntimeError('구름 아래 드롭 미확인 · 경로 버튼으로 구름을 먼저 확인하세요.')
+            self.board=list(resolved['board']);self.spikes=list(resolved['spikes'])
+            if show_preview:self.update_board_view()
+            return list(self.board)
         board, hues = classify_board(img)
         spikes = [flag and code not in ("J", "S") for code, flag in zip(board, detect_spike_cells(img))]
         visual=visual_infer(img) or {}
@@ -12789,6 +13372,7 @@ class App:
         # A single missed sample changes the status, not the visible button.
         if (transient and self._live_board_ready
                 and time.monotonic()-self._live_board_seen_at<=4.0):return
+        self._invalidate_cloud_board()
         self._live_board_ready = False
         if hasattr(self, 'toolbar') and self.toolbar.win.winfo_exists():
             self.toolbar.win.withdraw()
@@ -12894,7 +13478,15 @@ class App:
                 shot = capture.grab(dict(left=x, top=y, width=width, height=height))
                 image = Image.frombytes('RGB', shot.size, shot.rgb)
             captured_at = time.monotonic()
+            if any(cloud_cell_mask(image)):
+                raw,_=classify_board(image);mask=cloud_cell_mask(image)
+                if cloud_visible_board_valid(image,raw,mask):
+                    resolved=self._cloud_resolve_crop(image,rect=rect,observe_spikes=False)
+                    board=tuple(resolved['board']) if resolved is not None else dict(cloud_pending=True,rect=tuple(rect),mask=mask)
+                self._attribute_probe_queue.put((epoch,rect,board,captured_at))
+                return
             result, _ = classify_board(image)
+            self._cloud_resolve_crop(image,rect=rect,observe_spikes=False)
             self._route_debug_probe_state=live_board_grid_diagnostics(image,result)
             if self._route_debug_probe_state['passed']:
                 board = tuple(result)
@@ -12904,6 +13496,13 @@ class App:
 
     def _accept_attribute_probe(self, board):
         if getattr(self,'_background_running',False) is True:return
+        if isinstance(board,dict) and board.get('cloud_pending'):
+            self._prefind_cancel();self._manual_cloud_pending=board
+            self._attribute_probe_candidate=None;self._live_board_ready=True
+            self._attribute_probe_last_valid=time.monotonic();self._live_board_seen_at=self._attribute_probe_last_valid
+            self._set_attribute_status('구름 아래 드롭 미확인 · 버튼으로 제자리 확인')
+            self.toolbar.button.configure(text='구름 드롭 확인');self.toolbar.raise_to_top()
+            return
         self._attribute_probe_last_valid = time.monotonic()
         self._live_board_seen_at = self._attribute_probe_last_valid
         notice=getattr(self,'_route_result_notice',None)
@@ -12951,6 +13550,7 @@ class App:
         self._prefind_started_at = None
         self._prefind_probe_busy = False
         self._prefind_probe_next = 0.0
+        self._prefind_condition_wait = None
         self._prefind_probe_queue = queue.SimpleQueue()
         self._prefind_after = self.root.after(300,self._prefind_tick)
 
@@ -12981,6 +13581,18 @@ class App:
         checks=getattr(self,'_prefind_checks',None)
         if (check_key is not None and isinstance(checks,dict) and check_key[0]==tuple(board)
                 and check_key[2]==self.selected_goals()):
+            if checks.get('condition_reason'):
+                self.toolbar.button.configure(text='↻ 조건 다시 확인')
+                self._set_attribute_status('5속성 수량 충족\n'+checks['condition_reason'],'#f8d67b')
+                return True
+            if checks.get('search_finished'):
+                self.toolbar.button.configure(text='↻ 다시 계산')
+                self._set_attribute_status('5속성 수량 충족\n동시 경로 미발견 · 탐색 종료 · 버튼으로 재시도','#f8d67b')
+                return True
+            if checks.get('time_reason'):
+                self.toolbar.button.configure(text='시간 미확인' if check_key[4] is None else '시간부족')
+                self._set_attribute_status(checks['time_reason'],'#f8d67b')
+                return True
             plan=getattr(self,'_prefind_master_plan',None)
             survival=isinstance(plan,dict) and master_survival(plan.get('execution_goals',()))
             text=master_condition_text(board,checks,check_key[7],check_key[8],check_key[9] if len(check_key)>9 else True)
@@ -13030,11 +13642,20 @@ class App:
                 x,y,w,h=rect
                 crop=image.crop((x-gx,y-gy,x-gx+w,y-gy+h))
                 actual,_=classify_board(crop)
-                if tuple(actual)!=board or seconds is None:
+                cloud_observed=None
+                if any(cloud_cell_mask(crop)):
+                    cloud_observed=self._cloud_resolve_crop(crop,allow_probe=False,rect=rect)
+                    actual=list(cloud_observed['board']) if cloud_observed is not None else []
+                if tuple(actual)!=board:
+                    data=None
+                elif master_multicolor(goals) and (seconds is None or seconds<=5.0):
+                    data=(board,tuple(False for _ in board),goals,avoid,seconds,0,rect,0,0,False)
+                elif seconds is None:
                     data=None
                 else:
-                    spikes=tuple(flag and code not in ('J','S')
-                                 for flag,code in zip(detect_spike_cells(crop),actual))
+                    spikes=(tuple(cloud_observed['spikes']) if cloud_observed is not None else
+                            tuple(flag and code not in ('J','S')
+                                  for flag,code in zip(detect_spike_cells(crop),actual)))
                     condition=App._read_combo_condition(self,image,board,store=False)
                     data=((board,spikes,goals,avoid,seconds,cap,rect,
                            condition['required_total'] if condition['confirmed'] else 0,
@@ -13117,14 +13738,14 @@ class App:
         return True
 
     def _prefind_retry_master(self,key):
-        """Retry a bounded search with a new seed; never arm playback or latch failure."""
+        """Finish one bounded manual search; an explicit button press can retry."""
         self._prefind_cancel()
-        self._prefind_paused_key=None;self._prefind_failed_key=None
+        self._prefind_paused_key=key;self._prefind_failed_key=key
         self._prefind_checks_key=key
-        self._prefind_checks={'five':'searching','six':'waiting'}
-        self._prefind_retry_key=key if key[5]>0 and (len(key)<10 or key[9]) else None
-        self._prefind_probe_next=time.monotonic()+.05
+        self._prefind_checks={'five':'unfound','six':'skipped','search_finished':True}
+        self._prefind_retry_key=None
         self._prefind_feedback(key[0])
+
 
     def _prefind_expired(self):
         key=self._prefind_key
@@ -13142,13 +13763,50 @@ class App:
             self._set_attribute_status(text,'#ffb2a9')
             self.toolbar.button.configure(text='↻ 다시 계산 · 탐색 실패')
 
+    def _prefind_wait_condition(self, key, reason='적 콤보 조건 미확인'):
+        """Stop repeated OCR on one board after four attempts/four seconds.
+
+        A terminal unknown is not a guessed enemy floor. A fresh board/area/mode
+        or an explicit calculate press starts a new independent read window.
+        """
+        identity=tuple(key[index] for index in (0,2,3,6))
+        now=time.monotonic()
+        wait=getattr(self,'_prefind_condition_wait',None)
+        if not isinstance(wait,dict) or wait.get('identity')!=identity:
+            wait=dict(identity=identity,started=now,attempts=0)
+        wait['attempts']+=1
+        self._prefind_condition_wait=wait
+        expired=wait['attempts']>=4 or now-wait['started']>=4.0
+        if expired:
+            self._prefind_cancel()
+            self._prefind_paused_key=key;self._prefind_failed_key=key
+            self._prefind_checks_key=key
+            self._prefind_checks=dict(five='unfound',six='skipped',
+                condition_reason=reason+' · 확인 종료 · 버튼으로 재시도')
+            self._prefind_probe_next=float('inf')
+            self._prefind_feedback(key[0])
+        else:
+            self._prefind_checks_key=key
+            self._prefind_checks={'five':'searching','six':'waiting'}
+            self._prefind_probe_next=now+.3
+            self._prefind_feedback(key[0])
+        return expired
+
     def _prefind_start(self, key):
+        if master_multicolor(key[2]) and (key[4] is None or key[4]<=5.0):
+            self._prefind_cancel()
+            self._prefind_checks_key=key
+            reason='시간 미확인 · 숫자/감소 화살표 겹침 · 탐색 중지' if key[4] is None else f'시간부족 · 조작시간 {key[4]:g}초 · 4초 잔여와 이동 여유 부족'
+            self._prefind_checks={'five':'time','six':'skipped','time_reason':reason}
+            self._prefind_probe_next=time.monotonic()+1.0
+            self._prefind_feedback(key[0])
+            return
         displayed=getattr(self,'_prefind_checks_key',None)
         checks=getattr(self,'_prefind_checks',None)
         # Completed preview is latched to the board, mode, safety and area.
         # Periodic timer/OCR variations must not restart its visible lifecycle.
         # Actual execution independently checks the current timer and conditions.
-        if (displayed is not None and isinstance(checks,dict)
+        if (displayed is not None and isinstance(checks,dict) and not checks.get('time_reason')
                 and all(checks.get(name) in ('ready','unfound','time','skipped') for name in ('five','six'))
                 and all(displayed[index]==key[index] for index in (0,2,3,6))):return
         if key==getattr(self,'_prefind_failed_key',None): return
@@ -13166,11 +13824,9 @@ class App:
         if key[2][2] and not five_attribute_possible_by_count(key[0]): return
         if master_multicolor(key[2]) and len(key)>9 and not key[9]:
             self._route_combo_condition=dict(board=key[0],required_total=key[7],combo_bonus=key[8],confirmed=False,source='presearch_icons')
-            self._prefind_checks_key=key
-            self._prefind_checks={'five':'searching','six':'waiting'}
-            self._prefind_probe_next=time.monotonic()+.3
-            self._prefind_feedback(key[0])
+            self._prefind_wait_condition(key)
             return
+        self._prefind_condition_wait=None
         if master_multicolor(key[2]) and sum(key[0].count(color)//3 for color in COLOR_ORDER)+key[8]<max(6,key[7]):
             self._route_combo_condition=dict(board=key[0],required_total=key[7],combo_bonus=key[8],confirmed=True,source='presearch_icons')
             self._prefind_checks_key=key
@@ -13234,8 +13890,13 @@ class App:
                     self._prefind_cancel()
                     return
                 key=self._prefind_key or getattr(self,'_prefind_checks_key',None)
+                wait=getattr(self,'_prefind_condition_wait',None)
+                if isinstance(wait,dict) and wait.get('identity')!=(board,goals,self.selected_skull_safety(),rect):
+                    self._prefind_condition_wait=None
+                    self._prefind_probe_next=0.0
                 if key and (key[0]!=board or key[2]!=goals or key[6]!=rect):
                     self._prefind_cancel()
+                    self._prefind_probe_next=0.0
                 retry_key=getattr(self,'_prefind_retry_key',None)
                 if retry_key is not None and time.monotonic()>=self._prefind_probe_next:
                     self._prefind_retry_key=None
@@ -13248,7 +13909,13 @@ class App:
                     if sampled!=board or area!=rect or mode!=goals or time.monotonic()-at>2:
                         continue
                     # A missed timer/OCR sample does not invalidate a verified board result.
-                    if data is None: continue
+                    if data is None:
+                        checks=getattr(self,'_prefind_checks',None) or {}
+                        complete=all(checks.get(name) in ('ready','unfound','time','skipped') for name in ('five','six'))
+                        if master_multicolor(goals) and not complete:
+                            failed_key=(board,(False,)*30,goals,self.selected_skull_safety(),None,0,rect,0,0,False)
+                            self._prefind_wait_condition(failed_key,'시간·적 콤보 조건 미확인')
+                        continue
                     else: self._prefind_start(data)
                 output=self._prefind_output
                 if output is not None:
@@ -13298,11 +13965,19 @@ class App:
                 self._prefind_feedback(board)
                 now=time.monotonic()
                 checks=getattr(self,'_prefind_checks',None) or {}
-                complete=all(checks.get(name) in ('ready','unfound','time','skipped') for name in ('five','six'))
+                complete=all(checks.get(name) in ('ready','unfound','time','skipped') for name in ('five','six')) and not checks.get('time_reason')
+                wait=getattr(self,'_prefind_condition_wait',None)
+                if (not complete and master_multicolor(goals) and self._prefind_probe_busy
+                        and isinstance(wait,dict) and now-wait['started']>=4.0):
+                    failed_key=(board,(False,)*30,goals,self.selected_skull_safety(),None,0,rect,0,0,False)
+                    self._prefind_wait_condition(failed_key,'시간·적 콤보 조건 미확인')
+                    complete=True
                 if (not complete and self._prefind_process is None and getattr(self,'_prefind_retry_key',None) is None
                         and not self._prefind_probe_busy and now>=self._prefind_probe_next):
                     self._remember_route_timer_windows()
                     self._prefind_probe_busy=True
+                    if master_multicolor(goals) and not isinstance(getattr(self,'_prefind_condition_wait',None),dict):
+                        self._prefind_condition_wait=dict(identity=(board,goals,self.selected_skull_safety(),rect),started=now,attempts=0)
                     self._prefind_probe_next=now+(.3 if master_multicolor(goals) else 1.5)
                     threading.Thread(target=self._prefind_probe_worker,
                         args=(board,rect,goals,self.selected_skull_safety()),daemon=True).start()
@@ -13653,12 +14328,20 @@ class App:
                 text=re.sub(r'\s+','',text)
                 match=re.fullmatch(r'(\d{1,2})',text)
                 readings.append((int(match.group(1)) if match else None,score,text))
-            value=None
-            if len(readings)==2 and all(v is not None and score>=.82 for v,score,_ in readings) and readings[0][0]==readings[1][0]:
-                candidate=readings[0][0]
-                if 1<=candidate<=20:value=candidate
+            value=confirmed_icon_number(readings,.82,20)
+            strong={v for v,score,_ in readings if v is not None and score>=.82}
+            if value is None and len(strong)<=1:
+                for view in combo_digit_retry_views(crop,yellow):
+                    text,score=self._recognize_title_line(view)
+                    text=re.sub(r'\s+','',text)
+                    match=re.fullmatch(r'(\d{1,2})',text)
+                    readings.append((int(match.group(1)) if match else None,score,text))
+                    value=confirmed_icon_number(readings,.82,20)
+                    if value is not None:break
             answer=(value,readings)
-            new_cache[key]=answer
+            # A failed tiny-glyph read is retried within the bounded condition
+            # window. Only agreed results may remain cached across samples.
+            if value is not None:new_cache[key]=answer
             return answer
         for box in enemy:
             try:value,readings=read(box,False)
@@ -13695,6 +14378,7 @@ class App:
         OCR is restricted to the cyan/red time bar; an unconfident time read
         produces a conservative path cap, not a guessed number of seconds.
         """
+        self._last_timer_read=dict(seconds=None,boxes=[],readings=[],error=None)
         try:
             image = image if image is not None else self._capture_route_timer_image()
             if report:
@@ -13723,27 +14407,44 @@ class App:
             boxes=timer_badge_boxes(timer_crop)
             readings=[]
             confirmed=[]
+            conflicting=False
             for box in boxes:
                 badge=timer_crop.crop(box)
+                if timer_badge_obscured(badge):
+                    readings.append((None,0,'시간 감소 화살표가 숫자를 가림'));continue
                 inset=max(2,round(min(badge.size)*.08))
                 views=(badge,badge.crop((inset,inset,badge.width-inset,badge.height-inset)).convert('L').convert('RGB'))
                 timer_cache=getattr(self,'_timer_digit_cache',{})
                 timer_key=hashlib.sha256(badge.tobytes()).hexdigest()
                 cached=timer_cache.get(timer_key)
-                votes=[cached,cached] if cached is not None else []
+                badge_readings=[]
                 for view in (() if cached is not None else views):
                     try:
                         number,score,text=self._recognize_number_crop(view.resize((view.width*3,view.height*3),Image.Resampling.LANCZOS))
-                        readings.append((number,round(score,4),text))
-                        if number is not None and 1<=number<=30 and score>=.85: votes.append(number)
+                        badge_readings.append((number,round(score,4),text))
                     except Exception as exc:
-                        readings.append((None,0,str(exc)))
-                if len(votes)==2 and votes[0]==votes[1]:
-                    confirmed.append(votes[0])
-                    timer_cache[timer_key]=votes[0]
+                        badge_readings.append((None,0,str(exc)))
+                value=cached if cached is not None else confirmed_icon_number(badge_readings)
+                strong={v for v,score,_ in badge_readings if v is not None and score>=.85}
+                if value is None and len(strong)<=1:
+                    retry=timer_digit_retry_view(badge)
+                    if retry is not None:
+                        try:
+                            number,score,text=self._recognize_number_crop(retry)
+                            badge_readings.append((number,round(score,4),text))
+                        except Exception as exc:badge_readings.append((None,0,str(exc)))
+                        value=confirmed_icon_number(badge_readings)
+                strong={v for v,score,_ in badge_readings if v is not None and score>=.85}
+                conflicting=conflicting or len(strong)>1
+                readings.extend(badge_readings)
+                if value is not None:
+                    confirmed.append(value)
+                    timer_cache[timer_key]=value
                     self._timer_digit_cache=dict(list(timer_cache.items())[-16:])
             if confirmed and len(set(confirmed))==1: seconds=confirmed[0]
-            if seconds is None:
+            obscured=bool(boxes) and any(timer_badge_obscured(timer_crop.crop(box)) for box in boxes)
+            conflicting=conflicting or len(set(confirmed))>1
+            if seconds is None and not obscured and not conflicting:
                 try:
                     local=self._run_ocr_tokens(timer_crop.resize((timer_crop.width*2,timer_crop.height*2),Image.Resampling.LANCZOS))
                     viable=[]
@@ -13757,12 +14458,14 @@ class App:
                     if len(set(viable))==1: seconds=viable[0]
                 except Exception as exc:
                     if report: self._v66_log(f'timer OCR unavailable: {exc}')
+            self._last_timer_read=dict(seconds=seconds,boxes=list(boxes),readings=list(readings),error=None if seconds is not None else '표시줄 숫자를 확정하지 못했습니다.')
             if report: self._route_debug_update(dict(timer_badge_boxes=boxes,timer_badge_readings=readings))
             cap = 0 if seconds is None and master_multicolor(self.selected_goals()) else self._drag_move_cap(seconds or 5)
             if report: self._route_debug_update(dict(timer_seconds=seconds, timer_move_cap=cap, timer_source='bar',timer_error=None if seconds is not None else '표시줄 숫자를 확정하지 못했습니다.'))
             if report: self._v66_log(f"v78 reduced timer: seconds={seconds}, safe move cap={cap}, red={nred}, filled={filled}")
             return cap, seconds
         except Exception as exc:
+            self._last_timer_read['error']=str(exc)
             if report:
                 self._route_combo_condition=dict(board=tuple(getattr(self,'board',[])),required_total=0,combo_bonus=0,
                     confirmed=False,error=str(exc))
@@ -14273,16 +14976,26 @@ class App:
         touch=getattr(device,'_touch',None)
         if not isinstance(touch,PersistentAndroidTouch):return
         expected=board_after_drag(board,path)
+        cloud_mode=bool(any(snapshot.get('cloud_mask') or []))
         started=time.monotonic();empty_frames=0;retries=0
         snapshot['input_release_confirmed']=False
         for attempt in range(12):
             if device.cancel.wait(.06):raise RuntimeError('자동 이동을 중지했습니다.')
             frame=device.capture();observed=background_board(frame)
             actual=list(observed['board']) if observed is not None else None
+            cloud_mask=[False]*30
+            if cloud_mode:
+                x,y,w,h=snapshot.get('board_rect',(882,255,692,572));crop=frame.crop((x,y,x+w,y+h))
+                raw,_=classify_board(crop);cloud_mask=cloud_cell_mask(crop)
+                # background_board intentionally rejects an unresolved cloud.
+                # An unchanged cloud is not an unavailable/fading game grid.
+                visible_valid=cloud_visible_board_valid(crop,raw,cloud_mask)
+                actual=list(raw) if visible_valid else None
+                snapshot.update(input_release_cloud_mask=cloud_mask,input_release_visible_grid=visible_valid)
             snapshot.update(input_observed_image=frame.copy(),input_release_board=actual,
                 input_release_seconds=round(time.monotonic()-started,4),input_release_retries=retries)
             empty_frames=empty_frames+1 if actual is None else 0
-            partial=self._partial_route_start(board,path,actual)
+            partial=None if cloud_mode else self._partial_route_start(board,path,actual)
             if partial is not None:
                 snapshot.update(input_partial_route_start=partial,input_release_confirmed=False)
                 if attempt>=2:
@@ -14292,9 +15005,11 @@ class App:
                 continue
             # The checked final layout has matches. After UP, matching orbs fade
             # or the grid changes. Two unavailable grids avoid a single noisy frame.
-            changed=actual is not None and sum(a!=b for a,b in zip(actual,expected))>=3
+            changed=actual is not None and sum(a!=b and not cloud_mask[i] for i,(a,b) in enumerate(zip(actual,expected)))>=3
             if changed or empty_frames>=2:
                 snapshot['input_release_confirmed']=True
+                if cloud_mode:
+                    snapshot.update(input_visible_game_confirmed=True,input_game_confirmed=False,input_completion_scope='visible_cells_sdk_trace_and_post_up_reaction')
                 return
             if attempt in (2,5,8):
                 touch.repeat_release();retries+=1
@@ -14361,6 +15076,7 @@ class App:
             if self.play_cancel.is_set():
                 cancelled = True
                 return
+            self._invalidate_cloud_board()
             mouse.down()
             pressed_at=time.perf_counter()
             reached.append(dict(cell=path[0],seconds=0.0))
@@ -15340,7 +16056,7 @@ class App:
             frame=image.resize((1600,940),Image.Resampling.LANCZOS)
             heading=self._background_header(frame)
             if getattr(self,'_manual_play_active',False) and getattr(self,'_all_actions_stopped',False):
-                observed=background_board(frame) if not heading else None
+                observed=background_skill_board_sample(frame) if not heading else None
                 self._background_queue.put(('manual_battle',context,ACTION_LOCAL.epoch,time.monotonic(),observed))
             if self._update_root_tree_context(frame,heading):self._farming_queue.put(('root_tree',))
             valid=heading=='잠입확인'
@@ -15388,6 +16104,9 @@ class App:
         self.user_settings['board_window_anchor']={'normalized':[bx/1600,by/940,bw/1600,bh/940]}
         self.toolbar._temporarily_hidden=False
         self.toolbar._user_hidden=False
+        if observed.get('partial'):
+            self._accept_attribute_probe(dict(cloud_pending=True,rect=tuple(self.board_rect),mask=observed['cloud_mask']))
+            return
         self.toolbar.button.configure(text='▶ 경로 계산')
         self._accept_attribute_probe(tuple(observed['board']))
 
@@ -16532,53 +17251,88 @@ class App:
         return profiles,frame
 
     def _background_needed_ready_slots(self,frame,profiles,state,used):
-        # Inspect only useful saved skills, in one image. Never open cards to learn effects.
-        candidates=[slot for slot in background_ready_slots(frame)
-                    if background_skill_decision(profiles,[slot],state,used)[0] is not None]
-        if not candidates:return []
-        mosaic=Image.new('RGB',(64*len(candidates),48),'#333333')
-        for index,slot in enumerate(candidates):
+        # Read remaining turns for the required counter as well as ready skills.
+        # Catalog cooldowns are never treated as the current remaining turns.
+        visible=set(background_ready_slots(frame))
+        useful=[slot for slot in range(len(profiles)) if background_skill_decision(profiles,[slot],state,used)[0] is not None]
+        candidates=[slot for slot in useful if slot in visible]
+        if not candidates:
+            self._background_cooldown_readings=dict(frame=frame,counts={});return []
+        useful=useful if any('haste' in profiles[i].get('effects',[]) for i in candidates) else candidates
+        mosaic=Image.new('RGB',(64*len(useful),48),'#333333')
+        for index,slot in enumerate(useful):
             cx=round((.057+.0875*slot)*1600)
             mosaic.paste(frame.crop((cx+26,650,cx+65,691)),(index*64,0))
-        blocked=set()
+        readings={}
         for token in self._run_ocr_tokens(mosaic.resize((mosaic.width*3,144),Image.Resampling.LANCZOS)):
             text=_compact_ocr_text(token.text)
             if token.score>=.85 and re.fullmatch(r'\d{1,2}',text) and int(text)>0:
                 index=int(token.cx//192)
-                if 0<=index<len(candidates):blocked.add(candidates[index])
-        return [slot for slot in candidates if slot not in blocked]
+                if 0<=index<len(useful):readings.setdefault(useful[index],set()).add(int(text))
+        counts={slot:next(iter(values)) for slot,values in readings.items() if len(values)==1}
+        self._background_cooldown_readings=dict(frame=frame,counts=counts,ambiguous=[slot for slot,values in readings.items() if len(values)>1])
+        return [slot for slot in candidates if slot not in readings]
+
+    def _background_visual_status(self,frame):
+        cached=getattr(self,'_background_visual_status_cache',None)
+        if cached is not None and cached[0] is frame:return dict(cached[1])
+        state=background_template_states(frame,getattr(self,'_background_run_settings',{}))
+        state['void_shield']=state.get('void_shield',False) or background_enemy_void(frame)
+        self._background_visual_status_cache=(frame,dict(state))
+        return state
 
     def _background_skill_button_text(self,frame,snapshot=None):
         boxes=background_skill_button_rects(frame)
         if boxes is None:return None
-        labels=[];records=[]
+        crops=[]
         for box in boxes:
             x0,y0,x1,y1=box;w=x1-x0;h=y1-y0
-            crop=frame.crop((round(x0+.2*w),round(y0+.10*h),round(x1-.2*w),round(y1-.10*h)))
-            readings=[self._recognize_title_line(crop.resize((crop.width*scale,crop.height*scale),Image.Resampling.LANCZOS)) for scale in (2,3)]
+            crops.append(frame.crop((round(x0+.2*w),round(y0+.10*h),round(x1-.2*w),round(y1-.10*h))))
+        key=(tuple(tuple(box) for box in boxes),hashlib.sha256(b''.join(crop.tobytes() for crop in crops)).hexdigest())
+        cache=getattr(self,'_background_skill_button_cache',{})
+        if key in cache:
+            if isinstance(snapshot,dict):snapshot['skill_button_cache_hit']=True
+            return cache[key]
+        fast=getattr(self,'_background_skill_button_fast_read',None)
+        labels=[];records=[]
+        for index,(box,crop) in enumerate(zip(boxes,crops)):
+            first=(fast['readings'][index] if isinstance(fast,dict) and fast.get('key')==key and len(fast.get('readings',[]))==2
+                   else self._recognize_title_line(crop.resize((crop.width*2,crop.height*2),Image.Resampling.LANCZOS)))
+            readings=[first,self._recognize_title_line(crop.resize((crop.width*3,crop.height*3),Image.Resampling.LANCZOS))]
             records.append(dict(box=list(box),readings=[[text,round(float(score),3)] for text,score in readings]))
             texts=[_compact_ocr_text(text) for text,score in readings if score>=.90]
             labels.append(texts[0] if len(texts)==2 and texts[0]==texts[1] else '')
         if isinstance(snapshot,dict):snapshot['skill_button_readings']=records
         if labels!=['닫기','사용하기']:return None
-        use=boxes[1];return ((use[0]+use[2])/2,(use[1]+use[3])/2)
+        use=boxes[1];point=((use[0]+use[2])/2,(use[1]+use[3])/2)
+        cache[key]=point;self._background_skill_button_cache=dict(list(cache.items())[-16:])
+        return point
 
     def _background_fast_skill_button(self,frame):
         boxes=background_skill_button_rects(frame)
         if boxes is None:return None
-        labels=[]
+        crops=[]
         for box in boxes:
             x0,y0,x1,y1=box;w=x1-x0;h=y1-y0
-            crop=frame.crop((round(x0+.2*w),round(y0+.1*h),round(x1-.2*w),round(y1-.1*h)))
+            crops.append(frame.crop((round(x0+.2*w),round(y0+.1*h),round(x1-.2*w),round(y1-.1*h))))
+        key=(tuple(tuple(box) for box in boxes),hashlib.sha256(b''.join(crop.tobytes() for crop in crops)).hexdigest())
+        cache=getattr(self,'_background_skill_button_cache',{})
+        if key in cache:return cache[key]
+        labels=[];readings=[]
+        for crop in crops:
             text,score=self._recognize_title_line(crop.resize((crop.width*2,crop.height*2),Image.Resampling.LANCZOS))
-            if score<.97:return None
+            readings.append((text,score))
             labels.append(_compact_ocr_text(text))
-        if labels!=['닫기','사용하기']:return None
-        use=boxes[1];return ((use[0]+use[2])/2,(use[1]+use[3])/2)
+        self._background_skill_button_fast_read=dict(key=key,readings=readings)
+        if min(score for text,score in readings)<.97 or labels!=['닫기','사용하기']:return None
+        use=boxes[1];point=((use[0]+use[2])/2,(use[1]+use[3])/2)
+        cache[key]=point;self._background_skill_button_cache=dict(list(cache.items())[-16:])
+        return point
 
     def _background_use_skill(self,device,frame,slot):
         assert_action_active(self)
         if self._background_cancel.is_set() or slot not in background_ready_slots(frame):return False
+        self.__dict__.pop('_background_skill_confirmed_frame',None)
         snapshot=getattr(self,'_farming_error_snapshot',None)
         point=((.057+.0875*slot)*1600,740)
         if isinstance(snapshot,dict):
@@ -16624,11 +17378,14 @@ class App:
         # positively identified use popup, once, after its transition settles.
         started=time.monotonic();retried=False;popup=False
         for attempt in range(12):
-            if self._background_cancel.wait(.35):raise RuntimeError('재료 파밍을 중지했습니다.')
-            current=device.capture();popup=background_skill_button_rects(current) is not None
+            if self._background_cancel.wait(.10 if attempt==0 else .35):raise RuntimeError('재료 파밍을 중지했습니다.')
+            current=device.capture();captured_at=time.monotonic();popup=background_skill_button_rects(current) is not None
             ready_after=background_ready_slots(current)
             if isinstance(snapshot,dict):snapshot.update(phase='background_skill_confirm',input_observed_image=current.copy(),skill_ready_after=list(ready_after),skill_confirm_checks=attempt+1,skill_popup_remaining=popup,skill_confirm_seconds=round(time.monotonic()-started,3))
-            if not popup and background_board(current) is not None and slot not in ready_after:return True
+            observed=background_skill_board_sample(current) if not popup and slot not in ready_after else None
+            if observed is not None:
+                self._background_skill_confirmed_frame=dict(device=device,frame=current,observed=observed,captured_at=captured_at)
+                return True
             if popup and attempt>=2 and not retried:
                 use=self._background_skill_button_text(current,snapshot)
                 if use is not None:
@@ -16640,11 +17397,18 @@ class App:
     def _background_wait_skill_board(self,device,before,effects):
         started=time.monotonic();previous=None
         needs_change=('refresh' in effects or 'five_board' in effects and not five_attribute_possible_by_count(before))
+        confirmed=self.__dict__.pop('_background_skill_confirmed_frame',None)
+        if (isinstance(confirmed,dict) and confirmed.get('device') is device
+                and 0<=started-confirmed.get('captured_at',-1)<=1.0):
+            observed=confirmed.get('observed')
+            if isinstance(observed,dict) and 'board' in observed and 'spikes' in observed:
+                previous=(tuple(observed['board']),tuple(observed['spikes']),tuple(observed.get('cloud_mask',[])))
         for _ in range(24):
             if self._background_cancel.wait(.08):raise RuntimeError('재료 파밍을 중지했습니다.')
-            frame=device.capture();observed=background_board(frame)
-            signature=(tuple(observed['board']),tuple(observed['spikes'])) if observed is not None else None
-            if signature is not None and signature==previous and (not needs_change or list(signature[0])!=list(before)):
+            frame=device.capture();observed=background_skill_board_sample(frame)
+            signature=(tuple(observed['board']),tuple(observed['spikes']),tuple(observed.get('cloud_mask',[]))) if observed is not None else None
+            changed=signature is not None and any(value is not None and value!=before[i] for i,value in enumerate(signature[0]))
+            if signature is not None and signature==previous and (not needs_change or changed):
                 diagnostics=getattr(self,'_background_diagnostics',None)
                 if isinstance(diagnostics,dict):diagnostics['skill_board_settle_seconds']=round(time.monotonic()-started,3)
                 return frame
@@ -16681,18 +17445,35 @@ class App:
         awoken_void=int(((strip[...,0]>160)&(strip[...,1]<90)&(strip[...,2]<100)).sum())>1800
         possible=sum(board.count(c)//3 for c in COLOR_ORDER)+bonus
         status_effects={'cleanse','bind_clear','awoken_clear','void_pierce','attack','recovery','absorb','attribute_absorb'}
-        state=background_status_text(self._run_ocr_tokens(frame.crop((0,40,1600,255)))) if any(status_effects.intersection(p.get('effects',[])) for p in profiles) else {}
-        state.update(background_template_states(frame,settings))
-        state['void_shield']=state.get('void_shield',False) or background_enemy_void(frame)
-        state.update(shortage=shortage,rainbow=bool(goals[2]),short_time=seconds is not None and seconds<min(6.0,float(settings.get('background_normal_seconds',10))),
+        state=self._background_visual_status(frame)
+        visual_counter=any(state.get(k) for k in ('void_shield','bound','awoken_void','damage_absorb','attribute_absorb'))
+        time_issue=seconds is None and shortened_timer_bar(frame) or seconds is not None and seconds<6
+        if not (visual_counter or time_issue) and any(status_effects.intersection(p.get('effects',[])) for p in profiles):
+            text_state=background_status_text(self._run_ocr_tokens(frame.crop((0,40,1600,255))))
+            for flag,value in text_state.items():state[flag]=state.get(flag,False) or value
+        state.update(shortage=shortage,rainbow=bool(goals[2]),short_time=(seconds is not None and seconds<min(6.0,float(settings.get('background_normal_seconds',10)))) or (seconds is None and master_multicolor(goals) and shortened_timer_bar(frame)),
                      combo_short=required>bonus and (possible<required or search_failed),
-                     locked=background_lock_count(frame)>0,
-                     low_hp=self._background_low_hp(frame) if any('heal' in p.get('effects',[]) or 'shield' in p.get('effects',[]) for p in profiles) else False)
+                     locked=shortage and background_lock_count(frame)>0,
+                     low_hp=self._background_low_hp(frame) if not visual_counter and not time_issue and any('heal' in p.get('effects',[]) or 'shield' in p.get('effects',[]) for p in profiles) else False)
+        state['time_critical']=master_multicolor(goals) and ((seconds is not None and seconds<=5.0) or (seconds is None and shortened_timer_bar(frame)))
         state['search_failed']=search_failed
         state['awoken_void']=state.get('awoken_void',False) or awoken_void
-        for flag,effect in (('short_time','time'),('bound','bind_clear'),('awoken_void','awoken_clear'),('void_shield','void_pierce'),('attack_down','attack'),('combo_short','bonus')):
+        for flag,effect in (('bound','bind_clear'),('awoken_void','awoken_clear'),('void_shield','void_pierce'),('damage_absorb','absorb'),('attribute_absorb','attribute_absorb'),('attack_down','attack'),('combo_short','bonus')):
             if effect in applied:state[flag]=False
         ready=self._background_needed_ready_slots(frame,profiles,state,used)
+        if state['locked'] and not any('five_board' in profiles[i].get('effects',[]) for i in ready):state['locked']=False
+        critical=['time'] if state.get('time_critical') else [effect for flag,effect in (('void_shield','void_pierce'),('damage_absorb','absorb'),('attribute_absorb','attribute_absorb'),('bound','bind_clear'),('awoken_void','awoken_clear')) if state.get(flag)]
+        if critical:
+            counts=getattr(self,'_background_cooldown_readings',{}).get('counts',{})
+            targets={}
+            for slot in ready:
+                turns=int(profiles[slot].get('haste_turns') or 0)
+                if 'haste' not in profiles[slot].get('effects',[]) or turns<=0:continue
+                waiting=[i for i,count in counts.items() if i!=slot and i not in used and count<=turns and (set(profiles[i].get('effects',[])).intersection(critical) or 'cleanse' in profiles[i].get('effects',[]) and any(e in critical for e in ('bind_clear','awoken_clear')))]
+                if waiting:targets[slot]=waiting
+            state['counter_haste_slots']=list(targets)
+            state['counter_haste_targets']=targets
+            state['cooldown_remaining']=dict(counts)
         choice,reason=background_skill_decision(profiles,ready,state,used)
         self._last_background_skill_decision=dict(state=dict(state),ready=list(ready),choice=choice,reason=reason,profiles=[dict(number=p.get('number'),name=p.get('name'),effects=p.get('effects',[]),haste_turns=p.get('haste_turns',0),haste_source=p.get('haste_source'),auto_use=p.get('auto_use',True)) for p in profiles])
         return state,ready,choice,reason
@@ -16702,9 +17483,9 @@ class App:
         turn_started=time.monotonic()
         used=set()
         applied=set()
-        math_spent=0.0;casts=0;searches=0
+        math_spent=0.0;casts=0;searches=0;skill_trace=[]
         for attempt in range(12):
-            observed=background_board(frame)
+            observed=self._background_observed(frame,device,True)
             if observed is None:return False
             board,spikes=observed['board'],observed['spikes']
             condition=self._read_combo_condition(frame,board,store=False)
@@ -16714,25 +17495,78 @@ class App:
                 entry_image=getattr(self,'_background_entry_diagnostics_image',None),
                 timings=dict(getattr(self,'_background_diagnostics',{})),input_display=getattr(device,'input_diagnostics',{}),
                 input_trace=getattr(device,'input_trace',[]),
-                captured_local=time.strftime('%Y-%m-%d %H:%M:%S'))
+                cloud_mask=observed.get('cloud_mask',[]),cloud_observation=observed.get('cloud_observation'),cloud_diagnostics=observed.get('cloud_diagnostics'),skill_trace=list(skill_trace),captured_local=time.strftime('%Y-%m-%d %H:%M:%S'))
             self._farming_error_snapshot=dict(self._manual_error_snapshot)
             self._background_queue.put(('board',board,spikes,observed['crop'].copy()))
-            if not condition['confirmed'] and not master_multicolor(goals):raise RuntimeError('적 콤보 조건 미확인 · 파밍을 중지했습니다.')
+            if not condition['confirmed']:
+                if not master_multicolor(goals):raise RuntimeError('적 콤보 조건 미확인 · 파밍을 중지했습니다.')
+                # Resolve the icon floor before timer OCR, skills or an expensive
+                # attack search. Duration digits are never a substitute floor.
+                condition_started=time.monotonic();condition_reads=[dict(condition)]
+                condition_changed=False
+                self._background_queue.put(('status','적 콤보 조건 재확인 · 최대 3회 · F10 중지'))
+                for retry in range(2):
+                    if self._background_cancel.wait(.10):return False
+                    if time.monotonic()-condition_started>=4.0:break
+                    fresh=device.capture();latest=self._background_observed(fresh,device,True)
+                    if latest is None:return False
+                    frame=fresh
+                    if (latest['board']!=board or latest['spikes']!=spikes
+                            or tuple(latest['rect'])!=tuple(observed['rect'])):
+                        condition_changed=True;break
+                    observed=latest
+                    try:condition=self._read_combo_condition(frame,board,store=False)
+                    except Exception as exc:condition=dict(condition,confirmed=False,error=str(exc))
+                    condition_reads.append(dict(condition))
+                    if condition['confirmed'] or time.monotonic()-condition_started>=4.0:break
+                for snapshot in (self._manual_error_snapshot,self._farming_error_snapshot):
+                    snapshot.update(combo_condition=condition,combo_condition_reads=condition_reads,
+                        combo_condition_elapsed=round(time.monotonic()-condition_started,3),
+                        game_image=frame.copy(),board_image=observed['crop'].copy())
+                if condition_changed:continue
+                if not condition['confirmed']:
+                    for snapshot in (self._manual_error_snapshot,self._farming_error_snapshot):
+                        snapshot['phase']='background_condition_unconfirmed'
+                    raise RuntimeError('적 콤보 조건 미확인 · 최대 3회/4초 재확인 종료 · 숫자를 추측하지 않고 파밍을 중지했습니다.')
             _,seconds=self._restricted_drag_move_cap(image=frame,report=False)
+            timer_reads=[dict(getattr(self,'_last_timer_read',{}))]
+            obscured_timer=any(len(read)>2 and read[2]=='시간 감소 화살표가 숫자를 가림' for read in getattr(self,'_last_timer_read',{}).get('readings',[]))
+            if seconds is None and master_multicolor(goals) and not obscured_timer:
+                changed=False
+                for retry in range(2):
+                    if self._background_cancel.wait(.12):return False
+                    frame=device.capture();latest=self._background_observed(frame,device,True)
+                    if latest is None:return False
+                    if latest['board']!=board or latest['spikes']!=spikes:
+                        changed=True;break
+                    _,seconds=self._restricted_drag_move_cap(image=frame,report=False)
+                    timer_reads.append(dict(getattr(self,'_last_timer_read',{})))
+                    if seconds is not None:break
+                if changed:continue
+                # Preserve the exact latest image and every failed read for diagnosis.
+                for snapshot in (self._manual_error_snapshot,self._farming_error_snapshot):
+                    snapshot.update(game_image=frame.copy(),board_image=latest['crop'].copy())
+            self._farming_error_snapshot.update(timer_reads=timer_reads,timer_seconds=seconds)
             required=max(team_min,condition['required_total'],6 if master_multicolor(goals) else 0);bonus=condition['combo_bonus']
             shortage=bool(goals[2] and not five_attribute_possible_by_count(board))
             possible=sum(board.count(c)//3 for c in COLOR_ORDER)+bonus
             settings=getattr(self,'_background_run_settings',{})
-            short_time=seconds is not None and seconds<min(6.0,float(settings.get('background_normal_seconds',10)))
+            short_time=(seconds is not None and seconds<min(6.0,float(settings.get('background_normal_seconds',10)))) or (seconds is None and master_multicolor(goals) and shortened_timer_bar(frame))
             state={};ready=[];choice=None;reason=''
             # First solve a sufficient board. Merely seeing an enemy combo floor
             # is not evidence that a combo skill is needed.
-            if shortage or possible<required or short_time:
+            visual=self._background_visual_status(frame)
+            critical_counter=any(visual.get(flag) and effect not in applied for flag,effect in (('void_shield','void_pierce'),('damage_absorb','absorb'),('attribute_absorb','attribute_absorb'),('bound','bind_clear'),('awoken_void','awoken_clear')))
+            if shortage or possible<required or short_time or critical_counter:
                 state,ready,choice,reason=self._background_skill_context(frame,board,profiles,goals,seconds,required,bonus,shortage,applied,used)
+                critical_counter=critical_counter or any(state.get(flag) for flag in ('void_shield','damage_absorb','attribute_absorb','bound','awoken_void'))
             if choice is not None and casts<8:
                 self._farming_error_snapshot.update(skill_reason=reason,skill_effects=profiles[choice].get('effects',[]),skill_decision=getattr(self,'_last_background_skill_decision',None))
+                skill_trace.append(dict(slot=choice,name=profiles[choice].get('name'),reason=reason,seconds=seconds,shortage=shortage,critical_counter=critical_counter,state=dict(state)))
+                self._farming_error_snapshot['skill_trace']=list(skill_trace)
                 used.add(choice);casts+=1
                 self._background_queue.put(('status',f'자동 스킬 · {profiles[choice]["name"]} · {reason} · F10 중지'))
+                self._invalidate_cloud_board()
                 if not self._background_use_skill(device,frame,choice):raise RuntimeError('스킬 발동을 확인하지 못해 파밍을 중지했습니다.')
                 applied.update(profiles[choice].get('effects',[]))
                 if 'haste' in profiles[choice].get('effects',[]):used={i for i in used if 'haste' in profiles[i].get('effects',[])}
@@ -16740,13 +17574,15 @@ class App:
                 math_spent=0.0;searches=0
                 self._background_queue.put(('status','스킬 사용 완료 · 판 안정 확인 · 재계산 · F10 중지'))
                 continue
-            survival=master_multicolor(goals) and seconds is not None and shortage
+            if master_multicolor(goals) and seconds is None:
+                raise RuntimeError('조작시간 숫자 재확인 실패 · 시간 감소 표시/숫자 겹침을 확인하세요. 사용 가능한 시간 대응 스킬이 없어 4초 잔여 조건을 보장할 수 없습니다.')
+            survival=master_multicolor(goals) and seconds is not None and (shortage or seconds<=5.0 or critical_counter)
             operation_seconds=route_operation_seconds(seconds,master_survival_goals() if survival else goals)
             cap=device.move_cap(operation_seconds)
             self._farming_error_snapshot.update(search_move_cap=cap,search_operation_seconds=operation_seconds,skill_decision=getattr(self,'_last_background_skill_decision',None))
-            effective=master_survival_goals(required,bonus) if survival else tuple(False for _ in goals) if shortage else goals
+            effective=master_survival_goals(required,bonus) if survival else tuple(False for _ in goals) if shortage or critical_counter else goals
             # With no useful skill and insufficient colours, charge skills by playing combos.
-            combo_turn=shortage and choice is None and not master_multicolor(goals)
+            combo_turn=(shortage or critical_counter) and choice is None and not master_multicolor(goals)
             target=combo_condition_goals(effective,6 if combo_turn else required,bonus)
             if survival:self._background_queue.put(('status','달인 다색 · 공격 조건 부족 · 6콤보 이상 생존 경로 · F10 중지'))
             if combo_turn:self._background_queue.put(('status','5속성 부족 · 사용 가능한 대응 스킬 없음 · 6콤보 이상으로 턴 진행 · F10 중지'))
@@ -16771,14 +17607,27 @@ class App:
                 state,ready,choice,reason=self._background_skill_context(frame,board,profiles,goals,seconds,required,bonus,shortage,applied,used,search_failed=True)
                 if choice is not None and casts<8:
                     self._farming_error_snapshot.update(skill_reason=reason,skill_effects=profiles[choice].get('effects',[]))
+                    skill_trace.append(dict(slot=choice,name=profiles[choice].get('name'),reason=reason,seconds=seconds,shortage=shortage,search_failed=True,state=dict(state)))
+                    self._farming_error_snapshot['skill_trace']=list(skill_trace)
                     used.add(choice);casts+=1
                     self._background_queue.put(('status',f'경로 미발견 · 다른 스킬 사용 · {profiles[choice]["name"]} · F10 중지'))
+                    self._invalidate_cloud_board()
                     if not self._background_use_skill(device,device.capture(),choice):raise RuntimeError('스킬 발동을 확인하지 못했습니다.')
                     applied.update(profiles[choice].get('effects',[]))
                     if 'haste' in profiles[choice].get('effects',[]):used={i for i in used if 'haste' in profiles[i].get('effects',[])}
                     frame=self._background_wait_skill_board(device,board,profiles[choice].get('effects',[]))
                     math_spent=0.0;searches=0
                     continue
+                # No useful ready skill: charge cooldowns with six combos rather
+                # than stopping on an unavailable five-colour/enemy attack floor.
+                if master_multicolor(goals):
+                    survival=True;effective=master_survival_goals(6,bonus);target=effective
+                    cap=device.move_cap(seconds)
+                    self._background_queue.put(('status','대응 스킬 대기 · 6콤보로 턴 진행 · F10 중지'))
+                    path,_,_,after=solve_path(board,time_budget=3.0,max_moves=cap,goals=target,spikes=spikes,avoid_skull=False,seed_offset=attempt,cancel_event=self._background_cancel)
+                    if self._background_cancel.is_set():return False
+                    details=board_goal_metrics(after,target)
+                    self._farming_error_snapshot.update(master_survival=True,search_move_cap=cap,search_operation_seconds=seconds,search_result=dict(attributes=details['attr_count'],final_combos=details['final_combos'],required_combos=6,all_met=details['all_met']),search_path=list(path))
                 # A five-colour miss may try combos, retaining the enemy floor.
                 if effective[2] and not master_multicolor(goals):
                     target=master_survival_goals(6,bonus) if survival else combo_condition_goals((False,)*7,required,bonus)
@@ -16801,8 +17650,11 @@ class App:
             if not manual_route_supported(path):raise RuntimeError('4방향이 아닌 자동 경로를 차단했습니다.')
             details=board_goal_metrics(board_after_drag(board,path),target)
             if not details['all_met']:raise RuntimeError('자동 경로 재검증 실패 · 파밍 중지')
-            fresh=device.capture();current=background_board(fresh)
+            fresh=device.capture();current=self._background_observed(fresh,device,True)
             if current is None:return False
+            next_visual=self._background_visual_status(fresh)
+            if any(next_visual.get(flag) and not visual.get(flag) and effect not in applied for flag,effect in (('void_shield','void_pierce'),('damage_absorb','absorb'),('attribute_absorb','attribute_absorb'),('bound','bind_clear'),('awoken_void','awoken_clear'))):
+                frame=fresh;continue
             next_condition=self._read_combo_condition(fresh,current['board'],store=False)
             _,now_seconds=self._restricted_drag_move_cap(image=fresh,report=False)
             if (current['board']!=board or current['spikes']!=spikes or now_seconds!=seconds
@@ -16814,7 +17666,7 @@ class App:
             self._manual_error_snapshot=dict(board=list(board),board_image=current['crop'].copy(),game_image=fresh.copy(),
                 path=list(path),spikes=list(spikes),goals=list(effective),combo_condition=condition,
                 predicted_combos=details['combos'],predicted_final_combos=details['final_combos'],predicted_known_next_combos=details.get('certified_next_combos',0),required_final_combos=details['required_total'] if survival or combo_turn else required,enemy_required_final_combos=required,
-                skill_decision=getattr(self,'_last_background_skill_decision',None),visual_model=dict(current.get('visual_model') or visual_infer(current['crop']) or {}),phase='background_before_drag',combo_turn_for_cooldown=combo_turn,master_survival=survival,source='adb_background',version=APP_VERSION,board_rect=list(current['rect']),entry_image=getattr(self,'_background_entry_diagnostics_image',None),timings=dict(getattr(self,'_background_diagnostics',{})),input_display=getattr(device,'input_diagnostics',{}),captured_local=time.strftime('%Y-%m-%d %H:%M:%S'))
+                cloud_mask=current.get('cloud_mask',[]),cloud_observation=current.get('cloud_observation'),cloud_diagnostics=current.get('cloud_diagnostics'),skill_trace=list(skill_trace),skill_decision=getattr(self,'_last_background_skill_decision',None),visual_model=dict(current.get('visual_model') or visual_infer(current['crop']) or {}),phase='background_before_drag',combo_turn_for_cooldown=combo_turn,master_survival=survival,source='adb_background',version=APP_VERSION,board_rect=list(current['rect']),entry_image=getattr(self,'_background_entry_diagnostics_image',None),timings=dict(getattr(self,'_background_diagnostics',{})),input_display=getattr(device,'input_diagnostics',{}),captured_local=time.strftime('%Y-%m-%d %H:%M:%S'))
             self._farming_error_snapshot=dict(self._manual_error_snapshot)
             self._ai_background_context=dict(self._manual_error_snapshot)
             self._background_queue.put(('ai_review',dict(self._manual_error_snapshot),'파밍 경로 판단 · '+('6콤보 생존 이동' if survival else '콤보로 턴 진행' if combo_turn else '경로 계산')))
@@ -16827,17 +17679,32 @@ class App:
             self._farming_error_snapshot.update(input_transport='mumu_native_sdk' if isinstance(getattr(device,'_touch',None),MuMuSDKTouch) else 'adb_continuous',input_directions=4,
                 input_move_units=route_move_units(path),input_usable_seconds=route_operation_seconds(now_seconds,master_survival_goals() if survival else goals),
                 input_checkpoint_mode='before_sdk_up' if isinstance(getattr(device,'_touch',None),MuMuSDKTouch) else 'after_release')
+            self._invalidate_cloud_board()
             device.drag(current['rect'],path,route_operation_seconds(now_seconds,master_survival_goals() if survival else goals))
             self._farming_error_snapshot['input_trace']=list(getattr(device,'input_trace',[]))
             held=getattr(device,'last_before_up_frame',None)
             if isinstance(held,Image.Image):
                 seen=background_board(held);actual=seen['board'] if seen is not None else None
                 expected=board_after_drag(board,path)
-                self._farming_error_snapshot.update(input_observed_image=held.copy(),input_before_up_image=held.copy(),input_before_up_board=actual,input_expected_board=expected,input_game_confirmed=actual==expected,input_observation_scope='before_sdk_up')
-                if actual!=expected:
+                cloud_mask=current.get('cloud_mask')
+                if cloud_mask is not None and any(cloud_mask):
+                    x,y,w,h=current['rect'];actual,_=classify_board(held.crop((x,y,x+w,y+h)))
+                checked=sdk_held_board_verification(held,board,path,actual,getattr(device,'input_trace',[]),getattr(device,'input_diagnostics',{}),current['rect'],cloud_mask)
+                self._farming_error_snapshot.update(input_observed_image=held.copy(),input_before_up_image=held.copy(),input_before_up_board=actual,input_expected_board=expected,input_game_confirmed=actual==expected,input_observation_scope='before_sdk_up',input_held_verification=checked)
+                if checked.get('cloud_cells_unverified'):
+                    self._farming_error_snapshot.update(input_game_confirmed=False,input_cloud_cells_unverified=list(checked['cloud_cells_unverified']))
+                if not checked['confirmed']:
                     self._farming_error_snapshot['input_error']='MuMu SDK 이동 후 실제 판이 계산 경로와 다릅니다. 다음 턴으로 진행하지 않았습니다.'
                     raise RuntimeError(self._farming_error_snapshot['input_error'])
             self._confirm_touch_release(device,list(board),path,self._farming_error_snapshot)
+            if self._farming_error_snapshot.get('input_held_verification',{}).get('reason')=='lifted_final_orb':
+                if self._farming_error_snapshot.get('input_release_confirmed') is not True:
+                    raise RuntimeError('잡은 드롭은 확인했지만 손 떼기 후 게임 반응이 확인되지 않았습니다.')
+                self._farming_error_snapshot.update(input_game_confirmed=True,input_completion_scope='verified_layout_and_post_up_reaction')
+            elif self._farming_error_snapshot.get('input_held_verification',{}).get('reason')=='cloud_visible_layout':
+                if self._farming_error_snapshot.get('input_release_confirmed') is not True:
+                    raise RuntimeError('구름 밖 드롭과 입력은 확인했지만 손 떼기 후 게임 반응이 확인되지 않았습니다.')
+                self._farming_error_snapshot.update(input_game_confirmed=False,input_visible_game_confirmed=True,input_completion_scope='visible_cells_sdk_trace_and_post_up_reaction')
             self._last_background_move_snapshot=dict(self._farming_error_snapshot)
             self._last_background_move_snapshot['input_trace']=list(getattr(device,'input_trace',[]))
             self._v66_log(f'farming drag delivered: {time.monotonic()-drag_started:.3f}s')
@@ -17442,17 +18309,16 @@ class App:
                 values.append(int(match[1]) if match and score>=.92 else None)
             return values[0] if values[0] is not None and values[0]==values[1] else None
         result['amount']=read_number((760,270,940,355),r'(\d{1,9})')
-        badge=rgb[270:360,975:1100]
-        orange=bool(badge.size and ((badge[...,0]>200)&(badge[...,1]>75)&(badge[...,1]<210)&(badge[...,2]<100)).mean()>.08)
-        result['multiplier']=read_number((975,270,1100,360),r'[xX×](\d{1,2})') if orange else 1
+        # The number is already the credited amount, even beside an ×2 badge.
+        # The badge is decorative for accounting; do not spend two OCR calls on it.
+        result['amount_basis']='displayed_final'
         return result
 
     def _background_record_mana(self,session,receipt):
         summary=self._background_mana_summary
         if session in summary['receipts']:return
-        amount=receipt.get('amount');multiplier=receipt.get('multiplier')
-        # The result amount is counted as displayed until the multiplier's
-        # meaning is confirmed; it must not be applied twice.
+        amount=receipt.get('amount')
+        # Confirmed in-game: 171,360 beside ×2 credits exactly 171,360.
         value=amount if isinstance(amount,int) and 0<=amount<=999999999 else None
         summary['receipts'][session]=dict(receipt,total=value)
         if value is None:summary['unknown']+=1
@@ -17549,7 +18415,7 @@ class App:
                     goal_done=background_goal_complete(ledger,key,groups[key]['revision'],getattr(self,'_background_selected_material_ids',None))
                     if goal_done and session is None:
                         message=f'{groups[key]["name"]} · 목표 재료 모두 충족 · 파밍 완료';break
-                frame=device.capture();observed=None if background_battle_intro(frame) else background_board(frame)
+                frame=device.capture();observed=None if background_battle_intro(frame) else self._background_observed(frame,device,True)
                 self._ai_background_context=dict(board=list(observed['board']) if observed is not None else [],spikes=list(observed['spikes']) if observed is not None else [],board_image=observed['crop'].copy() if observed is not None and observed.get('crop') is not None else None,game_image=frame.copy(),source='farming_screen')
                 if observed is not None:
                     if awaiting_change is not None:
@@ -18054,10 +18920,11 @@ class App:
         if not self._looks_like_reward_frame(frame):
             raise RuntimeError('결과창이 닫혀 스크롤 입력을 중지했습니다.')
         if getattr(self,'_background_running',False):
-            # A small overlapping touch scroll lets the existing merge verify rows.
-            if delta<0:self._background_device.swipe(960,610,960,520,300)
-            else:self._background_device.swipe(960,430,960,520,300)
-            if self._background_cancel.wait(.22):raise RuntimeError('재료 파밍을 중지했습니다.')
+            # Keep more than one complete card row in common, while moving
+            # far enough that an eleven-card receipt needs only one/two swipes.
+            if delta<0:self._background_device.swipe(960,610,960,470,180)
+            else:self._background_device.swipe(960,430,960,570,180)
+            if self._background_cancel.wait(.08):raise RuntimeError('재료 파밍을 중지했습니다.')
             return
         mouse = WindowsDragInput()
         try:
@@ -18067,17 +18934,17 @@ class App:
             mouse.move(x,y)
             if self._farming_scan_cancel.is_set():raise RuntimeError('재료 인식을 중지했습니다.')
             mouse.down()
-            if self._farming_scan_cancel.wait(.04):raise RuntimeError('재료 인식을 중지했습니다.')
-            distance=round(rect['height']*.065)*(1 if delta>0 else -1)
-            for step in range(1,11):
+            if self._farming_scan_cancel.wait(.02):raise RuntimeError('재료 인식을 중지했습니다.')
+            distance=round(rect['height']*.15)*(1 if delta>0 else -1)
+            for step in range(1,9):
                 if self._farming_scan_cancel.is_set():raise RuntimeError('재료 인식을 중지했습니다.')
-                mouse.move(x,y+round(distance*step/10))
-                if self._farming_scan_cancel.wait(.012):raise RuntimeError('재료 인식을 중지했습니다.')
-            if self._farming_scan_cancel.wait(.10):raise RuntimeError('재료 인식을 중지했습니다.')
+                mouse.move(x,y+round(distance*step/8))
+                if self._farming_scan_cancel.wait(.010):raise RuntimeError('재료 인식을 중지했습니다.')
+            if self._farming_scan_cancel.wait(.035):raise RuntimeError('재료 인식을 중지했습니다.')
         finally:
             mouse.close()
             self._result_scroll_input = None
-        time.sleep(.22)
+        if self._farming_scan_cancel.wait(.08):raise RuntimeError('재료 인식을 중지했습니다.')
 
     def _farming_read_card_quantity(self,image,box):
         import cv2
@@ -18101,33 +18968,100 @@ class App:
         readings=[self._recognize_number_crop(Image.fromarray(view).convert('RGB'),allow_multiplier=True)
                   for view in (binary,cv2.GaussianBlur(binary,(3,3),.6))]
         values=[value for value,score,_ in readings if value is not None and value>0 and score>=.85]
+        self._farming_receipt_event('card_mask',box=list(box),readings=[list(row) for row in readings])
         if len(values)==2:return values[0] if values[0]==values[1] else None
-        raw=[]
+        raw=[];raw_readings=[]
         for scale in (3,4):
             value,score,text=self._recognize_number_crop(zone.resize((zone.width*scale,zone.height*scale),Image.Resampling.LANCZOS),allow_multiplier=True)
+            raw_readings.append([value,score,text])
             if value is not None and value>0 and score>=.90 and re.fullmatch(r'[×xXхХ✕✖╳*]\s*\d{1,5}',text.strip()):raw.append(value)
+        self._farming_receipt_event('card_raw',box=list(box),readings=raw_readings)
         if len(raw)==2 and raw[0]==raw[1] and (not values or values[0]==raw[0]):return raw[0]
         return None
 
-    def _farming_read_page(self, image, templates=None):
+    def _farming_read_badge_sheet(self,image,boxes):
+        """One compact OCR pass over wanted card-local quantities only.
+
+        Global multipliers and character art never enter the sheet. Each OCR
+        token must belong to exactly one badge; unread/ambiguous badges still
+        require independent direct reads before any inventory is credited.
+        """
+        regions=[]
+        for box in boxes:
+            x0,y0,x1,y1=box
+            crop=image.crop((max(0,x0),round(y0+.65*(y1-y0)),min(image.width,x1),min(image.height,y1+7)))
+            regions.append((box,crop.resize((crop.width*3,crop.height*3),Image.Resampling.LANCZOS)))
+        if not regions:return []
+        width=max(crop.width for _,crop in regions)+24
+        height=sum(crop.height+24 for _,crop in regions)
+        sheet=Image.new('RGB',(width,height),'white');slots=[];top=12
+        for box,crop in regions:
+            sheet.paste(crop,(12,top));slots.append((box,12,top,12+crop.width,top+crop.height));top+=crop.height+24
+        tokens=self._run_ocr_tokens(sheet)
+        items=[]
+        for box,left,top,right,bottom in slots:
+            values=set()
+            local=[token for token in tokens if token.score>=.85 and left<=token.cx<=right and top<=token.cy<=bottom]
+            for token in local:
+                match=re.fullmatch(r'[×xXхХ✕✖╳*]\s*(\d{1,5})',token.text.strip())
+                if match and int(match.group(1))>0:values.add(int(match.group(1)))
+            # Some OCR backends emit the multiplication mark and digits as
+            # separate tokens. Join only adjacent tokens on the same baseline
+            # inside this one card, never digits from artwork or another badge.
+            for mark in local:
+                if not re.fullmatch(r'[×xXхХ✕✖╳*]',mark.text.strip()):continue
+                for digits in local:
+                    if not re.fullmatch(r'\d{1,5}',digits.text.strip()):continue
+                    if (digits.x1>=mark.x2-3 and digits.x1-mark.x2<=max(mark.y2-mark.y1,digits.y2-digits.y1)*.8
+                            and abs(digits.cy-mark.cy)<=max(mark.y2-mark.y1,digits.y2-digits.y1)*.4):
+                        if int(digits.text.strip())>0:values.add(int(digits.text.strip()))
+            self._farming_receipt_event('badge',box=list(box),readings=[dict(text=t.text,score=round(t.score,4)) for t in local],values=sorted(values))
+            if len(values)>1:raise ValueError('같은 카드 수량이 다르게 읽혀 집계를 보류했습니다.')
+            if values:
+                x0,y0,x1,y1=box
+                items.append(dict(amount=values.pop(),crop=image.crop(box).convert('RGB'),screen_box=box,
+                                  x=(x0+x1)/2,y=(y0+y1)/2))
+        return items
+
+    def _farming_read_page(self, image, templates=None, known=None, offset=0.0):
         boxes = [b for b in detect_reward_card_rects(image)
                  if b[1] > image.height*.23 and b[3] < image.height*.761]
+        identities={}
         if templates is not None:
-            boxes = [box for box in boxes if self._farming_identify_art(image.crop(box),templates) is not None]
+            identities={box:self._farming_identify_art(image.crop(box),templates) for box in boxes}
+            boxes=[box for box in boxes if identities[box] is not None]
         if not boxes: return []
-        read = lambda crop: [t for t in self._run_ocr_tokens(crop) if t.score >= .60]
-        tokens = read(image)
-        for x0,y0,x1,y1 in boxes:
-            values = {n for n,t in _find_reward_amount_tokens(tokens, image.size)
-                      if x0-8 <= t.cx <= x1+9 and y0+.58*(y1-y0) <= t.cy <= y1+17}
-            if len(values) > 1:
-                raise ValueError('같은 카드 수량이 다르게 읽혀 집계를 보류했습니다.')
-        # Only wanted artwork needs quantity OCR. Unrelated reward cards must
-        # not block accounting when their tiny amount label is unreadable.
-        items = extract_visual_reward_items(image, tokens, read, boxes=boxes)
-        items = [i for i in items if i['screen_box'] in boxes]
-        seen={item['screen_box'] for item in items}
+        items=[];unread=[]
         for box in boxes:
+            x0,y0,x1,y1=box;cx=(x0+x1)/2;cy=(y0+y1)/2
+            # The measured displacement identifies a physical receipt row.
+            # Repeated artwork in a different row must still be read separately.
+            cached=next((row for row in (known or []) if abs(row['x']-cx)<image.height*.035
+                         and abs(row['virtual_y']-(cy+offset))<image.height*.035),None)
+            if cached is not None and templates is not None:
+                prior=cached.get('crop')
+                prior_id=self._farming_identify_art(prior,templates) if isinstance(prior,Image.Image) else None
+                if prior_id is None:cached=None
+                elif prior_id!=identities[box]:
+                    raise ValueError('스크롤 전후 같은 위치의 재료 이미지가 달라 전체 집계를 보류했습니다.')
+            if cached is None:unread.append(box)
+            else:items.append(dict(amount=int(cached['amount']),crop=image.crop(box).convert('RGB'),
+                                   screen_box=box,x=cx,y=cy))
+        if unread:
+            if templates is not None:
+                items.extend(self._farming_read_badge_sheet(image,unread))
+            else:
+                # Diagnostic callers without registered artwork retain the
+                # complete-page OCR path; the farming path uses only badges.
+                read=lambda crop:[t for t in self._run_ocr_tokens(crop) if t.score>=.60]
+                tokens=read(image)
+                for x0,y0,x1,y1 in unread:
+                    values={n for n,t in _find_reward_amount_tokens(tokens,image.size)
+                            if x0-8<=t.cx<=x1+9 and y0+.58*(y1-y0)<=t.cy<=y1+17}
+                    if len(values)>1:raise ValueError('같은 카드 수량이 다르게 읽혀 집계를 보류했습니다.')
+                items.extend(extract_visual_reward_items(image,tokens,read,boxes=unread))
+        seen={item['screen_box'] for item in items}
+        for box in unread:
             if box in seen: continue
             amount=self._farming_read_card_quantity(image,box)
             if amount is not None:
@@ -18140,26 +19074,108 @@ class App:
             raise RewardQuantityPending(items,missing)
         return items
 
+    def _farming_receipt_event(self,kind,**fields):
+        trace=getattr(self,'_farming_receipt_trace',None)
+        if isinstance(trace,dict):
+            trace.setdefault('events',[]).append(dict(kind=kind,**fields))
+            trace['events']=trace['events'][-150:]
+
+    def _farming_receipt_frame(self,image,label):
+        self._farming_receipt_last=image
+        frames=getattr(self,'_farming_receipt_frames',None)
+        if isinstance(frames,list) and len(frames)<10:
+            frames.append((label,image.copy()))
+
+    def _farming_receipt_failure(self,error):
+        """Preserve the actual receipt, not the last battle's board snapshot."""
+        trace=dict(getattr(self,'_farming_receipt_trace',{}) or {})
+        trace.update(error=str(error),phase='crystal_receipt',version=APP_VERSION)
+        image=getattr(self,'_farming_receipt_last',None)
+        snapshot=dict(trace)
+        if isinstance(image,Image.Image):snapshot['game_image']=image.copy()
+        self._farming_error_snapshot=snapshot
+        self._manual_error_snapshot=snapshot
+        # The background worker already makes a failure ZIP. Include an extra
+        # receipt bundle because page-by-page alignment is necessary to diagnose
+        # unread quantities; no further capture/input is performed after F10.
+        try:
+            import io,zipfile
+            root=self.data_paths['root']/'debug'/'manual_errors'
+            root.mkdir(parents=True,exist_ok=True)
+            base='집계_'+time.strftime('%H%M%S');target=root/(base+'.zip');number=1
+            while target.exists() or target.with_suffix('.pending').exists():
+                number+=1;target=root/(base+'_'+str(number)+'.zip')
+            pending=target.with_suffix('.pending')
+            with zipfile.ZipFile(pending,'w',compression=zipfile.ZIP_DEFLATED) as archive:
+                archive.writestr('report.json',json.dumps(trace,ensure_ascii=False,default=str).encode('utf-8'))
+                for index,(label,frame) in enumerate(getattr(self,'_farming_receipt_frames',[]) or []):
+                    stream=io.BytesIO();frame.save(stream,format='PNG')
+                    archive.writestr(f'{index:02d}_{label}.png',stream.getvalue())
+                if isinstance(image,Image.Image):
+                    stream=io.BytesIO();image.save(stream,format='PNG');archive.writestr('last.png',stream.getvalue())
+            os.replace(pending,target)
+            snapshot['receipt_debug_archive']=str(target)
+            return str(target)
+        except (OSError,AttributeError,KeyError,TypeError,ValueError):return None
+
     def _farming_scrolled_frame(self,rect,previous):
-        last_error=None
-        for attempt in range(3):
-            if self._farming_scan_cancel.is_set(): raise RuntimeError('재료 인식을 중지했습니다.')
+        last_error=None;candidate_delta=None;stable=0
+        for attempt in range(10):
+            if self._farming_scan_cancel.is_set():raise RuntimeError('재료 인식을 중지했습니다.')
             current=self._farming_capture(rect)
+            self._farming_receipt_last=current
             if not self._looks_like_reward_frame(current):
                 raise ValueError('결과창이 닫혀 집계를 중단했습니다.')
             try:
                 delta=reward_scroll_delta(previous,current)
-                if abs(delta)>=1 or attempt==2: return current,delta
+                stable=stable+1 if candidate_delta is not None and abs(delta-candidate_delta)<1 else 1
+                candidate_delta=delta
+                self._farming_receipt_event('settle',attempt=attempt+1,delta=round(delta,3),stable=stable)
+                # Three independent frames span at least 120 ms. Two frames
+                # only 60 ms apart could be an animation pause, not its end.
+                if stable>=3:
+                    self._farming_receipt_frame(current,'settled')
+                    return current,delta
             except ValueError as exc:
-                last_error=exc
-                if attempt==2: raise
-            # Do not send another wheel event during an unfinished animation.
-            time.sleep(.12)
-        raise last_error or ValueError('보상 목록 이동을 확인하지 못했습니다.')
+                last_error=exc;candidate_delta=None;stable=0
+                self._farming_receipt_event('settle_unconfirmed',attempt=attempt+1,error=str(exc))
+            if self._farming_scan_cancel.wait(.06):raise RuntimeError('재료 인식을 중지했습니다.')
+        raise last_error or ValueError('보상 목록이 움직이는 중이라 집계를 보류했습니다.')
+
+    def _farming_read_stationary_page(self,rect,image,templates,known,offset):
+        """Finish a page's bounded OCR retries before the next scroll gesture."""
+        retained=list(known or [])
+        for attempt in range(3):
+            if self._farming_scan_cancel.is_set():raise RuntimeError('재료 인식을 중지했습니다.')
+            unread=None
+            try:page=self._farming_read_page(image,templates,known=retained,offset=offset)
+            except RewardQuantityPending as error:unread=error;page=error.items
+            self._farming_receipt_event('page_read',attempt=attempt+1,offset=round(offset,3),
+                items=[dict(x=round(row['x'],2),y=round(row['y'],2),amount=int(row['amount'])) for row in page],
+                missing=list(unread.missing) if unread is not None else [])
+            if self._farming_scan_cancel.is_set():raise RuntimeError('재료 인식을 중지했습니다.')
+            if unread is None and not page:return image,page
+            if unread is not None and self._farming_scan_cancel.wait(.12):raise RuntimeError('재료 인식을 중지했습니다.')
+            current=self._farming_capture(rect)
+            self._farming_receipt_last=current
+            if not self._looks_like_reward_frame(current):raise ValueError('결과창이 닫혀 집계를 중단했습니다.')
+            delta=reward_scroll_delta(image,current)
+            if abs(delta)>=1:raise ValueError('수량 판독 중 보상 목록이 움직여 전체 집계를 보류했습니다.')
+            self._farming_receipt_frame(current,'read')
+            if unread is None:return current,page
+            retained=merge_reward_page(retained,page,offset,image.height)
+            image=current
+            # Fully visible unread badges are retried in fresh stationary
+            # captures. Only after this can an overlapping lower view rescue one.
+        raise RewardQuantityPending(page,unread.missing)
 
     def _farming_collect_pages(self, rect, first, templates=None):
         balance = 0
         image = first
+        self._farming_receipt_trace=dict(source='device' if getattr(self,'_background_running',False) else 'window',
+            started=time.strftime('%Y-%m-%d %H:%M:%S'),events=[])
+        self._farming_receipt_frames=[]
+        self._farming_receipt_frame(first,'first')
         aggregate = []
         pending = []
         observed_cards = False
@@ -18189,12 +19205,13 @@ class App:
                     else:
                         observed_cards |= any(b[1]>image.height*.23 and b[3]<image.height*.761
                                               for b in detect_reward_card_rects(image))
-                        page = self._farming_read_page(image,templates)
+                        image,page=self._farming_read_stationary_page(rect,image,templates,aggregate,offset)
                 except RewardQuantityPending as unread:
                     page=unread.items
                     for item in unread.missing:
                         candidate=dict(item,virtual_y=item['y']+offset)
                         if not any(abs(old['x']-candidate['x'])<image.height*.035 and abs(old['virtual_y']-candidate['virtual_y'])<image.height*.035 for old in pending):pending.append(candidate)
+                self._farming_receipt_event('page',offset=round(offset,3),count=len(page),pending=len(pending))
                 aggregate = merge_reward_page(aggregate, page, offset, image.height)
                 pending=[item for item in pending if not any(abs(old['x']-item['x'])<image.height*.035 and abs(old['virtual_y']-item['virtual_y'])<image.height*.035 for old in aggregate)]
                 position = reward_scrollbar_position(image)
@@ -18204,7 +19221,9 @@ class App:
                         raise ValueError('온전히 보이는 보상 카드가 없습니다.')
                     if position is None and any(b[3] >= image.height*.761 for b in detect_reward_card_rects(image)):
                         raise ValueError('화면 아래 잘린 보상이 있어 전체 집계를 확인하지 못했습니다.')
+                    self._farming_receipt_event('complete',count=len(aggregate),amount=sum(int(row['amount']) for row in aggregate))
                     return aggregate
+                self._farming_receipt_event('scroll',direction='down',offset=round(offset,3))
                 self._farming_wheel(rect, -120)
                 balance -= 1
                 new,delta = self._farming_scrolled_frame(rect,image)
@@ -18213,9 +19232,15 @@ class App:
                 offset += delta
                 image = new
             raise ValueError('보상 목록 전체를 확인하지 못해 집계를 보류했습니다.')
+        except Exception as error:
+            self._farming_receipt_failure(error)
+            raise
         finally:
-            # Undo exactly the wheel events we sent. F10 stops all further input.
-            for _ in range(abs(balance)):
+            # Automatic farming immediately leaves the receipt, so restoring
+            # the list wastes gestures and can only delay the next battle.
+            # Manual collection restores its view; F10 stops all further input.
+            restore=0 if getattr(self,'_background_running',False) else abs(balance)
+            for _ in range(restore):
                 if self._farming_scan_cancel.is_set():
                     break
                 try:
@@ -18560,6 +19585,7 @@ class App:
     def stop_playback(self):
         self._background_failure_hold=False
         self._manual_stop_requested=True
+        self._invalidate_cloud_board()
         share_cancel=getattr(self,'_ai_share_cancel',None)
         if share_cancel is not None:share_cancel.set()
         self._all_actions_stopped=True
