@@ -1,8 +1,8 @@
 # PAD0 개인용 업데이트 배포
 
-[최신 실행 패키지 다운로드](https://raw.githubusercontent.com/tterx/pad0-updates/main/pad0_overlay_windows_v101_41.zip)
+[최신 실행 패키지 다운로드](https://raw.githubusercontent.com/tterx/pad0-updates/main/pad0_overlay_windows_v101_122.zip)
 
-프로그램을 완전히 종료하고 `시작.vbs`로 재실행하면 **v101.41**를 확인합니다. 개인 DB와 설정은 유지합니다.
+프로그램을 완전히 종료하고 `시작.vbs`로 재실행하면 **v101.122**를 확인합니다. 개인 DB와 설정은 유지합니다.
 
 ## 백그라운드 재료 파밍 — 첫 구현
 
@@ -21,3 +21,7 @@
 업데이트 주소: https://raw.githubusercontent.com/tterx/pad0-updates/main/update.json
 
 이 저장소와 배포 파일은 공개되어 있습니다. 현재 실행기는 pad0_overlay.py만 자동 교체합니다. v101.41는 추가 Python 의존성 없이 적용할 수 있으며 MuMu ADB 연결이 필요합니다.
+
+## 배포 보관 정책
+
+배포 ZIP, releases 소스 폴더와 GitHub 릴리스는 최신 5개 버전을 보관합니다. v101.122 기준 v101.118~v101.122이며, 새 버전 배포 시 같은 기준으로 정리합니다. 업데이트 진입점 update.json과 개인 학습 자료는 이 정리 대상에 포함하지 않습니다. Git 커밋 이력은 유지합니다.
