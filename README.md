@@ -1,10 +1,10 @@
 # PAD0 개인용 업데이트 배포
 
-[최신 실행 패키지 다운로드](https://raw.githubusercontent.com/tterx/pad0-updates/main/pad0_overlay_windows_v101_143.zip)
+[최신 실행 패키지 다운로드](https://raw.githubusercontent.com/tterx/pad0-updates/main/pad0_overlay_windows_v101_144.zip)
 
-프로그램을 완전히 종료하고 `시작.vbs`로 재실행하면 **v101.143**를 확인합니다. 개인 DB와 설정은 유지합니다.
+프로그램을 완전히 종료하고 `시작.vbs`로 재실행하면 **v101.144**를 확인합니다. 개인 DB와 설정은 유지합니다.
 
-이번 버전은 로컬 모델 학습·실제 드롭 인식·정답 자료 보관·업데이트 시 공유를 pad0_ai.py로 분리했습니다. 기존 모델·자료 형식·최근 100개 보관과 공유 절차를 유지합니다. 공통 버전·상수·JSON I/O는 pad0_common.py로 분리하며 기존 실행기의 자동 업데이트와 단일 백업도 지원합니다. [AI 모듈·검사 방법](AI_MODULE.md)
+이번 버전은 주요 창·오버레이·설정 화면을 pad0_ui.py로 분리했습니다. 장치·스킬 기능은 메인에서 콜백으로 전달하고, 자동파밍 판단·시작·중지 제어를 유지합니다. 기존 실행기의 단일 파일 자동 업데이트와 백업 복원을 지원합니다. [UI 모듈·검사 방법](UI_MODULE.md)
 
 ## 백그라운드 재료 파밍 — 첫 구현
 
