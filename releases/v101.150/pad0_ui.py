@@ -2777,31 +2777,40 @@ class AppUIMixin:
         root = self.data_paths['root']
         existing = getattr(self,'_quantity_window',None)
         if existing is not None and existing.winfo_exists():
+            refresh_existing=getattr(self,'_quantity_refresh',None)
+            if callable(refresh_existing):refresh_existing()
             existing.deiconify();existing.lift();return
         win=tk.Toplevel(self.root);self._quantity_window=win
-        win.title('AI 관리 · 재료 수량');win.geometry('900x640');win.minsize(760,540)
+        win.title('AI 관리 · 재료 수량');win.geometry('900x680');win.resizable(False,False)
         shell=ttk.Frame(win,padding=12);shell.pack(fill='both',expand=True)
         ttk.Label(shell,text='필요 · 보유 · 획득 수량',font=('Malgun Gothic',12,'bold')).pack(anchor='w')
-        ttk.Label(shell,text='정답을 저장한 뒤 수량 이미지 학습을 누르면 다음 판독부터 적용됩니다. 게임·등록 수량을 직접 변경하지 않습니다.').pack(anchor='w',pady=5)
-        ttk.Label(shell,text='최근 정답 100개로 학습하며 가까운 숫자 이미지 예시만 판독합니다. 처음 보는 숫자와 불일치는 계속 검토가 필요합니다.').pack(anchor='w')
+        ttk.Label(shell,text='위쪽 ‘판단용 숫자’를 확인하세요. 판단 맞음 또는 숫자 수정 저장 후 수량 이미지 학습을 누르면 적용됩니다.',wraplength=720).pack(anchor='w',pady=5)
         controls=ttk.Frame(shell);controls.pack(fill='x',pady=8)
-        mode=tk.StringVar(value='미확인')
+        mode=tk.StringVar(value='전체')
         select=ttk.Combobox(controls,textvariable=mode,values=('전체','미확인','확인 완료'),state='readonly',width=14)
         select.pack(side='left')
+        notice=tk.StringVar(value='이미지를 보고 정답을 확인해 주세요. 목록은 최근 200개를 표시합니다.')
+        ttk.Label(shell,textvariable=notice,wraplength=720).pack(side='bottom',fill='x',pady=8)
         body=ttk.Frame(shell);body.pack(fill='both',expand=True)
         left=ttk.Frame(body,width=270);left.pack(side='left',fill='y',padx=(0,12))
         cases=tk.Listbox(left,width=33,exportselection=False);cases.pack(side='left',fill='both',expand=True)
         scroll=ttk.Scrollbar(left,command=cases.yview);scroll.pack(side='right',fill='y');cases.configure(yscrollcommand=scroll.set)
         right=ttk.Frame(body);right.pack(side='left',fill='both',expand=True)
         details=tk.StringVar(value='목록에서 수량 이미지를 선택하세요.')
-        ttk.Label(right,textvariable=details,wraplength=520).pack(anchor='w')
-        number_label=ttk.Label(right,anchor='center');number_label.pack(fill='x',pady=12)
+        detail_box=ttk.Frame(right,height=44);detail_box.pack(fill='x')
+        detail_box.pack_propagate(False)
+        ttk.Label(detail_box,textvariable=details,wraplength=520).pack(fill='both',expand=True)
+        # Reserve the editor before expandable image widgets consume the height.
+        row=ttk.LabelFrame(right,text='수량 정답 입력',padding=10);row.pack(fill='x',pady=8)
+        ttk.Label(row,text='실제 숫자').grid(row=0,column=0,sticky='w',padx=(0,8))
+        truth=tk.StringVar();entry=ttk.Entry(row,textvariable=truth,width=14,font=('Malgun Gothic',12))
+        entry.grid(row=0,column=1,sticky='w')
+        ttk.Label(row,text='0도 입력할 수 있습니다.',foreground='#555555').grid(row=1,column=0,columnspan=2,sticky='w',pady=(4,8))
+        actions=ttk.Frame(row);actions.grid(row=2,column=0,columnspan=2,sticky='w')
+        ttk.Label(right,text='판단용 숫자',font=('Malgun Gothic',11,'bold')).pack(anchor='w',pady=(4,0))
+        number_label=ttk.Label(right,anchor='center');number_label.pack(fill='x',pady=(2,6))
+        reference_title=ttk.Label(right,text='확인용 전체 이미지');reference_title.pack(anchor='w')
         card_label=ttk.Label(right,anchor='center');card_label.pack(fill='both',expand=True)
-        row=ttk.Frame(right);row.pack(fill='x',pady=8)
-        ttk.Label(row,text='정답 수량').pack(side='left',padx=(0,8))
-        truth=tk.StringVar();entry=ttk.Entry(row,textvariable=truth,width=15);entry.pack(side='left')
-        notice=tk.StringVar(value='판독 실패와 성공 기록을 함께 보관합니다. 목록은 최근 200개를 표시합니다.')
-        ttk.Label(shell,textvariable=notice,wraplength=850).pack(fill='x',pady=8)
         state={'records':[],'record':None,'photos':[]}
         def pick(event=None):
             indexes=cases.curselection()
@@ -2809,13 +2818,21 @@ class AppUIMixin:
             record=state['records'][indexes[0]];state['record']=record
             value=record.get('truth') if record.get('status')=='confirmed' else record.get('predicted')
             truth.set('' if value is None else str(value))
+            confirm_button.configure(state='normal' if record.get('predicted') is not None else 'disabled')
             details.set(f"{record['kind']} 수량 · 판독값: {record.get('predicted') if record.get('predicted') is not None else '미확인'}\n{record.get('reason','')}")
             folder=quantity_root(root)/'samples'/record['id'];photos=[]
+            context_path=folder/'context.png'
+            reference_path=context_path if context_path.is_file() else folder/'card.png'
+            reference_title.configure(text='확인용 전체 이미지 · 필요 수량 / 재료 / 보유 수량' if context_path.is_file() else '재료 참고 이미지')
             try:
-                for path,label,size in ((folder/'number.png',number_label,(500,150)),(folder/'card.png',card_label,(300,250))):
+                for path,label,size in ((folder/'number.png',number_label,(500,100)),(reference_path,card_label,(240,160))):
                     if path.exists():
                         with Image.open(path) as opened:
-                            preview=opened.convert('RGB');preview=fit_image_preserve_aspect(preview,size)
+                            preview=opened.convert('RGB')
+                            if label is number_label:
+                                scale=min(size[0]/preview.width,size[1]/preview.height)
+                                preview=preview.resize((max(1,round(preview.width*scale)),max(1,round(preview.height*scale))),Image.Resampling.LANCZOS)
+                            preview=fit_image_preserve_aspect(preview,size)
                         photo=ImageTk.PhotoImage(preview);photos.append(photo);label.configure(image=photo,text='')
                     else:label.configure(image='',text='재료 이미지 없음')
                 state['photos']=photos
@@ -2824,16 +2841,35 @@ class AppUIMixin:
         def refresh(event=None):
             state['records']=quantity_list(root,mode.get());state['record']=None
             cases.delete(0,'end');truth.set('');details.set('목록에서 수량 이미지를 선택하세요.')
+            confirm_button.configure(state='disabled')
             number_label.configure(image='');card_label.configure(image='');state['photos']=[]
             for record in state['records']:
                 value=record.get('truth') if record.get('status')=='confirmed' else record.get('predicted')
                 cases.insert('end',f"{record['kind']} · {'?' if value is None else value} · {'확인 완료' if record.get('status')=='confirmed' else '미확인'}")
-            if state['records']:cases.selection_set(0);pick()
-        def save():
+            if state['records']:
+                cases.selection_set(0);pick()
+            else:
+                total=quantity_list(root,'전체',limit=1)
+                if total:
+                    text='이 필터에 해당하는 기록이 없습니다. 전체를 선택해 주세요.'
+                else:
+                    text='수량 이미지가 아직 없습니다. 게임의 재료 화면에서 F7/재료확인을 실행하거나 저장 화면 가져오기를 눌러 주세요.'
+                details.set(text);number_label.configure(image='',text=text,wraplength=500)
+                card_label.configure(image='',text='표시할 재료 이미지 없음')
+                notice.set(text)
+        def import_saved():
+            try:
+                added=self._import_saved_quantity_images();mode.set('전체');refresh()
+                if state['records']:notice.set(f'저장 화면에서 새 수량 이미지 {added}개를 가져왔습니다. 실제 숫자를 입력해 주세요.')
+            except (ValueError,OSError) as exc:notice.set('저장 화면 가져오기 실패: '+str(exc))
+        def save(use_prediction=False):
             record=state['record']
             if record is None:return
             try:
-                quantity_confirm(root,record['id'],truth.get().strip());refresh()
+                value=record.get('predicted') if use_prediction else truth.get().strip()
+                if value is None:
+                    notice.set('판독값이 미확인입니다. 실제 숫자를 입력하고 수정 저장을 눌러 주세요.');return
+                quantity_confirm(root,record['id'],value);refresh()
                 notice.set('정답 저장 완료 · 수량 이미지 학습을 누르면 실제 판독에 적용됩니다.')
             except (ValueError,OSError) as exc:notice.set(str(exc))
         def train():
@@ -2841,11 +2877,19 @@ class AppUIMixin:
                 count=quantity_train(root)
                 notice.set(f'수량 이미지 {count}개 학습 완료 · 다음 재료 확인·자동파밍·보상 판독부터 사용합니다.')
             except (ValueError,OSError) as exc:notice.set('학습 보류: '+str(exc))
-        ttk.Button(row,text='정답 저장',command=save).pack(side='left',padx=8)
+        confirm_button=ttk.Button(actions,text='판단 맞음',width=14,command=lambda:save(True))
+        confirm_button.pack(side='left',padx=(0,8))
+        ttk.Button(actions,text='수정 저장',width=14,command=save).pack(side='left')
         ttk.Button(controls,text='다시 읽기',command=refresh).pack(side='left',padx=8)
         ttk.Button(controls,text='수량 이미지 학습',command=train).pack(side='left')
+        ttk.Button(controls,text='저장 화면 가져오기',command=import_saved).pack(side='left',padx=8)
         cases.bind('<<ListboxSelect>>',pick);select.bind('<<ComboboxSelected>>',refresh)
         entry.bind('<Return>',lambda event:save())
+        self._quantity_refresh=refresh
+        existing_records=quantity_list(root,'전체')
+        if not existing_records or any(record['kind'] in ('필요','보유') and not (quantity_root(root)/'samples'/record['id']/'context.png').is_file() for record in existing_records):
+            try:self._import_saved_quantity_images()
+            except (ValueError,OSError):pass
         refresh()
 
     def show_ai_management(self,case_id=None):
