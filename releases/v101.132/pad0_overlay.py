@@ -29,7 +29,7 @@ import mss
 import numpy as np
 from PIL import Image, ImageDraw
 
-APP_VERSION = "v101.127"
+APP_VERSION = "v101.132"
 APP_TITLE = f"퍼드0 경로 오버레이 {APP_VERSION}"
 ROWS, COLS = 5, 6
 # Approximate hue prototypes in degrees; per-cell colors are classified by nearest circular hue.
@@ -571,7 +571,7 @@ def _batch_three_distance(b):
  vert=c[:,2]-c[:,0]+np.abs(r-a[:,None]-np.array([0,1,2])).sum(axis=1)
  return np.minimum(horiz,vert)
 
-def _solve_master_batch_round(board,budget,cap,width,seed,mode,required_total,combo_bonus,cancel_event=None):
+def _solve_master_batch_round(board,budget,cap,width,seed,mode,required_total,combo_bonus,cancel_event=None,require_heal=False):
  """Evaluate candidates in arrays and reserve a beam quota per held colour.
 
  A rare carried orb must not crowd out common-colour routes needed to arrange
@@ -603,7 +603,7 @@ def _solve_master_batch_round(board,budget,cap,width,seed,mode,required_total,co
   for i in good[:120]:
    if time.perf_counter()>deadline or cancel_event is not None and cancel_event.is_set():break
    after=[COLOR_ORDER[int(x)] for x in nb[i]]
-   goals=combo_condition_goals(master_multicolor_goals(),required_total,combo_bonus)
+   goals=combo_condition_goals(recovery_route_goals(master_multicolor_goals(),require_heal),required_total,combo_bonus)
    if board_goal_metrics(after,goals)['all_met']:
     path=list(map(int,paths[parent[i],:depth]))+[int(nxt[i])]
     # Replay is authoritative; batched bookkeeping alone cannot arm input.
@@ -618,6 +618,7 @@ def _solve_master_batch_round(board,budget,cap,width,seed,mode,required_total,co
   if mode==0:score=final_attrs*25+final_count*17+potential*.8-distances*3-excess*2
   elif mode==1:score=final_attrs*15+final_count*12+potential*.7-distances*4-excess*3
   else:score=final_attrs*20+final_count*20+potential*.6-distances*2-excess*4
+  if require_heal:score+=(groups[:,5]>0)*20-_batch_three_distance(nm[:,5])*2
   order=np.argsort(-score,kind='stable')
   held_codes=nb[np.arange(len(nb)),nxt]
   # Preserve routes with different carried colours AND different matched
@@ -639,7 +640,7 @@ def _solve_master_batch_round(board,budget,cap,width,seed,mode,required_total,co
  return best,None
 
 
-def _solve_master_direct_batch_round(board,budget,cap,width,seed,mode,required_total,combo_bonus,cancel_event=None):
+def _solve_master_direct_batch_round(board,budget,cap,width,seed,mode,required_total,combo_bonus,cancel_event=None,require_heal=False):
  """Direct-match beam retained for dense eight-combo layouts.
 
  A rare carried orb must not crowd out common-colour routes needed to arrange
@@ -669,7 +670,7 @@ def _solve_master_direct_batch_round(board,budget,cap,width,seed,mode,required_t
   for i in good[:120]:
    if time.perf_counter()>deadline or cancel_event is not None and cancel_event.is_set():break
    after=[COLOR_ORDER[int(x)] for x in nb[i]]
-   goals=combo_condition_goals(master_multicolor_goals(),required_total,combo_bonus)
+   goals=combo_condition_goals(recovery_route_goals(master_multicolor_goals(),require_heal),required_total,combo_bonus)
    if board_goal_metrics(after,goals)['all_met']:
     path=list(map(int,paths[parent[i],:depth]))+[int(nxt[i])]
     # Replay is authoritative; batched bookkeeping alone cannot arm input.
@@ -684,6 +685,7 @@ def _solve_master_direct_batch_round(board,budget,cap,width,seed,mode,required_t
   if mode==0:score=attrs*25+count*16+potential-distances*3-excess*2
   elif mode==1:score=attrs*15+count*12+potential*.7-distances*4-excess*3
   else:score=attrs*20+count*20+potential*.6-distances*2-excess*4
+  if require_heal:score+=(groups[:,5]>0)*20-_batch_three_distance(nm[:,5])*2
   order=np.argsort(-score,kind='stable')
   held_codes=nb[np.arange(len(nb)),nxt]
   chosen=[];seen=set()
@@ -713,13 +715,13 @@ def _solve_master_direct_batch_round(board,budget,cap,width,seed,mode,required_t
  return best,None
 
 
-def solve_master_batch(board,time_budget,max_moves,required_total,combo_bonus=0,cancel_event=None,seed_offset=0):
+def solve_master_batch(board,time_budget,max_moves,required_total,combo_bonus=0,cancel_event=None,seed_offset=0,require_heal=False):
     """Bounded diverse restarts for high master combo requirements, never input."""
     max_moves=max(0,min(65,int(max_moves))) if max_moves is not None else 65
-    started=time.perf_counter();best=[0];goals=combo_condition_goals(master_multicolor_goals(),required_total,combo_bonus)
+    started=time.perf_counter();best=[0];goals=combo_condition_goals(recovery_route_goals(master_multicolor_goals(),require_heal),required_total,combo_bonus)
     best_metrics=board_goal_metrics(board,goals)
     upper=sum(board.count(color)//3 for color in COLOR_ORDER)+combo_bonus
-    if best_metrics['all_met'] or max_moves==0 or upper<max(6,required_total):return best,best_metrics['combos'],best_metrics['matched'],list(board)
+    if best_metrics['all_met'] or max_moves==0 or upper<max(6,required_total) or require_heal and board.count('H')<3:return best,best_metrics['combos'],best_metrics['matched'],list(board)
     attempt=0
     while time.perf_counter()-started<time_budget and not (cancel_event is not None and cancel_event.is_set()):
         remaining=max(0,time_budget-(time.perf_counter()-started))
@@ -727,7 +729,7 @@ def solve_master_batch(board,time_budget,max_moves,required_total,combo_bonus=0,
         # with gravity-aware ranking when that beam cannot satisfy the goal.
         run=_solve_master_direct_batch_round if max(6,required_total)-combo_bonus>=8 and attempt%2==0 else _solve_master_batch_round
         path,_=run(board,remaining,max_moves,700,seed_offset+attempt,
-            0 if attempt<4 else (attempt-4)%3,required_total,combo_bonus,cancel_event)
+            0 if attempt<4 else (attempt-4)%3,required_total,combo_bonus,cancel_event,**(dict(require_heal=True) if require_heal else {}))
         after=board_after_drag(board,path);metrics=board_goal_metrics(after,goals)
         if metrics['all_met']:return path,metrics['combos'],metrics['matched'],after
         if (metrics['attr_count'],metrics['final_combos'])>(best_metrics['attr_count'],best_metrics['final_combos']):
@@ -737,9 +739,21 @@ def solve_master_batch(board,time_budget,max_moves,required_total,combo_bonus=0,
     return best,best_metrics['combos'],best_metrics['matched'],after
 
 
-def solve_master_attack(board,time_budget,max_moves,spikes=None,avoid_skull=True,required_total=6,combo_bonus=0,cancel_event=None,seed_offset=0):
+def solve_master_attack(board,time_budget,max_moves,spikes=None,avoid_skull=True,required_total=6,combo_bonus=0,cancel_event=None,seed_offset=0,require_heal=False):
+    if require_heal:
+        if not any(spikes or ()) and 'S' not in board:
+            return solve_master_batch(board,time_budget,max_moves,required_total,combo_bonus,cancel_event,seed_offset,require_heal=True)
+        goals=combo_condition_goals(recovery_route_goals(master_multicolor_goals()),required_total,combo_bonus)
+        return solve_path(board,time_budget=time_budget,max_moves=max_moves,goals=goals,spikes=spikes,avoid_skull=avoid_skull,seed_offset=seed_offset,cancel_event=cancel_event)
     if max(6,int(required_total))-int(combo_bonus)>=7 and not any(spikes or ()) and 'S' not in board:
         return solve_master_batch(board,time_budget,max_moves,required_total,combo_bonus,cancel_event,seed_offset)
+    if max(6,int(required_total))-int(combo_bonus)==6 and not any(spikes or ()) and 'S' not in board:
+        started=time.perf_counter()
+        fast=solve_master_batch(board,min(1.0,max(0,float(time_budget))*.4),max_moves,required_total,combo_bonus,cancel_event,seed_offset)
+        goals=combo_condition_goals(master_multicolor_goals(),required_total,combo_bonus)
+        if verified_prefind_route(board,fast[0],goals,max_moves):return fast
+        time_budget=max(0,float(time_budget)-(time.perf_counter()-started))
+        if time_budget<=0 or cancel_event is not None and cancel_event.is_set():return fast
     started=time.perf_counter();budget=max(0,float(time_budget))
     goals=combo_condition_goals(master_multicolor_goals(),required_total,combo_bonus)
     if seed_offset%2:
@@ -907,6 +921,30 @@ def cloud_cell_mask(image: Image.Image) -> list[bool]:
     return result
 
 
+def dark_cell_mask(image: Image.Image) -> list[bool]:
+    """Opaque black discs with a neutral circular rim, not purple/jammer art."""
+    arr=np.asarray(image.convert('RGB'));height,width=arr.shape[:2]
+    if width<48 or height<40:return [False]*30
+    found=[]
+    for index in range(30):
+        row,col=divmod(index,6)
+        tile=arr[round(row*height/5):round((row+1)*height/5),round(col*width/6):round((col+1)*width/6)]
+        hh,ww=tile.shape[:2];yy,xx=np.mgrid[:hh,:ww]
+        radius=((xx+.5-ww*.5)/(ww*.5))**2+((yy+.5-hh*.5)/(hh*.5))**2
+        _,sat,value=rgb_to_hsv_np(tile)
+        core=radius<.45**2;ring=(radius>.68**2)&(radius<.94**2)
+        black=(value<.18)&(sat<.50)
+        neutral=(sat<.30)&(value>.23)
+        found.append(bool(core.any() and ring.any() and black[core].mean()>.72
+                          and black[radius<.65**2].mean()>.65 and neutral[ring].mean()>.10
+                          and float(value[ring].mean())>float(value[core].mean())+.045))
+    return found
+
+
+def obscured_cell_mask(image):
+    return [cloud or dark for cloud,dark in zip(cloud_cell_mask(image),dark_cell_mask(image))]
+
+
 def cloud_visible_board_valid(image,board,mask=None):
     """Validate a partly obscured live grid using only the visible orb cells.
 
@@ -914,7 +952,7 @@ def cloud_visible_board_valid(image,board,mask=None):
     callers must reconstruct them before using any puzzle solver.
     """
     if len(board)!=ROWS*COLS:return False
-    mask=cloud_cell_mask(image) if mask is None else list(mask)
+    mask=obscured_cell_mask(image) if mask is None else list(mask)
     if len(mask)!=ROWS*COLS:return False
     width,height=image.size
     if min(width,height)<80 or not .95<=width/height<=1.5:return False
@@ -1000,7 +1038,7 @@ def cloud_revealed_drop(image,index,before_image=None):
     Unreliable reveals, including jammer/poison art, return None.
     """
     if before_image is None or image.size!=before_image.size or not isinstance(index,int) or not 0<=index<ROWS*COLS:return None
-    if not cloud_cell_mask(before_image)[index]:return None
+    if not obscured_cell_mask(before_image)[index]:return None
     arr=np.asarray(image.convert('RGB'));before=np.asarray(before_image.convert('RGB'))
     height,width=arr.shape[:2];cw,ch=width/COLS,height/ROWS;row,col=divmod(index,COLS)
     cx,cy=(col+.5)*cw,(row+.5)*ch
@@ -1504,6 +1542,55 @@ def master_multicolor_goals():
     return (False,False,True,False,False,False,False,6,0,True)
 
 
+def recovery_route_goals(goals, required=True):
+    """Add a real heart match without relaxing colour/combo requirements."""
+    values=list(goals)
+    if len(values)<7:values.extend([False]*(7-len(values)))
+    if required:values[3]=True
+    return tuple(values)
+
+
+def route_health_status(image):
+    """Read the framed HP rail, never character HP bars or unframed pink art."""
+    import cv2
+    frame=image.convert('RGB').resize((1600,940),Image.Resampling.LANCZOS)
+    rgb=np.asarray(frame);top=825
+    region=rgb[top:925,:875]
+    white=(region.min(axis=2)>190)&(region.max(axis=2).astype(int)-region.min(axis=2)<55)
+    n,labels,stats,_=cv2.connectedComponentsWithStats(white.astype('uint8'),8)
+    for x,y,w,h,area in sorted(stats[1:],key=lambda s:-s[2]):
+        x,y,w,h=map(int,(x,y,w,h))
+        if not (x<80 and 650<w<870 and 10<=h<=42 and 810<x+w<875):continue
+        # The pink heart at the left distinguishes this rail from card borders.
+        heart=region[y:y+h,x:x+28].astype(int)
+        pink=(heart[...,0]>180)&(heart[...,2]>110)&(heart[...,0]-heart[...,1]>45)&(heart[...,2]-heart[...,1]>10)
+        if pink.sum()<20:continue
+        rail=None
+        for row in range(y,y+h):
+            line=white[row].copy();line[:x+25]=False
+            edges=np.diff(np.r_[False,line,False].astype(int));starts=np.flatnonzero(edges==1);ends=np.flatnonzero(edges==-1)
+            spans=[(int(a),int(b)) for a,b in zip(starts,ends) if b-a>w*.8]
+            if spans:rail=(row,*max(spans,key=lambda p:p[1]-p[0]));break
+        if rail is None:continue
+        row,left,right=rail
+        while row+1<y+h and white[row+1,left+8:right-8].mean()>.9:row+=1
+        sample=region[row+1:row+4,left+8:right-8].astype(int)
+        if sample.shape[0]!=3 or sample.shape[1]<600:continue
+        pink=(sample[...,0]>180)&(sample[...,1]>40)&(sample[...,1]<190)&(sample[...,2]>100)&(sample[...,0]-sample[...,1]>45)&(sample[...,2]-sample[...,1]>10)
+        dark=(sample.max(axis=2)<165)&(sample.max(axis=2)-sample.min(axis=2)<60)
+        filled=pink.sum(axis=0)>=2;known=(pink|dark).sum(axis=0)>=2
+        if known.mean()<.94:continue
+        missing=np.flatnonzero(~filled);end=int(missing[0]) if len(missing) else len(filled)
+        # Require one filled prefix; scattered pink cannot establish HP.
+        if np.sum(filled[end:])>max(3,len(filled)*.015):continue
+        ratio=end/len(filled)
+        # A pixel rail cannot establish the exact 60% boundary. Request numeric
+        # confirmation near it instead of rounding 60.1% down to 60%.
+        low=True if ratio<.58 else False if ratio>.62 else None
+        return dict(ratio=ratio,low_hp=low,source='hp_bar',box=[left,top+row,right,top+row+4])
+    return dict(ratio=None,low_hp=None,source='unconfirmed')
+
+
 def route_operation_seconds(seconds,goals):
     if not master_multicolor(goals):return seconds
     if seconds is None:raise RuntimeError('달인 다색 · 조작시간 미확인 · 4초 잔여 조건을 확인할 수 없습니다.')
@@ -1690,6 +1777,30 @@ def combo_digit_views(image, yellow=False):
 
 def combo_digit_retry_views(image, yellow=False):
     """Alternate glyph-preserving views of the icon centre, never its duration."""
+    if not yellow:
+        import cv2
+        rgb=np.asarray(image.convert('RGB'))
+        neutral=rgb.max(axis=2).astype(int)-rgb.min(axis=2)<65
+        views=[]
+        # Small outlined digits have gray antialiased strokes. The primary
+        # white-only mask can shave a 7 into a question mark; rethreshold the
+        # original pixels instead of enlarging that already damaged mask.
+        for threshold in (120,150):
+            mask=neutral&(rgb.min(axis=2)>threshold)
+            n,labels,stats,_=cv2.connectedComponentsWithStats(mask.astype('uint8'),8)
+            parts=[i for i in range(1,n) if stats[i,4]>=4
+                   and stats[i,3]>=max(4,image.height*.25)]
+            if not parts:continue
+            # Keep separate digit components (e.g. 10), discard isolated orb
+            # highlights, and never expand outside the localized icon crop.
+            mask=np.isin(labels,parts)
+            ys,xs=np.where(mask)
+            glyph=Image.fromarray(np.where(mask,0,255).astype('uint8')).crop(
+                (int(xs.min()),int(ys.min()),int(xs.max())+1,int(ys.max())+1))
+            glyph=glyph.resize((glyph.width*6,glyph.height*6),Image.Resampling.LANCZOS).convert('RGB')
+            view=Image.new('RGB',(glyph.width+40,glyph.height+40),'white');view.paste(glyph,(20,20))
+            views.append(view)
+        return views
     views=combo_digit_views(image,yellow)
     if not views:return []
     # The usual magnifications use antialiasing twice. A crisp binary edge and
@@ -2024,7 +2135,7 @@ def shortened_route_search_process(board, spikes, goals, cap, avoid_skull, outpu
         while time.monotonic()<deadline:
             kwargs=dict(time_budget=min(1.2,max(0.0,deadline-time.monotonic())),max_moves=cap,spikes=spikes,
                         avoid_skull=avoid_skull,seed_offset=attempt)
-            if goals[2]:
+            if goals[2] and not goals[3]:
                 path,_,_,_=solve_five_attributes_v101(board,required_total=required_total,combo_bonus=combo_bonus,**kwargs)
             else:
                 path,_,_,_=solve_path(board,goals=goals,**kwargs)
@@ -2061,7 +2172,7 @@ def solve_path(
     """
     if len(board) != ROWS * COLS:
         raise ValueError(f"퍼즐판에는 {ROWS * COLS}칸이 필요합니다.")
-    if master_survival(goals):
+    if master_survival(goals) and not goals[3]:
         return solve_five_attributes_v101(board,time_budget=time_budget,max_moves=max_moves,
             spikes=spikes,avoid_skull=avoid_skull,seed_offset=seed_offset,
             required_total=6,combo_bonus=goals[8] if len(goals)>8 else 0,require_five=False,cancel_event=cancel_event)
@@ -5248,7 +5359,7 @@ def breakthrough_button_candidate(image):
     if white((230,45,460,96))<.60 or white((170,154,1400,205))<.78:
         return None
     material=small.crop((145,240,880,530))
-    panel=np.asarray(material,dtype=np.int16)[23:52,30:698]
+    panel=np.asarray(material,dtype=np.int16)[235:270,30:698]
     if float(np.mean((panel.mean(axis=2)>170)&(np.ptp(panel,axis=2)<23)))<.65:
         return None
     try:
@@ -5299,7 +5410,7 @@ def confirmed_breakthrough_heading(readings):
     titles=[re.sub(r'[\s·:：]','',str(text)) for text,_ in readings]
     if titles[0]!=titles[1]:
         return None
-    return bool(re.fullmatch(r'(?:(?:초절|초|최종)?한계|중간|최종)?돌파확인',titles[0]))
+    return titles[0]=='생성확인' or bool(re.fullmatch(r'(?:(?:초절|초|최종)?한계|중간|최종)?돌파확인',titles[0]))
 
 
 def locate_material_badges(image):
@@ -7266,7 +7377,7 @@ class BackgroundADB:
         if type(index) is not int or not 0<=index<30:raise ValueError('구름 확인 셀이 올바르지 않습니다.')
         self.guard(force=True)
         if not isinstance(self._touch,MuMuSDKTouch) or self._touch.closed:
-            raise RuntimeError('구름 아래 드롭 확인에는 MuMu SDK 연결이 필요합니다.')
+            raise RuntimeError('구름·암흑 아래 드롭 확인에는 MuMu SDK 연결이 필요합니다.')
         x,y,w,h=rect;row,col=divmod(index,6)
         point=self.point(x+(col+.5)*w/6,y+(row+.5)*h/5)
         try:return self._touch.probe(*point)
@@ -7815,7 +7926,7 @@ def background_battle_intro(frame):
 def background_board(frame):
     rect=(882,255,692,572)
     crop=frame.crop((rect[0],rect[1],rect[0]+rect[2],rect[1]+rect[3]))
-    if any(cloud_cell_mask(crop)):return None
+    if any(obscured_cell_mask(crop)):return None
     board,_=classify_board(crop)
     if not _live_board_grid_is_visible(crop,board):return None
     spikes=[flag and code not in ('J','S') for flag,code in zip(detect_spike_cells(crop),board)]
@@ -7831,7 +7942,7 @@ def background_skill_board_sample(frame):
     observed=background_board(frame)
     if observed is not None:return observed
     rect=(882,255,692,572);x,y,w,h=rect;crop=frame.crop((x,y,x+w,y+h))
-    mask=cloud_cell_mask(crop)
+    mask=obscured_cell_mask(crop)
     if not any(mask):return None
     raw,_=classify_board(crop)
     if not cloud_visible_board_valid(crop,raw,mask):return None
@@ -7852,7 +7963,7 @@ def sdk_held_board_verification(frame,board,path,observed,trace,diagnostics,rect
     if cloud_mask is not None and any(cloud_mask):
         if len(cloud_mask)!=30 or any(type(value) is not bool for value in cloud_mask):
             result['reason']='cloud_mask_unconfirmed';return result
-        x,y,w,h=rect;crop=frame.crop((x,y,x+w,y+h));physical=cloud_cell_mask(crop)
+        x,y,w,h=rect;crop=frame.crop((x,y,x+w,y+h));physical=obscured_cell_mask(crop)
         if any(physical[i] and not cloud_mask[i] for i in range(30)) or not cloud_visible_board_valid(crop,observed,physical):
             result['reason']='cloud_visible_grid_unconfirmed';return result
         hidden=[bool(physical[i] and cloud_mask[i]) for i in range(30)]
@@ -8703,30 +8814,86 @@ def background_status_text(tokens):
         'attribute_absorb':any(w in t for w in ('속성흡수','属性吸収'))}
 
 
+STATUS_ICON_LABELS={'void_shield':'일정 피해 이상 무효 방패','attack_down':'공격력 감소','awoken_void':'각성 무효','bound':'바인드',
+    'recovery_down':'회복력 감소','damage_absorb':'데미지 흡수','attribute_absorb':'속성 흡수',
+    'combo_absorb':'콤보 흡수 아이콘','time_reduction':'조작시간 감소 아이콘','cloud':'구름 효과','dark':'암흑 효과'}
+
+
+def learn_status_icon(settings,key,crop,area):
+    """Supervised local example matching, not a guessed enemy effect/turn value."""
+    import base64,io
+    if key not in STATUS_ICON_LABELS or area not in ('enemy','party'):raise ValueError('상태 종류와 위치를 확인하세요.')
+    if not 10<=crop.width<=100 or not 10<=crop.height<=100:raise ValueError('아이콘 그림만 10~100px로 선택하세요.')
+    image=crop.convert('RGB')
+    if float(np.asarray(image).astype(float).std())<10:raise ValueError('빈 영역은 아이콘으로 학습하지 않습니다.')
+    stream=io.BytesIO();image.save(stream,format='PNG');png=base64.b64encode(stream.getvalue()).decode()
+    previous=settings.get('background_status_templates',{}).get(key,{})
+    samples=list(previous.get('samples') or ([dict(png=previous['png'],area=previous.get('area','enemy'))] if previous.get('png') else []))
+    samples=[row for row in samples if row.get('png')!=png or row.get('area')!=area]
+    samples.append(dict(png=png,area=area,confirmed=True))
+    settings.setdefault('background_status_templates',{})[key]=dict(png=png,area=area,samples=samples[-4:],method='confirmed_image_examples')
+    return len(samples[-4:])
+
+
 def background_template_states(frame,settings):
     import base64,io,cv2
     states={};image=np.asarray(frame.convert('RGB'))
     for key,entry in settings.get('background_status_templates',{}).items():
-        if key not in ('void_shield','attack_down','awoken_void','bound','recovery_down','damage_absorb','attribute_absorb'):continue
-        try:
-            raw=base64.b64decode(entry['png'],validate=True)
-            if len(raw)>50000:continue
-            template=np.asarray(Image.open(io.BytesIO(raw)).convert('RGB'))
-            h,w=template.shape[:2]
-            if not 10<=h<=100 or not 10<=w<=100:continue
-            area=image[120:570,:870] if entry.get('area')=='enemy' else image[825:940,:]
-            # Colour matching prevents visually similar shield shapes changing category.
-            score=cv2.matchTemplate(area,template,cv2.TM_SQDIFF_NORMED)
-            value,_,where,_=cv2.minMaxLoc(score)
-            patch=area[where[1]:where[1]+h,where[0]:where[0]+w]
-            if value<.025 and np.abs(patch.astype('int16')-template.astype('int16')).mean()<18:states[key]=True
-        except (ValueError,KeyError,OSError,cv2.error):continue
+        if key not in STATUS_ICON_LABELS:continue
+        examples=entry.get('samples') or [entry]
+        for example in examples[-4:]:
+            try:
+                raw=base64.b64decode(example['png'],validate=True)
+                if len(raw)>50000:continue
+                template=np.asarray(Image.open(io.BytesIO(raw)).convert('RGB'));h,w=template.shape[:2]
+                if not 10<=h<=100 or not 10<=w<=100:continue
+                area=image[120:570,:870] if example.get('area')=='enemy' else image[825:940,:]
+                score=cv2.matchTemplate(area,template,cv2.TM_SQDIFF_NORMED)
+                value,_,where,_=cv2.minMaxLoc(score)
+                patch=area[where[1]:where[1]+h,where[0]:where[0]+w]
+                if value<.025 and np.abs(patch.astype('int16')-template.astype('int16')).mean()<18:
+                    states[key]=True;break
+            except (ValueError,KeyError,OSError,cv2.error):continue
     return states
 
 
 def background_target_key(ledger):
     """A statistics dropdown must not replace the last complete F7 snapshot."""
+    selection=configured_farming_selection(ledger)
+    if selection is not None:return selection['key']
     return ledger.get('last_confirmed_farming_group') or ledger.get('active_farming_group')
+
+
+def configured_farming_selection(ledger):
+    """Only an explicit, current material selection enables receipt accounting."""
+    selection=ledger.get('farming_selection')
+    if not isinstance(selection,dict):return None
+    key=selection.get('key');ids=selection.get('material_ids')
+    if not isinstance(key,str):return None
+    group=ledger.get('farming_groups',{}).get(key)
+    if (not group or not isinstance(ids,list) or not ids or any(not isinstance(cid,str) for cid in ids)
+            or len(set(ids))!=len(ids)):return None
+    if selection.get('revision')!=group.get('revision'):return None
+    known={row['id'] for row in group.get('materials',[]) if row.get('confirmed',True)}
+    if not set(ids).issubset(known):return None
+    return dict(key=key,material_ids=list(ids),revision=group.get('revision'))
+
+
+def selected_farming_groups(ledger):
+    selection=configured_farming_selection(ledger)
+    if selection is None:return {}
+    key=selection['key'];group=ledger['farming_groups'][key]
+    return {key:dict(group,materials=[row for row in group['materials'] if row['id'] in selection['material_ids']])}
+
+
+def save_farming_selection(ledger,key,requirements,selected):
+    updated,chosen=prepare_farming_selection(ledger,key,requirements,selected,require_target=False,require_shortage=False)
+    group=updated['farming_groups'][key]
+    if any(row['id'] in chosen and not row.get('confirmed',True) for row in group['materials']):
+        raise ValueError('선택한 재료의 이름/이미지 등록을 먼저 완료해 주세요.')
+    updated['farming_selection']=dict(key=key,material_ids=chosen,revision=group.get('revision'))
+    updated['active_farming_group']=key
+    return updated,chosen
 
 
 def background_goal_complete(ledger,key,revision=None,material_ids=None):
@@ -8742,9 +8909,9 @@ def background_goal_complete(ledger,key,revision=None,material_ids=None):
     return all(row['deficit']==0 for row in rows)
 
 
-def prepare_farming_selection(ledger,key,requirements,selected):
+def prepare_farming_selection(ledger,key,requirements,selected,require_target=True,require_shortage=True):
     updated=json.loads(json.dumps(ledger));group=updated.get('farming_groups',{}).get(key)
-    if not group or background_target_key(updated)!=key:raise ValueError('돌파 대상이 바뀌었습니다. 창을 다시 열어주세요.')
+    if not group or require_target and background_target_key(updated)!=key:raise ValueError('돌파 대상이 바뀌었습니다. 창을 다시 열어주세요.')
     ids={row['id'] for row in group['materials']}
     if set(requirements)!=ids or not set(selected).issubset(ids):raise ValueError('재료 목록이 바뀌었습니다.')
     changed=False
@@ -8752,8 +8919,8 @@ def prepare_farming_selection(ledger,key,requirements,selected):
         value=str(requirements[row['id']]).strip()
         if not re.fullmatch(r'\d{1,6}',value):raise ValueError('필요 수량은 0~999999의 정수로 입력하세요.')
         number=int(value);changed=changed or row['required']!=number;row['required']=number
-    chosen=[row['id'] for row in farming_group_rows(updated,key) if row['id'] in selected and row['deficit']>0]
-    if not chosen:raise ValueError('부족한 재료를 하나 이상 선택해 주세요.')
+    chosen=[row['id'] for row in farming_group_rows(updated,key) if row['id'] in selected and (not require_shortage or row['deficit']>0)]
+    if require_shortage and not chosen:raise ValueError('부족한 재료를 하나 이상 선택해 주세요.')
     if changed:group['revision']=uuid.uuid4().hex
     return updated,chosen
 
@@ -8819,7 +8986,7 @@ AI_REVIEW_ACTIONS=('경로 계산','스킬 사용 후 재계산','6콤보 생존
 def ai_board_image_valid(image):
     if not isinstance(image,Image.Image):return False
     try:
-        if any(cloud_cell_mask(image)):return False
+        if any(obscured_cell_mask(image)):return False
         board,_=classify_board(image)
         return _live_board_grid_is_visible(image,board)
     except (ValueError,OSError,TypeError):return False
@@ -8837,6 +9004,31 @@ def ai_review_has_board(folder,record):
     path=Path(folder)/'board.png'
     try:info=path.stat();return _ai_board_file_valid(str(path),info.st_mtime_ns,info.st_size)
     except OSError:return False
+
+
+def ai_review_has_display(folder,record):
+    if ai_review_has_board(folder,record):return True
+    if record.get('board_image')!='board.png' or not record.get('obscured_cells'):return False
+    board=record.get('proposal',{}).get('board',[])
+    if len(board)!=30:return False
+    try:
+        with Image.open(Path(folder)/'board.png') as opened:image=opened.convert('RGB')
+        mask=obscured_cell_mask(image)
+        return any(mask) and cloud_visible_board_valid(image,board,mask)
+    except (OSError,ValueError,TypeError):return False
+
+
+def ai_review_list(root,mode='전체',limit=200):
+    paths=sorted(Path(root).glob('*/record.json'),reverse=True);rows=[]
+    for path in paths:
+        record=_load_json_dict(path)
+        if not record.get('id') or 'proposal' not in record or not ai_review_has_display(path.parent,record):continue
+        feedback=_load_json_dict(path.parent/'feedback.json');status=feedback.get('status','pending')
+        if mode=='미확인' and status!='pending':continue
+        if mode=='확인 완료' and status not in ('confirmed','corrected'):continue
+        rows.append((record['id'],status,record.get('created_at',0)))
+        if len(rows)>=limit:break
+    return rows,len(paths)
 
 
 def ai_review_write(root,proposal,board_image=None,game_image=None):
@@ -9408,7 +9600,8 @@ class App:
                 predicted_combos=metrics['combos'],predicted_final_combos=metrics['final_combos'],required_final_combos=metrics['required_total'],predicted_attributes=metrics['attr_count'],
                 predicted_direct_attributes=metrics['direct_attr_count'],predicted_known_next_combos=metrics['certified_next_combos'],
                 predicted_known_next_colors=metrics['certified_next_colors'],known_after_gravity=metrics['known_after_gravity'],
-                goals=list(goals if goals is not None else self.selected_goals()),solver_seconds=elapsed)
+                goals=list(goals if goals is not None else self.selected_goals()),solver_seconds=elapsed,
+                health=getattr(self,'_route_hp_reading',None),predicted_recovery_matched=metrics['recovery_matched'])
         except Exception as exc:
             self._v66_log(f'manual error snapshot metadata unavailable: {exc}')
 
@@ -9534,7 +9727,7 @@ class App:
         pending=getattr(self,'_manual_cloud_pending',None)
         if isinstance(pending,dict) and not (self.busy or self.playback_active):
             self._prefind_cancel();self.play_cancel.clear();self.busy=True
-            self.set_status('구름 아래 드롭을 이동 없이 확인합니다 · F10 중지')
+            self.set_status('구름·암흑 아래 드롭을 이동 없이 확인합니다 · F10 중지')
             threading.Thread(target=self._manual_cloud_worker,args=(pending['rect'],getattr(self,'_stop_epoch',0)),daemon=True).start()
             return
         self._last_manual_route_request_at = time.monotonic()
@@ -9545,6 +9738,11 @@ class App:
             if getattr(self,'_background_running',False):
                 self.set_status('백그라운드 파밍 중입니다. F10으로 중지한 뒤 직접 실행할 수 있습니다.');return
             if force:self._prefind_cancel()
+            key=getattr(self,'_prefind_checks_key',None)
+            checks=getattr(self,'_prefind_checks',None) or {}
+            if key is not None and checks.get('time_reason') and key[4] is not None and key[4]>1.0:
+                self._manual_survival_requested=True;self._master_execute_precomputed_only=False
+                self.calculate_clicked();return
             visible=getattr(self,'_attribute_probe_candidate',None)
             if isinstance(visible,(tuple,list)) and len(visible)==30 and not five_attribute_possible_by_count(visible):
                 self.set_status('5속성 수량 부족 · 판이 바뀌면 새 경로를 준비합니다.');return
@@ -9702,6 +9900,7 @@ class App:
         ttk.Button(farm_row,text='재료 파밍 시작 / 중지',command=self.start_background_farming).pack(side='left',fill='x',expand=True)
         ttk.Button(farm_row,text='AI 관리',command=self.show_ai_management).pack(side='left',padx=(6,0))
         ttk.Button(farm_row,text='파티 설정',command=self.show_party_settings).pack(side='left',padx=(6,0))
+        ttk.Button(outer,text='파밍 설정 · 목표 재료 선택',command=self.show_farming_settings).pack(fill='x',pady=3)
         ttk.Button(farm_row,text='파밍 연결 설정',command=self.background_settings).pack(side='left',padx=(6,0))
         attribute_host = ttk.Frame(outer)
         attribute_host.pack(fill="x")
@@ -13126,6 +13325,7 @@ class App:
         for entry in getattr(self,'_cloud_memories',{}).values():entry['memory'].invalidate()
         self._cloud_memories={}
         self._manual_cloud_pending=None
+        self._obscured_probe_candidate=None
 
     def _cloud_capture_crop(self,rect,device=None):
         if device is not None:
@@ -13163,7 +13363,7 @@ class App:
         return held,self._cloud_capture_crop(rect)
 
     def _cloud_resolve_crop(self,image,allow_probe=False,rect=None,device=None,observe_spikes=True):
-        mask=cloud_cell_mask(image);raw,_=classify_board(image)
+        mask=obscured_cell_mask(image);raw,_=classify_board(image)
         if any(mask):
             if not cloud_visible_board_valid(image,raw,mask):return None
         elif not _live_board_grid_is_visible(image,raw):return None
@@ -13194,7 +13394,7 @@ class App:
             if device is not None:self._farming_error_snapshot=probe_snapshot
             cancel=device.cancel if device is not None else self.play_cancel
             if cancel.wait(.06):raise RuntimeError('구름 확인을 중지했습니다.')
-            stable=self._cloud_capture_crop(rect,device);stable_mask=cloud_cell_mask(stable);stable_raw,_=classify_board(stable)
+            stable=self._cloud_capture_crop(rect,device);stable_mask=obscured_cell_mask(stable);stable_raw,_=classify_board(stable)
             if stable_mask!=mask or not cloud_visible_board_valid(stable,stable_raw,stable_mask) or any(stable_raw[i]!=raw[i] for i in range(30) if not mask[i]):
                 memory.invalidate();raise RuntimeError('구름 확인 전 판이 움직여 다시 확인해야 합니다.')
             before=stable
@@ -13209,7 +13409,7 @@ class App:
                     # touch, instead of treating that animation as a new board.
                     restored=0
                     for settle in range(8):
-                        after_mask=cloud_cell_mask(after);after_raw,_=classify_board(after)
+                        after_mask=obscured_cell_mask(after);after_raw,_=classify_board(after)
                         unchanged=(after_mask==mask and cloud_visible_board_valid(after,after_raw,mask)
                                    and all(after_raw[i]==raw[i] for i in range(30) if not mask[i]))
                         restored=restored+1 if unchanged else 0
@@ -13218,7 +13418,7 @@ class App:
                         assert_action_active(self)
                         after=self._cloud_capture_crop(rect,device)
                     if restored<2:
-                        memory.invalidate();raise RuntimeError('구름 드롭 확인 중 판이 바뀌어 입력을 멈췄습니다.')
+                        memory.invalidate();raise RuntimeError('가림 드롭 확인 중 판이 바뀌어 입력을 멈췄습니다.')
                     colour=cloud_revealed_drop(held,index,before_image=before)
                     observations.append(dict(cell=index,attempt=retry+1,colour=colour,stationary=True,released=True,release_settle_frames=settle+1))
                     probe_snapshot.update(input_before_up_image=held.copy(),input_observed_image=after.copy())
@@ -13242,7 +13442,7 @@ class App:
 
     def _background_observed(self,frame,device=None,allow_probe=False):
         rect=(882,255,692,572);x,y,w,h=rect;crop=frame.crop((x,y,x+w,y+h))
-        if not any(cloud_cell_mask(crop)):
+        if not any(obscured_cell_mask(crop)):
             result=background_board(frame)
             if result is not None:self._cloud_resolve_crop(crop,rect=rect,device=device)
             return result
@@ -13258,7 +13458,7 @@ class App:
             assert_action_active(self)
             image=self._cloud_capture_crop(rect)
             result=self._cloud_resolve_crop(image,True,rect=rect)
-            if result is None:raise RuntimeError('구름이 있는 퍼즐판을 확인하지 못했습니다.')
+            if result is None:raise RuntimeError('구름·암흑이 있는 퍼즐판을 확인하지 못했습니다.')
             def ready():
                 self.busy=False;self._manual_cloud_pending=None
                 self.board=list(result['board']);self.spikes=list(result['spikes']);self.update_board_view()
@@ -13267,8 +13467,8 @@ class App:
                 self._attribute_probe_candidate=tuple(self.board);self._attribute_probe_repeats=2
                 self._live_board_ready=True;self._live_board_seen_at=time.monotonic()
                 self._prefind_probe_next=0.0
-                self.set_status('구름 드롭 확인 완료 · 경로 준비 후 버튼으로 실행하세요.')
-                self._set_attribute_status('구름 드롭 확인 완료 · 경로 준비 중')
+                self.set_status('가림 드롭 확인 완료 · 경로 준비 후 버튼으로 실행하세요.')
+                self._set_attribute_status('가림 드롭 확인 완료 · 경로 준비 중')
                 self.toolbar.button.configure(text='▶ 경로 계산')
             post_action_result(self,epoch,ready)
         except Exception as exc:
@@ -13281,10 +13481,10 @@ class App:
 
     def capture_and_classify(self, show_preview=True) -> list[str]:
         img = self.grab_board()
-        if any(cloud_cell_mask(img)):
+        if any(obscured_cell_mask(img)):
             self._ai_last_capture=None
             resolved=self._cloud_resolve_crop(img,rect=self.board_rect)
-            if resolved is None:raise RuntimeError('구름 아래 드롭 미확인 · 경로 버튼으로 구름을 먼저 확인하세요.')
+            if resolved is None:raise RuntimeError('구름·암흑 아래 드롭 미확인 · 경로 버튼으로 구름을 먼저 확인하세요.')
             self.board=list(resolved['board']);self.spikes=list(resolved['spikes'])
             if show_preview:self.update_board_view()
             return list(self.board)
@@ -13478,11 +13678,11 @@ class App:
                 shot = capture.grab(dict(left=x, top=y, width=width, height=height))
                 image = Image.frombytes('RGB', shot.size, shot.rgb)
             captured_at = time.monotonic()
-            if any(cloud_cell_mask(image)):
-                raw,_=classify_board(image);mask=cloud_cell_mask(image)
+            if any(obscured_cell_mask(image)):
+                raw,_=classify_board(image);mask=obscured_cell_mask(image)
                 if cloud_visible_board_valid(image,raw,mask):
                     resolved=self._cloud_resolve_crop(image,rect=rect,observe_spikes=False)
-                    board=tuple(resolved['board']) if resolved is not None else dict(cloud_pending=True,rect=tuple(rect),mask=mask)
+                    board=tuple(resolved['board']) if resolved is not None else dict(cloud_pending=True,rect=tuple(rect),mask=mask,visible_signature=tuple(None if mask[i] else raw[i] for i in range(30)))
                 self._attribute_probe_queue.put((epoch,rect,board,captured_at))
                 return
             result, _ = classify_board(image)
@@ -13497,12 +13697,18 @@ class App:
     def _accept_attribute_probe(self, board):
         if getattr(self,'_background_running',False) is True:return
         if isinstance(board,dict) and board.get('cloud_pending'):
+            identity=(board.get('rect'),tuple(board.get('mask',[])),tuple(board.get('visible_signature',[])))
+            previous=getattr(self,'_obscured_probe_candidate',None);now=time.monotonic()
+            self._obscured_probe_candidate=(identity,previous[1] if previous and previous[0]==identity else now)
+            if previous is None or previous[0]!=identity or now-previous[1]<.12:return
             self._prefind_cancel();self._manual_cloud_pending=board
             self._attribute_probe_candidate=None;self._live_board_ready=True
             self._attribute_probe_last_valid=time.monotonic();self._live_board_seen_at=self._attribute_probe_last_valid
-            self._set_attribute_status('구름 아래 드롭 미확인 · 버튼으로 제자리 확인')
-            self.toolbar.button.configure(text='구름 드롭 확인');self.toolbar.raise_to_top()
+            self._set_attribute_status('구름·암흑 아래 드롭 미확인 · 버튼으로 제자리 확인')
+            self.toolbar.button.configure(text='가림 드롭 확인');self.toolbar.raise_to_top()
             return
+        self._obscured_probe_candidate=None
+        self._manual_cloud_pending=None
         self._attribute_probe_last_valid = time.monotonic()
         self._live_board_seen_at = self._attribute_probe_last_valid
         notice=getattr(self,'_route_result_notice',None)
@@ -13590,7 +13796,7 @@ class App:
                 self._set_attribute_status('5속성 수량 충족\n동시 경로 미발견 · 탐색 종료 · 버튼으로 재시도','#f8d67b')
                 return True
             if checks.get('time_reason'):
-                self.toolbar.button.configure(text='시간 미확인' if check_key[4] is None else '시간부족')
+                self.toolbar.button.configure(text='시간 미확인' if check_key[4] is None else '▶ 6콤보 계산·실행' if check_key[4]>1.0 else '시간부족')
                 self._set_attribute_status(checks['time_reason'],'#f8d67b')
                 return True
             plan=getattr(self,'_prefind_master_plan',None)
@@ -13600,6 +13806,7 @@ class App:
             if certificate.get('known_next_combos',0) and checks.get('six')=='ready':
                 text=text.replace('6콤보: 경로 확인',f"6콤보: 경로 확인 · 첫 {certificate['direct_combos']} + 기존 낙하 {certificate['known_next_combos']}")
             if survival and checks.get('six')=='ready' and '6콤보:' not in text:text+='\n6콤보: 경로 확인'
+            if check_key[2][3]:text=text.replace('6콤보:','6콤보·회복:')
             self._set_attribute_status(text,
                 '#84edbc' if all(checks.get(k)=='ready' for k in ('five','six')) else '#f8d67b')
             joint=getattr(self,'_prefind_result',None) is not None
@@ -13626,13 +13833,17 @@ class App:
         self._set_attribute_status(phase,'#84edbc' if ready else '#f8d67b')
         return True
 
-    def _prefind_probe_worker(self, board, rect, goals, avoid):
+    def _prefind_probe_worker(self, board, rect, goals, avoid, health_only=False):
         previous=tuple(getattr(ACTION_LOCAL,k,None) for k in ('app','epoch','passive_display'))
         epoch=getattr(self,'_stop_epoch',0)
         ACTION_LOCAL.app=self;ACTION_LOCAL.epoch=epoch;ACTION_LOCAL.passive_display=True
         captured_at=time.monotonic()
         try:
             image=self._capture_route_timer_image(cache_for_error=False)
+            if epoch==getattr(self,'_stop_epoch',0):App._observe_route_health(self,image)
+            if health_only:
+                self._prefind_probe_queue.put((board,rect,goals,captured_at,dict(health_only=True)))
+                return
             if not master_multicolor(goals) and not shortened_timer_bar(image):
                 data=None
             else:
@@ -13643,7 +13854,7 @@ class App:
                 crop=image.crop((x-gx,y-gy,x-gx+w,y-gy+h))
                 actual,_=classify_board(crop)
                 cloud_observed=None
-                if any(cloud_cell_mask(crop)):
+                if any(obscured_cell_mask(crop)):
                     cloud_observed=self._cloud_resolve_crop(crop,allow_probe=False,rect=rect)
                     actual=list(cloud_observed['board']) if cloud_observed is not None else []
                 if tuple(actual)!=board:
@@ -13793,6 +14004,12 @@ class App:
         return expired
 
     def _prefind_start(self, key):
+        if master_multicolor(key[2]) and key[2][3] and key[0].count('H')<3:
+            self._prefind_cancel()
+            self._prefind_checks_key=key
+            self._prefind_checks=dict(five='unfound',six='skipped',condition_reason=f"체력 60% 이하 · 회복 드롭 부족 ({key[0].count('H')}/3)")
+            self._prefind_feedback(key[0])
+            return
         if master_multicolor(key[2]) and (key[4] is None or key[4]<=5.0):
             self._prefind_cancel()
             self._prefind_checks_key=key
@@ -13908,6 +14125,7 @@ class App:
                     self._prefind_probe_busy=False
                     if sampled!=board or area!=rect or mode!=goals or time.monotonic()-at>2:
                         continue
+                    if isinstance(data,dict) and data.get('health_only'):continue
                     # A missed timer/OCR sample does not invalidate a verified board result.
                     if data is None:
                         checks=getattr(self,'_prefind_checks',None) or {}
@@ -13981,6 +14199,13 @@ class App:
                     self._prefind_probe_next=now+(.3 if master_multicolor(goals) else 1.5)
                     threading.Thread(target=self._prefind_probe_worker,
                         args=(board,rect,goals,self.selected_skull_safety()),daemon=True).start()
+                if (complete and (getattr(self,'_prefind_result',None) is not None or goals[3])
+                        and master_multicolor(goals) and not self._prefind_probe_busy
+                        and now-getattr(self,'_route_hp_checked_at',now)>=1.0):
+                    self._remember_route_timer_windows()
+                    self._prefind_probe_busy=True
+                    threading.Thread(target=self._prefind_probe_worker,
+                        args=(board,rect,goals,self.selected_skull_safety()),kwargs=dict(health_only=True),daemon=True).start()
             # Drain cancelled probes too; never leave a stale busy flag forever.
             if not eligible:
                 while True:
@@ -14097,6 +14322,44 @@ class App:
         self._clear_route_result_notice()
         self._reset_attribute_probe("5속성: 확인 대기")
 
+    def _observe_route_health(self,image):
+        epoch=getattr(self,'_stop_epoch',0)
+        previous=getattr(self,'_route_hp_reading',None)
+        try:
+            status=route_health_status(image)
+            if status['ratio'] is not None and status['low_hp'] is None:
+                # Only the boundary needs OCR; normal HP checks use the rail
+                # without competing with timer/enemy OCR on every preview.
+                crop=image.convert('RGB').resize((1600,940),Image.Resampling.LANCZOS).crop((580,875,855,930))
+                readings=[]
+                for scale in (3,4):
+                    text,score=self._recognize_title_line(crop.resize((crop.width*scale,crop.height*scale),Image.Resampling.LANCZOS))
+                    found=re.fullmatch(r'\s*(\d{1,8})\s*/\s*(\d{1,8})\s*',text.replace(',',''))
+                    value=tuple(map(int,found.groups())) if found and score>=.85 else None
+                    readings.append(value if value and 0<=value[0]<=value[1] and value[1]>0 else None)
+                if readings[0] is not None and readings[0]==readings[1]:
+                    current,total=readings[0]
+                    if abs(current/total-status['ratio'])<=.04:
+                        status.update(current=current,total=total,ratio=current/total,low_hp=current*5<=total*3,source='hp_numbers')
+        except Exception:
+            status=dict(ratio=None,low_hp=None,source='unconfirmed')
+        status['epoch']=epoch
+        if epoch!=getattr(self,'_stop_epoch',0):return status
+        # A missed frame cannot prove that previously low HP has recovered.
+        if (status.get('low_hp') is None and isinstance(previous,dict)
+                and previous.get('epoch')==epoch and previous.get('low_hp') is True):
+            status.update(low_hp=True,source='last_confirmed_low_hp')
+        self._route_hp_reading=status
+        self._route_hp_checked_at=time.monotonic()
+        return status
+
+    def _route_health_goals(self,goals):
+        status=getattr(self,'_route_hp_reading',None)
+        if not master_multicolor(goals) or not isinstance(status,dict):return tuple(goals)
+        values=list(goals)
+        values[3]=status.get('epoch')==getattr(self,'_stop_epoch',0) and status.get('low_hp') is True
+        return tuple(values)
+
     def selected_goals(self) -> tuple[bool, ...]:
         """Keep stable mode IDs while displaying the six requested party goals."""
         try:
@@ -14105,7 +14368,8 @@ class App:
             selected = 0
         if selected not in {i for i, _, _ in ROUTE_GOAL_OPTIONS}:
             selected = 0
-        return master_multicolor_goals() if selected==9 else tuple(index == selected for index in range(7))
+        goals=master_multicolor_goals() if selected==9 else tuple(index == selected for index in range(7))
+        return App._route_health_goals(self,goals)
 
     def selected_skull_safety(self) -> bool:
         # Until HP/poison damage are measured, retain conservative hazard ranking.
@@ -14130,6 +14394,12 @@ class App:
 
     def _prepare_route_goals(self, board, spikes):
         requested=self.selected_goals()
+        if getattr(self,'_manual_survival_requested',False) and master_multicolor(requested):
+            self._manual_survival_requested=False
+            effective=master_survival_goals()
+            self._route_combo_fallback=dict(board=tuple(board),spikes=tuple(spikes),requested_goals=tuple(requested),
+                effective_goals=effective,reason='master_survival')
+            return effective
         effective,fallback=inventory_route_goals(board,requested)
         offer=getattr(self,'_route_combo_offer',None)
         offered=(self._combo_offer_matches(board,spikes,requested)
@@ -14156,7 +14426,7 @@ class App:
             self.set_status('자동파밍 중입니다. F10으로 중지한 뒤 수동 계산을 사용할 수 있습니다.');return
         self._background_failure_hold=False
         resume_actions(self)
-        if master_multicolor(self.selected_goals()):
+        if master_multicolor(self.selected_goals()) and not getattr(self,'_manual_survival_requested',False):
             self._master_execute_precomputed_only=True
             if (not getattr(self,'_route_ui_active',False) and not (self.busy or self.playback_active)
                     and (getattr(self,'_prefind_result',None) is None
@@ -14382,6 +14652,7 @@ class App:
         try:
             image = image if image is not None else self._capture_route_timer_image()
             if report:
+                App._observe_route_health(self,image)
                 try:App._read_combo_condition(self,image,getattr(self,'board',[]))
                 except Exception as exc:
                     self._route_combo_condition=dict(board=tuple(getattr(self,'board',[])),required_total=0,combo_bonus=0,
@@ -14497,6 +14768,7 @@ class App:
         try:
             started = time.perf_counter()
             move_cap, detected_seconds = self._restricted_drag_move_cap()
+            goals=App._route_health_goals(self,goals)
             master_requested=master_multicolor(goals)
             requested_master=tuple(goals)
             if master_requested:
@@ -14547,8 +14819,8 @@ class App:
             self._v66_log(f"{APP_VERSION} solver strategy: {'5-attribute search' if goals[2] else 'normal'}, budget={budget}, reserve={reserve}")
             def search(seconds,limit):
                 if master_requested and goals[2]:
-                    return solve_master_attack(board,seconds,limit,spikes,avoid_skull,required_total,combo_bonus,cancel_event,seed_offset=getattr(self,"_master_search_attempt",0))
-                if goals[2]:
+                    return solve_master_attack(board,seconds,limit,spikes,avoid_skull,required_total,combo_bonus,cancel_event,seed_offset=getattr(self,"_master_search_attempt",0),**(dict(require_heal=True) if effective[3] else {}))
+                if goals[2] and not effective[3]:
                     return solve_five_attributes_v101(board,time_budget=seconds,max_moves=limit,
                                                       spikes=spikes,avoid_skull=avoid_skull,required_total=required_total,combo_bonus=combo_bonus,cancel_event=cancel_event)
                 return solve_path(board,time_budget=seconds,max_moves=limit,
@@ -14713,7 +14985,7 @@ class App:
         if details['required_total'] or details['combo_bonus']:
             self.last_result_summary+=f" · 최종 {details['final_combos']}콤보 (가산 +{details['combo_bonus']}) / 적 요구 {details['required_total']}"
         self.set_status(result_text)
-        App._ai_review_needed(self,'경로 판단 확인 필요: '+result_text if unmet else '경로 계산 결과',popup=bool(unmet),snapshot=dict(board=list(board),spikes=list(spikes),goals=list(selected),path=list(path),source='manual_route',master_survival=master_survival(selected)))
+        App._ai_review_needed(self,'경로 판단 확인 필요: '+result_text if unmet else '경로 계산 결과',popup=True,snapshot=dict(board=list(board),spikes=list(spikes),goals=list(selected),path=list(path),source='manual_route',master_survival=master_survival(selected)))
         if fallback and details["combos"]<1:
             self._route_combo_fallback=None
             self.set_status("콤보 경로 미발견 · 이동하지 않습니다. 5속성 설정은 유지됩니다.")
@@ -14906,6 +15178,11 @@ class App:
             # The shield needs six combos regardless of the enemy absorption
             # threshold. Only a changed bonus can invalidate this route.
             condition_changed=current_combo[1]!=previous_combo[1]
+        if previous_combo is not None and condition_changed and current_combo is not None and current_combo[2]:
+            execution=self._route_playback_goals(self.board,path)
+            required=6 if survival else current_combo[0]
+            checked=board_goal_metrics(board_after_drag(self.board,path),combo_condition_goals(execution,required,current_combo[1]))
+            if checked['all_met']:condition_changed=False
         if previous_combo is not None and condition_changed:
             self._cancel_countdown('자동실행 취소: 적 콤보 조건 또는 가산이 변경되었습니다. 다시 계산해 주세요.')
             self.restore_control_panel()
@@ -14986,7 +15263,7 @@ class App:
             cloud_mask=[False]*30
             if cloud_mode:
                 x,y,w,h=snapshot.get('board_rect',(882,255,692,572));crop=frame.crop((x,y,x+w,y+h))
-                raw,_=classify_board(crop);cloud_mask=cloud_cell_mask(crop)
+                raw,_=classify_board(crop);cloud_mask=obscured_cell_mask(crop)
                 # background_board intentionally rejects an unresolved cloud.
                 # An unchanged cloud is not an unavailable/fading game grid.
                 visible_valid=cloud_visible_board_valid(crop,raw,cloud_mask)
@@ -15619,10 +15896,13 @@ class App:
         self._party_button=tk.Button(self._background_button_win,text='파티 설정',command=self.show_party_settings,
             bg='#294a60',fg='white',activebackground='#3d647d',font=('Segoe UI',11,'bold'),relief='solid',borderwidth=1,padx=18,pady=9)
         self._party_button.pack(fill='both',expand=True)
+        self._farming_settings_button=tk.Button(self._background_button_win,text='파밍 설정',command=self.show_farming_settings,
+            bg='#294a60',fg='white',activebackground='#3d647d',font=('Segoe UI',11,'bold'),relief='solid',borderwidth=1,padx=18,pady=9)
+        self._farming_settings_button.pack(fill='both',expand=True)
         self._team_party_context=None;self._team_party_valid_at=0.0
         self._team_party_win=None
         self._team_party_button=None
-        for button in (self._background_button,self._party_button):
+        for button in (self._background_button,self._party_button,self._farming_settings_button):
             button.bind('<ButtonPress-1>',lambda _e:(setattr(self,'_background_pressed',True),setattr(self,'_background_pressed_at',time.monotonic())),add='+')
             button.bind('<ButtonRelease-1>',lambda _e:self.root.after(120,lambda:setattr(self,'_background_pressed',False)),add='+')
         self._awakening_register_context=None;self._awakening_register_at=0.0;self._awakening_register_busy=False
@@ -15645,7 +15925,7 @@ class App:
         result=None
         if len(readings)==2 and min(score for _,score in readings)>=.82:
             values=[_compact_ocr_text(text) for text,_ in readings]
-            if values[0]==values[1] and values[0] in ('잠입확인','연전확인','결과','각성스킬상세','크리처상세','팀','근원트리','홈','모험','던전','육성','크리스탈획득던전','출현아이템','중간돌파확인','한계돌파확인','최종한계돌파확인'):result=values[0]
+            if values[0]==values[1] and values[0] in ('잠입확인','연전확인','결과','각성스킬상세','크리처상세','팀','근원트리','홈','모험','던전','육성','크리스탈획득던전','출현아이템','중간돌파확인','한계돌파확인','최종한계돌파확인','생성확인'):result=values[0]
         if fingerprint and result:self._background_header_cache=(fingerprint,result)
         return result
 
@@ -16105,7 +16385,7 @@ class App:
         self.toolbar._temporarily_hidden=False
         self.toolbar._user_hidden=False
         if observed.get('partial'):
-            self._accept_attribute_probe(dict(cloud_pending=True,rect=tuple(self.board_rect),mask=observed['cloud_mask']))
+            self._accept_attribute_probe(dict(cloud_pending=True,rect=tuple(self.board_rect),mask=observed['cloud_mask'],visible_signature=tuple(observed['board'])))
             return
         self.toolbar.button.configure(text='▶ 경로 계산')
         self._accept_attribute_probe(tuple(observed['board']))
@@ -16249,7 +16529,7 @@ class App:
                 self._background_button_win.withdraw()
             else:
                 x,y,w,h=context[1]
-                self._background_button_win.geometry(f'{round(w*.123)}x{round(h*.12)}+{round(x+w*.862)}+{round(y+h*.30)}')
+                self._background_button_win.geometry(f'{round(w*.123)}x{round(h*.18)}+{round(x+w*.862)}+{round(y+h*.30)}')
                 if self._background_button_win.state()=='withdrawn' or now-getattr(self,'_background_raise_at',0)>=1.0:
                     show_game_overlay_without_focus(self._background_button_win)
                     self._background_raise_at=now
@@ -16724,8 +17004,7 @@ class App:
         from PIL import ImageTk
         import base64,io
         win=tk.Toplevel(self.root);win.title('전투 상태 아이콘 등록 · 아이콘 그림만 드래그');win.geometry('830x600')
-        labels={'void_shield':'일정 피해 이상 무효 방패','attack_down':'공격력 감소','awoken_void':'각성 무효','bound':'바인드',
-                'recovery_down':'회복력 감소','damage_absorb':'데미지 흡수','attribute_absorb':'속성 흡수'}
+        labels=STATUS_ICON_LABELS
         choice=tk.StringVar(value=list(labels.values())[0]);ttk.Combobox(win,textvariable=choice,values=list(labels.values()),state='readonly',width=35).pack()
         ttk.Label(win,text='남은 턴 숫자를 제외하고 아이콘 그림만 선택하세요. 50/75% 감소 방패는 무효 방패로 등록하지 마세요.').pack()
         canvas=tk.Canvas(win,width=800,height=470);canvas.pack();photo=ImageTk.PhotoImage(frame.resize((800,470)));canvas.image=photo
@@ -16743,8 +17022,10 @@ class App:
             if not box or not 10<=box[2]-box[0]<=100 or not 10<=box[3]-box[1]<=100:return
             crop=frame.crop(box);stream=io.BytesIO();crop.save(stream,format='PNG')
             key=next(k for k,v in labels.items() if v==choice.get())
-            self.user_settings.setdefault('background_status_templates',{})[key]=dict(png=base64.b64encode(stream.getvalue()).decode(),area='enemy' if box[1]<600 else 'party')
-            self.save_user_settings();win.destroy();self.set_status('상태 아이콘을 저장했습니다. 다음 파밍부터 자동 비교합니다.')
+            try:count=learn_status_icon(self.user_settings,key,crop,'enemy' if box[1]<600 else 'party')
+            except ValueError as exc:self.set_status(str(exc));return
+            self.save_user_settings();self._background_visual_status_cache=None
+            win.destroy();self.set_status(f'상태 아이콘 예시 {count}개 저장 · 다음 자동파밍 판단에 적용합니다.')
         ttk.Button(win,text='선택한 상태 아이콘 저장',command=save).pack(pady=8)
 
     def _background_complete_notification(self,message):
@@ -16992,18 +17273,24 @@ class App:
             self.save_user_settings();window.destroy()
         ttk.Button(body,text='저장',command=save).pack(anchor='e',pady=8)
 
-    def show_farming_confirmation(self):
+    def show_farming_settings(self):
+        if (getattr(self,'_background_running',False) or getattr(self,'_manual_reward_busy',False)
+                or getattr(self,'playback_active',False)):
+            self.set_status('진행 중인 파밍·집계가 끝난 뒤 목표 재료를 바꿔 주세요.');return
+        self.show_farming_confirmation(settings_only=True)
+
+    def show_farming_confirmation(self,settings_only=False,target_key=None):
         existing=getattr(self,'_farming_confirm_window',None)
         if existing is not None and existing.winfo_exists():existing.deiconify();existing.lift();return
         try:
-            ledger=self._load_crystal_ledger();key=background_target_key(ledger)
+            ledger=self._load_crystal_ledger();key=target_key or background_target_key(ledger)
             group=ledger.get('farming_groups',{}).get(key)
             if not group or not group.get('materials'):raise ValueError('돌파 화면에서 재료 목록을 먼저 확인해 주세요.')
             rows=farming_group_rows(ledger,key);db=self._load_crystal_db()
         except Exception as error:self.set_status(str(error));return
         epoch=getattr(self,'_stop_epoch',0)
         win=tk.Toplevel(self.root);win.withdraw();self._farming_confirm_window=win
-        win.title('재료 파밍 확인');win.geometry('560x220');win.minsize(490,180)
+        win.title('파밍 설정' if settings_only else '재료 파밍 확인');win.geometry('620x260');win.minsize(560,220)
         style=ttk.Style(win)
         style.configure('FarmConfirm.TFrame',background='#f5f7fa')
         style.configure('FarmConfirm.TLabel',background='#f5f7fa',foreground='#1e293b')
@@ -17011,7 +17298,15 @@ class App:
         style.configure('FarmTable.TLabel',background='white',foreground='#334155')
         style.configure('FarmHeader.TLabel',background='white',foreground='#64748b')
         body=ttk.Frame(win,padding=14,style='FarmConfirm.TFrame');body.pack(fill='both',expand=True)
-        ttk.Label(body,style='FarmConfirm.TLabel',text='돌파 대상: '+group['name'],font=('Malgun Gothic',12,'bold'),wraplength=510).pack(anchor='w',pady=(0,12))
+        ttk.Label(body,style='FarmConfirm.TLabel',text='파밍할 재료를 선택하세요',font=('Malgun Gothic',12,'bold')).pack(anchor='w')
+        keys=[k for k,g in ledger.get('farming_groups',{}).items() if g.get('materials')]
+        selector=ttk.Combobox(body,state='readonly',values=[ledger['farming_groups'][k]['name'] for k in keys])
+        selector.current(keys.index(key));selector.pack(fill='x',pady=(8,6))
+        def change_group(_event):
+            chosen_key=keys[selector.current()]
+            cancel();self.show_farming_confirmation(settings_only=settings_only,target_key=chosen_key)
+        selector.bind('<<ComboboxSelected>>',change_group)
+        ttk.Label(body,style='FarmConfirm.TLabel',text='선택하지 않으면 보상 집계창과 자동 집계를 사용하지 않습니다.',wraplength=570).pack(anchor='w',pady=(0,10))
         area=ttk.Frame(body,style='FarmTable.TFrame');area.pack(fill='both',expand=True)
         canvas=tk.Canvas(area,highlightthickness=0,bg='white');scroll=ttk.Scrollbar(area,orient='vertical',command=canvas.yview)
         canvas.configure(yscrollcommand=scroll.set);scroll.pack(side='right',fill='y');canvas.pack(side='left',fill='both',expand=True)
@@ -17020,32 +17315,36 @@ class App:
         canvas.bind('<Configure>',lambda e:canvas.itemconfigure(item,width=e.width))
         win.bind('<MouseWheel>',lambda e:canvas.yview_scroll(-int(e.delta/120),'units'))
         for event,direction in (('<Button-4>',-1),('<Button-5>',1)):win.bind(event,lambda e,d=direction:canvas.yview_scroll(d,'units'))
-        listing.columnconfigure(1,weight=1);checks={};needs={};photos=[]
+        listing.columnconfigure(2,weight=1);checks={};needs={};photos=[]
+        saved=configured_farming_selection(ledger)
+        saved_ids=set(saved['material_ids']) if saved is not None and saved['key']==key else set()
         entries={str(entry['id']):entry for entry in db.get('crystals',[])}
-        listing.columnconfigure(0,minsize=40)
-        for col,text in enumerate(('재료','필요','보유','부족'),1):
-            ttk.Label(listing,text=text,style='FarmHeader.TLabel',anchor='w' if col==1 else 'e').grid(row=0,column=col,sticky='ew',padx=(0,10),pady=(0,6))
+        listing.columnconfigure(1,minsize=40)
+        for col,text in enumerate(('재료','필요','보유','부족'),2):
+            ttk.Label(listing,text=text,style='FarmHeader.TLabel',anchor='w' if col==2 else 'e').grid(row=0,column=col,sticky='ew',padx=(0,10),pady=(0,6))
         for index,row in enumerate(rows,1):
-            cid=row['id'];checks[cid]=tk.BooleanVar(value=row['deficit']>0);needs[cid]=tk.StringVar(value=str(row['required']))
-            if row['deficit']<=0:continue
+            cid=row['id'];checks[cid]=tk.BooleanVar(value=cid in saved_ids);needs[cid]=tk.StringVar(value=str(row['required']))
+            ttk.Checkbutton(listing,variable=checks[cid]).grid(row=index,column=0,sticky='w',padx=(2,6))
             entry=entries.get(cid,{})
             label=ttk.Label(listing,text=crystal_display_name(entry,row,index),wraplength=235,style='FarmTable.TLabel')
             try:
                 from PIL import ImageTk
                 path=self.data_paths['icons_dir']/str(entry.get('image_file') or row.get('image_file') or '')
                 with Image.open(path) as source:image=source.convert('RGB');image.thumbnail((32,32));photo=ImageTk.PhotoImage(image)
-                photos.append(photo);ttk.Label(listing,image=photo,style='FarmTable.TLabel').grid(row=index,column=0,sticky='w',padx=(0,8),pady=5)
+                photos.append(photo);ttk.Label(listing,image=photo,style='FarmTable.TLabel').grid(row=index,column=1,sticky='w',padx=(0,8),pady=5)
             except (OSError,ValueError,KeyError):pass
-            label.grid(row=index,column=1,sticky='w',padx=(0,10),pady=5)
-            ttk.Entry(listing,textvariable=needs[cid],width=7,justify='right').grid(row=index,column=2,sticky='e',padx=(0,10))
-            ttk.Label(listing,text=str(row['owned']),anchor='e',style='FarmTable.TLabel').grid(row=index,column=3,sticky='e',padx=(0,10))
-            deficit=tk.StringVar(value=str(row['deficit']));ttk.Label(listing,textvariable=deficit,anchor='e',style='FarmTable.TLabel').grid(row=index,column=4,sticky='e',padx=(0,10))
+            label.grid(row=index,column=2,sticky='w',padx=(0,10),pady=5)
+            ttk.Entry(listing,textvariable=needs[cid],width=7,justify='right').grid(row=index,column=3,sticky='e',padx=(0,10))
+            ttk.Label(listing,text=str(row['owned']),anchor='e',style='FarmTable.TLabel').grid(row=index,column=4,sticky='e',padx=(0,10))
+            deficit=tk.StringVar(value=str(row['deficit']));ttk.Label(listing,textvariable=deficit,anchor='e',style='FarmTable.TLabel').grid(row=index,column=5,sticky='e',padx=(0,10))
             def update(*_,var=needs[cid],owned=row['owned'],out=deficit):
                 try:out.set(str(max(0,int(var.get())-owned)))
                 except ValueError:out.set('—')
             needs[cid].trace_add('write',update)
         win._material_photos=photos
         notice=tk.StringVar();notice_label=ttk.Label(body,style='FarmConfirm.TLabel',textvariable=notice,foreground='#b33b32',wraplength=510);notice_label.pack(side='bottom',anchor='w',pady=(8,0),before=area)
+        hide_stats=tk.BooleanVar(value=self.user_settings.get('farming_hide_stats',False))
+        ttk.Checkbutton(body,text='보상 집계창 숨기기 (수량은 계속 집계)',variable=hide_stats).pack(side='bottom',anchor='w',before=area)
         controls=ttk.Frame(body,style='FarmConfirm.TFrame');controls.pack(side='bottom',fill='x',pady=(8,0),before=area)
         def cancel():
             if win.winfo_exists():win.destroy()
@@ -17056,12 +17355,24 @@ class App:
                 with self._crystal_db_lock:
                     current=self._load_crystal_ledger()
                     if current.get('farming_groups',{}).get(key)!=group:raise ValueError('재료 목록이 바뀌었습니다. 창을 다시 열어주세요.')
-                    updated,chosen=prepare_farming_selection(current,key,{cid:var.get() for cid,var in needs.items()},[cid for cid,var in checks.items() if var.get()])
+                    updated,chosen=save_farming_selection(current,key,{cid:var.get() for cid,var in needs.items()},[cid for cid,var in checks.items() if var.get()])
+                    if not settings_only and not chosen:raise ValueError('파밍할 재료를 하나 이상 선택해 주세요.')
                     _atomic_json_write(self.data_paths['ledger'],updated)
-                cancel();self.start_background_farming(confirmed=True,material_ids=chosen,confirmed_key=key)
+                self.user_settings['farming_hide_stats']=hide_stats.get();self.save_user_settings()
+                cancel()
+                if settings_only:
+                    self._prefind_cancel();self._prefind_paused_key=None;self._prefind_failed_key=None
+                    self._prefind_condition_wait=None;self._prefind_probe_next=0.0
+                    self._attribute_probe_next=0.0
+                    self._farming_displayed_session=None
+                    if getattr(self,'_farming_stats',None) is not None:self._farming_stats.withdraw()
+                    self.set_status(f'파밍 설정 저장 · {len(chosen)}종 선택' if chosen else '파밍 설정 저장 · 보상 집계 끔')
+                else:self.start_background_farming(confirmed=True,material_ids=chosen,confirmed_key=key)
             except (ValueError,OSError) as error:notice.set(str(error))
         ttk.Button(controls,text='취소',command=cancel).pack(side='right')
-        ttk.Button(controls,text='확인',command=confirm,style='Accent.TButton').pack(side='right',padx=(0,8))
+        ttk.Button(controls,text='저장' if settings_only else '확인 · 파밍 시작',command=confirm,style='Accent.TButton').pack(side='right',padx=(0,8))
+        ttk.Button(controls,text='전체 해제',command=lambda:[var.set(False) for var in checks.values()]).pack(side='left')
+        ttk.Button(controls,text='부족 재료 선택',command=lambda:[checks[row['id']].set(row['deficit']>0) for row in rows]).pack(side='left',padx=6)
         win.protocol('WM_DELETE_WINDOW',cancel);win.bind('<Escape>',lambda e:cancel())
         # Size from actual font/DPI metrics; a single row should not leave a tall blank list.
         win.update_idletasks()
@@ -17074,8 +17385,8 @@ class App:
         except (AttributeError,tk.TclError):ax,ay,aw,ah=win.winfo_pointerx(),win.winfo_pointery(),1,1
         vx,vy=win.winfo_vrootx(),win.winfo_vrooty()
         vw,vh=win.winfo_vrootwidth(),win.winfo_vrootheight()
-        px,py=farming_confirmation_position((ax,ay,aw,ah),(560,height),(vx,vy,vw,vh))
-        win.geometry(f'560x{height}{px:+d}{py:+d}')
+        px,py=farming_confirmation_position((ax,ay,aw,ah),(620,height),(vx,vy,vw,vh))
+        win.geometry(f'620x{height}{px:+d}{py:+d}')
         if table_height<=height-reserved:scroll.pack_forget()
         self._party_bring_forward(win)
 
@@ -17089,6 +17400,10 @@ class App:
             self.set_status('현재 작업이 끝난 뒤 재료 파밍을 시작해 주세요.');return
         try:
             ledger=self._load_crystal_ledger();key=background_target_key(ledger)
+            selection=configured_farming_selection(ledger)
+            if selection is None:raise ValueError('파밍 설정에서 목표 재료를 먼저 선택해 주세요.')
+            if material_ids is None:material_ids=selection['material_ids']
+            if key!=selection['key'] or set(material_ids)!=set(selection['material_ids']):raise ValueError('선택한 파밍 재료가 바뀌었습니다. 다시 확인해 주세요.')
             if confirmed_key is not None and key!=confirmed_key:raise ValueError('돌파 대상이 바뀌었습니다. 다시 확인해 주세요.')
             if background_goal_complete(ledger,key,material_ids=material_ids):self.set_status('선택한 재료가 모두 충족되어 파밍을 시작하지 않습니다.');return
             self._background_selected_material_ids=list(material_ids) if material_ids is not None else None
@@ -17480,6 +17795,10 @@ class App:
 
     def _background_battle_turn(self,device,frame,profiles,goals,team_min):
         if background_battle_intro(frame):return False
+        if master_multicolor(goals):
+            # The run may have started at low HP; re-evaluate the adaptive
+            # heart requirement every turn rather than latching it for the run.
+            values=list(goals);values[3]=False;goals=tuple(values)
         turn_started=time.monotonic()
         used=set()
         applied=set()
@@ -17488,10 +17807,12 @@ class App:
             observed=self._background_observed(frame,device,True)
             if observed is None:return False
             board,spikes=observed['board'],observed['spikes']
+            health=App._observe_route_health(self,frame)
+            recovery_required=master_multicolor(goals) and health.get('low_hp') is True
             condition=self._read_combo_condition(frame,board,store=False)
             self._manual_error_snapshot=dict(board=list(board),board_image=observed['crop'].copy(),game_image=frame.copy(),
                 path=[],spikes=list(spikes),goals=list(goals),combo_condition=condition,phase='background_search',
-                source='adb_background',version=APP_VERSION,board_rect=list(observed['rect']),
+                source='adb_background',version=APP_VERSION,health=dict(health),recovery_required=recovery_required,board_rect=list(observed['rect']),
                 entry_image=getattr(self,'_background_entry_diagnostics_image',None),
                 timings=dict(getattr(self,'_background_diagnostics',{})),input_display=getattr(device,'input_diagnostics',{}),
                 input_trace=getattr(device,'input_trace',[]),
@@ -17577,13 +17898,17 @@ class App:
             if master_multicolor(goals) and seconds is None:
                 raise RuntimeError('조작시간 숫자 재확인 실패 · 시간 감소 표시/숫자 겹침을 확인하세요. 사용 가능한 시간 대응 스킬이 없어 4초 잔여 조건을 보장할 수 없습니다.')
             survival=master_multicolor(goals) and seconds is not None and (shortage or seconds<=5.0 or critical_counter)
+            if recovery_required and (survival or board.count('H')<3):
+                raise RuntimeError('체력 60% 이하 · 회복 포함 5속성·6콤보 조건 부족 · 파밍 중지')
             operation_seconds=route_operation_seconds(seconds,master_survival_goals() if survival else goals)
             cap=device.move_cap(operation_seconds)
             self._farming_error_snapshot.update(search_move_cap=cap,search_operation_seconds=operation_seconds,skill_decision=getattr(self,'_last_background_skill_decision',None))
             effective=master_survival_goals(required,bonus) if survival else tuple(False for _ in goals) if shortage or critical_counter else goals
             # With no useful skill and insufficient colours, charge skills by playing combos.
             combo_turn=(shortage or critical_counter) and choice is None and not master_multicolor(goals)
+            effective=recovery_route_goals(effective,recovery_required)
             target=combo_condition_goals(effective,6 if combo_turn else required,bonus)
+            if recovery_required:self._background_queue.put(('status','체력 60% 이하 · 회복 포함 5속성·6콤보 경로 탐색 · F10 중지'))
             if survival:self._background_queue.put(('status','달인 다색 · 공격 조건 부족 · 6콤보 이상 생존 경로 · F10 중지'))
             if combo_turn:self._background_queue.put(('status','5속성 부족 · 사용 가능한 대응 스킬 없음 · 6콤보 이상으로 턴 진행 · F10 중지'))
             if not combo_turn:self._background_queue.put(('status',f'백그라운드 경로 탐색 · 적/팀 {required}콤보 이상 · 가산 +{bonus} · F10 중지'))
@@ -17593,7 +17918,7 @@ class App:
             math_started=time.monotonic();searches+=1
             if effective[2]:
                 if master_multicolor(goals):
-                    path,_,_,after=solve_master_attack(board,budget,cap,spikes,False,required,bonus,self._background_cancel,seed_offset=attempt)
+                    path,_,_,after=solve_master_attack(board,budget,cap,spikes,False,required,bonus,self._background_cancel,seed_offset=attempt,**(dict(require_heal=True) if recovery_required else {}))
                 else:
                     path,_,_,after=solve_five_attributes_v101(board,time_budget=budget,max_moves=cap,spikes=spikes,
                         avoid_skull=False,required_total=required,combo_bonus=bonus,seed_offset=attempt,cancel_event=self._background_cancel)
@@ -17618,6 +17943,8 @@ class App:
                     frame=self._background_wait_skill_board(device,board,profiles[choice].get('effects',[]))
                     math_spent=0.0;searches=0
                     continue
+                if recovery_required:
+                    raise RuntimeError('회복 포함 5속성·6콤보 경로 미발견 · 회복 조건을 생략하지 않고 파밍 중지')
                 # No useful ready skill: charge cooldowns with six combos rather
                 # than stopping on an unavailable five-colour/enemy attack floor.
                 if master_multicolor(goals):
@@ -17652,6 +17979,9 @@ class App:
             if not details['all_met']:raise RuntimeError('자동 경로 재검증 실패 · 파밍 중지')
             fresh=device.capture();current=self._background_observed(fresh,device,True)
             if current is None:return False
+            next_health=App._observe_route_health(self,fresh)
+            if master_multicolor(goals) and next_health.get('low_hp') is True and not target[3]:
+                frame=fresh;continue
             next_visual=self._background_visual_status(fresh)
             if any(next_visual.get(flag) and not visual.get(flag) and effect not in applied for flag,effect in (('void_shield','void_pierce'),('damage_absorb','absorb'),('attribute_absorb','attribute_absorb'),('bound','bind_clear'),('awoken_void','awoken_clear'))):
                 frame=fresh;continue
@@ -17664,7 +17994,7 @@ class App:
             if len(path)-1>device.move_cap(route_operation_seconds(now_seconds,master_survival_goals() if survival else goals)):raise RuntimeError('제한시간부족 · 입력 직전 파밍 경로를 보류했습니다.')
             # Keep one pre-move original in RAM; files are written only on manual save.
             self._manual_error_snapshot=dict(board=list(board),board_image=current['crop'].copy(),game_image=fresh.copy(),
-                path=list(path),spikes=list(spikes),goals=list(effective),combo_condition=condition,
+                path=list(path),spikes=list(spikes),goals=list(effective),combo_condition=condition,health=dict(next_health),recovery_required=recovery_required,
                 predicted_combos=details['combos'],predicted_final_combos=details['final_combos'],predicted_known_next_combos=details.get('certified_next_combos',0),required_final_combos=details['required_total'] if survival or combo_turn else required,enemy_required_final_combos=required,
                 cloud_mask=current.get('cloud_mask',[]),cloud_observation=current.get('cloud_observation'),cloud_diagnostics=current.get('cloud_diagnostics'),skill_trace=list(skill_trace),skill_decision=getattr(self,'_last_background_skill_decision',None),visual_model=dict(current.get('visual_model') or visual_infer(current['crop']) or {}),phase='background_before_drag',combo_turn_for_cooldown=combo_turn,master_survival=survival,source='adb_background',version=APP_VERSION,board_rect=list(current['rect']),entry_image=getattr(self,'_background_entry_diagnostics_image',None),timings=dict(getattr(self,'_background_diagnostics',{})),input_display=getattr(device,'input_diagnostics',{}),captured_local=time.strftime('%Y-%m-%d %H:%M:%S'))
             self._farming_error_snapshot=dict(self._manual_error_snapshot)
@@ -17864,13 +18194,20 @@ class App:
             if len(board)!=30:board=[]
             original=snapshot.get('board_image');game=snapshot.get('game_image')
             if isinstance(capture,dict) and capture.get('board')==board and original is None:original=capture.get('board_image')
-            if len(board)!=30 or not ai_board_image_valid(original):return None
+            cached=getattr(self,'_manual_error_snapshot',None)
+            if isinstance(cached,dict) and cached.get('board')==board:
+                if original is None:original=cached.get('board_image')
+                if game is None:game=cached.get('game_image')
+            hidden=obscured_cell_mask(original) if isinstance(original,Image.Image) else [False]*30
+            display_hidden=any(hidden) and cloud_visible_board_valid(original,board,hidden) if len(board)==30 else False
+            if len(board)!=30 or not (ai_board_image_valid(original) or display_hidden):return None
             spikes=list(snapshot.get('spikes') or getattr(self,'spikes',[]) or [])
             if len(spikes)!=len(board):spikes=[None]*len(board)
             spikes=[None if flag is None else bool(flag) for flag in spikes]
             goal=int(self.goal_var.get())
             if goal not in {i for i,_,_ in ROUTE_GOAL_OPTIONS}:goal=0
-            action='6콤보 생존 이동' if snapshot.get('master_survival') else '콤보로 턴 진행' if snapshot.get('combo_turn_for_cooldown') else '자동 실행 보류' if popup else '경로 계산'
+            held=popup and (not snapshot.get('path') or '확인 필요' in str(reason))
+            action='6콤보 생존 이동' if snapshot.get('master_survival') else '콤보로 턴 진행' if snapshot.get('combo_turn_for_cooldown') else '자동 실행 보류' if held else '경로 계산'
             visual=snapshot.get('visual_model') or (capture.get('visual_model',{}) if isinstance(capture,dict) and capture.get('board')==board else {})
             locks=snapshot.get('locks') or (capture.get('locks') if isinstance(capture,dict) and capture.get('board')==board else None)
             if locks is None and visual.get('locks'):locks=[None if v is None else bool(v) for v in visual['locks']]
@@ -17878,23 +18215,27 @@ class App:
             proposal=dict(board=board,spikes=spikes,locks=locks,goal_index=goal,action=action)
             fingerprint=hashlib.sha256(json.dumps([proposal,str(reason)],ensure_ascii=False,sort_keys=True).encode()).hexdigest()
             now=time.monotonic();last=getattr(self,'_ai_last_review',None)
-            if last and last[0]==fingerprint and now-last[1]<3:return
+            if last and last[0]==fingerprint and now-last[1]<60:return
             record=ai_review_write(self._ai_review_root(),dict(reason=str(reason),proposal=proposal,
                 goals=list(snapshot.get('goals') or self.selected_goals()),path=list(snapshot.get('path') or []),
                 combo_condition=snapshot.get('combo_condition'),source=snapshot.get('source','current_rules'),
+                obscured_cells=hidden,cloud_cells=cloud_cell_mask(original),dark_cells=dark_cell_mask(original),
                 party=[dict(number=r.get('number'),name=r.get('name')) for r in self.user_settings.get('background_party_profiles',[])],
                 visual_model=visual,condition_source='경로 조건: 사용자 선택·기존 규칙 / 이미지: '+str(visual.get('model_version','기존 판독'))),original,game)
             self._ai_last_review=(fingerprint,now)
-            farming=getattr(self,'_background_running',False) is True or str(snapshot.get('source','')).startswith(('background','farming','adb_background'))
+            farming=getattr(self,'_background_running',False) is True or (not getattr(self,'_manual_play_active',False) and str(snapshot.get('source','')).startswith(('background','farming','adb_background')))
             if farming:
                 self._ai_farming_pending=record['id']
-            if popup and not farming and self.user_settings.get('ai_review_auto_open',True):self.show_ai_management(record['id'])
-            else:
-                refresh=getattr(self,'_ai_review_refresh',None)
-                if callable(refresh):refresh(record['id'])
+            # Manual reviews stay queued on disk until the user opens AI management.
+            refresh=getattr(self,'_ai_review_refresh',None)
+            if callable(refresh):refresh(record['id'])
             return record
         except Exception as error:
             self.set_status('AI 검토 데이터 저장 보류: '+str(error))
+
+    def _show_pending_manual_ai(self):
+        # Discard callbacks queued before the manual-review policy changed.
+        self._ai_manual_pending=None
 
     def show_ai_management(self,case_id=None):
         existing=getattr(self,'_ai_review_window',None)
@@ -17915,10 +18256,11 @@ class App:
         ttk.Button(model_controls,text='이전 모델 복구',command=self.rollback_visual_model).pack(side='left')
         self._visual_model_status_var=tk.StringVar(value=self._visual_model_status_text())
         ttk.Label(shell,textvariable=self._visual_model_status_var,wraplength=1000).pack(anchor='w',pady=(0,5))
-        ttk.Label(shell,text='정답 확인 후 학습을 실행하면 검증을 통과한 모델이 드롭·가시 인식에 적용됩니다.').pack(anchor='w')
+        ttk.Label(shell,text='승인된 유효 자료 최대 100개를 다시 학습·검증합니다. 신규 자료만 학습하는 방식은 아닙니다.').pack(anchor='w')
         auto=tk.BooleanVar(value=self.user_settings.get('ai_review_auto_open',True))
         def auto_changed():self.user_settings['ai_review_auto_open']=auto.get();self.save_user_settings()
-        ttk.Checkbutton(shell,text='판단 시 자동 열기 (자동파밍은 재료 수집 완료 후 일괄 검토)',variable=auto,command=auto_changed).pack(anchor='w',pady=(4,6))
+        ttk.Checkbutton(shell,text='자동파밍 완료 후 AI 검토창 열기',variable=auto,command=auto_changed).pack(anchor='w',pady=(4,6))
+        ttk.Label(shell,text='수동 플레이 기록은 창을 자동으로 열지 않습니다. AI 관리에서 미확인을 선택해 나중에 검토하세요.').pack(anchor='w')
         footer=ttk.Frame(shell);footer.pack(side='bottom',fill='x',pady=(8,0))
         notice=tk.StringVar(value='닫기만 하면 미확인으로 남습니다. 수정은 저장 데이터에만 반영하며 게임을 조작하지 않습니다.')
         ttk.Label(shell,textvariable=notice,wraplength=1000).pack(side='bottom',fill='x',pady=(6,0))
@@ -17950,7 +18292,9 @@ class App:
             for i,button in enumerate(buttons):
                 if i<len(board):
                     code=board[i];s=labels['spikes'][i];l=labels['locks'][i]
-                    button.configure(text=names[code]+(' ▲' if s else '')+(' 🔒' if l else ''),bg=COLOR_INFO[code][1],relief='sunken' if i==state['cell'] else 'raised',state='normal')
+                    record=state.get('record') or {}
+                    hidden_name='구름' if (record.get('cloud_cells') or [False]*30)[i] else '암흑' if (record.get('dark_cells') or [False]*30)[i] else ''
+                    button.configure(text=names[code]+(' ▲' if s else '')+('\n잠금 ●' if l else '')+('\n'+hidden_name if hidden_name else ''),bg=COLOR_INFO[code][1],relief='sunken' if i==state['cell'] else 'raised',state='normal')
                 else:button.configure(text='—',bg='#eeeeee',state='disabled')
         def select_cell(index):
             labels=state['labels']
@@ -17994,7 +18338,7 @@ class App:
             if image_name:
                 from PIL import ImageTk
                 with Image.open(folder/image_name) as image:
-                    image=image.convert('RGB');image.thumbnail((280,245));photo=ImageTk.PhotoImage(image)
+                    image=image.convert('RGB');image.thumbnail((360,300));photo=ImageTk.PhotoImage(image)
                 win._ai_photo=photo;original.configure(image=photo,text='')
             goal.set(goal_titles[labels['goal_index']]);action.set(labels['action'])
             paint();select_cell(0);state['loading']=False;state['dirty']=False
@@ -18002,19 +18346,27 @@ class App:
             if state['dirty']:notice.set('새 기록도 로컬에 보관 중입니다. 현재 수정 내용을 먼저 저장해 주세요.');return
             if selected_id is None and state['record']:selected_id=state['record']['id']
             root=self._ai_review_root();root.mkdir(parents=True,exist_ok=True)
-            paths=sorted(root.glob('*/record.json'),reverse=True);state['loading']=True;cases.delete(0,'end');state['ids']=[]
-            for path in paths:
-                record=_load_json_dict(path)
-                if not record.get('id') or 'proposal' not in record or not ai_review_has_board(path.parent,record):continue
-                feedback=_load_json_dict(path.parent/'feedback.json');status=feedback.get('status','pending')
-                if mode.get()=='미확인' and status!='pending':continue
-                if mode.get()=='확인 완료' and status not in ('confirmed','corrected'):continue
-                state['ids'].append(record['id']);cases.insert('end',{'pending':'미확인','confirmed':'확인','corrected':'수정','unknown':'보류'}.get(status,'미확인')+' · '+time.strftime('%m/%d %H:%M:%S',time.localtime(record['created_at'])))
-                if len(state['ids'])>=200:break
-            count.set(f'퍼즐판 {len(state["ids"])}건 표시 · 원본 기록 {len(paths)}건\n이미지·정답은 로컬 보관 · 자동 삭제/업로드 없음')
-            state['loading']=False
-            if state['ids']:
-                index=state['ids'].index(selected_id) if selected_id in state['ids'] else 0;cases.selection_set(index);load()
+            state['refresh_generation']=state.get('refresh_generation',0)+1;generation=state['refresh_generation']
+            wanted=mode.get();results=queue.SimpleQueue();state['loading']=True
+            count.set('로컬 기록 읽는 중… 창은 계속 사용할 수 있습니다.')
+            def worker():
+                try:rows,total=ai_review_list(root,wanted);results.put((rows,total,None))
+                except Exception as error:results.put(([],0,str(error)))
+            def finish():
+                if not win.winfo_exists() or generation!=state.get('refresh_generation'):return
+                try:rows,total,error=results.get_nowait()
+                except queue.Empty:win.after(50,finish);return
+                state['loading']=False
+                if state['dirty']:notice.set('수정 내용을 먼저 저장해 주세요.');return
+                if error:notice.set('기록 읽기 보류: '+error);return
+                cases.delete(0,'end');state['ids']=[]
+                for cid,status,created in rows:
+                    state['ids'].append(cid)
+                    cases.insert('end',{'pending':'미확인','confirmed':'확인','corrected':'수정','unknown':'보류'}.get(status,'미확인')+' · '+time.strftime('%m/%d %H:%M:%S',time.localtime(created)))
+                count.set(f'퍼즐판 {len(rows)}건 표시 · 원본 기록 {total}건\n이미지·정답은 로컬 보관')
+                if state['ids']:
+                    index=state['ids'].index(selected_id) if selected_id in state['ids'] else 0;cases.selection_set(index);load()
+            threading.Thread(target=worker,daemon=True).start();win.after(50,finish)
         def save(status):
             record=state['record']
             if not record:notice.set('먼저 기록을 선택해 주세요.');return
@@ -18042,6 +18394,12 @@ class App:
                 image=image.convert('RGB');image.thumbnail((child.winfo_screenwidth()-80,child.winfo_screenheight()-130));photo=ImageTk.PhotoImage(image)
             child._original_photo=photo;ttk.Label(child,image=photo).pack();ttk.Button(child,text='닫기',command=child.destroy).pack(pady=6)
         original.bind('<Button-1>',lambda e:view_image())
+        def teach_enemy_icon():
+            record=state['record'];name=record.get('game_image') if record else None
+            if not name:notice.set('전체 게임 화면이 있는 기록을 선택하세요.');return
+            with Image.open(self._ai_review_root()/record['id']/name) as image:frame=image.convert('RGB').resize((1600,940))
+            self._party_template_editor(frame)
+        ttk.Button(footer,text='적 스킬 아이콘 학습',command=teach_enemy_icon).pack(side='left',padx=(0,6))
         ttk.Button(footer,text='전체 화면',command=lambda:view_image(True)).pack(side='left',padx=(0,6))
         ttk.Button(footer,text='현재 판 추가',command=add_current).pack(side='left')
         ttk.Button(footer,text='데이터 폴더',command=open_folder).pack(side='left',padx=6)
@@ -18055,8 +18413,8 @@ class App:
         self._ai_review_refresh=refresh
         cases.bind('<<ListboxSelect>>',load);mode.trace_add('write',lambda *_:refresh())
         def close():self._ai_review_refresh=None;self._ai_review_window=None;win.destroy()
-        win.protocol('WM_DELETE_WINDOW',close);refresh(case_id)
-        win.lift()
+        win.protocol('WM_DELETE_WINDOW',close);win.deiconify();win.lift()
+        win.after_idle(lambda:refresh(case_id) if win.winfo_exists() else None)
 
     def _stage_db_path(self):
         return self.data_paths['ledger'].parent/'stage_db.json'
@@ -18204,7 +18562,8 @@ class App:
 
     def _background_prepare_entry(self,device,frame,key,templates):
         with self._crystal_db_lock:ledger=self._load_crystal_ledger()
-        rows=[row for row in farming_group_rows(ledger,key) if row['deficit']>0]
+        selected=getattr(self,'_background_selected_material_ids',None)
+        rows=[row for row in farming_group_rows(ledger,key) if row['deficit']>0 and (selected is None or row['id'] in selected)]
         if not rows:raise RuntimeError('부족한 재료가 없습니다.')
         deficits={row['id']:row['deficit'] for row in rows}
         heading=self._background_header(frame)
@@ -18375,7 +18734,8 @@ class App:
             tokens=self._background_entry_tokens(frame) if entry else None
             known_stage=self._background_stage(frame,tokens) if entry else None
             with self._crystal_db_lock:current=self._load_crystal_ledger()
-            deficits={r['id']:r['deficit'] for r in farming_group_rows(current,key)}
+            selected=getattr(self,'_background_selected_material_ids',None)
+            deficits={r['id']:r['deficit'] for r in farming_group_rows(current,key) if selected is None or r['id'] in selected}
             known_matches=entry and stage_has_shortage(self._stage_db_load(),known_stage,deficits)
             if not known_matches and entry:known_matches=stage_has_shortage(self._stage_resolve_known(templates),known_stage,deficits)
             if not known_matches:
@@ -18479,7 +18839,7 @@ class App:
                             credited=True;self._background_queue.put(('credited',amounts))
                             goal_done=background_goal_complete(ledger,key,material_ids=getattr(self,'_background_selected_material_ids',None))
                         stage_row=self._stage_db_load()['stages'].get(stage,{})
-                        remaining={r['id']:r['deficit'] for r in farming_group_rows(ledger,key) if r['deficit']>0}
+                        remaining={r['id']:r['deficit'] for r in farming_group_rows(ledger,key) if r['deficit']>0 and (selected is None or r['id'] in selected)}
                         current_ids={str(d.get('id')) for d in stage_row.get('drops',[]) if d.get('id')}
                         if not goal_done and stage_row.get('preview_verified') and not (current_ids&set(remaining)):
                             frame=self._background_prepare_entry(device,device.capture(),key,templates)
@@ -18791,6 +19151,15 @@ class App:
             if getattr(self,'_all_actions_stopped',False) is True:return
             if getattr(self,'_background_running',False):
                 return
+            if configured_farming_selection(self._load_crystal_ledger()) is None:
+                window=getattr(self,'_farming_stats',None)
+                if window is not None:window.withdraw()
+                self._farming_result_visible=False;self._farming_lobby_visible=False
+                self._farming_positive=0;self._farming_displayed_session=None
+                while True:
+                    try:self._farming_queue.get_nowait()
+                    except queue.Empty:break
+                return
             self._farming_sync_stats_focus()
             while True:
                 try:
@@ -18893,7 +19262,9 @@ class App:
     def _farming_start_scan(self, rect, ledger):
         if getattr(self,'_root_tree_active',False) is True:return
         if getattr(self,'_all_actions_stopped',False) is True:return
-        if not any(r.get('confirmed',True) for g in ledger['farming_groups'].values() for r in g['materials']):
+        selected=selected_farming_groups(ledger)
+        if not selected:return
+        if not any(r.get('confirmed',True) for g in selected.values() for r in g['materials']):
             self._farming_attempts=3
             self._farming_show_stats('재료 이름 등록 대기 · 돌파 화면에서 재료를 클릭하고 상세 이름 자동 인식을 기다려 주세요.')
             return
@@ -19301,9 +19672,11 @@ class App:
                 raise ValueError('크리스탈 결과창이 확인되지 않습니다.')
             if not self._farming_result_header_confirmed(first):
                 raise ValueError('상단 결과 제목을 확인하지 못해 집계를 보류했습니다.')
-            templates = self._farming_material_templates(groups)
+            selected=selected_farming_groups(self._load_crystal_ledger())
+            if not selected:raise ValueError('선택한 파밍 재료가 없어 집계를 중지했습니다.')
+            templates = self._farming_material_templates(selected)
             items = self._farming_collect_pages(rect, first, templates)
-            amounts = self._farming_match_items(items, groups, templates)
+            amounts = self._farming_match_items(items, selected, templates)
             final=self._farming_capture(rect)
             if self._farming_scan_cancel.is_set() or not self._farming_result_header_confirmed(final) or not self._looks_like_reward_frame(final):
                 raise ValueError('결과창 확인이 끝나기 전에 화면이 바뀌었습니다.')
@@ -19361,6 +19734,11 @@ class App:
         if getattr(self,'_root_tree_active',False) is True:return
         self._farming_last_message = message
         ledger = self._load_crystal_ledger()
+        selection=configured_farming_selection(ledger)
+        if selection is None or getattr(self,'user_settings',{}).get('farming_hide_stats',False) or all(r['deficit']==0 for r in farming_group_rows(ledger,selection['key']) if r['id'] in selection['material_ids']):
+            window=getattr(self,'_farming_stats',None)
+            if window is not None:window.withdraw()
+            return
         groups = ledger.get('farming_groups', {})
         session = ledger.get('reward_session', {})
         lobby=bool(getattr(self,'_farming_lobby_visible',False))
@@ -19398,17 +19776,15 @@ class App:
             self._farming_retry_button = ttk.Button(body, text='인식 재시도', command=self._farming_retry)
             self._farming_retry_button.pack(fill='x')
             win.protocol('WM_DELETE_WINDOW', self._farming_hide_stats)
-        key = ledger.get('active_farming_group')
-        if key not in groups:
-            key = next(iter(groups))
-        self._farming_group_keys = list(groups)
+        key = selection['key']
+        self._farming_group_keys = [key]
         self._farming_group_select['values'] = [groups[k]['name'] for k in self._farming_group_keys]
         self._farming_group_select.current(self._farming_group_keys.index(key))
         self._farming_tree.delete(*self._farming_tree.get_children())
         self._farming_photos = []
         from PIL import ImageTk
         entries = {str(row['id']):row for row in self._load_crystal_db()['crystals']}
-        rows = farming_group_rows(ledger, key)
+        rows = [row for row in farming_group_rows(ledger, key) if row['id'] in selection['material_ids']]
         for row in rows:
             options = {}
             entry = entries.get(row['id'], {})
@@ -19585,6 +19961,7 @@ class App:
     def stop_playback(self):
         self._background_failure_hold=False
         self._manual_stop_requested=True
+        self._manual_survival_requested=False
         self._invalidate_cloud_board()
         share_cancel=getattr(self,'_ai_share_cancel',None)
         if share_cancel is not None:share_cancel.set()
