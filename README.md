@@ -1,10 +1,10 @@
 # PAD0 개인용 업데이트 배포
 
-[최신 실행 패키지 다운로드](https://raw.githubusercontent.com/tterx/pad0-updates/main/pad0_overlay_windows_v101_141.zip)
+[최신 실행 패키지 다운로드](https://raw.githubusercontent.com/tterx/pad0-updates/main/pad0_overlay_windows_v101_142.zip)
 
-프로그램을 완전히 종료하고 `시작.vbs`로 재실행하면 **v101.141**를 확인합니다. 개인 DB와 설정은 유지합니다.
+프로그램을 완전히 종료하고 `시작.vbs`로 재실행하면 **v101.142**를 확인합니다. 개인 DB와 설정은 유지합니다.
 
-이번 버전은 마우스·Android·MuMu SDK의 입력 전송과 손가락 해제를 별도 모듈로 분리했습니다. 이동·F10 중지 동작을 유지하고 기존 검사 14개를 메인 프로그램 없이 실행할 수 있습니다. 이전 자동 업데이트 실행기와 단일 백업 실행도 지원합니다. [입력 모듈·검사 방법](INPUT_MODULE.md)
+이번 버전은 콤보·5속성·회복 판정과 경로 탐색을 pad0_solver.py로 분리했습니다. 탐색 로직·시간 예산·4방향 실행을 유지하고 기존 핵심 검사 12개를 메인·OCR·입력 없이 실행할 수 있습니다. 구형 자동 업데이트와 별도 탐색 프로세스도 지원합니다. [탐색 모듈·검사 방법](SOLVER_MODULE.md)
 
 ## 백그라운드 재료 파밍 — 첫 구현
 
