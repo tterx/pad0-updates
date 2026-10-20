@@ -1164,6 +1164,9 @@ class FloatingPathExecuteButton:
                   bg="#287a58", fg="white", relief="flat", bd=0,
                   font=("Segoe UI", 9, "bold"), padx=8, pady=6)
         self.farming_button.pack(side="left", fill="x", expand=True, padx=(4,0))
+        tk.Button(actions, text="재료 검토", command=self.app.show_quantity_management,
+                  bg="#50697c", fg="white", relief="flat", bd=0,
+                  font=("Segoe UI", 9, "bold"), padx=8, pady=6).pack(side="left", fill="x", expand=True, padx=(4,0))
         screen_w, screen_h = win.winfo_screenwidth(), win.winfo_screenheight()
         saved_xy = self.app.user_settings.get("crystal_window_xy")
         if isinstance(saved_xy, list) and len(saved_xy) == 2:
@@ -2770,6 +2773,73 @@ class AppUIMixin:
         scroll.pack(side='right',fill='y');text.pack(fill='both',expand=True)
         text.insert('1.0',ai_storage_guide_text(self.data_paths['root']));text.configure(state='disabled')
 
+    def _build_icon_review_tab(self,parent):
+        from PIL import ImageTk
+        from pad0_crystal_review import icon_review_list, icon_review_confirm
+        root=self.data_paths['root']
+        shell=ttk.Frame(parent,padding=12);shell.pack(fill='both',expand=True)
+        ttk.Label(shell,text='현재 화면과 등록된 재료를 좌우로 비교해 주세요.',font=('Malgun Gothic',11,'bold')).pack(anchor='w')
+        ttk.Label(shell,text='같은 재료/다른 재료 판단은 즉시 이후 아이콘 비교에 적용됩니다. 크리스탈 DB 이미지는 유지합니다.',wraplength=830).pack(anchor='w',pady=6)
+        status=tk.StringVar(value='자동파밍에서 아이콘을 확정하지 못하면 비교 기록이 쌓입니다.')
+        ttk.Label(shell,textvariable=status,wraplength=830).pack(side='bottom',fill='x',pady=8)
+        body=ttk.Frame(shell);body.pack(fill='both',expand=True)
+        left=ttk.Frame(body,width=195);left.pack(side='left',fill='y',padx=(0,12))
+        cases=tk.Listbox(left,width=23,exportselection=False);cases.pack(fill='both',expand=True)
+        right=ttk.Frame(body);right.pack(side='left',fill='both',expand=True)
+        candidate=tk.StringVar();selector=ttk.Combobox(right,textvariable=candidate,state='readonly',width=48);selector.pack(fill='x',pady=(0,8))
+        actions=ttk.Frame(right);actions.pack(fill='x',pady=(0,8))
+        views=ttk.Frame(right);views.pack(fill='both',expand=True)
+        labels=[]
+        for title in ('현재 화면의 아이콘','등록된 재료 이미지'):
+            column=ttk.Frame(views);column.pack(side='left',fill='both',expand=True,padx=4)
+            ttk.Label(column,text=title,font=('Malgun Gothic',10,'bold')).pack(anchor='center',pady=5)
+            label=ttk.Label(column,anchor='center');label.pack(fill='both',expand=True);labels.append(label)
+        state={'records':[],'record':None,'choices':[],'photos':[]}
+        def show_pair(event=None):
+            record=state['record']
+            if record is None:return
+            try:index=state['choices'].index(candidate.get())
+            except ValueError:return
+            reference=record['candidates'][index]
+            folder=Path(root)/'crystal_review'/'cases'/record['id'];photos=[]
+            try:
+                for path,label in zip((folder/'probe.png',folder/f'reference_{index}.png'),labels):
+                    with Image.open(path) as opened:image=opened.convert('RGB')
+                    image=fit_image_preserve_aspect(image,(250,300))
+                    photo=ImageTk.PhotoImage(image,master=parent);photos.append(photo);label.configure(image=photo,text='')
+                state['photos']=photos
+                verdict=record.get('decisions',{}).get(reference['cid'],'미확인')
+                status.set(f"{reference['label']} · 비교 차이 {reference['score']:.2f} · 판단 {verdict} · {record['reason']}")
+            except (OSError,ValueError,tk.TclError) as error:status.set('비교 이미지 읽기 실패: '+str(error))
+        def pick(event=None):
+            indexes=cases.curselection()
+            if not indexes:return
+            record=state['records'][indexes[0]];state['record']=record
+            state['choices']=[f"{c['label']} [{c['cid']}]" for c in record['candidates']]
+            selector.configure(values=state['choices'])
+            index=next((i for i,c in enumerate(record['candidates']) if c['cid'] not in record.get('decisions',{})),0)
+            candidate.set(state['choices'][index]);show_pair()
+        def refresh():
+            state['records']=icon_review_list(root);state['record']=None;cases.delete(0,'end')
+            for record in state['records']:cases.insert('end',('미확인' if record['status']=='pending' else '확인 완료')+' · '+record['candidates'][0]['label'])
+            if state['records']:cases.selection_set(0);pick()
+            else:
+                status.set('아직 아이콘 비교 기록이 없습니다. 자동파밍에서 구분이 어려운 아이콘은 이곳에 기록됩니다.')
+                for label in labels:label.configure(image='',text='비교 기록 없음')
+        def confirm(same):
+            record=state['record']
+            if record is None:return
+            try:
+                index=state['choices'].index(candidate.get());cid=record['candidates'][index]['cid']
+                icon_review_confirm(root,record['id'],cid,same);refresh()
+                status.set('판단 저장 완료 · 다음 아이콘 비교부터 사용합니다.')
+            except (ValueError,OSError) as error:status.set(str(error))
+        ttk.Button(actions,text='같은 재료',width=14,command=lambda:confirm(True)).pack(side='left',padx=(0,8))
+        ttk.Button(actions,text='다른 재료',width=14,command=lambda:confirm(False)).pack(side='left')
+        ttk.Button(actions,text='다시 읽기',command=refresh).pack(side='right')
+        cases.bind('<<ListboxSelect>>',pick);selector.bind('<<ComboboxSelected>>',show_pair)
+        self._icon_review_refresh=refresh;refresh()
+
     def show_quantity_management(self):
         from PIL import ImageTk
         from pad0_quantity import (quantity_list, quantity_confirm, quantity_train,
@@ -2777,15 +2847,22 @@ class AppUIMixin:
         root = self.data_paths['root']
         existing = getattr(self,'_quantity_window',None)
         if existing is not None and existing.winfo_exists():
+            refresh_existing=getattr(self,'_quantity_refresh',None)
+            if callable(refresh_existing):refresh_existing()
+            refresh_icons=getattr(self,'_icon_review_refresh',None)
+            if callable(refresh_icons):refresh_icons()
             existing.deiconify();existing.lift();return
         win=tk.Toplevel(self.root);self._quantity_window=win
-        win.title('AI 관리 · 재료 수량');win.geometry(f'900x{min(640,max(460,win.winfo_screenheight()-100))}');win.minsize(760,460)
-        shell=ttk.Frame(win,padding=12);shell.pack(fill='both',expand=True)
+        win.title('크리스탈 검토 · 수량 / 아이콘');win.geometry('900x720');win.resizable(False,False)
+        tabs=ttk.Notebook(win);tabs.pack(fill='both',expand=True)
+        quantities=ttk.Frame(tabs);icons=ttk.Frame(tabs)
+        tabs.add(quantities,text='재료 수량');tabs.add(icons,text='아이콘 비교')
+        self._build_icon_review_tab(icons)
+        shell=ttk.Frame(quantities,padding=12);shell.pack(fill='both',expand=True)
         ttk.Label(shell,text='필요 · 보유 · 획득 수량',font=('Malgun Gothic',12,'bold')).pack(anchor='w')
-        ttk.Label(shell,text='판독값이 맞으면 판단 맞음, 틀리면 실제 숫자를 입력하고 수정 저장을 누르세요. 이후 수량 이미지 학습을 누르면 적용됩니다.',wraplength=720).pack(anchor='w',pady=5)
-        ttk.Label(shell,text='최근 정답 100개로 학습합니다. 미확인은 숫자를 직접 입력해 주세요. 정답 저장은 게임·등록 수량을 변경하지 않습니다.',wraplength=720).pack(anchor='w')
+        ttk.Label(shell,text='위쪽 ‘판단용 숫자’를 확인하세요. 판단 맞음 또는 숫자 수정 저장 후 수량 이미지 학습을 누르면 적용됩니다.',wraplength=720).pack(anchor='w',pady=5)
         controls=ttk.Frame(shell);controls.pack(fill='x',pady=8)
-        mode=tk.StringVar(value='미확인')
+        mode=tk.StringVar(value='전체')
         select=ttk.Combobox(controls,textvariable=mode,values=('전체','미확인','확인 완료'),state='readonly',width=14)
         select.pack(side='left')
         notice=tk.StringVar(value='이미지를 보고 정답을 확인해 주세요. 목록은 최근 200개를 표시합니다.')
@@ -2796,7 +2873,9 @@ class AppUIMixin:
         scroll=ttk.Scrollbar(left,command=cases.yview);scroll.pack(side='right',fill='y');cases.configure(yscrollcommand=scroll.set)
         right=ttk.Frame(body);right.pack(side='left',fill='both',expand=True)
         details=tk.StringVar(value='목록에서 수량 이미지를 선택하세요.')
-        ttk.Label(right,textvariable=details,wraplength=520).pack(anchor='w')
+        detail_box=ttk.Frame(right,height=44);detail_box.pack(fill='x')
+        detail_box.pack_propagate(False)
+        ttk.Label(detail_box,textvariable=details,wraplength=520).pack(fill='both',expand=True)
         # Reserve the editor before expandable image widgets consume the height.
         row=ttk.LabelFrame(right,text='수량 정답 입력',padding=10);row.pack(fill='x',pady=8)
         ttk.Label(row,text='실제 숫자').grid(row=0,column=0,sticky='w',padx=(0,8))
@@ -2804,7 +2883,9 @@ class AppUIMixin:
         entry.grid(row=0,column=1,sticky='w')
         ttk.Label(row,text='0도 입력할 수 있습니다.',foreground='#555555').grid(row=1,column=0,columnspan=2,sticky='w',pady=(4,8))
         actions=ttk.Frame(row);actions.grid(row=2,column=0,columnspan=2,sticky='w')
-        number_label=ttk.Label(right,anchor='center');number_label.pack(fill='x',pady=8)
+        ttk.Label(right,text='판단용 숫자',font=('Malgun Gothic',11,'bold')).pack(anchor='w',pady=(4,0))
+        number_label=ttk.Label(right,anchor='center');number_label.pack(fill='x',pady=(2,6))
+        reference_title=ttk.Label(right,text='확인용 전체 이미지');reference_title.pack(anchor='w')
         card_label=ttk.Label(right,anchor='center');card_label.pack(fill='both',expand=True)
         state={'records':[],'record':None,'photos':[]}
         def pick(event=None):
@@ -2816,11 +2897,18 @@ class AppUIMixin:
             confirm_button.configure(state='normal' if record.get('predicted') is not None else 'disabled')
             details.set(f"{record['kind']} 수량 · 판독값: {record.get('predicted') if record.get('predicted') is not None else '미확인'}\n{record.get('reason','')}")
             folder=quantity_root(root)/'samples'/record['id'];photos=[]
+            context_path=folder/'context.png'
+            reference_path=context_path if context_path.is_file() else folder/'card.png'
+            reference_title.configure(text='확인용 전체 이미지 · 필요 수량 / 재료 / 보유 수량' if context_path.is_file() else '재료 참고 이미지')
             try:
-                for path,label,size in ((folder/'number.png',number_label,(500,150)),(folder/'card.png',card_label,(300,250))):
+                for path,label,size in ((folder/'number.png',number_label,(500,100)),(reference_path,card_label,(240,160))):
                     if path.exists():
                         with Image.open(path) as opened:
-                            preview=opened.convert('RGB');preview=fit_image_preserve_aspect(preview,size)
+                            preview=opened.convert('RGB')
+                            if label is number_label:
+                                scale=min(size[0]/preview.width,size[1]/preview.height)
+                                preview=preview.resize((max(1,round(preview.width*scale)),max(1,round(preview.height*scale))),Image.Resampling.LANCZOS)
+                            preview=fit_image_preserve_aspect(preview,size)
                         photo=ImageTk.PhotoImage(preview);photos.append(photo);label.configure(image=photo,text='')
                     else:label.configure(image='',text='재료 이미지 없음')
                 state['photos']=photos
@@ -2834,7 +2922,22 @@ class AppUIMixin:
             for record in state['records']:
                 value=record.get('truth') if record.get('status')=='confirmed' else record.get('predicted')
                 cases.insert('end',f"{record['kind']} · {'?' if value is None else value} · {'확인 완료' if record.get('status')=='confirmed' else '미확인'}")
-            if state['records']:cases.selection_set(0);pick()
+            if state['records']:
+                cases.selection_set(0);pick()
+            else:
+                total=quantity_list(root,'전체',limit=1)
+                if total:
+                    text='이 필터에 해당하는 기록이 없습니다. 전체를 선택해 주세요.'
+                else:
+                    text='수량 이미지가 아직 없습니다. 게임의 재료 화면에서 F7/재료확인을 실행하거나 저장 화면 가져오기를 눌러 주세요.'
+                details.set(text);number_label.configure(image='',text=text,wraplength=500)
+                card_label.configure(image='',text='표시할 재료 이미지 없음')
+                notice.set(text)
+        def import_saved():
+            try:
+                added=self._import_saved_quantity_images();mode.set('전체');refresh()
+                if state['records']:notice.set(f'저장 화면에서 새 수량 이미지 {added}개를 가져왔습니다. 실제 숫자를 입력해 주세요.')
+            except (ValueError,OSError) as exc:notice.set('저장 화면 가져오기 실패: '+str(exc))
         def save(use_prediction=False):
             record=state['record']
             if record is None:return
@@ -2850,13 +2953,19 @@ class AppUIMixin:
                 count=quantity_train(root)
                 notice.set(f'수량 이미지 {count}개 학습 완료 · 다음 재료 확인·자동파밍·보상 판독부터 사용합니다.')
             except (ValueError,OSError) as exc:notice.set('학습 보류: '+str(exc))
-        confirm_button=ttk.Button(actions,text='판단 맞음',command=lambda:save(True))
+        confirm_button=ttk.Button(actions,text='판단 맞음',width=14,command=lambda:save(True))
         confirm_button.pack(side='left',padx=(0,8))
-        ttk.Button(actions,text='수정 저장',command=save).pack(side='left')
+        ttk.Button(actions,text='수정 저장',width=14,command=save).pack(side='left')
         ttk.Button(controls,text='다시 읽기',command=refresh).pack(side='left',padx=8)
         ttk.Button(controls,text='수량 이미지 학습',command=train).pack(side='left')
+        ttk.Button(controls,text='저장 화면 가져오기',command=import_saved).pack(side='left',padx=8)
         cases.bind('<<ListboxSelect>>',pick);select.bind('<<ComboboxSelected>>',refresh)
         entry.bind('<Return>',lambda event:save())
+        self._quantity_refresh=refresh
+        existing_records=quantity_list(root,'전체')
+        if not existing_records or any(record['kind'] in ('필요','보유') and not (quantity_root(root)/'samples'/record['id']/'context.png').is_file() for record in existing_records):
+            try:self._import_saved_quantity_images()
+            except (ValueError,OSError):pass
         refresh()
 
     def show_ai_management(self,case_id=None):
@@ -2877,7 +2986,6 @@ class AppUIMixin:
         ttk.Button(model_controls,text='확인 데이터로 학습',command=self.train_visual_model).pack(side='left',padx=6)
         ttk.Button(model_controls,text='이전 모델 복구',command=self.rollback_visual_model).pack(side='left')
         ttk.Button(model_controls,text='보관 안내',command=self.show_ai_storage_guide).pack(side='left',padx=6)
-        ttk.Button(model_controls,text='재료 수량',command=self.show_quantity_management).pack(side='left',padx=6)
         self._visual_model_status_var=tk.StringVar(value=self._visual_model_status_text())
         ttk.Label(shell,textvariable=self._visual_model_status_var,wraplength=1000).pack(anchor='w',pady=(0,5))
         ttk.Label(shell,text='최근 유효 정답 최대 100개로 다시 학습·검증합니다. 성공하면 오래된 확정 원본을 정리합니다.').pack(anchor='w')
