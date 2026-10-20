@@ -1,10 +1,10 @@
 # PAD0 개인용 업데이트 배포
 
-[최신 실행 패키지 다운로드](https://raw.githubusercontent.com/tterx/pad0-updates/main/pad0_overlay_windows_v101_148.zip)
+[최신 실행 패키지 다운로드](https://raw.githubusercontent.com/tterx/pad0-updates/main/pad0_overlay_windows_v101_149.zip)
 
-프로그램을 완전히 종료하고 `시작.vbs`로 재실행하면 **v101.148**를 확인합니다. 개인 DB와 설정은 유지합니다.
+프로그램을 완전히 종료하고 `시작.vbs`로 재실행하면 **v101.149**를 확인합니다. 개인 DB와 설정은 유지합니다.
 
-이번 버전은 재료 수량 목록을 전체 기록으로 열고, 기록이 없으면 저장된 최근 재료·보상 화면에서 숫자 이미지를 가져옵니다. 저장 화면도 없을 때에는 F7/재료확인 안내를 표시합니다. 창을 다시 열거나 다시 읽기를 누르면 목록을 갱신합니다. [사용법](QUANTITY_AI.md)
+이번 버전은 재료 수량 창에서 지원하지 않는 ttk.Label 높이 옵션 때문에 목록과 이미지 초기화 전에 중단되던 오류를 수정했습니다. 실제 Tcl/Tk 창에서 기록·이미지·버튼 표시와 정답 저장·학습 적용을 확인했습니다. [사용법](QUANTITY_AI.md)
 
 ## 백그라운드 재료 파밍 — 첫 구현
 
