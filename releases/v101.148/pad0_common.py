@@ -7,7 +7,7 @@ from pathlib import Path
 import uuid
 
 
-APP_VERSION = "v101.143"
+APP_VERSION = "v101.148"
 
 COLOR_INFO = {
     "R": ("불", "#ee5547", 5),
@@ -55,3 +55,9 @@ ROWS, COLS = 5, 6
 COLOR_ORDER = ["R", "B", "G", "Y", "P", "H", "J", "S"]
 
 PRIMARY_ATTRIBUTES = {"R", "B", "G", "Y", "P"}
+
+# Approximate hue prototypes in degrees; per-cell colors are classified by nearest circular hue.
+
+APP_TITLE = f"퍼드0 경로 오버레이 {APP_VERSION}"
+
+AI_GITHUB_DEFAULT_REPO = "tterx/pad0-learning-data"
