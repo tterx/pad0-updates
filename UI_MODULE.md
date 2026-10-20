@@ -7,3 +7,5 @@
 개발 소스는 common / crystal / input / solver / ai / ui 모듈을 사용합니다. 배포 소스에는 6개 모듈을 내장하므로 기존 단일 파일 업데이트와 백업 복원 방식이 유지됩니다.
 
 UI 경계 검사: `PYTHONPATH=tests .venv/bin/python -m unittest test_ui_module144 test_attribute_strip91`
+
+재료 수량 검토 화면은 [재료 수량 AI 안내](QUANTITY_AI.md)를 참고하세요.

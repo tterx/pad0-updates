@@ -33,3 +33,5 @@ tools/train_visual_bootstrap.py도 AI 모듈을 직접 불러옵니다. 이번 �
 ## 배포
 
 tools/build_release_source.py는 공통 모듈을 먼저, 나머지 모듈을 이어 포함합니다. 기존 실행기는 배포용 pad0_overlay.py 하나만 받아도 해당 버전의 다섯 모듈을 메모리에 불러올 수 있습니다. 단일 파일 백업도 같은 방식으로 실행합니다. 추가 다운로드·사용자 자료 변경은 없고 ZIP에도 모듈 파일을 포함합니다. 매니페스트 해시는 생성된 배포 파일을 기준으로 계산합니다.
+
+재료 수량 이미지 학습은 별도 `pad0_quantity.py`와 `ai_quantities` 저장소에서 관리합니다. [사용법](QUANTITY_AI.md)
