@@ -16,14 +16,13 @@ import sys
 import time
 from typing import Optional
 
+from pad0_common import ROWS, COLS, COLOR_ORDER, PRIMARY_ATTRIBUTES
+
 import numpy as np
 
 
-ROWS, COLS = 5, 6
 
-COLOR_ORDER = ["R", "B", "G", "Y", "P", "H", "J", "S"]
 
-PRIMARY_ATTRIBUTES = {"R", "B", "G", "Y", "P"}
 
 SOLVER_MAX_MOVES = None
 
