@@ -29,7 +29,7 @@ import mss
 import numpy as np
 from PIL import Image, ImageDraw
 
-APP_VERSION = "v101.130"
+APP_VERSION = "v101.135"
 APP_TITLE = f"퍼드0 경로 오버레이 {APP_VERSION}"
 ROWS, COLS = 5, 6
 # Approximate hue prototypes in degrees; per-cell colors are classified by nearest circular hue.
@@ -457,31 +457,152 @@ def visual_validate_head(head,features,labels,name,baseline=None):
     return dict(approved=bool(approved),accuracy=accuracy,coverage=coverage,accepted_errors=errors,validation_cells=len(labels),per_class=per_class)
 
 
-def visual_training_data(root):
-    records=[];seen={}
-    for path in sorted(Path(root).glob('*/record.json'),reverse=True):
-        if len(records)>=100:break
-        record=_load_json_dict(path);feedback=_load_json_dict(path.parent/'feedback.json')
-        if not ai_review_has_board(path.parent,record):continue
-        if feedback.get('human_confirmed') is not True or feedback.get('status') not in ('confirmed','corrected') or not feedback.get('image_training_eligible'):continue
-        labels=feedback.get('labels') or {};board=labels.get('board',[])
-        if len(board)!=30 or any(code not in COLOR_ORDER for code in board):continue
-        image_path=path.parent/'board.png'
-        if not image_path.is_file():continue
-        with Image.open(image_path) as original:image=original.convert('RGB')
+AI_REVIEW_DATA_LOCK=threading.RLock()
+
+
+def ai_review_data_locked(function):
+    """Serialize local record snapshots, edits and destructive retention."""
+    from functools import wraps
+    @wraps(function)
+    def guarded(*args,**kwargs):
+        with AI_REVIEW_DATA_LOCK:return function(*args,**kwargs)
+    return guarded
+
+
+def _ai_case_folder_safe(root,folder):
+    root=Path(root);folder=Path(folder)
+    if (root.is_symlink() or folder.is_symlink() or not folder.is_dir()
+            or not re.fullmatch(r'\d{8}_\d{6}_[0-9a-f]{32}',folder.name)):
+        return False
+    if getattr(root,'is_junction',lambda:False)() or getattr(folder,'is_junction',lambda:False)():return False
+    try:
+        return folder.parent.resolve()==root.resolve() and all(not p.is_symlink() and not getattr(p,'is_junction',lambda:False)() for p in folder.rglob('*'))
+    except OSError:return False
+
+
+def _visual_training_case(root,folder):
+    """A readable, approved original; malformed/ineligible records are retained."""
+    folder=Path(folder)
+    if not _ai_case_folder_safe(root,folder):return None
+    record=_load_json_dict(folder/'record.json');feedback=_load_json_dict(folder/'feedback.json')
+    proposal=record.get('proposal')
+    if not isinstance(proposal,dict) or not isinstance(proposal.get('board'),list):return None
+    if record.get('id')!=folder.name or not ai_review_has_board(folder,record):return None
+    if (feedback.get('human_confirmed') is not True or feedback.get('status') not in ('confirmed','corrected')
+            or feedback.get('image_training_eligible') is not True):return None
+    labels=feedback.get('labels') or {}
+    if not isinstance(labels,dict):return None
+    board=labels.get('board',[])
+    if not isinstance(board,list) or len(board)!=30 or any(code not in COLOR_ORDER for code in board):return None
+    try:visual_labels={name:list(labels.get(name,[None]*30)) for name in ('board','spikes','locks')}
+    except TypeError:return None
+    if any(len(visual_labels[name])!=30 or any(value is not None and type(value) is not bool for value in visual_labels[name]) for name in ('spikes','locks')):return None
+    try:
+        with Image.open(folder/'board.png') as original:image=original.convert('RGB')
         digest=hashlib.sha256(image.tobytes()).hexdigest()
-        visual_labels={name:list(labels.get(name,[None]*30)) for name in ('board','spikes','locks')}
+        version=_ai_case_version(folder)
+    except (OSError,ValueError):return None
+    return dict(id=folder.name,folder=folder,record=record,feedback=feedback,image=image,
+        labels=visual_labels,effective_labels=visual_labels,digest=digest,
+        group=hashlib.sha256(''.join(board).encode()).hexdigest(),contributors=[],source_version=version)
+
+
+def _ai_case_version(folder):
+    """Small stable edit fingerprint plus the original image's file identity."""
+    folder=Path(folder);board=folder/'board.png';info=board.stat()
+    return (hashlib.sha256((folder/'record.json').read_bytes()).hexdigest(),
+            hashlib.sha256((folder/'feedback.json').read_bytes()).hexdigest(),
+            info.st_size,info.st_mtime_ns,getattr(info,'st_ino',None))
+
+
+@ai_review_data_locked
+def visual_training_cases(root,limit=100):
+    """The exact bounded training snapshot, with original identity and sources."""
+    records=[];seen={};limit=max(0,int(limit))
+    for path in sorted(Path(root).glob('*/record.json'),reverse=True):
+        if len(records)>=limit:break
+        case=_visual_training_case(root,path.parent)
+        if case is None:continue
+        visual_labels=case['labels'];digest=case['digest']
         if digest in seen:
             previous=seen[digest]
             for name in visual_labels:
                 for i,value in enumerate(visual_labels[name]):
-                    if previous[name][i] is not None and value is not None and previous[name][i]!=value:raise ValueError('같은 원본에 서로 다른 시각 정답이 있습니다. AI 관리에서 정답을 통일해 주세요.')
-                    if value is not None:previous[name][i]=value
+                    old=previous['labels'][name][i]
+                    if old is not None and value is not None and old!=value:
+                        raise ValueError('같은 원본에 서로 다른 시각 정답이 있습니다. AI 관리에서 정답을 통일해 주세요.')
+                    if value is not None:previous['labels'][name][i]=value
+            previous['contributors'].append({key:value for key,value in case.items() if key not in ('image','contributors')})
             continue
-        seen[digest]=visual_labels
-        group=hashlib.sha256(''.join(board).encode()).hexdigest()
-        records.append((group,image,visual_labels))
+        seen[digest]=case;records.append(case)
     return records
+
+
+def visual_training_data(root):
+    return [(case['group'],case['image'],case['labels']) for case in visual_training_cases(root)]
+
+
+def _ai_case_retention_contents_safe(folder):
+    for path in Path(folder).iterdir():
+        if not path.is_file() or path.is_symlink():return False
+        if path.name not in ('record.json','feedback.json','board.png','game.png') and not re.fullmatch(r'feedback_[0-9a-f]{32}\.json',path.name):return False
+    return True
+
+
+def _persist_training_case_labels(case):
+    """Save only merged labels that were explicitly approved on identical pixels."""
+    previous=case['feedback'];labels=json.loads(json.dumps(previous.get('labels') or {}))
+    for name,values in case['effective_labels'].items():labels[name]=list(values)
+    if labels==previous.get('labels'):return
+    updated=json.loads(json.dumps(previous));updated['labels']=labels;updated['status']='corrected'
+    updated['retention_merge']=dict(method='human_confirmed_identical_pixels',
+        sources=[dict(id=row['id'],confirmed_at=row['feedback'].get('confirmed_at'),
+            status=row['feedback'].get('status'),labels=row['feedback'].get('labels'))
+            for row in case['contributors']],at=time.time())
+    folder=case['folder']
+    _atomic_json_write(folder/('feedback_'+uuid.uuid4().hex+'.json'),updated)
+    _atomic_json_write(folder/'feedback.json',updated)
+    case['feedback']=updated
+
+
+@ai_review_data_locked
+def ai_prune_training_cases(root,limit=100,cancel=None,protected_ids=()):
+    """After a validated model is saved, retain the same next-training dataset."""
+    root=Path(root)
+    result=dict(kept=0,deleted=0,preserved_open=0,preserved_other=0,cancelled=False)
+    if cancel is not None and cancel.is_set():return dict(result,cancelled=True)
+    selected=visual_training_cases(root,limit);keep={row['id'] for row in selected};result['kept']=len(selected)
+    if not selected:return result
+    candidates=[]
+    for path in sorted(root.glob('*/record.json'),reverse=True):
+        if cancel is not None and cancel.is_set():return dict(result,cancelled=True)
+        if path.parent.name in keep:continue
+        case=_visual_training_case(root,path.parent)
+        if case is None:continue
+        if not _ai_case_retention_contents_safe(case['folder']):result['preserved_other']+=1;continue
+        candidates.append({key:value for key,value in case.items() if key not in ('image','contributors')})
+    # Preserve shared-update progress before old source IDs cease to exist.
+    ai_record_share_changes(root.parent)
+    for case in selected:
+        if cancel is not None and cancel.is_set():return dict(result,cancelled=True)
+        if _ai_case_version(case['folder'])!=case['source_version']:
+            raise ValueError('정리 중 정답이 바뀌어 원본 정리를 보류했습니다.')
+        _persist_training_case_labels(case)
+    keep_versions={row['id']:_ai_case_version(row['folder']) for row in selected}
+    for case in candidates:
+        if cancel is not None and cancel.is_set():return dict(result,cancelled=True)
+        protected=set(protected_ids() if callable(protected_ids) else protected_ids)
+        if case['id'] in protected:result['preserved_open']+=1;continue
+        # Never delete against an externally changed or missing retained set.
+        if any(_ai_case_version(root/cid)!=version for cid,version in keep_versions.items()):
+            raise ValueError('보관할 정답이 바뀌어 오래된 원본 정리를 보류했습니다.')
+        folder=case['folder']
+        if not _ai_case_folder_safe(root,folder) or not _ai_case_retention_contents_safe(folder):
+            result['preserved_other']+=1;continue
+        if _ai_case_version(folder)!=case['source_version']:
+            result['preserved_other']+=1;continue
+        shutil.rmtree(folder);result['deleted']+=1
+    return result
 
 
 def visual_train_confirmed(root,current,cancel=None):
@@ -571,7 +692,7 @@ def _batch_three_distance(b):
  vert=c[:,2]-c[:,0]+np.abs(r-a[:,None]-np.array([0,1,2])).sum(axis=1)
  return np.minimum(horiz,vert)
 
-def _solve_master_batch_round(board,budget,cap,width,seed,mode,required_total,combo_bonus,cancel_event=None):
+def _solve_master_batch_round(board,budget,cap,width,seed,mode,required_total,combo_bonus,cancel_event=None,require_heal=False):
  """Evaluate candidates in arrays and reserve a beam quota per held colour.
 
  A rare carried orb must not crowd out common-colour routes needed to arrange
@@ -603,7 +724,7 @@ def _solve_master_batch_round(board,budget,cap,width,seed,mode,required_total,co
   for i in good[:120]:
    if time.perf_counter()>deadline or cancel_event is not None and cancel_event.is_set():break
    after=[COLOR_ORDER[int(x)] for x in nb[i]]
-   goals=combo_condition_goals(master_multicolor_goals(),required_total,combo_bonus)
+   goals=combo_condition_goals(recovery_route_goals(master_multicolor_goals(),require_heal),required_total,combo_bonus)
    if board_goal_metrics(after,goals)['all_met']:
     path=list(map(int,paths[parent[i],:depth]))+[int(nxt[i])]
     # Replay is authoritative; batched bookkeeping alone cannot arm input.
@@ -618,6 +739,7 @@ def _solve_master_batch_round(board,budget,cap,width,seed,mode,required_total,co
   if mode==0:score=final_attrs*25+final_count*17+potential*.8-distances*3-excess*2
   elif mode==1:score=final_attrs*15+final_count*12+potential*.7-distances*4-excess*3
   else:score=final_attrs*20+final_count*20+potential*.6-distances*2-excess*4
+  if require_heal:score+=(groups[:,5]>0)*20-_batch_three_distance(nm[:,5])*2
   order=np.argsort(-score,kind='stable')
   held_codes=nb[np.arange(len(nb)),nxt]
   # Preserve routes with different carried colours AND different matched
@@ -639,7 +761,7 @@ def _solve_master_batch_round(board,budget,cap,width,seed,mode,required_total,co
  return best,None
 
 
-def _solve_master_direct_batch_round(board,budget,cap,width,seed,mode,required_total,combo_bonus,cancel_event=None):
+def _solve_master_direct_batch_round(board,budget,cap,width,seed,mode,required_total,combo_bonus,cancel_event=None,require_heal=False):
  """Direct-match beam retained for dense eight-combo layouts.
 
  A rare carried orb must not crowd out common-colour routes needed to arrange
@@ -669,7 +791,7 @@ def _solve_master_direct_batch_round(board,budget,cap,width,seed,mode,required_t
   for i in good[:120]:
    if time.perf_counter()>deadline or cancel_event is not None and cancel_event.is_set():break
    after=[COLOR_ORDER[int(x)] for x in nb[i]]
-   goals=combo_condition_goals(master_multicolor_goals(),required_total,combo_bonus)
+   goals=combo_condition_goals(recovery_route_goals(master_multicolor_goals(),require_heal),required_total,combo_bonus)
    if board_goal_metrics(after,goals)['all_met']:
     path=list(map(int,paths[parent[i],:depth]))+[int(nxt[i])]
     # Replay is authoritative; batched bookkeeping alone cannot arm input.
@@ -684,6 +806,7 @@ def _solve_master_direct_batch_round(board,budget,cap,width,seed,mode,required_t
   if mode==0:score=attrs*25+count*16+potential-distances*3-excess*2
   elif mode==1:score=attrs*15+count*12+potential*.7-distances*4-excess*3
   else:score=attrs*20+count*20+potential*.6-distances*2-excess*4
+  if require_heal:score+=(groups[:,5]>0)*20-_batch_three_distance(nm[:,5])*2
   order=np.argsort(-score,kind='stable')
   held_codes=nb[np.arange(len(nb)),nxt]
   chosen=[];seen=set()
@@ -713,13 +836,13 @@ def _solve_master_direct_batch_round(board,budget,cap,width,seed,mode,required_t
  return best,None
 
 
-def solve_master_batch(board,time_budget,max_moves,required_total,combo_bonus=0,cancel_event=None,seed_offset=0):
+def solve_master_batch(board,time_budget,max_moves,required_total,combo_bonus=0,cancel_event=None,seed_offset=0,require_heal=False):
     """Bounded diverse restarts for high master combo requirements, never input."""
     max_moves=max(0,min(65,int(max_moves))) if max_moves is not None else 65
-    started=time.perf_counter();best=[0];goals=combo_condition_goals(master_multicolor_goals(),required_total,combo_bonus)
+    started=time.perf_counter();best=[0];goals=combo_condition_goals(recovery_route_goals(master_multicolor_goals(),require_heal),required_total,combo_bonus)
     best_metrics=board_goal_metrics(board,goals)
     upper=sum(board.count(color)//3 for color in COLOR_ORDER)+combo_bonus
-    if best_metrics['all_met'] or max_moves==0 or upper<max(6,required_total):return best,best_metrics['combos'],best_metrics['matched'],list(board)
+    if best_metrics['all_met'] or max_moves==0 or upper<max(6,required_total) or require_heal and board.count('H')<3:return best,best_metrics['combos'],best_metrics['matched'],list(board)
     attempt=0
     while time.perf_counter()-started<time_budget and not (cancel_event is not None and cancel_event.is_set()):
         remaining=max(0,time_budget-(time.perf_counter()-started))
@@ -727,7 +850,7 @@ def solve_master_batch(board,time_budget,max_moves,required_total,combo_bonus=0,
         # with gravity-aware ranking when that beam cannot satisfy the goal.
         run=_solve_master_direct_batch_round if max(6,required_total)-combo_bonus>=8 and attempt%2==0 else _solve_master_batch_round
         path,_=run(board,remaining,max_moves,700,seed_offset+attempt,
-            0 if attempt<4 else (attempt-4)%3,required_total,combo_bonus,cancel_event)
+            0 if attempt<4 else (attempt-4)%3,required_total,combo_bonus,cancel_event,**(dict(require_heal=True) if require_heal else {}))
         after=board_after_drag(board,path);metrics=board_goal_metrics(after,goals)
         if metrics['all_met']:return path,metrics['combos'],metrics['matched'],after
         if (metrics['attr_count'],metrics['final_combos'])>(best_metrics['attr_count'],best_metrics['final_combos']):
@@ -737,7 +860,12 @@ def solve_master_batch(board,time_budget,max_moves,required_total,combo_bonus=0,
     return best,best_metrics['combos'],best_metrics['matched'],after
 
 
-def solve_master_attack(board,time_budget,max_moves,spikes=None,avoid_skull=True,required_total=6,combo_bonus=0,cancel_event=None,seed_offset=0):
+def solve_master_attack(board,time_budget,max_moves,spikes=None,avoid_skull=True,required_total=6,combo_bonus=0,cancel_event=None,seed_offset=0,require_heal=False):
+    if require_heal:
+        if not any(spikes or ()) and 'S' not in board:
+            return solve_master_batch(board,time_budget,max_moves,required_total,combo_bonus,cancel_event,seed_offset,require_heal=True)
+        goals=combo_condition_goals(recovery_route_goals(master_multicolor_goals()),required_total,combo_bonus)
+        return solve_path(board,time_budget=time_budget,max_moves=max_moves,goals=goals,spikes=spikes,avoid_skull=avoid_skull,seed_offset=seed_offset,cancel_event=cancel_event)
     if max(6,int(required_total))-int(combo_bonus)>=7 and not any(spikes or ()) and 'S' not in board:
         return solve_master_batch(board,time_budget,max_moves,required_total,combo_bonus,cancel_event,seed_offset)
     if max(6,int(required_total))-int(combo_bonus)==6 and not any(spikes or ()) and 'S' not in board:
@@ -906,11 +1034,17 @@ def cloud_cell_mask(image: Image.Image) -> list[bool]:
         tile=arr[round((row+.12)*height/ROWS):round((row+.88)*height/ROWS),
                  round((col+.12)*width/COLS):round((col+.88)*width/COLS)]
         _,sat,value=rgb_to_hsv_np(tile)
-        pale=(sat<.16)&(value>.82)
+        pale=(sat<.22)&(value>.76)
         hh,ww=pale.shape
         quadrants=[float(pale[y0:y1,x0:x1].mean()) for y0,y1 in ((0,hh//2),(hh//2,hh))
                    for x0,x1 in ((0,ww//2),(ww//2,ww))]
-        result.append(float(pale.mean())>=.64 and sum(score>=.48 for score in quadrants)>=3)
+        # Cloud borders can be translucent before the full white animation
+        # settles. Require a broad white core as well as multiple quadrants;
+        # a normal orb's narrow highlight must never become a hidden cell.
+        core=pale[hh//4:hh-hh//4,ww//4:ww-ww//4]
+        opaque=float(pale.mean())>=.64 and sum(score>=.48 for score in quadrants)>=3
+        covered_core=float(core.mean())>=.80 and float(pale.mean())>=.38 and sum(score>=.28 for score in quadrants)>=3
+        result.append(opaque or covered_core)
     return result
 
 
@@ -1535,6 +1669,55 @@ def master_multicolor_goals():
     return (False,False,True,False,False,False,False,6,0,True)
 
 
+def recovery_route_goals(goals, required=True):
+    """Add a real heart match without relaxing colour/combo requirements."""
+    values=list(goals)
+    if len(values)<7:values.extend([False]*(7-len(values)))
+    if required:values[3]=True
+    return tuple(values)
+
+
+def route_health_status(image):
+    """Read the framed HP rail, never character HP bars or unframed pink art."""
+    import cv2
+    frame=image.convert('RGB').resize((1600,940),Image.Resampling.LANCZOS)
+    rgb=np.asarray(frame);top=825
+    region=rgb[top:925,:875]
+    white=(region.min(axis=2)>190)&(region.max(axis=2).astype(int)-region.min(axis=2)<55)
+    n,labels,stats,_=cv2.connectedComponentsWithStats(white.astype('uint8'),8)
+    for x,y,w,h,area in sorted(stats[1:],key=lambda s:-s[2]):
+        x,y,w,h=map(int,(x,y,w,h))
+        if not (x<80 and 650<w<870 and 10<=h<=42 and 810<x+w<875):continue
+        # The pink heart at the left distinguishes this rail from card borders.
+        heart=region[y:y+h,x:x+28].astype(int)
+        pink=(heart[...,0]>180)&(heart[...,2]>110)&(heart[...,0]-heart[...,1]>45)&(heart[...,2]-heart[...,1]>10)
+        if pink.sum()<20:continue
+        rail=None
+        for row in range(y,y+h):
+            line=white[row].copy();line[:x+25]=False
+            edges=np.diff(np.r_[False,line,False].astype(int));starts=np.flatnonzero(edges==1);ends=np.flatnonzero(edges==-1)
+            spans=[(int(a),int(b)) for a,b in zip(starts,ends) if b-a>w*.8]
+            if spans:rail=(row,*max(spans,key=lambda p:p[1]-p[0]));break
+        if rail is None:continue
+        row,left,right=rail
+        while row+1<y+h and white[row+1,left+8:right-8].mean()>.9:row+=1
+        sample=region[row+1:row+4,left+8:right-8].astype(int)
+        if sample.shape[0]!=3 or sample.shape[1]<600:continue
+        pink=(sample[...,0]>180)&(sample[...,1]>40)&(sample[...,1]<190)&(sample[...,2]>100)&(sample[...,0]-sample[...,1]>45)&(sample[...,2]-sample[...,1]>10)
+        dark=(sample.max(axis=2)<165)&(sample.max(axis=2)-sample.min(axis=2)<60)
+        filled=pink.sum(axis=0)>=2;known=(pink|dark).sum(axis=0)>=2
+        if known.mean()<.94:continue
+        missing=np.flatnonzero(~filled);end=int(missing[0]) if len(missing) else len(filled)
+        # Require one filled prefix; scattered pink cannot establish HP.
+        if np.sum(filled[end:])>max(3,len(filled)*.015):continue
+        ratio=end/len(filled)
+        # A pixel rail cannot establish the exact 60% boundary. Request numeric
+        # confirmation near it instead of rounding 60.1% down to 60%.
+        low=True if ratio<.58 else False if ratio>.62 else None
+        return dict(ratio=ratio,low_hp=low,source='hp_bar',box=[left,top+row,right,top+row+4])
+    return dict(ratio=None,low_hp=None,source='unconfirmed')
+
+
 def route_operation_seconds(seconds,goals):
     if not master_multicolor(goals):return seconds
     if seconds is None:raise RuntimeError('달인 다색 · 조작시간 미확인 · 4초 잔여 조건을 확인할 수 없습니다.')
@@ -1721,6 +1904,30 @@ def combo_digit_views(image, yellow=False):
 
 def combo_digit_retry_views(image, yellow=False):
     """Alternate glyph-preserving views of the icon centre, never its duration."""
+    if not yellow:
+        import cv2
+        rgb=np.asarray(image.convert('RGB'))
+        neutral=rgb.max(axis=2).astype(int)-rgb.min(axis=2)<65
+        views=[]
+        # Small outlined digits have gray antialiased strokes. The primary
+        # white-only mask can shave a 7 into a question mark; rethreshold the
+        # original pixels instead of enlarging that already damaged mask.
+        for threshold in (120,150):
+            mask=neutral&(rgb.min(axis=2)>threshold)
+            n,labels,stats,_=cv2.connectedComponentsWithStats(mask.astype('uint8'),8)
+            parts=[i for i in range(1,n) if stats[i,4]>=4
+                   and stats[i,3]>=max(4,image.height*.25)]
+            if not parts:continue
+            # Keep separate digit components (e.g. 10), discard isolated orb
+            # highlights, and never expand outside the localized icon crop.
+            mask=np.isin(labels,parts)
+            ys,xs=np.where(mask)
+            glyph=Image.fromarray(np.where(mask,0,255).astype('uint8')).crop(
+                (int(xs.min()),int(ys.min()),int(xs.max())+1,int(ys.max())+1))
+            glyph=glyph.resize((glyph.width*6,glyph.height*6),Image.Resampling.LANCZOS).convert('RGB')
+            view=Image.new('RGB',(glyph.width+40,glyph.height+40),'white');view.paste(glyph,(20,20))
+            views.append(view)
+        return views
     views=combo_digit_views(image,yellow)
     if not views:return []
     # The usual magnifications use antialiasing twice. A crisp binary edge and
@@ -2055,7 +2262,7 @@ def shortened_route_search_process(board, spikes, goals, cap, avoid_skull, outpu
         while time.monotonic()<deadline:
             kwargs=dict(time_budget=min(1.2,max(0.0,deadline-time.monotonic())),max_moves=cap,spikes=spikes,
                         avoid_skull=avoid_skull,seed_offset=attempt)
-            if goals[2]:
+            if goals[2] and not goals[3]:
                 path,_,_,_=solve_five_attributes_v101(board,required_total=required_total,combo_bonus=combo_bonus,**kwargs)
             else:
                 path,_,_,_=solve_path(board,goals=goals,**kwargs)
@@ -2092,7 +2299,7 @@ def solve_path(
     """
     if len(board) != ROWS * COLS:
         raise ValueError(f"퍼즐판에는 {ROWS * COLS}칸이 필요합니다.")
-    if master_survival(goals):
+    if master_survival(goals) and not goals[3]:
         return solve_five_attributes_v101(board,time_budget=time_budget,max_moves=max_moves,
             spikes=spikes,avoid_skull=avoid_skull,seed_offset=seed_offset,
             required_total=6,combo_bonus=goals[8] if len(goals)>8 else 0,require_five=False,cancel_event=cancel_event)
@@ -8734,7 +8941,7 @@ def background_status_text(tokens):
         'attribute_absorb':any(w in t for w in ('속성흡수','属性吸収'))}
 
 
-STATUS_ICON_LABELS={'void_shield':'일정 피해 이상 무효 방패','attack_down':'공격력 감소','awoken_void':'각성 무효','bound':'바인드',
+STATUS_ICON_LABELS={'none':'없음 · 공격 턴수만 있음','void_shield':'일정 피해 이상 무효 방패','attack_down':'공격력 감소','awoken_void':'각성 무효','bound':'바인드',
     'recovery_down':'회복력 감소','damage_absorb':'데미지 흡수','attribute_absorb':'속성 흡수',
     'combo_absorb':'콤보 흡수 아이콘','time_reduction':'조작시간 감소 아이콘','cloud':'구름 효과','dark':'암흑 효과'}
 
@@ -8758,23 +8965,67 @@ def learn_status_icon(settings,key,crop,area):
 def background_template_states(frame,settings):
     import base64,io,cv2
     states={};image=np.asarray(frame.convert('RGB'))
-    for key,entry in settings.get('background_status_templates',{}).items():
-        if key not in STATUS_ICON_LABELS:continue
-        examples=entry.get('samples') or [entry]
-        for example in examples[-4:]:
-            try:
-                raw=base64.b64decode(example['png'],validate=True)
-                if len(raw)>50000:continue
-                template=np.asarray(Image.open(io.BytesIO(raw)).convert('RGB'));h,w=template.shape[:2]
-                if not 10<=h<=100 or not 10<=w<=100:continue
-                area=image[120:570,:870] if example.get('area')=='enemy' else image[825:940,:]
-                score=cv2.matchTemplate(area,template,cv2.TM_SQDIFF_NORMED)
+    entries=settings.get('background_status_templates',{})
+    def matches(example,excluded=(),multiple=False):
+        try:
+            raw=base64.b64decode(example['png'],validate=True)
+            if len(raw)>50000:return []
+            template=np.asarray(Image.open(io.BytesIO(raw)).convert('RGB'));h,w=template.shape[:2]
+            if not 10<=h<=100 or not 10<=w<=100 or template.std()<10:return []
+            enemy=example.get('area')=='enemy';offset=120 if enemy else 825
+            area=image[120:570,:870] if enemy else image[825:940,:]
+            score=cv2.matchTemplate(area,template,cv2.TM_SQDIFF_NORMED)
+            # A confirmed negative excludes only this glyph's location. A real
+            # status next to the attack badge must remain eligible for matching.
+            for ex,ey,ew,eh in excluded:
+                ey-=offset
+                x0=max(0,ex-w+1);x1=min(score.shape[1],ex+ew)
+                y0=max(0,ey-h+1);y1=min(score.shape[0],ey+eh)
+                if x0>=x1 or y0>=y1:continue
+                xs=np.arange(x0,x1);ys=np.arange(y0,y1)
+                overlap_x=np.maximum(0,np.minimum(xs+w,ex+ew)-np.maximum(xs,ex))
+                overlap_y=np.maximum(0,np.minimum(ys+h,ey+eh)-np.maximum(ys,ey))
+                view=score[y0:y1,x0:x1]
+                view[overlap_y[:,None]*overlap_x[None,:]>=.7*min(w*h,ew*eh)]=1
+            found=[]
+            for _ in range(32):
                 value,_,where,_=cv2.minMaxLoc(score)
-                patch=area[where[1]:where[1]+h,where[0]:where[0]+w]
-                if value<.025 and np.abs(patch.astype('int16')-template.astype('int16')).mean()<18:
-                    states[key]=True;break
-            except (ValueError,KeyError,OSError,cv2.error):continue
+                if value>=.025:break
+                x,y=where;patch=area[y:y+h,x:x+w]
+                if np.abs(patch.astype('int16')-template.astype('int16')).mean()<18:
+                    found.append((x,y+offset,w,h))
+                    if not multiple:break
+                score[max(0,y-h//2):y+h//2+1,max(0,x-w//2):x+w//2+1]=1
+            return found
+        except (ValueError,KeyError,OSError,cv2.error):return []
+    negatives=[]
+    negative_entry=entries.get('none',{})
+    for example in (negative_entry.get('samples') or [negative_entry])[-4:]:
+        # New negative labels need explicit human approval. Legacy positive
+        # examples remain compatible and are never migrated to negatives.
+        if example.get('confirmed') is True:negatives.extend(matches(example,multiple=True))
+    for key,entry in entries.items():
+        if key not in STATUS_ICON_LABELS or key=='none':continue
+        for example in (entry.get('samples') or [entry])[-4:]:
+            if matches(example,negatives):states[key]=True;break
     return states
+
+
+def status_icon_selection_boxes(frame,key,box=None):
+    """No-effect teaching may select the attack badge without drawing a crop."""
+    if key not in STATUS_ICON_LABELS:raise ValueError('상태 종류를 선택하세요.')
+    anchors=enemy_attack_anchors(frame)
+    if box is None:
+        if key!='none':raise ValueError('남은 턴 숫자를 제외하고 상태 아이콘 그림을 선택하세요.')
+        boxes=[(max(0,cx-17),max(0,cy-17),min(frame.width,cx+18),min(frame.height,cy+18)) for cx,cy in anchors]
+        if not boxes:raise ValueError('공격 표시를 자동으로 찾지 못했습니다. 스킬 효과가 아닌 그림을 직접 선택하세요.')
+        return boxes
+    x0,y0,x1,y1=map(int,box)
+    if not (0<=x0<x1<=frame.width and 0<=y0<y1<=frame.height and 10<=x1-x0<=100 and 10<=y1-y0<=100):
+        raise ValueError('아이콘 그림만 10~100px로 선택하세요.')
+    if key!='none' and any(x0<=cx<x1 and y0<=cy<y1 for cx,cy in anchors):
+        raise ValueError('빨간 공격 표시는 스킬 효과가 아닙니다. 없음 · 공격 턴수만 있음을 선택하세요.')
+    return [(x0,y0,x1,y1)]
 
 
 def background_target_key(ledger):
@@ -8938,6 +9189,111 @@ def ai_review_has_display(folder,record):
     except (OSError,ValueError,TypeError):return False
 
 
+def ai_share_case_fingerprint(case):
+    """Stable learning content identity; reconfirm timestamps do not add data."""
+    labels=case.get('effective_labels') or case.get('labels') or case.get('feedback',{}).get('labels') or {}
+    if not isinstance(labels,dict):raise ValueError('시각 정답 형식이 올바르지 않습니다.')
+    visual={key:list(labels.get(key,[None]*30)) for key in ('board','spikes','locks')}
+    image=case.get('image')
+    if image is None:
+        with Image.open(Path(case['folder'])/'board.png') as source:image=source.convert('RGB')
+    else:image=image.convert('RGB')
+    digest=hashlib.sha256(f'{image.width}x{image.height}\n'.encode('ascii'))
+    digest.update(image.tobytes())
+    digest.update(json.dumps(visual,ensure_ascii=False,sort_keys=True,separators=(',',':')).encode('utf-8'))
+    return digest.hexdigest()
+
+
+def ai_record_share_changes(root,cases=None,force_current=False):
+    """Retain small change counters before pruning sources, including thresholds >100."""
+    root=Path(root)
+    with AI_REVIEW_DATA_LOCK:
+        state=_load_json_dict(root/'share_changes.json')
+        known=dict(state['known']) if isinstance(state.get('known'),dict) else {}
+        pending=dict(state['pending']) if isinstance(state.get('pending'),dict) else {}
+        if force_current:known={}
+        if cases is None:
+            cases=[];case_root=root/'cases'
+            for path in sorted(case_root.glob('*/record.json'),reverse=True):
+                folder=path.parent
+                if (not re.fullmatch(r'\d{8}_\d{6}_[0-9a-f]{32}',folder.name)
+                        or folder.is_symlink() or any((folder/name).is_symlink() for name in ('record.json','feedback.json','board.png'))):continue
+                record=_load_json_dict(path);feedback=_load_json_dict(folder/'feedback.json')
+                if record.get('id')!=folder.name:continue
+                if feedback.get('status')=='unknown':
+                    pending.pop(folder.name,None);known.pop(folder.name,None);continue
+                labels=feedback.get('labels') or {}
+                if not isinstance(labels,dict):continue
+                board=labels.get('board',[])
+                if (feedback.get('human_confirmed') is not True or feedback.get('status') not in ('confirmed','corrected')
+                        or feedback.get('image_training_eligible') is not True or not isinstance(board,list) or len(board)!=30
+                        or any(code not in COLOR_ORDER for code in board)):continue
+                try:
+                    if not ai_review_has_board(folder,record):continue
+                    cases.append(dict(id=folder.name,folder=folder,feedback=feedback,labels=labels))
+                except (OSError,ValueError,TypeError,AttributeError):continue
+        for case in cases:
+            try:
+                cid=case['id']
+                if not re.fullmatch(r'\d{8}_\d{6}_[0-9a-f]{32}',cid):continue
+                fingerprint=ai_share_case_fingerprint(case)
+            except (OSError,ValueError,TypeError,KeyError,AttributeError):continue
+            if known.get(cid)!=fingerprint:pending[cid]=fingerprint
+            known[cid]=fingerprint
+        # Removed, acknowledged sources need no permanent ledger entry.
+        known={cid:value for cid,value in known.items() if cid in pending or (root/'cases'/cid).is_dir()}
+        state=dict(schema=1,known=known,pending=pending)
+        _atomic_json_write(root/'share_changes.json',state)
+        return state
+
+
+def ai_ack_share_changes(root,captured):
+    """Acknowledge this snapshot only; newer edits remain due for sharing."""
+    root=Path(root)
+    with AI_REVIEW_DATA_LOCK:
+        state=_load_json_dict(root/'share_changes.json')
+        pending=dict(state['pending']) if isinstance(state.get('pending'),dict) else {}
+        known=dict(state['known']) if isinstance(state.get('known'),dict) else {}
+        for cid,digest in captured.items():
+            if pending.get(cid)==digest:pending.pop(cid,None)
+        known={cid:value for cid,value in known.items() if cid in pending or (root/'cases'/cid).is_dir()}
+        _atomic_json_write(root/'share_changes.json',dict(schema=1,known=known,pending=pending))
+
+
+def ai_storage_guide_text(data_root):
+    """Describe automatic retention; opening this guide never removes files."""
+    return (
+        '학습 성공 후 최근 정답 100개를 남깁니다.\n'
+        '사람이 판단 맞음·수정 저장으로 확정한 유효 원본을 기록 생성 순서로 고릅니다. '
+        '같은 원본은 중복을 제외하며 나뉘어 확인한 잠금·가시 정답도 합쳐 보존합니다. '
+        '학습·검증과 모델 저장이 성공한 뒤, 그보다 오래된 유효 확정 기록 폴더를 자동 정리합니다.\n\n'
+        '미확인·모르겠음·학습에 유효하지 않은 기록은 정리 대상이 아닙니다. '
+        '학습 실패·중단·모델 저장 실패 때도 원본을 지우지 않습니다. '
+        '관리창에 열어 둔 기록은 보호하고, 창을 닫은 뒤 다시 정리합니다. '
+        '현재 모델과 이전 모델도 유지합니다.\n\n'
+        '200건은 목록 표시 상한입니다.\n'
+        '필터에 맞는 최근 200건을 표시하므로 미확인 기록을 포함한 전체 기록 수는 100개보다 많을 수 있습니다. '
+        '100개는 유효한 확정 학습 자료에 적용하는 보관 기준입니다.\n\n'
+        'GitHub에는 최근 학습 자료 전체 묶음을 압축해 공유합니다.\n'
+        '업데이트 때 설정된 새 정답 수에 도달하면 최근 유효 정답 최대 100개와 원본 퍼즐판, '
+        '기록·합쳐진 정답, 현재·이전 모델을 ZIP으로 만듭니다. 용량이 크면 여러 ZIP으로 나눕니다. '
+        '새 전체 묶음의 업로드를 모두 확인한 뒤 오래된 앱 학습 업로드와 완료된 전송 ZIP을 정리합니다. '
+        '업로드 실패·중단 시 기존 완료 자료와 재전송 ZIP은 남깁니다.\n\n'
+        '새 정답 수는 작은 전송 기록에 별도로 남기므로, 원본을 100개로 정리해도 '
+        '200개 같은 업로드 기준에 도달할 수 있습니다. 같은 정답을 다시 확인한 것만으로 새 자료 수가 늘지는 않습니다.\n\n'
+        '공유 대상과 보관할 파일\n'
+        '전체 게임 화면·개인 설정·적 아이콘 예시·토큰은 학습 ZIP에 넣지 않습니다. '
+        '적 아이콘 확인 예시는 settings.json에 남습니다. '
+        'ai_review/models의 현재·이전 모델, github_sync.json과 share_changes.json의 전송 상태, '
+        'settings.json과 database는 계속 유지합니다. '
+        '추가 파일이 섞였거나 정리 중 변경된 기록은 임의로 삭제하지 않습니다.\n\n'
+        '더 오래 보관하고 싶은 자료가 있다면 학습 전에 사용자 데이터 폴더를 별도 위치에 백업하세요. '
+        '검토가 끝난 debug 오류 ZIP은 학습 원본과 별도이므로 직접 정리할 수 있습니다. '
+        '미완료 전송 ZIP은 자동 재시도에 필요하므로 직접 지우지 마세요.\n\n'
+        '사용자 데이터 위치: '+str(data_root)
+    )
+
+
 def ai_review_list(root,mode='전체',limit=200):
     paths=sorted(Path(root).glob('*/record.json'),reverse=True);rows=[]
     for path in paths:
@@ -8951,6 +9307,7 @@ def ai_review_list(root,mode='전체',limit=200):
     return rows,len(paths)
 
 
+@ai_review_data_locked
 def ai_review_write(root,proposal,board_image=None,game_image=None):
     """Local, immutable observations. Nothing is a training label by default."""
     root=Path(root);root.mkdir(parents=True,exist_ok=True)
@@ -8964,6 +9321,7 @@ def ai_review_write(root,proposal,board_image=None,game_image=None):
     return record
 
 
+@ai_review_data_locked
 def ai_review_feedback(root,cid,status,labels,note='',outcome='미확인'):
     if not re.fullmatch(r'\d{8}_\d{6}_[0-9a-f]{32}',str(cid)):raise ValueError('검토 기록 번호가 올바르지 않습니다.')
     folder=Path(root)/cid;record=_load_json_dict(folder/'record.json')
@@ -8975,11 +9333,14 @@ def ai_review_feedback(root,cid,status,labels,note='',outcome='미확인'):
     for field in ('spikes','locks'):
         values=labels.get(field,[])
         if board and (len(values)!=30 or any(value is not None and type(value) is not bool for value in values)):raise ValueError('가시·잠금 30칸을 확인해 주세요.')
+    if 'clouds' in labels:
+        values=labels['clouds']
+        if not isinstance(values,list) or len(values)!=30 or any(value is not None and type(value) is not bool for value in values):raise ValueError('구름 30칸을 확인해 주세요.')
     if labels.get('goal_index') not in {i for i,_,_ in ROUTE_GOAL_OPTIONS}:raise ValueError('경로 조건을 선택해 주세요.')
     if labels.get('action') not in AI_REVIEW_ACTIONS:raise ValueError('행동을 선택해 주세요.')
     if status=='confirmed' and labels!=record.get('proposal'):status='corrected'
     feedback=dict(schema_version=1,status=status,labels=labels if status!='unknown' else None,note=str(note)[:4000],outcome=str(outcome)[:80],confirmed_at=time.time(),human_confirmed=status!='unknown',
-                  image_training_eligible=bool(status!='unknown' and board and ai_review_has_board(folder,record)))
+                  image_training_eligible=bool(status!='unknown' and board and not any(labels.get('clouds',[])) and ai_review_has_board(folder,record)))
     # Preserve every explicit correction; feedback.json is just the current selection.
     _atomic_json_write(folder/('feedback_'+uuid.uuid4().hex+'.json'),feedback)
     _atomic_json_write(folder/'feedback.json',feedback)
@@ -9039,54 +9400,68 @@ def ai_github_token(repo):
 
 
 def ai_confirmed_export_cases(root):
-    cases=[]
-    for path in sorted((Path(root)/'cases').glob('*/record.json')):
-        if not re.fullmatch(r'\d{8}_\d{6}_[0-9a-f]{32}',path.parent.name):continue
-        record=_load_json_dict(path);feedback=_load_json_dict(path.parent/'feedback.json')
-        labels=feedback.get('labels') or {};board=labels.get('board',[])
-        if (feedback.get('human_confirmed') is not True or feedback.get('status') not in ('confirmed','corrected')
-                or len(board)!=30 or any(code not in COLOR_ORDER for code in board) or not ai_review_has_board(path.parent,record)):continue
-        files=[p for p in (path,path.parent/'feedback.json',path.parent/'board.png',path.parent/'game.png') if p.is_file()]
-        if any(not source.resolve().is_relative_to(Path(root).resolve()) for source in files):continue
-        digest=hashlib.sha256()
-        for source in files:
-            digest.update(source.name.encode());digest.update(source.read_bytes())
-        cases.append(dict(id=path.parent.name,digest=digest.hexdigest(),files=files))
-    return cases
+    """The same newest 100 distinct approved sources used by local training."""
+    with AI_REVIEW_DATA_LOCK:
+        cases=[];root=Path(root)
+        for selected in visual_training_cases(root/'cases',limit=100):
+            folder=selected['folder']
+            files=[folder/name for name in ('record.json','feedback.json','board.png')]
+            if any(path.is_symlink() or not path.is_file() or not path.resolve().is_relative_to(root.resolve()) for path in files):
+                raise ValueError('학습 원본 경로를 확인하세요.')
+            record=dict(selected['record']);record.pop('game_image',None)
+            feedback=dict(selected['feedback']);labels=dict(feedback.get('labels') or {})
+            labels.update(selected['effective_labels']);feedback['labels']=labels
+            payloads={
+                'record.json':json.dumps(record,ensure_ascii=False,sort_keys=True,separators=(',',':')).encode(),
+                'feedback.json':json.dumps(feedback,ensure_ascii=False,sort_keys=True,separators=(',',':')).encode(),
+                'board.png':files[2].read_bytes(),
+            }
+            source_digest=hashlib.sha256()
+            for path in files:source_digest.update(path.name.encode());source_digest.update(path.read_bytes())
+            cases.append(dict(id=selected['id'],digest=ai_share_case_fingerprint(selected),
+                files=files,payloads=payloads,source_digest=source_digest.hexdigest()))
+        return cases
 
 
 def ai_export_training(root,cases,version,max_bytes=24*1024*1024):
-    """Local archives only. Group confirmed cases intact, with bounded part size."""
+    """A complete recent training snapshot, split without separating one case."""
     import zipfile
-    root=Path(root);batch=time.strftime('%Y%m%d-%H%M%S')+'-'+uuid.uuid4().hex[:10]
-    folder=root/'exports'/batch;folder.mkdir(parents=True,exist_ok=False)
-    groups=[dict(cases={case['id']:case['digest']},files=[('cases/'+case['id']+'/'+p.name,p) for p in case['files']]) for case in cases]
-    models=[p for p in sorted((root/'models').glob('*')) if p.is_file() and p.suffix in ('.npz','.json') and re.fullmatch(r'[A-Za-z0-9_.-]+',p.name)]
-    groups.extend(dict(cases={},files=[('models/'+p.name,p)]) for p in models)
-    chunks=[];chunk=[];size=0
-    for group in groups:
-        estimate=sum(p.stat().st_size+len(name.encode())*2+128 for name,p in group['files'])+1024
-        if estimate+4096>max_bytes:raise ValueError('한 자료가 ZIP 분할 상한보다 큽니다. 해당 원본 크기를 확인하세요.')
-        if chunk and size+estimate+4096>max_bytes:chunks.append(chunk);chunk=[];size=0
-        chunk.append(group);size+=estimate
-    if chunk:chunks.append(chunk)
-    result=[]
-    for index,chunk in enumerate(chunks,1):
-        path=folder/f'학습_{index:02}.zip';pending=path.with_suffix('.pending');case_map={k:v for group in chunk for k,v in group['cases'].items()}
-        manifest=dict(schema=1,version=version,batch=batch,part=index,parts=len(chunks),cases=case_map,confirmed_only=True)
-        with zipfile.ZipFile(pending,'w',zipfile.ZIP_DEFLATED,compresslevel=6) as archive:
-            archive.writestr('manifest.json',json.dumps(manifest,ensure_ascii=False,indent=2))
-            for group in chunk:
-                for name,source in group['files']:archive.write(source,name)
-        if pending.stat().st_size>max_bytes:pending.unlink();raise ValueError('학습 ZIP 분할 크기 검증에 실패했습니다.')
-        os.replace(pending,path)
-        result.append(dict(path=str(path.relative_to(root)),sha256=hashlib.sha256(path.read_bytes()).hexdigest(),cases=case_map))
-    for case in cases:
-        digest=hashlib.sha256()
-        for source in case['files']:
-            digest.update(source.name.encode());digest.update(source.read_bytes())
-        if digest.hexdigest()!=case['digest']:raise ValueError('압축 중 정답이 바뀌었습니다. 최신 정답을 다음 실행에서 다시 준비합니다.')
-    return dict(tag='training-'+version.replace('.','-')+'-'+batch,files=result,batch=batch)
+    with AI_REVIEW_DATA_LOCK:
+        root=Path(root);batch=time.strftime('%Y%m%d-%H%M%S')+'-'+uuid.uuid4().hex[:10]
+        folder=root/'exports'/batch;folder.mkdir(parents=True,exist_ok=False)
+        groups=[dict(cases={case['id']:case['digest']},files=[('cases/'+case['id']+'/'+name,data) for name,data in case['payloads'].items()]) for case in cases]
+        models=[root/'models'/name for name in ('visual_model.npz','visual_model_previous.npz')]
+        for path in models:
+            if path.is_file() and not path.is_symlink() and path.resolve().is_relative_to(root.resolve()):
+                groups.append(dict(cases={},files=[('models/'+path.name,path.read_bytes())]))
+        chunks=[];chunk=[];size=0
+        for group in groups:
+            estimate=sum(len(data)+len(name.encode())*2+128 for name,data in group['files'])+1024
+            if estimate+4096>max_bytes:raise ValueError('한 자료가 ZIP 분할 상한보다 큽니다. 해당 원본 크기를 확인하세요.')
+            if chunk and size+estimate+4096>max_bytes:chunks.append(chunk);chunk=[];size=0
+            chunk.append(group);size+=estimate
+        if chunk:chunks.append(chunk)
+        if not chunks:raise ValueError('공유할 학습 자료가 없습니다.')
+        result=[]
+        for index,chunk in enumerate(chunks,1):
+            path=folder/f'학습_{index:02}.zip';pending=path.with_suffix('.pending');case_map={k:v for group in chunk for k,v in group['cases'].items()}
+            manifest=dict(schema=2,version=version,batch=batch,part=index,parts=len(chunks),cases=case_map,
+                confirmed_only=True,complete_snapshot=True,retention_limit=100,total_cases=len(cases))
+            with zipfile.ZipFile(pending,'w',zipfile.ZIP_DEFLATED,compresslevel=6) as archive:
+                archive.writestr('manifest.json',json.dumps(manifest,ensure_ascii=False,indent=2))
+                for group in chunk:
+                    for name,data in group['files']:archive.writestr(name,data)
+            if pending.stat().st_size>max_bytes:pending.unlink();raise ValueError('학습 ZIP 분할 크기 검증에 실패했습니다.')
+            os.replace(pending,path)
+            result.append(dict(path=str(path.relative_to(root)),sha256=hashlib.sha256(path.read_bytes()).hexdigest(),cases=case_map))
+        for case in cases:
+            digest=hashlib.sha256()
+            for source in case['files']:digest.update(source.name.encode());digest.update(source.read_bytes())
+            if digest.hexdigest()!=case['source_digest']:raise ValueError('압축 중 정답이 바뀌었습니다. 최신 정답을 다음 실행에서 다시 준비합니다.')
+        receipt=dict(schema=1,batch=batch,files=result,complete_snapshot=True)
+        _atomic_json_write(folder/'snapshot.json',receipt)
+        return dict(tag='training-'+version.replace('.','-')+'-'+batch,files=result,all_files=list(result),batch=batch,
+            version=version,snapshot_cases={case['id']:case['digest'] for case in cases},complete_snapshot=True)
 
 
 class GitHubLearningClient:
@@ -9144,6 +9519,147 @@ class GitHubLearningClient:
             except ValueError:uploaded=None
         if not uploaded or uploaded.get('size')!=len(data) or uploaded.get('state')!='uploaded':raise RuntimeError('GitHub 파일 업로드 완료 응답을 확인하지 못했습니다.')
 
+    def _snapshot_assets(self,release_id):
+        result=[]
+        for page in range(1,101):
+            rows=self.request('GET','/repos/'+self.repo+'/releases/'+str(int(release_id))+'/assets?per_page=100&page='+str(page)) or []
+            if not isinstance(rows,list):raise RuntimeError('학습 파일 목록을 확인하지 못했습니다.')
+            result.extend(rows)
+            if len(rows)<100:return result
+        raise RuntimeError('학습 파일 목록이 너무 큽니다.')
+
+    def cleanup_snapshots(self,keep_tag,files,cancel=None):
+        """Verify a full replacement before removing completed, app-owned releases."""
+        import io,zipfile
+        from datetime import datetime
+        from urllib.parse import quote
+        cancel=cancel or threading.Event();prefix='/repos/'+self.repo+'/releases'
+        release=self.request('GET',prefix+'/tags/'+quote(keep_tag,safe=''))
+        if not release or release.get('name')!='PAD0 학습 자료 '+keep_tag:raise RuntimeError('새 학습 스냅샷을 확인하지 못했습니다.')
+        assets=self._snapshot_assets(release['id']);by_name={row.get('name'):row for row in assets}
+        expected={Path(row['path']).name:row['sha256'] for row in files}
+        if not expected or len(expected)!=len(files):raise RuntimeError('학습 스냅샷 파일 구성을 확인하지 못했습니다.')
+        for name,digest in expected.items():
+            if cancel.is_set():raise RuntimeError('자료 정리 중지 · 다음 실행에서 이어 확인합니다.')
+            asset=by_name.get(name)
+            if not asset or asset.get('state')!='uploaded':raise RuntimeError('학습 스냅샷의 모든 ZIP 전송을 확인하지 못했습니다.')
+            if asset.get('digest')!='sha256:'+digest:
+                data=self.request('GET','/repos/'+self.repo+'/releases/assets/'+str(int(asset['id'])),binary=True)
+                if not isinstance(data,bytes) or hashlib.sha256(data).hexdigest()!=digest:raise RuntimeError('학습 스냅샷 ZIP 검증에 실패했습니다.')
+        marker='PAD0_MANAGED_TRAINING_SNAPSHOT\n'
+        metadata=dict(schema=1,complete=True,tag=keep_tag,files=expected)
+        body=marker+json.dumps(metadata,sort_keys=True)
+        confirmed=self.request('PATCH',prefix+'/'+str(int(release['id'])),dict(body=body))
+        if not confirmed or confirmed.get('id')!=release['id'] or confirmed.get('body')!=body:
+            raise RuntimeError('새 학습 스냅샷의 완료 표시를 확인하지 못했습니다.')
+        def created(value):
+            try:
+                result=datetime.fromisoformat(str(value).replace('Z','+00:00'))
+                return result if result.tzinfo is not None else None
+            except ValueError:return None
+        # GitHub created_at may be the target commit date shared by many tags;
+        # published_at is the actual snapshot publication order.
+        kept_at=created(release.get('published_at'))
+        old=[]
+        for page in range(1,101):
+            rows=self.request('GET',prefix+'?per_page=100&page='+str(page)) or []
+            if not isinstance(rows,list):raise RuntimeError('기존 학습 자료 목록을 확인하지 못했습니다.')
+            old.extend(rows)
+            if len(rows)<100:break
+        else:raise RuntimeError('기존 학습 자료 목록이 너무 큽니다.')
+        removed=0
+        for row in old:
+            if cancel.is_set():raise RuntimeError('자료 정리 중지 · 다음 실행에서 이어 확인합니다.')
+            tag=row.get('tag_name','')
+            if (tag==keep_tag or row.get('name')!='PAD0 학습 자료 '+tag or row.get('draft')
+                    or not re.fullmatch(r'training-v\d+(?:-\d+)*-\d{8}-\d{6}-[0-9a-f]{10}',tag)):continue
+            old_at=created(row.get('published_at'))
+            if kept_at is None or old_at is None or old_at>=kept_at:continue
+            parts=self._snapshot_assets(row['id'])
+            if not parts or any(not re.fullmatch(r'학습_\d{2,}\.zip',part.get('name','')) or part.get('state')!='uploaded' for part in parts):continue
+            complete=False;body=row.get('body') or ''
+            if body.startswith(marker):
+                try:
+                    info=json.loads(body[len(marker):])
+                    complete=info.get('complete') is True and info.get('tag')==tag and set(info.get('files',{}))=={part['name'] for part in parts}
+                except (ValueError,TypeError):pass
+            else:
+                # Legacy releases have no marker. Their first ZIP manifest
+                # proves ownership and how many uploaded parts form the set.
+                first=min(parts,key=lambda part:part['name'])
+                try:
+                    data=self.request('GET','/repos/'+self.repo+'/releases/assets/'+str(int(first['id'])),binary=True)
+                    with zipfile.ZipFile(io.BytesIO(data)) as archive:
+                        info=json.loads(archive.read('manifest.json'))
+                    count=int(info.get('parts',0));batch=info.get('batch','')
+                    complete=(info.get('confirmed_only') is True and 0<count<=1000 and tag.endswith('-'+batch)
+                        and tag=='training-'+str(info.get('version','')).replace('.','-')+'-'+batch
+                        and {part['name'] for part in parts}=={f'학습_{i:02}.zip' for i in range(1,count+1)})
+                except (ValueError,TypeError,KeyError,OSError,zipfile.BadZipFile):pass
+            if not complete:continue
+            self.request('DELETE',prefix+'/'+str(int(row['id'])));removed+=1
+        return removed
+
+
+def ai_validate_snapshot_metadata(root,item,cleanup=False):
+    """State files never authorize paths outside one generated export folder."""
+    root=Path(root);batch=item.get('batch','');tag=item.get('tag','')
+    if (not re.fullmatch(r'\d{8}-\d{6}-[0-9a-f]{10}',batch)
+            or not re.fullmatch(r'training-v\d+(?:-\d+)*-'+re.escape(batch),tag)):
+        raise ValueError('학습 스냅샷 번호를 확인하세요.')
+    if cleanup and item.get('complete_snapshot') is not True:raise ValueError('전체 학습 스냅샷 완료 상태를 확인하세요.')
+    exports=root/'exports';folder=exports/batch
+    for path in (root,exports,folder):
+        if path.is_symlink() or getattr(path,'is_junction',lambda:False)():raise ValueError('학습 ZIP 폴더 경로를 확인하세요.')
+    for field in ('files','all_files'):
+        if field not in item:continue
+        rows=item[field]
+        if not isinstance(rows,list) or cleanup and field=='files' and not rows:raise ValueError('학습 ZIP 목록을 확인하세요.')
+        for row in rows:
+            value=row.get('path','');path=Path(value)
+            if (path.is_absolute() or len(path.parts)!=3 or path.parts[:2]!=('exports',batch)
+                    or not re.fullmatch(r'학습_\d{2,}\.zip',path.name)
+                    or not re.fullmatch(r'[0-9a-f]{64}',str(row.get('sha256','')))):
+                raise ValueError('학습 ZIP 경로 또는 해시를 확인하세요.')
+            target=root/path
+            if target.is_symlink() or not target.resolve().is_relative_to(root.resolve()):raise ValueError('학습 ZIP 경로를 확인하세요.')
+    return batch
+
+
+def ai_cleanup_completed_exports(root,keep_batch,previous_uploaded=None,previous_tag=None):
+    """Remove only provably completed local bundles, never retry payloads."""
+    import zipfile
+    root=Path(root);exports=root/'exports';removed=0;previous_uploaded=previous_uploaded or {}
+    if not re.fullmatch(r'\d{8}-\d{6}-[0-9a-f]{10}',keep_batch):raise ValueError('유지할 학습 ZIP 번호를 확인하세요.')
+    if (root.is_symlink() or getattr(root,'is_junction',lambda:False)() or not exports.is_dir()
+            or exports.is_symlink() or getattr(exports,'is_junction',lambda:False)()):return 0
+    for folder in exports.iterdir():
+        if (folder.is_symlink() or getattr(folder,'is_junction',lambda:False)() or not folder.is_dir() or folder.name[:15]>=keep_batch[:15]
+                or not re.fullmatch(r'\d{8}-\d{6}-[0-9a-f]{10}',folder.name)):continue
+        contents=list(folder.iterdir())
+        if any(not path.is_file() or path.is_symlink() or (path.name not in ('snapshot.json','uploaded.json')
+                and not re.fullmatch(r'학습_\d{2,}\.zip',path.name)) for path in contents):continue
+        receipt=_load_json_dict(folder/'uploaded.json')
+        complete=(receipt.get('schema')==1 and receipt.get('complete') is True and receipt.get('batch')==folder.name
+            and re.fullmatch(r'training-v\d+(?:-\d+)*-'+re.escape(folder.name),str(receipt.get('tag',''))) is not None)
+        if not complete:
+            files=sorted(folder.glob('학습_*.zip'))
+            if not files or any(file.is_symlink() for file in files):continue
+            try:
+                manifests=[]
+                for file in files:
+                    with zipfile.ZipFile(file) as archive:manifests.append(json.loads(archive.read('manifest.json')))
+                count=len(files)
+                owned=all(info.get('confirmed_only') is True and info.get('batch')==folder.name and info.get('parts')==count for info in manifests)
+                all_acknowledged=all(info.get('cases') and all(previous_uploaded.get(cid)==digest for cid,digest in info['cases'].items()) for info in manifests)
+                complete=owned and (bool(previous_tag and previous_tag.endswith('-'+folder.name)) or all_acknowledged)
+            except (ValueError,TypeError,KeyError,OSError,zipfile.BadZipFile):continue
+        if complete:
+            # Never follow a nested link supplied by another program.
+            if any(path.is_symlink() for path in folder.rglob('*')):continue
+            shutil.rmtree(folder);removed+=1
+    return removed
+
 
 def ai_github_sync_on_update(root,repo,threshold=50,enabled=True,version=APP_VERSION,token_provider=None,client_factory=GitHubLearningClient,cancel=None):
     root=Path(root);root.mkdir(parents=True,exist_ok=True);state_path=root/'github_sync.json'
@@ -9154,26 +9670,77 @@ def ai_github_sync_on_update(root,repo,threshold=50,enabled=True,version=APP_VER
         if not enabled:save();return dict(status='disabled',message='업데이트 시 학습 자료 공유 꺼짐')
         repo=ai_github_repo(repo)
         # A token/repository change never acknowledges data sent elsewhere.
-        if state.get('repo')!=repo:
+        repo_changed=state.get('repo')!=repo
+        if repo_changed:
             pending_update=state.get('pending_update')
             state=dict(repo=repo,seen_version=version,uploaded={})
-            if pending_update==version:state['pending_update']=version
+            state['pending_update']=version
         pending=state.get('pending')
-        if not changed and not pending and state.get('pending_update')!=version:save();return dict(status='same_version',message='이번 버전의 자료 확인 완료 · 다음 업데이트 때 다시 확인합니다.')
-        if not pending:
-            cases=ai_confirmed_export_cases(root);uploaded=state.get('uploaded',{})
-            fresh=[case for case in cases if uploaded.get(case['id'])!=case['digest']]
-            if len(fresh)<max(1,int(threshold)):
-                state.pop('pending_update',None);save();return dict(status='below_threshold',count=len(fresh),message=f'새 정답 {len(fresh)}/{max(1,int(threshold))}건 · 다음 업데이트 때 확인합니다.')
+        cleanup=state.get('cleanup_pending')
+        if changed and ((pending and pending.get('version')!=version) or (cleanup and cleanup.get('version')!=version)):
+            # Resuming yesterday's transfer must not consume this update's
+            # opportunity to share newly reviewed material afterwards.
+            state['resume_update']=version
+        try:
+            if pending:ai_validate_snapshot_metadata(root,pending)
+            if cleanup:ai_validate_snapshot_metadata(root,cleanup,cleanup=True)
+        except (ValueError,TypeError,AttributeError) as exc:
+            state['last_error']=str(exc);save();return dict(status='error',message='학습 자료 상태 확인 필요 · '+str(exc))
+        if not changed and not pending and not cleanup and state.get('pending_update')!=version:
+            save();return dict(status='same_version',message='이번 버전의 자료 확인 완료 · 다음 업데이트 때 다시 확인합니다.')
+        dirty={};new_count=0
+        if not pending and not cleanup:
+            journal=ai_record_share_changes(root,force_current=repo_changed);uploaded=state.get('uploaded',{})
+            already={cid:digest for cid,digest in journal['pending'].items() if uploaded.get(cid)==digest}
+            if already:ai_ack_share_changes(root,already)
+            cases=ai_confirmed_export_cases(root)
+            dirty={cid:digest for cid,digest in journal['pending'].items() if cid not in already}
+            fresh={case['id']:case['digest'] for case in cases if uploaded.get(case['id'])!=case['digest']}
+            new_count=len(set(dirty)|set(fresh))
+            if not cases or new_count<max(1,int(threshold)) and not state.get('force_snapshot'):
+                state.pop('pending_update',None);save()
+                return dict(status='below_threshold',count=new_count,message=f'새 정답 {new_count}/{max(1,int(threshold))}건 · 다음 업데이트 때 확인합니다.')
             state['pending_update']=version;save()
         token=(token_provider or ai_github_token)(repo)
         if not token:state['last_error']='GitHub 연결 설정 필요';save();return dict(status='needs_auth',message='AI 관리의 공유 설정에서 GitHub를 한 번 연결하세요.')
         client=client_factory(repo,token)
+        def finish_cleanup(item):
+            """A failed cleanup retries without replacing or uploading the snapshot."""
+            try:
+                if cancel.is_set():raise RuntimeError('자료 정리를 중지했습니다.')
+                remote=getattr(client,'cleanup_snapshots',None)
+                if callable(remote):remote(item['tag'],item['files'],cancel=cancel)
+                ai_validate_snapshot_metadata(root,item,cleanup=True)
+                folder=root/'exports'/item['batch']
+                if folder.is_dir() and not folder.is_symlink():
+                    _atomic_json_write(folder/'uploaded.json',dict(schema=1,complete=True,batch=item['batch'],tag=item['tag']))
+                ai_cleanup_completed_exports(root,item['batch'],item.get('previous_uploaded'),item.get('previous_tag'))
+                ai_ack_share_changes(root,item.get('share_changes',{}))
+                state.pop('cleanup_pending',None);state.pop('last_error',None)
+                if state.get('resume_update')==version:
+                    state['pending_update']=version;state.pop('resume_update',None)
+                save()
+                return dict(status='uploaded',count=item.get('new_count',0),snapshot_count=len(item.get('snapshot_cases',{})),
+                    message=f"학습 자료 공유·이전 자료 정리 완료 · 최근 정답 {len(item.get('snapshot_cases',{}))}개 스냅샷")
+            except Exception as exc:
+                state['last_error']=str(exc);save()
+                return dict(status='uploaded',count=item.get('new_count',0),cleanup_pending=True,
+                    message='학습 자료 업로드 완료 · 이전 자료 정리 보류: '+str(exc))
         try:
             client.verify_private()
+            if cleanup:return finish_cleanup(cleanup)
             if cancel.is_set():return dict(status='cancelled',message='자료 공유 중지 · 다음 실행에서 이어 전송합니다.')
             if not pending:
-                pending=ai_export_training(root,fresh,version);state['pending']=pending;save()
+                with AI_REVIEW_DATA_LOCK:
+                    # Refresh under the same lock as local retention. Frozen ZIP
+                    # bytes remain valid even if later training removes a case.
+                    cases=ai_confirmed_export_cases(root)
+                    if not cases:raise ValueError('공유할 학습 정답이 없습니다.')
+                    captured=ai_record_share_changes(root)
+                    pending=ai_export_training(root,cases,version)
+                    pending.update(share_changes=dict(captured['pending']),new_count=new_count,
+                        previous_uploaded=dict(state.get('uploaded',{})),previous_tag=state.get('last_success',{}).get('tag'))
+                    state['pending']=pending;save()
             if cancel.is_set():return dict(status='cancelled',message='자료 공유 중지 · 다음 실행에서 이어 전송합니다.')
             release_id=client.release(pending['tag']);count=0
             while pending['files']:
@@ -9185,8 +9752,18 @@ def ai_github_sync_on_update(root,repo,threshold=50,enabled=True,version=APP_VER
                 client.upload(release_id,path.name,data)
                 state.setdefault('uploaded',{}).update(item['cases']);count+=len(item['cases']);pending['files'].pop(0);save()
             state.pop('pending',None);state.pop('pending_update',None);state.pop('last_error',None)
-            state['last_success']=dict(version=version,tag=pending['tag'],at=time.strftime('%Y-%m-%d %H:%M:%S'));save()
-            return dict(status='uploaded',count=count,message=f'업데이트 학습 자료 공유 완료 · 새 정답 {count}건')
+            state['last_success']=dict(version=version,tag=pending['tag'],at=time.strftime('%Y-%m-%d %H:%M:%S'))
+            if pending.get('complete_snapshot') is True and pending.get('all_files'):
+                state['uploaded']=dict(pending.get('snapshot_cases',{}));state.pop('force_snapshot',None)
+                cleanup=dict(tag=pending['tag'],batch=pending['batch'],version=pending.get('version',version),files=pending['all_files'],complete_snapshot=True,
+                    share_changes=pending.get('share_changes',{}),snapshot_cases=pending.get('snapshot_cases',{}),
+                    previous_uploaded=pending.get('previous_uploaded',{}),previous_tag=pending.get('previous_tag'),new_count=pending.get('new_count',count))
+                state['cleanup_pending']=cleanup;save()
+                return finish_cleanup(cleanup)
+            # A pre-upgrade pending bundle may contain only a delta. Finish it
+            # intact, then create a full replacement before deleting any backup.
+            state['force_snapshot']=True;state['pending_update']=version;state.pop('resume_update',None);save()
+            return dict(status='uploaded',count=count,message='기존 미완료 자료 전송 완료 · 다음 실행에서 최근 100개 전체 스냅샷을 준비합니다.')
         except Exception as exc:
             # Never include request headers, credentials, or response bodies.
             state['last_error']=str(exc);save();return dict(status='error',message='학습 자료 공유 보류 · '+str(exc))
@@ -9520,7 +10097,8 @@ class App:
                 predicted_combos=metrics['combos'],predicted_final_combos=metrics['final_combos'],required_final_combos=metrics['required_total'],predicted_attributes=metrics['attr_count'],
                 predicted_direct_attributes=metrics['direct_attr_count'],predicted_known_next_combos=metrics['certified_next_combos'],
                 predicted_known_next_colors=metrics['certified_next_colors'],known_after_gravity=metrics['known_after_gravity'],
-                goals=list(goals if goals is not None else self.selected_goals()),solver_seconds=elapsed)
+                goals=list(goals if goals is not None else self.selected_goals()),solver_seconds=elapsed,
+                health=getattr(self,'_route_hp_reading',None),predicted_recovery_matched=metrics['recovery_matched'])
         except Exception as exc:
             self._v66_log(f'manual error snapshot metadata unavailable: {exc}')
 
@@ -9639,6 +10217,8 @@ class App:
 
     def trigger_route(self, force=False):
         """One entry point for F6; Shift+F6 forces a fresh search."""
+        if getattr(self,'_material_catalog_busy',False):
+            self.set_status('재료 이름·스테이지 확인 중입니다. F10으로 중지한 뒤 경로를 실행하세요.');return
         if getattr(self,'_background_running',False):
             self.set_status('자동파밍 중입니다. F10으로 중지한 뒤 수동 계산을 사용할 수 있습니다.');return
         self._background_failure_hold=False
@@ -10665,6 +11245,7 @@ class App:
         try:
             key=self._register_farming_profile(card_name, targets)
             self._arm_crystal_clicks(key,targets,source_context)
+            if not manual:self._start_material_catalog(key,targets,source_context)
         except (ValueError, OSError) as exc:
             self.set_status(f'재료 등록 보류: {exc}')
             if hasattr(self,'toolbar'): self.toolbar.refresh()
@@ -13725,6 +14306,7 @@ class App:
             if certificate.get('known_next_combos',0) and checks.get('six')=='ready':
                 text=text.replace('6콤보: 경로 확인',f"6콤보: 경로 확인 · 첫 {certificate['direct_combos']} + 기존 낙하 {certificate['known_next_combos']}")
             if survival and checks.get('six')=='ready' and '6콤보:' not in text:text+='\n6콤보: 경로 확인'
+            if check_key[2][3]:text=text.replace('6콤보:','6콤보·회복:')
             self._set_attribute_status(text,
                 '#84edbc' if all(checks.get(k)=='ready' for k in ('five','six')) else '#f8d67b')
             joint=getattr(self,'_prefind_result',None) is not None
@@ -13751,13 +14333,17 @@ class App:
         self._set_attribute_status(phase,'#84edbc' if ready else '#f8d67b')
         return True
 
-    def _prefind_probe_worker(self, board, rect, goals, avoid):
+    def _prefind_probe_worker(self, board, rect, goals, avoid, health_only=False):
         previous=tuple(getattr(ACTION_LOCAL,k,None) for k in ('app','epoch','passive_display'))
         epoch=getattr(self,'_stop_epoch',0)
         ACTION_LOCAL.app=self;ACTION_LOCAL.epoch=epoch;ACTION_LOCAL.passive_display=True
         captured_at=time.monotonic()
         try:
             image=self._capture_route_timer_image(cache_for_error=False)
+            if epoch==getattr(self,'_stop_epoch',0):App._observe_route_health(self,image)
+            if health_only:
+                self._prefind_probe_queue.put((board,rect,goals,captured_at,dict(health_only=True)))
+                return
             if not master_multicolor(goals) and not shortened_timer_bar(image):
                 data=None
             else:
@@ -13918,6 +14504,12 @@ class App:
         return expired
 
     def _prefind_start(self, key):
+        if master_multicolor(key[2]) and key[2][3] and key[0].count('H')<3:
+            self._prefind_cancel()
+            self._prefind_checks_key=key
+            self._prefind_checks=dict(five='unfound',six='skipped',condition_reason=f"체력 60% 이하 · 회복 드롭 부족 ({key[0].count('H')}/3)")
+            self._prefind_feedback(key[0])
+            return
         if master_multicolor(key[2]) and (key[4] is None or key[4]<=5.0):
             self._prefind_cancel()
             self._prefind_checks_key=key
@@ -14033,6 +14625,7 @@ class App:
                     self._prefind_probe_busy=False
                     if sampled!=board or area!=rect or mode!=goals or time.monotonic()-at>2:
                         continue
+                    if isinstance(data,dict) and data.get('health_only'):continue
                     # A missed timer/OCR sample does not invalidate a verified board result.
                     if data is None:
                         checks=getattr(self,'_prefind_checks',None) or {}
@@ -14106,6 +14699,13 @@ class App:
                     self._prefind_probe_next=now+(.3 if master_multicolor(goals) else 1.5)
                     threading.Thread(target=self._prefind_probe_worker,
                         args=(board,rect,goals,self.selected_skull_safety()),daemon=True).start()
+                if (complete and (getattr(self,'_prefind_result',None) is not None or goals[3])
+                        and master_multicolor(goals) and not self._prefind_probe_busy
+                        and now-getattr(self,'_route_hp_checked_at',now)>=1.0):
+                    self._remember_route_timer_windows()
+                    self._prefind_probe_busy=True
+                    threading.Thread(target=self._prefind_probe_worker,
+                        args=(board,rect,goals,self.selected_skull_safety()),kwargs=dict(health_only=True),daemon=True).start()
             # Drain cancelled probes too; never leave a stale busy flag forever.
             if not eligible:
                 while True:
@@ -14222,6 +14822,44 @@ class App:
         self._clear_route_result_notice()
         self._reset_attribute_probe("5속성: 확인 대기")
 
+    def _observe_route_health(self,image):
+        epoch=getattr(self,'_stop_epoch',0)
+        previous=getattr(self,'_route_hp_reading',None)
+        try:
+            status=route_health_status(image)
+            if status['ratio'] is not None and status['low_hp'] is None:
+                # Only the boundary needs OCR; normal HP checks use the rail
+                # without competing with timer/enemy OCR on every preview.
+                crop=image.convert('RGB').resize((1600,940),Image.Resampling.LANCZOS).crop((580,875,855,930))
+                readings=[]
+                for scale in (3,4):
+                    text,score=self._recognize_title_line(crop.resize((crop.width*scale,crop.height*scale),Image.Resampling.LANCZOS))
+                    found=re.fullmatch(r'\s*(\d{1,8})\s*/\s*(\d{1,8})\s*',text.replace(',',''))
+                    value=tuple(map(int,found.groups())) if found and score>=.85 else None
+                    readings.append(value if value and 0<=value[0]<=value[1] and value[1]>0 else None)
+                if readings[0] is not None and readings[0]==readings[1]:
+                    current,total=readings[0]
+                    if abs(current/total-status['ratio'])<=.04:
+                        status.update(current=current,total=total,ratio=current/total,low_hp=current*5<=total*3,source='hp_numbers')
+        except Exception:
+            status=dict(ratio=None,low_hp=None,source='unconfirmed')
+        status['epoch']=epoch
+        if epoch!=getattr(self,'_stop_epoch',0):return status
+        # A missed frame cannot prove that previously low HP has recovered.
+        if (status.get('low_hp') is None and isinstance(previous,dict)
+                and previous.get('epoch')==epoch and previous.get('low_hp') is True):
+            status.update(low_hp=True,source='last_confirmed_low_hp')
+        self._route_hp_reading=status
+        self._route_hp_checked_at=time.monotonic()
+        return status
+
+    def _route_health_goals(self,goals):
+        status=getattr(self,'_route_hp_reading',None)
+        if not master_multicolor(goals) or not isinstance(status,dict):return tuple(goals)
+        values=list(goals)
+        values[3]=status.get('epoch')==getattr(self,'_stop_epoch',0) and status.get('low_hp') is True
+        return tuple(values)
+
     def selected_goals(self) -> tuple[bool, ...]:
         """Keep stable mode IDs while displaying the six requested party goals."""
         try:
@@ -14230,7 +14868,8 @@ class App:
             selected = 0
         if selected not in {i for i, _, _ in ROUTE_GOAL_OPTIONS}:
             selected = 0
-        return master_multicolor_goals() if selected==9 else tuple(index == selected for index in range(7))
+        goals=master_multicolor_goals() if selected==9 else tuple(index == selected for index in range(7))
+        return App._route_health_goals(self,goals)
 
     def selected_skull_safety(self) -> bool:
         # Until HP/poison damage are measured, retain conservative hazard ranking.
@@ -14283,6 +14922,8 @@ class App:
         return self.selected_goals()
 
     def calculate_clicked(self, use_current=False):
+        if getattr(self,'_material_catalog_busy',False):
+            self.set_status('재료 이름·스테이지 확인 중입니다. F10으로 중지한 뒤 경로를 실행하세요.');return
         if getattr(self,'_background_running',False):
             self.set_status('자동파밍 중입니다. F10으로 중지한 뒤 수동 계산을 사용할 수 있습니다.');return
         self._background_failure_hold=False
@@ -14513,6 +15154,7 @@ class App:
         try:
             image = image if image is not None else self._capture_route_timer_image()
             if report:
+                App._observe_route_health(self,image)
                 try:App._read_combo_condition(self,image,getattr(self,'board',[]))
                 except Exception as exc:
                     self._route_combo_condition=dict(board=tuple(getattr(self,'board',[])),required_total=0,combo_bonus=0,
@@ -14628,6 +15270,7 @@ class App:
         try:
             started = time.perf_counter()
             move_cap, detected_seconds = self._restricted_drag_move_cap()
+            goals=App._route_health_goals(self,goals)
             master_requested=master_multicolor(goals)
             requested_master=tuple(goals)
             if master_requested:
@@ -14678,8 +15321,8 @@ class App:
             self._v66_log(f"{APP_VERSION} solver strategy: {'5-attribute search' if goals[2] else 'normal'}, budget={budget}, reserve={reserve}")
             def search(seconds,limit):
                 if master_requested and goals[2]:
-                    return solve_master_attack(board,seconds,limit,spikes,avoid_skull,required_total,combo_bonus,cancel_event,seed_offset=getattr(self,"_master_search_attempt",0))
-                if goals[2]:
+                    return solve_master_attack(board,seconds,limit,spikes,avoid_skull,required_total,combo_bonus,cancel_event,seed_offset=getattr(self,"_master_search_attempt",0),**(dict(require_heal=True) if effective[3] else {}))
+                if goals[2] and not effective[3]:
                     return solve_five_attributes_v101(board,time_budget=seconds,max_moves=limit,
                                                       spikes=spikes,avoid_skull=avoid_skull,required_total=required_total,combo_bonus=combo_bonus,cancel_event=cancel_event)
                 return solve_path(board,time_budget=seconds,max_moves=limit,
@@ -15669,6 +16312,37 @@ class App:
             if not self._crystal_click_stopped and self.root.winfo_exists():
                 self._crystal_click_after=self.root.after(100,self._crystal_click_tick)
 
+    def _save_crystal_material_name(self,name,binding):
+        assert_action_active(self)
+        with self._crystal_db_lock:
+            ledger=self._load_crystal_ledger();db=self._load_crystal_db()
+            key,index,cid,revision=binding
+            group=ledger.get('farming_groups',{}).get(key,{})
+            if not 0<=index<len(group.get('materials',[])): raise ValueError('재료 목록이 바뀌었습니다.')
+            row=group['materials'][index]
+            entry=next((r for r in db['crystals'] if str(r['id'])==cid),None)
+            image_file=(entry or {}).get('image_file') or row.get('image_file')
+            if not image_file or not (self.data_paths['icons_dir']/image_file).is_file():
+                image_file=row.get('image_file')
+            if not image_file or not (self.data_paths['icons_dir']/image_file).is_file():
+                raise ValueError('클릭한 재료 이미지가 없습니다. 돌파 화면에서 F7로 다시 읽어 주세요.')
+            for saved in db['crystals']:
+                if (crystal_name_key(saved.get('crystal_name') or saved.get('label',''))==crystal_name_key(name)
+                        and not (self.data_paths['icons_dir']/str(saved.get('image_file') or '')).is_file()):
+                    saved['image_file']=''
+            # A known material name may only reuse a compatible existing image.
+            matches=[r for r in db['crystals'] if crystal_name_key(r.get('crystal_name') or r.get('label',''))==crystal_name_key(name)]
+            if (len(matches)==1 and str(matches[0]['id'])!=cid
+                    and matches[0].get('image_file')
+                    and (self.data_paths['icons_dir']/matches[0]['image_file']).is_file()):
+                with Image.open(self.data_paths['icons_dir']/image_file) as a, Image.open(self.data_paths['icons_dir']/matches[0]['image_file']) as b:
+                    score=min(float(np.abs(x-y).mean()) for x,y in zip(crystal_art_signatures(a),crystal_art_signatures(b)))
+                if score>=13: raise ValueError('같은 이름의 기존 이미지와 일치하지 않아 중복 등록을 보류했습니다.')
+            updated,database,canonical=name_crystal_material(ledger,db,binding,name,image_file)
+            _atomic_json_write(self.data_paths['database'],database)
+            _atomic_json_write(self.data_paths['ledger'],updated)
+        return updated,canonical
+
     def _on_crystal_detail_done(self,name,binding,error=None,background=False):
         if getattr(self,'_all_actions_stopped',False) is True:return
         self.ocr_busy=False
@@ -15686,33 +16360,8 @@ class App:
             self.set_status(f'{name} 확인 · 연결할 재료를 확정하지 못했습니다. 돌파 화면에서 F7로 읽은 뒤 게임에서 해당 재료를 클릭해 주세요.')
             return
         try:
-            with self._crystal_db_lock:
-                ledger=self._load_crystal_ledger();db=self._load_crystal_db()
-                key,index,cid,revision=binding
-                group=ledger.get('farming_groups',{}).get(key,{})
-                if not 0<=index<len(group.get('materials',[])): raise ValueError('재료 목록이 바뀌었습니다.')
-                row=group['materials'][index]
-                entry=next((r for r in db['crystals'] if str(r['id'])==cid),None)
-                image_file=(entry or {}).get('image_file') or row.get('image_file')
-                if not image_file or not (self.data_paths['icons_dir']/image_file).is_file():
-                    image_file=row.get('image_file')
-                if not image_file or not (self.data_paths['icons_dir']/image_file).is_file():
-                    raise ValueError('클릭한 재료 이미지가 없습니다. 돌파 화면에서 F7로 다시 읽어 주세요.')
-                for saved in db['crystals']:
-                    if (crystal_name_key(saved.get('crystal_name') or saved.get('label',''))==crystal_name_key(name)
-                            and not (self.data_paths['icons_dir']/str(saved.get('image_file') or '')).is_file()):
-                        saved['image_file']=''
-                # A known material name may only reuse a compatible existing image.
-                matches=[r for r in db['crystals'] if crystal_name_key(r.get('crystal_name') or r.get('label',''))==crystal_name_key(name)]
-                if (len(matches)==1 and str(matches[0]['id'])!=cid
-                        and matches[0].get('image_file')
-                        and (self.data_paths['icons_dir']/matches[0]['image_file']).is_file()):
-                    with Image.open(self.data_paths['icons_dir']/image_file) as a, Image.open(self.data_paths['icons_dir']/matches[0]['image_file']) as b:
-                        score=min(float(np.abs(x-y).mean()) for x,y in zip(crystal_art_signatures(a),crystal_art_signatures(b)))
-                    if score>=13: raise ValueError('같은 이름의 기존 이미지와 일치하지 않아 중복 등록을 보류했습니다.')
-                updated,database,canonical=name_crystal_material(ledger,db,binding,name,image_file)
-                _atomic_json_write(self.data_paths['database'],database)
-                _atomic_json_write(self.data_paths['ledger'],updated)
+            key,index,cid,revision=binding
+            updated,canonical=self._save_crystal_material_name(name,binding)
             if canonical!=cid:
                 if str((getattr(self,'active_target',None) or {}).get('id'))==cid:
                     self.active_target=updated.get('active_target')
@@ -16861,10 +17510,11 @@ class App:
 
     def _party_template_editor(self,frame):
         from PIL import ImageTk
-        import base64,io
-        win=tk.Toplevel(self.root);win.title('전투 상태 아이콘 등록 · 아이콘 그림만 드래그');win.geometry('830x600')
+        win=tk.Toplevel(self.root);win.title('전투 상태 아이콘 등록 · 효과 없음도 확인');win.geometry('830x620')
         labels=STATUS_ICON_LABELS
         choice=tk.StringVar(value=list(labels.values())[0]);ttk.Combobox(win,textvariable=choice,values=list(labels.values()),state='readonly',width=35).pack()
+        ttk.Label(win,text='전체 게임 화면을 보여줍니다. 빨간 공격 표시와 옆 숫자는 공격까지 남은 턴이며, 스킬 효과가 아닙니다.').pack()
+        ttk.Label(win,text='효과가 없으면 없음으로 저장하세요. 선택 영역이 없으면 빨간 공격 그림을 자동으로 골라 구분 예시로 저장합니다.').pack()
         ttk.Label(win,text='남은 턴 숫자를 제외하고 아이콘 그림만 선택하세요. 50/75% 감소 방패는 무효 방패로 등록하지 마세요.').pack()
         canvas=tk.Canvas(win,width=800,height=470);canvas.pack();photo=ImageTk.PhotoImage(frame.resize((800,470)));canvas.image=photo
         canvas.create_image(0,0,anchor='nw',image=photo);selection={}
@@ -16877,15 +17527,15 @@ class App:
                 x,y=selection['start'];selection['box']=(min(x,e.x)*2,min(y,e.y)*2,max(x,e.x)*2,max(y,e.y)*2)
         canvas.bind('<ButtonPress-1>',down);canvas.bind('<B1-Motion>',drag);canvas.bind('<ButtonRelease-1>',up)
         def save():
-            box=selection.get('box')
-            if not box or not 10<=box[2]-box[0]<=100 or not 10<=box[3]-box[1]<=100:return
-            crop=frame.crop(box);stream=io.BytesIO();crop.save(stream,format='PNG')
             key=next(k for k,v in labels.items() if v==choice.get())
-            try:count=learn_status_icon(self.user_settings,key,crop,'enemy' if box[1]<600 else 'party')
+            try:
+                boxes=status_icon_selection_boxes(frame,key,selection.get('box'))
+                for box in boxes:
+                    count=learn_status_icon(self.user_settings,key,frame.crop(box),'enemy' if box[1]<600 else 'party')
             except ValueError as exc:self.set_status(str(exc));return
             self.save_user_settings();self._background_visual_status_cache=None
-            win.destroy();self.set_status(f'상태 아이콘 예시 {count}개 저장 · 다음 자동파밍 판단에 적용합니다.')
-        ttk.Button(win,text='선택한 상태 아이콘 저장',command=save).pack(pady=8)
+            win.destroy();self.set_status(f'효과 없음 예시 {count}개 저장 · 해당 그림은 스킬 효과에서 제외합니다.' if key=='none' else f'상태 아이콘 예시 {count}개 저장 · 다음 자동파밍 판단에 적용합니다.')
+        ttk.Button(win,text='선택한 상태 / 없음 저장',command=save).pack(pady=8)
 
     def _background_complete_notification(self,message):
         self.user_settings['background_last_completion']=dict(message=message,at=time.strftime('%Y-%m-%d %H:%M:%S'))
@@ -17134,17 +17784,32 @@ class App:
 
     def show_farming_settings(self):
         if (getattr(self,'_background_running',False) or getattr(self,'_manual_reward_busy',False)
-                or getattr(self,'playback_active',False)):
+                or getattr(self,'playback_active',False) or getattr(self,'_material_catalog_busy',False)):
             self.set_status('진행 중인 파밍·집계가 끝난 뒤 목표 재료를 바꿔 주세요.');return
         self.show_farming_confirmation(settings_only=True)
 
+    def _show_material_scan_guide(self):
+        existing=getattr(self,'_material_scan_guide',None)
+        if existing is not None and existing.winfo_exists():existing.deiconify();existing.lift();return
+        win=tk.Toplevel(self.root);self._material_scan_guide=win
+        win.title('새 파밍 재료 등록');win.geometry('540x270')
+        body=ttk.Frame(win,padding=16);body.pack(fill='both',expand=True)
+        ttk.Label(body,text='새 재료는 게임의 생성·돌파 확인창에서 등록합니다.',font=('Malgun Gothic',11,'bold'),wraplength=500).pack(anchor='w',pady=(0,12))
+        ttk.Label(body,text='1. 게임에서 원하는 캐릭터의 생성 또는 돌파 확인창을 여세요.\n2. 필요 수량·재료 카드·보유 수량이 보이면 재료확인 또는 F7을 누르세요.\n3. 이름이 없는 재료부터 등록한 뒤, 부족 재료의 훈장 버튼으로 출현 목록을 확인합니다.\n4. 부족 재료가 가장 많이 나오는 스테이지로 이동하면 파밍 설정에서 재료를 선택하세요.\n\n자동 확인은 전투를 시작하지 않습니다. F10으로 중지할 수 있습니다.',wraplength=500,justify='left').pack(anchor='w')
+        def scan():win.destroy();self.request_resource_ocr(manual=False,fallback_on_failure=True)
+        ttk.Button(body,text='현재 재료창 확인 (F7)',command=scan).pack(side='bottom',anchor='e',pady=(12,0))
+
     def show_farming_confirmation(self,settings_only=False,target_key=None):
+        if getattr(self,'_material_catalog_busy',False):
+            self.set_status('재료 이름·스테이지 확인 완료 후 파밍 설정을 열어주세요. F10으로 중지할 수 있습니다.');return
         existing=getattr(self,'_farming_confirm_window',None)
         if existing is not None and existing.winfo_exists():existing.deiconify();existing.lift();return
         try:
             ledger=self._load_crystal_ledger();key=target_key or background_target_key(ledger)
             group=ledger.get('farming_groups',{}).get(key)
-            if not group or not group.get('materials'):raise ValueError('돌파 화면에서 재료 목록을 먼저 확인해 주세요.')
+            if not group or not group.get('materials'):
+                self.set_status('게임의 생성·돌파 확인창에서 재료확인/F7 → 이름·획득 스테이지 자동 등록 → 파밍 설정 순서로 진행하세요.')
+                self._show_material_scan_guide();return
             rows=farming_group_rows(ledger,key);db=self._load_crystal_db()
         except Exception as error:self.set_status(str(error));return
         epoch=getattr(self,'_stop_epoch',0)
@@ -17165,7 +17830,10 @@ class App:
             chosen_key=keys[selector.current()]
             cancel();self.show_farming_confirmation(settings_only=settings_only,target_key=chosen_key)
         selector.bind('<<ComboboxSelected>>',change_group)
-        ttk.Label(body,style='FarmConfirm.TLabel',text='선택하지 않으면 보상 집계창과 자동 집계를 사용하지 않습니다.',wraplength=570).pack(anchor='w',pady=(0,10))
+        ttk.Label(body,style='FarmConfirm.TLabel',text='새 대상은 게임의 생성·돌파 확인창을 열고 [재료확인] 또는 F7을 누르세요. 이름 미확인 재료 → 부족 재료의 출현 목록 → 겹치는 재료가 많은 스테이지 순으로 자동 확인합니다. 선택하지 않으면 보상 집계를 사용하지 않습니다.',wraplength=570).pack(anchor='w',pady=(0,8))
+        def rescan_materials():
+            cancel();self.request_resource_ocr(manual=False,fallback_on_failure=True)
+        ttk.Button(body,text='게임의 현재 재료창 다시 확인 (F7)',command=rescan_materials).pack(anchor='w',pady=(0,8))
         area=ttk.Frame(body,style='FarmTable.TFrame');area.pack(fill='both',expand=True)
         canvas=tk.Canvas(area,highlightthickness=0,bg='white');scroll=ttk.Scrollbar(area,orient='vertical',command=canvas.yview)
         canvas.configure(yscrollcommand=scroll.set);scroll.pack(side='right',fill='y');canvas.pack(side='left',fill='both',expand=True)
@@ -17185,7 +17853,9 @@ class App:
             cid=row['id'];checks[cid]=tk.BooleanVar(value=cid in saved_ids);needs[cid]=tk.StringVar(value=str(row['required']))
             ttk.Checkbutton(listing,variable=checks[cid]).grid(row=index,column=0,sticky='w',padx=(2,6))
             entry=entries.get(cid,{})
-            label=ttk.Label(listing,text=crystal_display_name(entry,row,index),wraplength=235,style='FarmTable.TLabel')
+            stages=[number for number,saved in self._stage_db_load()['stages'].items() if saved.get('preview_verified') and any(str(drop.get('id'))==cid for drop in saved.get('drops',[]))]
+            destination='획득: '+', '.join('★'+n for n in sorted(stages)) if stages else '이름 확인 필요 · 재료확인/F7' if not row.get('confirmed',True) else '획득 스테이지 미확인 · 재료확인/F7'
+            label=ttk.Label(listing,text=crystal_display_name(entry,row,index)+'\n'+destination,wraplength=235,style='FarmTable.TLabel')
             try:
                 from PIL import ImageTk
                 path=self.data_paths['icons_dir']/str(entry.get('image_file') or row.get('image_file') or '')
@@ -17654,6 +18324,10 @@ class App:
 
     def _background_battle_turn(self,device,frame,profiles,goals,team_min):
         if background_battle_intro(frame):return False
+        if master_multicolor(goals):
+            # The run may have started at low HP; re-evaluate the adaptive
+            # heart requirement every turn rather than latching it for the run.
+            values=list(goals);values[3]=False;goals=tuple(values)
         turn_started=time.monotonic()
         used=set()
         applied=set()
@@ -17662,10 +18336,12 @@ class App:
             observed=self._background_observed(frame,device,True)
             if observed is None:return False
             board,spikes=observed['board'],observed['spikes']
+            health=App._observe_route_health(self,frame)
+            recovery_required=master_multicolor(goals) and health.get('low_hp') is True
             condition=self._read_combo_condition(frame,board,store=False)
             self._manual_error_snapshot=dict(board=list(board),board_image=observed['crop'].copy(),game_image=frame.copy(),
                 path=[],spikes=list(spikes),goals=list(goals),combo_condition=condition,phase='background_search',
-                source='adb_background',version=APP_VERSION,board_rect=list(observed['rect']),
+                source='adb_background',version=APP_VERSION,health=dict(health),recovery_required=recovery_required,board_rect=list(observed['rect']),
                 entry_image=getattr(self,'_background_entry_diagnostics_image',None),
                 timings=dict(getattr(self,'_background_diagnostics',{})),input_display=getattr(device,'input_diagnostics',{}),
                 input_trace=getattr(device,'input_trace',[]),
@@ -17751,13 +18427,17 @@ class App:
             if master_multicolor(goals) and seconds is None:
                 raise RuntimeError('조작시간 숫자 재확인 실패 · 시간 감소 표시/숫자 겹침을 확인하세요. 사용 가능한 시간 대응 스킬이 없어 4초 잔여 조건을 보장할 수 없습니다.')
             survival=master_multicolor(goals) and seconds is not None and (shortage or seconds<=5.0 or critical_counter)
+            if recovery_required and (survival or board.count('H')<3):
+                raise RuntimeError('체력 60% 이하 · 회복 포함 5속성·6콤보 조건 부족 · 파밍 중지')
             operation_seconds=route_operation_seconds(seconds,master_survival_goals() if survival else goals)
             cap=device.move_cap(operation_seconds)
             self._farming_error_snapshot.update(search_move_cap=cap,search_operation_seconds=operation_seconds,skill_decision=getattr(self,'_last_background_skill_decision',None))
             effective=master_survival_goals(required,bonus) if survival else tuple(False for _ in goals) if shortage or critical_counter else goals
             # With no useful skill and insufficient colours, charge skills by playing combos.
             combo_turn=(shortage or critical_counter) and choice is None and not master_multicolor(goals)
+            effective=recovery_route_goals(effective,recovery_required)
             target=combo_condition_goals(effective,6 if combo_turn else required,bonus)
+            if recovery_required:self._background_queue.put(('status','체력 60% 이하 · 회복 포함 5속성·6콤보 경로 탐색 · F10 중지'))
             if survival:self._background_queue.put(('status','달인 다색 · 공격 조건 부족 · 6콤보 이상 생존 경로 · F10 중지'))
             if combo_turn:self._background_queue.put(('status','5속성 부족 · 사용 가능한 대응 스킬 없음 · 6콤보 이상으로 턴 진행 · F10 중지'))
             if not combo_turn:self._background_queue.put(('status',f'백그라운드 경로 탐색 · 적/팀 {required}콤보 이상 · 가산 +{bonus} · F10 중지'))
@@ -17767,7 +18447,7 @@ class App:
             math_started=time.monotonic();searches+=1
             if effective[2]:
                 if master_multicolor(goals):
-                    path,_,_,after=solve_master_attack(board,budget,cap,spikes,False,required,bonus,self._background_cancel,seed_offset=attempt)
+                    path,_,_,after=solve_master_attack(board,budget,cap,spikes,False,required,bonus,self._background_cancel,seed_offset=attempt,**(dict(require_heal=True) if recovery_required else {}))
                 else:
                     path,_,_,after=solve_five_attributes_v101(board,time_budget=budget,max_moves=cap,spikes=spikes,
                         avoid_skull=False,required_total=required,combo_bonus=bonus,seed_offset=attempt,cancel_event=self._background_cancel)
@@ -17792,6 +18472,8 @@ class App:
                     frame=self._background_wait_skill_board(device,board,profiles[choice].get('effects',[]))
                     math_spent=0.0;searches=0
                     continue
+                if recovery_required:
+                    raise RuntimeError('회복 포함 5속성·6콤보 경로 미발견 · 회복 조건을 생략하지 않고 파밍 중지')
                 # No useful ready skill: charge cooldowns with six combos rather
                 # than stopping on an unavailable five-colour/enemy attack floor.
                 if master_multicolor(goals):
@@ -17826,6 +18508,9 @@ class App:
             if not details['all_met']:raise RuntimeError('자동 경로 재검증 실패 · 파밍 중지')
             fresh=device.capture();current=self._background_observed(fresh,device,True)
             if current is None:return False
+            next_health=App._observe_route_health(self,fresh)
+            if master_multicolor(goals) and next_health.get('low_hp') is True and not target[3]:
+                frame=fresh;continue
             next_visual=self._background_visual_status(fresh)
             if any(next_visual.get(flag) and not visual.get(flag) and effect not in applied for flag,effect in (('void_shield','void_pierce'),('damage_absorb','absorb'),('attribute_absorb','attribute_absorb'),('bound','bind_clear'),('awoken_void','awoken_clear'))):
                 frame=fresh;continue
@@ -17838,7 +18523,7 @@ class App:
             if len(path)-1>device.move_cap(route_operation_seconds(now_seconds,master_survival_goals() if survival else goals)):raise RuntimeError('제한시간부족 · 입력 직전 파밍 경로를 보류했습니다.')
             # Keep one pre-move original in RAM; files are written only on manual save.
             self._manual_error_snapshot=dict(board=list(board),board_image=current['crop'].copy(),game_image=fresh.copy(),
-                path=list(path),spikes=list(spikes),goals=list(effective),combo_condition=condition,
+                path=list(path),spikes=list(spikes),goals=list(effective),combo_condition=condition,health=dict(next_health),recovery_required=recovery_required,
                 predicted_combos=details['combos'],predicted_final_combos=details['final_combos'],predicted_known_next_combos=details.get('certified_next_combos',0),required_final_combos=details['required_total'] if survival or combo_turn else required,enemy_required_final_combos=required,
                 cloud_mask=current.get('cloud_mask',[]),cloud_observation=current.get('cloud_observation'),cloud_diagnostics=current.get('cloud_diagnostics'),skill_trace=list(skill_trace),skill_decision=getattr(self,'_last_background_skill_decision',None),visual_model=dict(current.get('visual_model') or visual_infer(current['crop']) or {}),phase='background_before_drag',combo_turn_for_cooldown=combo_turn,master_survival=survival,source='adb_background',version=APP_VERSION,board_rect=list(current['rect']),entry_image=getattr(self,'_background_entry_diagnostics_image',None),timings=dict(getattr(self,'_background_diagnostics',{})),input_display=getattr(device,'input_diagnostics',{}),captured_local=time.strftime('%Y-%m-%d %H:%M:%S'))
             self._farming_error_snapshot=dict(self._manual_error_snapshot)
@@ -17917,6 +18602,7 @@ class App:
 
     def train_visual_model(self):
         if getattr(self,'_ai_training_busy',False):self._update_visual_model_status('이미 학습 중입니다. F10으로 중지할 수 있습니다.');return
+        if getattr(self,'_ai_retention_busy',False):self._update_visual_model_status('학습 원본 정리 중입니다. 정리가 끝난 뒤 다시 학습해 주세요.');return
         if self.busy or self.playback_active or getattr(self,'_background_running',False):self._update_visual_model_status('자동 이동·파밍을 멈춘 뒤 학습을 시작해 주세요.');return
         resume_actions(self);epoch=getattr(self,'_stop_epoch',0);cancel=threading.Event();self._ai_training_cancel=cancel;self._ai_training_busy=True
         import base64
@@ -17948,28 +18634,94 @@ class App:
         if cancel.is_set():self._update_visual_model_status('학습 중지 · 기존 모델 유지');return
         if error:self._update_visual_model_status(error);return
         try:
+            visual_model_load(data)
             folder=self.data_paths['root']/'ai_review'/'models';folder.mkdir(parents=True,exist_ok=True)
             path=folder/'visual_model.npz';previous=folder/'visual_model_previous.npz'
             import base64
-            old=path.read_bytes() if path.is_file() else base64.b85decode(VISUAL_MODEL_B85)
-            visual_model_load(old)
-            temp=folder/('candidate_'+uuid.uuid4().hex+'.npz');temp.write_bytes(data)
-            previous.write_bytes(old);os.replace(temp,path)
+            with AI_REVIEW_DATA_LOCK:
+                old=path.read_bytes() if path.is_file() else base64.b85decode(VISUAL_MODEL_B85)
+                visual_model_load(old)
+                temp=folder/('candidate_'+uuid.uuid4().hex+'.pending')
+                backup=folder/('previous_'+uuid.uuid4().hex+'.pending')
+                try:
+                    temp.write_bytes(data);backup.write_bytes(old)
+                    os.replace(backup,previous);os.replace(temp,path)
+                finally:
+                    temp.unlink(missing_ok=True);backup.unlink(missing_ok=True)
             self.user_settings['visual_ai_enabled']=True;self.save_user_settings();self._configure_visual_model()
             variable=getattr(self,'_visual_model_enabled_var',None)
             if variable is not None:variable.set(True)
             self._update_visual_model_status('검증 통과 · 적용 완료 · '+self._visual_model_status_text())
-        except Exception as error:self._update_visual_model_status('모델 저장 실패 · '+str(error))
+        except Exception as error:
+            self._update_visual_model_status('모델 저장 실패 · '+str(error));return
+        self._ai_retention_model_sha=hashlib.sha256(data).hexdigest()
+        self._ai_retention_cancel=cancel;self._ai_retention_retry=True
+        self._start_ai_retention()
+
+    def _start_ai_retention(self):
+        """A saved-model receipt is required for automatic source retention."""
+        if getattr(self,'_ai_retention_busy',False) or getattr(self,'_ai_training_busy',False):return
+        cancel=getattr(self,'_ai_retention_cancel',None)
+        expected=getattr(self,'_ai_retention_model_sha',None)
+        if cancel is None or cancel.is_set() or not expected:return
+        folder=self.data_paths['root']/'ai_review'
+        try:
+            model_path=folder/'models'/'visual_model.npz'
+            if not model_path.is_file() or hashlib.sha256(model_path.read_bytes()).hexdigest()!=expected:
+                self._ai_retention_retry=False;return
+            if not (folder/'cases').is_dir():self._ai_retention_retry=False;return
+            self._ai_retention_busy=True;results=queue.SimpleQueue()
+            def protected():
+                state=getattr(self,'_ai_review_edit_state',None)
+                record=state.get('record') if isinstance(state,dict) else None
+                return [record['id']] if isinstance(record,dict) and record.get('id') else []
+            def worker():
+                try:results.put((ai_prune_training_cases(folder/'cases',cancel=cancel,protected_ids=protected),None))
+                except Exception as error:results.put((None,str(error)))
+            threading.Thread(target=worker,daemon=True).start()
+            self.root.after(60,lambda:self._poll_ai_retention(results,cancel))
+        except Exception as error:
+            self._ai_retention_busy=False;self._ai_retention_retry=False
+            self._update_visual_model_status('모델 적용 완료 · 원본 정리 보류: '+str(error))
+
+    def _poll_ai_retention(self,results,cancel):
+        try:result,error=results.get_nowait()
+        except queue.Empty:
+            self.root.after(60,lambda:self._poll_ai_retention(results,cancel));return
+        self._ai_retention_busy=False
+        if error:
+            self._ai_retention_retry=False
+            self._update_visual_model_status('모델 적용 완료 · 원본 정리 보류: '+error);return
+        self._ai_retention_retry=bool(result.get('preserved_open')) and not result.get('cancelled')
+        text=f"모델 적용 완료 · 최근 정답 {result['kept']}개 보관 · 오래된 정답 {result['deleted']}개 정리"
+        if result.get('preserved_open'):text+=' · 열어 둔 자료는 창을 닫은 뒤 정리'
+        if result.get('preserved_other'):text+=' · 추가 파일/변경된 자료는 보존'
+        if result.get('cancelled'):text=f"모델 적용 완료 · 원본 정리 중지 · {result['deleted']}개 정리 후 나머지 보존"
+        self._update_visual_model_status(text)
+        refresh=getattr(self,'_ai_review_refresh',None)
+        if callable(refresh):refresh()
+        if self._ai_retention_retry and not getattr(self,'_ai_review_edit_state',None):
+            self.root.after_idle(self._start_ai_retention)
 
     def rollback_visual_model(self):
         if getattr(self,'_ai_training_busy',False):self._update_visual_model_status('학습을 F10으로 중지한 뒤 복구해 주세요.');return
+        if getattr(self,'_ai_retention_busy',False):self._update_visual_model_status('원본 정리가 끝난 뒤 이전 모델을 복구해 주세요.');return
+        self._ai_retention_retry=False;self._ai_retention_model_sha=None
         try:
             folder=self.data_paths['root']/'ai_review'/'models';path=folder/'visual_model.npz';previous=folder/'visual_model_previous.npz'
             if not previous.is_file():self._update_visual_model_status('복구할 이전 모델이 없습니다. 기본 모델을 사용 중입니다.');return
-            data=previous.read_bytes();visual_model_load(data)
-            current=path.read_bytes() if path.is_file() else None
-            temp=folder/'rollback.npz';temp.write_bytes(data);os.replace(temp,path)
-            if current:previous.write_bytes(current)
+            with AI_REVIEW_DATA_LOCK:
+                data=previous.read_bytes();visual_model_load(data)
+                current=path.read_bytes() if path.is_file() else None
+                temp=folder/('rollback_'+uuid.uuid4().hex+'.pending')
+                backup=folder/('previous_'+uuid.uuid4().hex+'.pending')
+                try:
+                    temp.write_bytes(data)
+                    if current:backup.write_bytes(current)
+                    os.replace(temp,path)
+                    if current:os.replace(backup,previous)
+                finally:
+                    temp.unlink(missing_ok=True);backup.unlink(missing_ok=True)
             self._configure_visual_model();self._update_visual_model_status('이전 모델 복구 · '+self._visual_model_status_text())
         except Exception as error:self._update_visual_model_status('복구 실패 · '+str(error))
 
@@ -17978,7 +18730,7 @@ class App:
         if getattr(self,'_ai_share_busy',False):return
         if getattr(self,'_all_actions_stopped',False):return
         if (getattr(self,'_background_running',False) or getattr(self,'playback_active',False) or getattr(self,'busy',False)
-                or getattr(self,'_ai_training_busy',False) or getattr(self,'ocr_busy',False)):
+                or getattr(self,'_ai_training_busy',False) or getattr(self,'_ai_retention_busy',False) or getattr(self,'ocr_busy',False)):
             self.root.after(3000,self._ai_update_sync_start);return
         self._ai_share_busy=True;cancel=self._ai_share_cancel=threading.Event();results=queue.SimpleQueue()
         settings=dict(self.user_settings);root=self.data_paths['root']/'ai_review'
@@ -18016,13 +18768,33 @@ class App:
         ttk.Label(body,textvariable=status,wraplength=610).pack(anchor='w',pady=3)
         def save():
             try:
+                if any(getattr(self,name,False) for name in ('_ai_training_busy','_ai_retention_busy','_ai_share_busy')):
+                    status.set('학습·정리·공유가 끝난 뒤 연결 설정을 저장해 주세요.');return
                 destination=ai_github_repo(repo.get());count=int(threshold.get())
                 if not 1<=count<=10000:raise ValueError('기준 수는 1~10000건으로 입력하세요.')
+                if destination!=self.user_settings.get('ai_github_repo',AI_GITHUB_DEFAULT_REPO):
+                    ai_record_share_changes(self.data_paths['root']/'ai_review',force_current=True)
                 if token.get().strip():ai_github_credential(destination,token.get())
                 token.set('');self.user_settings.update(ai_github_repo=destination,ai_github_threshold=count,ai_github_enabled=enabled.get());self.save_user_settings()
                 status.set('저장 완료 · 이번 업데이트의 미완료 전송이 있으면 이어서 처리합니다.');self.root.after(200,self._ai_update_sync_start)
             except (ValueError,OSError,RuntimeError) as exc:status.set(str(exc))
         ttk.Button(body,text='연결 설정 저장',command=save).pack(anchor='e',pady=6)
+
+    def show_ai_storage_guide(self):
+        existing=getattr(self,'_ai_storage_guide_window',None)
+        if existing is not None and existing.winfo_exists():
+            existing.deiconify();existing.lift();return
+        parent=getattr(self,'_ai_review_window',None) or self.root
+        win=tk.Toplevel(parent);self._ai_storage_guide_window=win
+        win.title('AI 데이터 보관·정리 안내');win.geometry('780x620');win.minsize(580,400)
+        body=ttk.Frame(win,padding=12);body.pack(fill='both',expand=True)
+        buttons=ttk.Frame(body);buttons.pack(side='bottom',fill='x',pady=(8,0))
+        ttk.Button(buttons,text='사용자 데이터 폴더 열기',command=self.open_data_folder).pack(side='left')
+        ttk.Button(buttons,text='닫기',command=win.destroy).pack(side='right')
+        text=tk.Text(body,wrap='word',font=('Malgun Gothic',10),padx=8,pady=8)
+        scroll=ttk.Scrollbar(body,command=text.yview);text.configure(yscrollcommand=scroll.set)
+        scroll.pack(side='right',fill='y');text.pack(fill='both',expand=True)
+        text.insert('1.0',ai_storage_guide_text(self.data_paths['root']));text.configure(state='disabled')
 
     def _ai_review_root(self):
         return self.data_paths['root']/'ai_review'/'cases'
@@ -18098,9 +18870,10 @@ class App:
         ttk.Checkbutton(model_controls,text='이미지 AI 사용',variable=enabled,command=model_changed).pack(side='left')
         ttk.Button(model_controls,text='확인 데이터로 학습',command=self.train_visual_model).pack(side='left',padx=6)
         ttk.Button(model_controls,text='이전 모델 복구',command=self.rollback_visual_model).pack(side='left')
+        ttk.Button(model_controls,text='보관 안내',command=self.show_ai_storage_guide).pack(side='left',padx=6)
         self._visual_model_status_var=tk.StringVar(value=self._visual_model_status_text())
         ttk.Label(shell,textvariable=self._visual_model_status_var,wraplength=1000).pack(anchor='w',pady=(0,5))
-        ttk.Label(shell,text='승인된 유효 자료 최대 100개를 다시 학습·검증합니다. 신규 자료만 학습하는 방식은 아닙니다.').pack(anchor='w')
+        ttk.Label(shell,text='최근 유효 정답 최대 100개로 다시 학습·검증합니다. 성공하면 오래된 확정 원본을 정리합니다.').pack(anchor='w')
         auto=tk.BooleanVar(value=self.user_settings.get('ai_review_auto_open',True))
         def auto_changed():self.user_settings['ai_review_auto_open']=auto.get();self.save_user_settings()
         ttk.Checkbutton(shell,text='자동파밍 완료 후 AI 검토창 열기',variable=auto,command=auto_changed).pack(anchor='w',pady=(4,6))
@@ -18109,7 +18882,7 @@ class App:
         notice=tk.StringVar(value='닫기만 하면 미확인으로 남습니다. 수정은 저장 데이터에만 반영하며 게임을 조작하지 않습니다.')
         ttk.Label(shell,textvariable=notice,wraplength=1000).pack(side='bottom',fill='x',pady=(6,0))
         main=ttk.Frame(shell);main.pack(fill='both',expand=True)
-        left=ttk.Frame(main,width=220);left.pack(side='left',fill='y',padx=(0,12))
+        left=ttk.Frame(main,width=220);left.pack(side='left',fill='y',padx=(0,12));left.pack_propagate(False)
         mode=tk.StringVar(value='전체');ttk.Combobox(left,textvariable=mode,values=('전체','미확인','확인 완료'),state='readonly',width=22).pack(fill='x')
         cases=tk.Listbox(left,width=27,exportselection=False);cases.pack(fill='both',expand=True,pady=6)
         count=tk.StringVar();ttk.Label(left,textvariable=count,wraplength=210).pack(anchor='w')
@@ -18125,11 +18898,13 @@ class App:
         ttk.Label(body,textvariable=reason,wraplength=740,justify='left').pack(anchor='w',pady=(0,8))
         ttk.Label(body,text='원본 이미지 (클릭하면 확대) / 인식한 판 (칸을 눌러 수정)').pack(anchor='w',pady=(0,4))
         boards=ttk.Frame(body);boards.pack(fill='x')
-        original=ttk.Label(boards,text='원본 이미지 없음');original.pack(side='left',anchor='n',padx=(0,12))
+        original_holder=ttk.Frame(boards,width=360,height=300);original_holder.pack(side='left',anchor='n',padx=(0,12));original_holder.pack_propagate(False)
+        original=ttk.Label(original_holder,text='원본 이미지 없음',anchor='center');original.pack(fill='both',expand=True)
         grid=ttk.Frame(boards);grid.pack(side='left',anchor='n')
         state={'record':None,'labels':None,'feedback':{},'cell':0,'ids':[],'loading':False,'dirty':False}
+        self._ai_review_edit_state=state
         buttons=[]
-        color=tk.StringVar();spike=tk.StringVar(value='미확인');lock=tk.StringVar(value='미확인');cell_text=tk.StringVar(value='칸을 눌러 수정')
+        color=tk.StringVar();spike=tk.StringVar(value='미확인');lock=tk.StringVar(value='미확인');cloud=tk.StringVar(value='미확인');cell_text=tk.StringVar(value='칸을 눌러 수정')
         names={code:COLOR_INFO[code][0] for code in COLOR_ORDER}
         def paint():
             labels=state['labels'];board=labels.get('board',[]) if labels else []
@@ -18137,7 +18912,7 @@ class App:
                 if i<len(board):
                     code=board[i];s=labels['spikes'][i];l=labels['locks'][i]
                     record=state.get('record') or {}
-                    hidden_name='구름' if (record.get('cloud_cells') or [False]*30)[i] else '암흑' if (record.get('dark_cells') or [False]*30)[i] else ''
+                    hidden_name='구름' if labels['clouds'][i] else '암흑' if (record.get('dark_cells') or [False]*30)[i] else ''
                     button.configure(text=names[code]+(' ▲' if s else '')+('\n잠금 ●' if l else '')+('\n'+hidden_name if hidden_name else ''),bg=COLOR_INFO[code][1],relief='sunken' if i==state['cell'] else 'raised',state='normal')
                 else:button.configure(text='—',bg='#eeeeee',state='disabled')
         def select_cell(index):
@@ -18146,21 +18921,26 @@ class App:
             state['cell']=index;cell_text.set(f'{index//6+1}행 {index%6+1}열')
             color.set(names[labels['board'][index]])
             spike.set({None:'미확인',False:'없음',True:'있음'}[labels['spikes'][index]])
-            lock.set({None:'미확인',False:'없음',True:'있음'}[labels['locks'][index]]);paint()
+            lock.set({None:'미확인',False:'없음',True:'있음'}[labels['locks'][index]])
+            cloud.set({None:'미확인',False:'없음',True:'있음'}[labels['clouds'][index]]);paint()
         for i in range(30):
-            button=tk.Button(grid,width=7,height=2,command=lambda index=i:select_cell(index));button.grid(row=i//6,column=i%6,padx=1,pady=1);buttons.append(button)
+            # Pixel-sized holders keep every vertical grid line still when
+            # selection, lock and cloud labels change the button text.
+            holder=ttk.Frame(grid,width=58,height=58);holder.grid(row=i//6,column=i%6,padx=1,pady=1);holder.pack_propagate(False)
+            button=tk.Button(holder,font=('Malgun Gothic',9),command=lambda index=i:select_cell(index));button.pack(fill='both',expand=True);buttons.append(button)
         editor=ttk.Frame(body);editor.pack(fill='x',pady=8)
         ttk.Label(editor,textvariable=cell_text).pack(side='left',padx=(0,8))
         color_box=ttk.Combobox(editor,textvariable=color,values=tuple(names.values()),state='readonly',width=7);color_box.pack(side='left')
         ttk.Label(editor,text=' 가시').pack(side='left');spike_box=ttk.Combobox(editor,textvariable=spike,values=('미확인','없음','있음'),state='readonly',width=6);spike_box.pack(side='left')
         ttk.Label(editor,text=' 잠금').pack(side='left');lock_box=ttk.Combobox(editor,textvariable=lock,values=('미확인','없음','있음'),state='readonly',width=6);lock_box.pack(side='left')
+        ttk.Label(editor,text=' 구름').pack(side='left');cloud_box=ttk.Combobox(editor,textvariable=cloud,values=('미확인','없음','있음'),state='readonly',width=6);cloud_box.pack(side='left')
         def update_cell(e=None):
             labels=state['labels']
             if not labels or not labels.get('board'):return
             state['dirty']=True
             index=state['cell'];labels['board'][index]=next(code for code,name in names.items() if name==color.get())
-            mapping={'미확인':None,'없음':False,'있음':True};labels['spikes'][index]=mapping[spike.get()];labels['locks'][index]=mapping[lock.get()];paint()
-        for box in (color_box,spike_box,lock_box):box.bind('<<ComboboxSelected>>',update_cell)
+            mapping={'미확인':None,'없음':False,'있음':True};labels['spikes'][index]=mapping[spike.get()];labels['locks'][index]=mapping[lock.get()];labels['clouds'][index]=mapping[cloud.get()];paint()
+        for box in (color_box,spike_box,lock_box,cloud_box):box.bind('<<ComboboxSelected>>',update_cell)
         goal_titles={i:title for i,title,_ in ROUTE_GOAL_OPTIONS};goal=tk.StringVar();action=tk.StringVar()
         form=ttk.Frame(body);form.pack(fill='x',pady=5)
         ttk.Label(form,text='경로조건').grid(row=0,column=0,sticky='w',padx=(0,8),pady=4)
@@ -18168,6 +18948,8 @@ class App:
         ttk.Label(form,text='행동').grid(row=1,column=0,sticky='w',pady=4)
         ttk.Combobox(form,textvariable=action,values=AI_REVIEW_ACTIONS,state='readonly',width=26).grid(row=1,column=1,sticky='w')
         def load(e=None):
+            if getattr(self,'_ai_retention_busy',False) or getattr(self,'_ai_training_busy',False):
+                notice.set('학습·정리 중입니다. 완료 후 다른 기록을 선택해 주세요.');return
             if state['loading']:return
             if state['dirty']:notice.set('현재 수정 내용을 먼저 저장하거나 창을 닫아 주세요.');return
             selected=cases.curselection()
@@ -18176,14 +18958,17 @@ class App:
             cid=state['ids'][selected[0]];folder=self._ai_review_root()/cid
             record=_load_json_dict(folder/'record.json');feedback=_load_json_dict(folder/'feedback.json')
             labels=feedback.get('labels') or record['proposal'];state.update(record=record,labels=json.loads(json.dumps(labels)),feedback=feedback,cell=0)
+            state['labels'].setdefault('clouds',list(record.get('cloud_cells') or [False]*30))
             reason.set(time.strftime('%Y-%m-%d %H:%M:%S',time.localtime(record['created_at']))+'\n'+record['reason']+'\n'+record.get('condition_source','')+'\n상태: '+{'pending':'미확인','confirmed':'판단 확인','corrected':'수정 확인','unknown':'모르겠음'}.get(feedback.get('status','pending'),'미확인'))
-            original.configure(image='',text='원본 이미지 없음');win._ai_photo=None
+            photo=None
             image_name=record.get('board_image')
             if image_name:
                 from PIL import ImageTk
                 with Image.open(folder/image_name) as image:
                     image=image.convert('RGB');image.thumbnail((360,300));photo=ImageTk.PhotoImage(image)
-                win._ai_photo=photo;original.configure(image=photo,text='')
+            # Keep the previous image intact until its replacement is ready.
+            # Refreshing status/list text must not shrink either image column.
+            original.configure(image=photo or '',text='' if photo is not None else '원본 이미지 없음');win._ai_photo=photo
             goal.set(goal_titles[labels['goal_index']]);action.set(labels['action'])
             paint();select_cell(0);state['loading']=False;state['dirty']=False
         def refresh(selected_id=None):
@@ -18207,16 +18992,23 @@ class App:
                 for cid,status,created in rows:
                     state['ids'].append(cid)
                     cases.insert('end',{'pending':'미확인','confirmed':'확인','corrected':'수정','unknown':'보류'}.get(status,'미확인')+' · '+time.strftime('%m/%d %H:%M:%S',time.localtime(created)))
-                count.set(f'퍼즐판 {len(rows)}건 표시 · 원본 기록 {total}건\n이미지·정답은 로컬 보관')
+                count.set(f'최근 {len(rows)}건 표시 · 전체 원본 기록 {total}건\n이미지·정답은 로컬 보관')
                 if state['ids']:
                     index=state['ids'].index(selected_id) if selected_id in state['ids'] else 0;cases.selection_set(index);load()
             threading.Thread(target=worker,daemon=True).start();win.after(50,finish)
         def save(status):
+            if getattr(self,'_ai_retention_busy',False) or getattr(self,'_ai_training_busy',False):
+                notice.set('학습·정리 중입니다. 완료 후 저장해 주세요.');return
             record=state['record']
             if not record:notice.set('먼저 기록을 선택해 주세요.');return
             try:
                 labels=json.loads(json.dumps(state['labels']));labels['goal_index']=next(i for i,title in goal_titles.items() if title==goal.get());labels['action']=action.get()
                 previous=state['feedback']
+                # Preserve the legacy confirmation status when an old record
+                # has no cloud annotation and no cell was edited.
+                if ('clouds' not in record['proposal'] and 'clouds' not in (previous.get('labels') or {})
+                        and labels.get('clouds')==list(record.get('cloud_cells') or [False]*30)):
+                    labels.pop('clouds',None)
                 result=ai_review_feedback(self._ai_review_root(),record['id'],status,labels,previous.get('note',''),previous.get('outcome','미확인'))
                 state['dirty']=False
                 refresh(record['id']);notice.set('저장 완료 · '+('학습에서 제외합니다.' if result['status']=='unknown' else '확인된 정답으로 분리했습니다. 미확인 잠금/가시는 정답에 포함하지 않습니다.'))
@@ -18256,7 +19048,9 @@ class App:
         for variable in (goal,action):variable.trace_add('write',mark_dirty)
         self._ai_review_refresh=refresh
         cases.bind('<<ListboxSelect>>',load);mode.trace_add('write',lambda *_:refresh())
-        def close():self._ai_review_refresh=None;self._ai_review_window=None;win.destroy()
+        def close():
+            self._ai_review_refresh=None;self._ai_review_window=None;self._ai_review_edit_state=None;win.destroy()
+            if getattr(self,'_ai_retention_retry',False):self._start_ai_retention()
         win.protocol('WM_DELETE_WINDOW',close);win.deiconify();win.lift()
         win.after_idle(lambda:refresh(case_id) if win.winfo_exists() else None)
 
@@ -18461,12 +19255,15 @@ class App:
             if changed:self._stage_save(stage_number,drops=stage_row['drops'])
         return db
 
-    def _background_pick_stage(self,device,frame,deficits,templates):
+    def _stage_inspect_visible(self,device,frame,templates):
+        """Register each medal preview without starting a battle."""
         tokens=self._run_ocr_tokens(frame)
         stage_entries=stage_list_entries(frame,tokens,self._stage_db_load())
         stage_tokens=[(entry['number'],entry['token']) for entry in stage_entries]
         if not stage_tokens:raise RuntimeError('획득 가능한 스테이지 번호를 읽지 못했습니다.')
         for number,t in stage_tokens:
+            assert_action_active(self)
+            t=next(entry['token'] for entry in stage_entries if entry['number']==number)
             db=self._stage_db_load();saved=db['stages'].get(number,{})
             if saved.get('preview_verified') and saved.get('image_file'):continue
             image=frame.crop((max(0,int(t.cx-67)),max(40,int(t.cy-180)),min(1600,int(t.cx+67)),int(t.cy-12)))
@@ -18476,6 +19273,15 @@ class App:
             device.tap(*next(entry['medal'] for entry in stage_entries if entry['number']==number));preview=self._nav_wait(device,{'출현아이템'})
             self._stage_register_preview(device,preview,number,templates)
             device.back();frame=self._nav_wait(device,{'크리스탈획득던전'})
+            # Re-read after closing a preview; a dialog can restore a different
+            # scroll position, so old medal coordinates are not reusable.
+            stage_entries=stage_list_entries(frame,self._run_ocr_tokens(frame),self._stage_db_load())
+            if {entry['number'] for entry in stage_entries}!={n for n,_ in stage_tokens}:
+                raise RuntimeError('출현 목록 확인 후 스테이지 위치가 바뀌었습니다. 다시 재료확인을 눌러 주세요.')
+        return frame,[(entry['number'],entry['token']) for entry in stage_entries]
+
+    def _background_pick_stage(self,device,frame,deficits,templates):
+        frame,stage_tokens=self._stage_inspect_visible(device,frame,templates)
         db=self._stage_resolve_known(templates)
         best=choose_farming_stage(db,deficits,[n for n,t in stage_tokens])
         if best is None:raise RuntimeError('부족 재료를 얻는 스테이지를 DB에서 확인하지 못했습니다.')
@@ -18485,6 +19291,145 @@ class App:
         if actual!=best:raise RuntimeError('선택한 스테이지와 잠입 확인 번호가 다릅니다.')
         self._background_queue.put(('status',f'파밍 스테이지 ★{actual} · 부족 재료 포함 종류 우선 선택'))
         return frame
+
+    def _start_material_catalog(self,key,targets,source):
+        """F7's explicit confirmation authorizes names/previews, never challenge."""
+        if sys.platform!='win32' or not source or not source.get('title_image'):return False
+        if (getattr(self,'_material_catalog_busy',False) or getattr(self,'_background_running',False)
+                or getattr(self,'busy',False) or getattr(self,'playback_active',False)):
+            self.set_status('현재 작업이 끝난 뒤 재료확인을 다시 눌러 주세요.');return False
+        try:
+            executable=find_background_adb(self.user_settings.get('background_adb_path',''))
+            settings=json.loads(json.dumps(self.user_settings))
+            settings.update(background_touch_mode='scrcpy',background_input_backend='mumu_sdk',background_defer_touch=True)
+            cancel=threading.Event()
+            device=BackgroundADB(executable,settings.get('background_adb_serial',''),cancel,capture_settings=settings)
+        except Exception as error:
+            self.set_status('재료 목록 저장 완료 · 자동 이름·스테이지 확인 연결 보류: '+str(error));return False
+        self._material_catalog_busy=True;self.ocr_busy=True
+        self._background_cancel=cancel;self._material_catalog_device=device
+        self._background_run_settings=settings
+        self._prefind_cancel();self.overlay.hide();self._disarm_reward_watch('material catalog')
+        if hasattr(self,'toolbar'):self.toolbar.minimize_crystal_window()
+        self.set_status('재료 이름 자동 등록 → 부족 재료 획득 스테이지 확인 · F10 중지')
+        epoch=getattr(self,'_stop_epoch',0)
+        threading.Thread(target=self._material_catalog_worker,args=(key,list(targets),dict(source),device,epoch),daemon=True).start()
+        return True
+
+    def _material_catalog_parent(self,frame,source,targets):
+        """Bind SDK pixels to the exact F7 owner and all material positions."""
+        assert_action_active(self)
+        gx,gy,gw,gh=source['game_rect']
+        def box(roi):
+            x,y,w,h=roi
+            return (round((x-gx)*1600/gw),round((y-gy)*940/gh),round((x+w-gx)*1600/gw),round((y+h-gy)*940/gh))
+        material=frame.crop(box(source['roi'])).resize((735,290),Image.Resampling.LANCZOS)
+        if not self._auto_material_screen_valid(material):return False
+        expected=source['image'].resize((735,290),Image.Resampling.LANCZOS)
+        for target in targets:
+            rect=tuple(target['crop_box'])
+            a=crystal_art_signatures(material.crop(rect));b=crystal_art_signatures(expected.crop(rect))
+            if min(float(np.abs(x-y).mean()) for x,y in zip(a,b))>=9:return False
+        title=frame.crop(box(source['title_roi'])).resize(source['title_image'].size,Image.Resampling.LANCZOS)
+        crop=source.get('title_box',(0,0,*title.size))
+        observed=np.asarray(title.crop(crop).convert('L'))<160
+        wanted=np.asarray(source['title_image'].crop(crop).convert('L'))<160
+        ink=max(int(wanted.sum()),int(observed.sum()),1)
+        return bool(wanted.size and wanted.sum()>=4 and float(np.mean(observed!=wanted))<.07
+                    and int(np.count_nonzero(observed!=wanted))/ink<.25)
+
+    def _material_catalog_return(self,device,source,targets):
+        device.back()
+        for _ in range(12):
+            frame=self._nav_pause(device,.15)
+            if self._material_catalog_parent(frame,source,targets):return frame
+        raise RuntimeError('재료 확인창으로 돌아온 것을 확인하지 못했습니다. 저장한 이름·스테이지는 유지합니다.')
+
+    def _material_catalog_open(self,device,frame,index,source,targets):
+        if not self._material_catalog_parent(frame,source,targets):raise RuntimeError('F7으로 확인한 대상·재료 화면이 달라 자동 클릭을 중지했습니다.')
+        gx,gy,gw,gh=source['game_rect'];x,y,w,h=source['roi'];x0,y0,x1,y1=targets[index]['crop_box']
+        device.tap((x-gx+(x0+x1)*w/1470)*1600/gw,(y-gy+(y0+y1)*h/580)*940/gh)
+        return self._nav_wait(device,{'크리스탈획득던전'})
+
+    def _material_catalog_detail_name(self,device,frame):
+        names=[]
+        for attempt in range(2):
+            located=locate_material_modal_title(frame.crop((400,0,1200,340)))
+            if located is None:raise RuntimeError('재료 이름 제목을 찾지 못했습니다.')
+            name=crystal_detail_name(self._read_material_detail_tokens(located[1]))
+            if not name:raise RuntimeError('재료 이름을 확정하지 못했습니다. 기존 이름은 유지합니다.')
+            names.append(name)
+            if attempt==0:frame=self._nav_pause(device,.12)
+        if crystal_name_key(names[0])!=crystal_name_key(names[1]):raise RuntimeError('재료 이름이 두 화면에서 일치하지 않습니다.')
+        return names[0]
+
+    def _material_catalog_worker(self,key,targets,source,device,epoch):
+        ACTION_LOCAL.app=self;ACTION_LOCAL.epoch=epoch;ACTION_LOCAL.passive_display=False
+        message='재료 자동 확인 완료';failure=None
+        def status(text):post_action_result(self,epoch,lambda:self.set_status(text))
+        try:
+            frame=device.connect();self._last_android_input=device
+            if not self._material_catalog_parent(frame,source,targets):raise RuntimeError('연결한 게임이 F7 재료 화면과 일치하지 않습니다.')
+            ledger=self._load_crystal_ledger();revision=ledger['farming_groups'][key]['revision']
+            if len(ledger['farming_groups'][key]['materials'])!=len(targets):raise RuntimeError('등록한 재료 수가 바뀌었습니다.')
+            # Finish ALL unnamed materials before inspecting any stage preview.
+            for index in range(len(targets)):
+                assert_action_active(self)
+                ledger=self._load_crystal_ledger();group=ledger['farming_groups'][key]
+                if group['revision']!=revision:raise RuntimeError('자동 확인 중 재료 구성이 바뀌었습니다.')
+                row=group['materials'][index]
+                if row.get('confirmed',True):continue
+                status(f'재료 이름 확인 {index+1}/{len(targets)} · F10 중지')
+                detail=self._material_catalog_open(device,frame,index,source,targets)
+                name=self._material_catalog_detail_name(device,detail)
+                updated,_=self._save_crystal_material_name(name,(key,index,row['id'],revision))
+                revision=updated['farming_groups'][key]['revision']
+                frame=self._material_catalog_return(device,source,targets)
+            ledger=self._load_crystal_ledger();group=ledger['farming_groups'][key]
+            if group['revision']!=revision:raise RuntimeError('스테이지 확인 전 재료 구성이 바뀌었습니다.')
+            deficits={row['id']:row['deficit'] for row in farming_group_rows(ledger,key) if row['deficit']>0}
+            if not deficits:
+                message='재료 이름 등록 완료 · 부족 재료 없음'
+            else:
+                templates=self._farming_material_templates({key:group});available={}
+                for index,row in enumerate(group['materials']):
+                    assert_action_active(self)
+                    if self._load_crystal_ledger()['farming_groups'][key]['revision']!=revision:raise RuntimeError('자동 확인 중 목표 재료가 바뀌었습니다.')
+                    if row['id'] not in deficits:continue
+                    status(f"{row.get('crystal_name') or str(index+1)+'번 재료'} · 훈장으로 출현 목록 확인 중 · F10 중지")
+                    listing=self._material_catalog_open(device,frame,index,source,targets)
+                    listing,entries=self._stage_inspect_visible(device,listing,templates)
+                    for number,_ in entries:available.setdefault(number,index)
+                    frame=self._material_catalog_return(device,source,targets)
+                db=self._stage_resolve_known(templates);best=choose_farming_stage(db,deficits,available)
+                if best is None:raise RuntimeError('등록한 출현 목록에 부족 재료가 없습니다. 획득 스테이지를 확인해 주세요.')
+                # Return to the material list containing the globally best stage.
+                listing=self._material_catalog_open(device,frame,available[best],source,targets)
+                entries=stage_list_entries(listing,self._run_ocr_tokens(listing),db)
+                target=next((entry['token'] for entry in entries if entry['number']==best),None)
+                if target is None:raise RuntimeError('선택한 스테이지 위치를 다시 확인하지 못했습니다.')
+                assert_action_active(self);device.tap(target.cx,target.cy-90)
+                entry=self._nav_wait(device,{'잠입확인'})
+                if self._stage_entry_metadata(entry)!=best:raise RuntimeError('잠입 확인 스테이지가 선택한 번호와 다릅니다.')
+                overlap={str(drop.get('id')) for drop in db['stages'][best].get('drops',[])}&set(deficits)
+                message=f'재료 이름·스테이지 등록 완료 · ★{best}: 부족 재료 {len(overlap)}종 · 파밍 설정에서 선택 후 재료파밍 시작'
+        except Exception as error:
+            failure=str(error);message='재료 자동 확인 보류 · '+failure+' · 확인된 자료는 저장했습니다.'
+        finally:
+            try:
+                close=getattr(device,'close_touch',None)
+                if callable(close):close()
+            except Exception as error:message+=' · 터치 연결 정리: '+str(error)
+            try:device.close_capture()
+            except Exception as error:message+=' · 캡처 연결 정리: '+str(error)
+            if getattr(self,'_material_catalog_device',None) is device:
+                self._material_catalog_device=None;self._material_catalog_busy=False
+            def finish():
+                self.ocr_busy=False
+                self._farming_sync_views(self._load_crystal_ledger())
+                if hasattr(self,'toolbar'):self.toolbar.refresh()
+                self.set_status(message)
+            post_action_result(self,epoch,finish)
 
     def _background_mana_result(self,frame,tokens):
         rgb=np.asarray(frame.convert('RGB'))
@@ -19903,6 +20848,9 @@ class App:
 
 
     def close(self):
+        catalog=getattr(self,'_material_catalog_device',None)
+        if catalog is not None:
+            catalog.cancel.set();catalog.abort()
         training=getattr(self,'_ai_training_cancel',None)
         if training is not None:training.set()
         wizard=getattr(self,'_background_setup_wizard',None)
