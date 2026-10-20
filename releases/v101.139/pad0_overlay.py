@@ -29,7 +29,7 @@ import mss
 import numpy as np
 from PIL import Image, ImageDraw
 
-APP_VERSION = "v101.134"
+APP_VERSION = "v101.139"
 APP_TITLE = f"퍼드0 경로 오버레이 {APP_VERSION}"
 ROWS, COLS = 5, 6
 # Approximate hue prototypes in degrees; per-cell colors are classified by nearest circular hue.
@@ -1034,11 +1034,17 @@ def cloud_cell_mask(image: Image.Image) -> list[bool]:
         tile=arr[round((row+.12)*height/ROWS):round((row+.88)*height/ROWS),
                  round((col+.12)*width/COLS):round((col+.88)*width/COLS)]
         _,sat,value=rgb_to_hsv_np(tile)
-        pale=(sat<.16)&(value>.82)
+        pale=(sat<.22)&(value>.76)
         hh,ww=pale.shape
         quadrants=[float(pale[y0:y1,x0:x1].mean()) for y0,y1 in ((0,hh//2),(hh//2,hh))
                    for x0,x1 in ((0,ww//2),(ww//2,ww))]
-        result.append(float(pale.mean())>=.64 and sum(score>=.48 for score in quadrants)>=3)
+        # Cloud borders can be translucent before the full white animation
+        # settles. Require a broad white core as well as multiple quadrants;
+        # a normal orb's narrow highlight must never become a hidden cell.
+        core=pale[hh//4:hh-hh//4,ww//4:ww-ww//4]
+        opaque=float(pale.mean())>=.64 and sum(score>=.48 for score in quadrants)>=3
+        covered_core=float(core.mean())>=.80 and float(pale.mean())>=.38 and sum(score>=.28 for score in quadrants)>=3
+        result.append(opaque or covered_core)
     return result
 
 
@@ -5083,17 +5089,7 @@ class FloatingPathExecuteButton:
             header, text="", bg="#f1f4f7", fg="#168451",
             font=("Malgun Gothic", 11, "bold"))
         self.breakthrough_label.pack(side="left", padx=(24, 0))
-        self.pin_button = tk.Button(
-            header, text=("📌 관리창 고정: 켬" if self.app.crystal_panel_pin_var.get() else "📌 관리창 고정: 꺼짐"), command=self.app.toggle_crystal_panel_pin,
-            bg="#50697c", fg="white", activebackground="#67879c",
-            activeforeground="white", relief="flat", bd=0,
-            font=("Segoe UI Emoji", 9, "bold"), padx=8, pady=4, cursor="hand2"
-        )
-        self.pin_button.pack(side="right", padx=(10, 0))
-        tk.Button(header, text="위치 초기화", command=self.reset_crystal_window_position,
-                  bg="#50697c", fg="white", relief="flat", bd=0,
-                  font=("Segoe UI", 9, "bold"), padx=7, pady=4).pack(side="right", padx=(4, 0))
-        self.farming_button = None  # Result statistics replace the battle HUD.
+        self.pin_button = None
         owner_row=tk.Frame(outer,bg="#f1f4f7",height=54)
         owner_row.pack(fill="x",pady=(0,8))
         owner_row.pack_propagate(False)
@@ -5123,7 +5119,7 @@ class FloatingPathExecuteButton:
         candidate_style.configure("CrystalCandidate.Treeview.Heading", font=("Segoe UI", 9, "bold"))
         self.candidate_tree = ttk.Treeview(
             tree_frame, columns=columns, show="tree headings", height=max(1,min(5,len(self.app.crystal_candidates))),
-            selectmode="browse", style="CrystalCandidate.Treeview")
+            selectmode="extended", style="CrystalCandidate.Treeview")
         self.candidate_tree.heading("#0", text="크리스탈 이미지 / 이름")
         self.candidate_tree.column("#0", width=345, minwidth=280, stretch=True, anchor="w")
         for key, heading, width in (("required", "목표", 88), ("current", "보유", 88), ("deficit", "부족", 88)):
@@ -5134,36 +5130,15 @@ class FloatingPathExecuteButton:
         self.candidate_tree.pack(side="left", fill="x", expand=True)
         candidate_scroll.pack(side="right", fill="y")
         self._candidate_photo_refs = []
-        candidate_actions = tk.Frame(candidate_box, bg='#f1f4f7')
-        candidate_actions.pack(fill='x', padx=4, pady=(0, 4))
-        tk.Button(candidate_actions, text="필요/보유 수정",
-                  command=lambda: self.app.edit_selected_crystal_quantities(from_candidates=True),
-                  bg="#50697c", fg="white", relief="flat", font=("Segoe UI", 9, "bold"),
-                  padx=8, pady=5).pack(side='left', padx=(5,0))
-        rename_row = tk.Frame(outer, bg="#f1f4f7")
-        rename_row.pack(fill="x", pady=(0, 6))
-        tk.Button(rename_row, text="돌파 이름 먼저 등록 / 수정", command=self.app._edit_farming_group_name,
-                  bg="#50697c", fg="white", relief="flat", padx=8, pady=5).pack(side="left")
         actions = tk.Frame(outer, bg="#f1f4f7")
         actions.pack(fill="x")
-        tk.Button(actions, text="영역 지정",
-                  command=self.app.select_resource_area,
-                  bg="#2f6d90", fg="white", activebackground="#3d83a9",
-                  activeforeground="white", relief="flat", bd=0,
-                  font=("Segoe UI", 9, "bold"), padx=8, pady=6).pack(side="left", fill="x", expand=True, padx=(0, 4))
-        tk.Button(actions, text="다시 읽기 (F7)",
-                  command=lambda: self.app.request_resource_ocr(manual=False, fallback_on_failure=True),
-                  bg="#287a58", fg="white", activebackground="#35966c",
-                  activeforeground="white", relief="flat", bd=0,
-                  font=("Segoe UI", 9, "bold"), padx=8, pady=6).pack(side="left", fill="x", expand=True, padx=4)
         tk.Button(actions, text="DB 관리", command=self.app.show_crystal_ledger,
-                  bg="#50697c", fg="white", activebackground="#67879c",
-                  activeforeground="white", relief="flat", bd=0,
-                  font=("Segoe UI", 9, "bold"), padx=8, pady=6).pack(side="left", fill="x", expand=True, padx=4)
-        tk.Button(actions, text="OCR 원문", command=self.app.show_ocr_debug,
-                  bg="#50697c", fg="white", activebackground="#67879c",
-                  activeforeground="white", relief="flat", bd=0,
-                  font=("Segoe UI", 9, "bold"), padx=8, pady=6).pack(side="left", fill="x", expand=True, padx=(4, 0))
+                  bg="#50697c", fg="white", relief="flat", bd=0,
+                  font=("Segoe UI", 9, "bold"), padx=8, pady=6).pack(side="left", fill="x", expand=True, padx=(0,4))
+        self.farming_button = tk.Button(actions, text="자동파밍", command=self.start_selected_crystal_farming,
+                  bg="#287a58", fg="white", relief="flat", bd=0,
+                  font=("Segoe UI", 9, "bold"), padx=8, pady=6)
+        self.farming_button.pack(side="left", fill="x", expand=True, padx=(4,0))
         screen_w, screen_h = win.winfo_screenwidth(), win.winfo_screenheight()
         saved_xy = self.app.user_settings.get("crystal_window_xy")
         if isinstance(saved_xy, list) and len(saved_xy) == 2:
@@ -5231,11 +5206,12 @@ class FloatingPathExecuteButton:
         self.card_name_label.configure(text=f'돌파 대상: {name}')
         self.refresh_owner_image(group,name,pending)
         pinned=bool(self.app.crystal_panel_pin_var.get())
-        self.pin_button.configure(text=('📌 관리창 고정: 켬' if pinned else '📌 관리창 고정: 꺼짐'),
-                                  bg=('#177c71' if pinned else '#50697c'))
+        if self.pin_button is not None:
+            self.pin_button.configure(text=('📌 관리창 고정: 켬' if pinned else '📌 관리창 고정: 꺼짐'),
+                                      bg=('#177c71' if pinned else '#50697c'))
         self.crystal_window.attributes('-topmost',pinned or getattr(self,'_crystal_presentation_active',False))
         self.breakthrough_label.configure(text=('모든 재료 충족' if not pending and self.app.all_crystal_requirements_met() else ''))
-        self.read_stamp_label.configure(text='F7: 전체 재료 확인 · 게임에서 재료 클릭: 관리창 최소화 후 이름 자동 등록 · 목록은 메인창에서 다시 열 수 있습니다.')
+        self.read_stamp_label.configure(text='파밍할 재료를 선택한 뒤 자동파밍을 누르세요. Ctrl/Shift로 여러 재료 선택 · 위쪽 재료부터 획득 던전 확인 · F10 중지')
         self.refresh_candidate_list()
 
     def refresh_owner_image(self,group,name,pending=False):
@@ -5279,7 +5255,13 @@ class FloatingPathExecuteButton:
         try:
             if not tree.winfo_exists():
                 return
-            old_selection = tree.selection()
+            old_ids = getattr(self, '_candidate_row_ids', {})
+            old_selection = {old_ids.get(iid) for iid in tree.selection()}
+            ledger = self.app._load_crystal_ledger()
+            key = ledger.get('active_farming_group')
+            group = ledger.get('farming_groups', {}).get(key, {})
+            self._candidate_group_snapshot = (key, json.loads(json.dumps(group)))
+            self._candidate_row_ids = {}
             for iid in tree.get_children(""):
                 tree.delete(iid)
             self._candidate_photo_refs = []
@@ -5306,19 +5288,43 @@ class FloatingPathExecuteButton:
                     except Exception:
                         photo = None
                 iid = str(index)
+                self._candidate_row_ids[iid] = cid
                 required = int(candidate.get("required", 0))
                 current = int(candidate.get("current", 0))
                 deficit = max(0, int(candidate.get("deficit", required-current)))
                 insert_kwargs = {'image': photo} if photo is not None else {}
                 tree.insert("", "end", iid=iid, text=label,
                             values=(required, current, deficit), **insert_kwargs)
-            for selected in old_selection:
-                if tree.exists(selected): tree.selection_set(selected)
+            selected_rows = [iid for iid,cid in self._candidate_row_ids.items() if cid in old_selection]
+            if selected_rows: tree.selection_set(selected_rows)
             tree.configure(height=max(1,min(5,len(candidates))))
             if not candidates:
                 tree.insert("", "end", iid="empty", text="미등록", values=("?", "?", "?"))
         except tk.TclError:
             pass
+
+    def start_selected_crystal_farming(self):
+        if (getattr(self.app, '_background_running', False) or getattr(self.app, '_material_catalog_busy', False)
+                or any(getattr(self.app, flag, False) for flag in ('busy','playback_active','ocr_busy','_manual_reward_busy','reward_poll_busy'))):
+            self.app.set_status('현재 작업이 끝난 뒤 자동파밍을 눌러 주세요.');return
+        try:
+            selected = {self._candidate_row_ids[iid] for iid in self.candidate_tree.selection()
+                        if iid in self._candidate_row_ids}
+            if not selected: raise ValueError('파밍할 재료를 하나 이상 선택해 주세요.')
+            key, snapshot = self._candidate_group_snapshot
+            with self.app._crystal_db_lock:
+                ledger = self.app._load_crystal_ledger()
+                group = ledger.get('farming_groups', {}).get(key)
+                if ledger.get('active_farming_group') != key or group != snapshot:
+                    raise ValueError('재료 목록이 바뀌었습니다. 재료를 다시 선택해 주세요.')
+                requirements = {row['id']: row['required'] for row in group['materials']}
+                updated, chosen = save_farming_selection(ledger, key, requirements, selected)
+                if background_goal_complete(updated, key, material_ids=chosen):
+                    raise ValueError('선택한 재료가 모두 충족되었습니다.')
+                _atomic_json_write(self.app.data_paths['ledger'], updated)
+            self.app.start_background_farming(confirmed=True, material_ids=chosen, confirmed_key=key)
+        except (ValueError, RuntimeError, OSError) as error:
+            self.app.set_status(str(error))
 
     def is_visible(self):
         """True when the floating execute button or crystal panel could contaminate a capture."""
@@ -5589,6 +5595,10 @@ def confirmed_detail_readings(readings,known_names=()):
     """
     if len(readings)!=2 or min(score for _,score in readings)<.85: return None
     texts=[_compact_ocr_text(text) for text,_ in readings]
+    parsed=[crystal_detail_name([OCRToken(text,0,0,200,30,score)]) for text,score in readings]
+    # Both crystal suffix spellings are already supported by the parser.
+    # Compare the complete owner identity, never repair its Korean letters.
+    if all(parsed) and crystal_name_key(parsed[0])==crystal_name_key(parsed[1]):return parsed[0]
     if texts[0]==texts[1]:
         return crystal_detail_name([OCRToken(readings[0][0],0,0,200,30,min(s for _,s in readings))])
     matches=[]
@@ -6822,7 +6832,7 @@ _DEBUG_ARCHIVE_NAME_LOCK=threading.Lock()
 
 def debug_archive_name(snapshot,automatic=False,directory=None):
     phase=str(snapshot.get('phase',''))
-    kind='스킬' if 'skill' in phase else '이동' if snapshot.get('path') else '인식' if snapshot.get('board') else '진입'
+    kind='이름' if phase=='material_name' else '스킬' if 'skill' in phase else '이동' if snapshot.get('path') else '인식' if snapshot.get('board') else '진입'
     base=f"{kind}_{time.strftime('%H%M%S')}"
     directory=Path(directory) if directory is not None else None
     scope=str(directory) if directory is not None else ''
@@ -9090,12 +9100,24 @@ def prepare_farming_selection(ledger,key,requirements,selected,require_target=Tr
     return updated,chosen
 
 
+def farming_stage_number(text, full=False):
+    text = str(text).strip()
+    numeric = r'[★☆]?\s*(\d{1,2})\s*[-－–ー]\s*(\d{1,2})'
+    match = re.fullmatch(numeric, text) if full else re.search(numeric, text)
+    if match: return '-'.join(match.groups())
+    special = r'(?<![A-Za-z0-9])S\s*P\s*(\d{1,3})(?![A-Za-z0-9])'
+    match = re.search(special, text, re.I)
+    if match and (not full or not re.search(r'[A-Za-z0-9가-힣]', text[:match.start()]+text[match.end():])):
+        return 'SP'+str(int(match.group(1)))
+    return None
+
+
 def stage_list_entries(frame,tokens,database=None):
     import cv2
     entries=[];rgb=np.asarray(frame.convert('RGB'))
     for token in tokens:
-        match=re.fullmatch(r'[★☆]?\s*(\d{1,2})\s*[-－–ー]\s*(\d{1,2})',token.text)
-        if not match or token.score<.9 or not 300<token.cy<850:continue
+        number=farming_stage_number(token.text,full=True)
+        if not number or token.score<.9 or not 300<token.cy<850:continue
         x0=max(0,int(token.cx-100));x1=min(frame.width,int(token.cx+100))
         y0=max(40,int(token.cy-260));y1=max(y0+1,int(token.cy-150))
         patch=rgb[y0:y1,x0:x1]
@@ -9105,10 +9127,10 @@ def stage_list_entries(frame,tokens,database=None):
         for index,(x,y,w,h,area) in enumerate(stats[1:],1):
             if 45<=w<=140 and 15<=h<=55 and 1.7<w/h<6 and area>350:
                 cx,cy=centers[index];medals.append((abs(x0+cx-token.cx),x0+cx,y0+cy))
-        registered=bool((database or {}).get('stages',{}).get('-'.join(match.groups()),{}).get('preview_verified'))
-        if not medals and not registered:raise RuntimeError('스테이지 '+ '-'.join(match.groups())+'의 훈장 버튼을 확인하지 못했습니다.')
+        registered=bool((database or {}).get('stages',{}).get(number,{}).get('preview_verified'))
+        if not medals and not registered:raise RuntimeError('스테이지 '+ number+'의 훈장 버튼을 확인하지 못했습니다.')
         medal=min(medals) if medals else None
-        entries.append(dict(number='-'.join(match.groups()),token=token,medal=(medal[1],medal[2]) if medal else None))
+        entries.append(dict(number=number,token=token,medal=(medal[1],medal[2]) if medal else None))
     if len({entry['number'] for entry in entries})!=len(entries):raise RuntimeError('스테이지 번호가 중복 판독되었습니다.')
     return entries
 
@@ -9327,11 +9349,14 @@ def ai_review_feedback(root,cid,status,labels,note='',outcome='미확인'):
     for field in ('spikes','locks'):
         values=labels.get(field,[])
         if board and (len(values)!=30 or any(value is not None and type(value) is not bool for value in values)):raise ValueError('가시·잠금 30칸을 확인해 주세요.')
+    if 'clouds' in labels:
+        values=labels['clouds']
+        if not isinstance(values,list) or len(values)!=30 or any(value is not None and type(value) is not bool for value in values):raise ValueError('구름 30칸을 확인해 주세요.')
     if labels.get('goal_index') not in {i for i,_,_ in ROUTE_GOAL_OPTIONS}:raise ValueError('경로 조건을 선택해 주세요.')
     if labels.get('action') not in AI_REVIEW_ACTIONS:raise ValueError('행동을 선택해 주세요.')
     if status=='confirmed' and labels!=record.get('proposal'):status='corrected'
     feedback=dict(schema_version=1,status=status,labels=labels if status!='unknown' else None,note=str(note)[:4000],outcome=str(outcome)[:80],confirmed_at=time.time(),human_confirmed=status!='unknown',
-                  image_training_eligible=bool(status!='unknown' and board and ai_review_has_board(folder,record)))
+                  image_training_eligible=bool(status!='unknown' and board and not any(labels.get('clouds',[])) and ai_review_has_board(folder,record)))
     # Preserve every explicit correction; feedback.json is just the current selection.
     _atomic_json_write(folder/('feedback_'+uuid.uuid4().hex+'.json'),feedback)
     _atomic_json_write(folder/'feedback.json',feedback)
@@ -10208,6 +10233,8 @@ class App:
 
     def trigger_route(self, force=False):
         """One entry point for F6; Shift+F6 forces a fresh search."""
+        if getattr(self,'_material_catalog_busy',False):
+            self.set_status('크리스탈 이름 자동 등록 중입니다. F10으로 중지한 뒤 경로를 실행하세요.');return
         if getattr(self,'_background_running',False):
             self.set_status('자동파밍 중입니다. F10으로 중지한 뒤 수동 계산을 사용할 수 있습니다.');return
         self._background_failure_hold=False
@@ -10674,11 +10701,8 @@ class App:
     def _material_button_clicked(self):
         self._material_button_pressed=False
         info=find_emulator_window_info()
-        context=(int(info['hwnd']),tuple(info['rect'])) if info else None
-        if (context!=self._material_button_context or not self._material_button_game_visible(info)
-                or time.monotonic()-self._material_button_valid_at>1.2):
-            self._material_button_hide()
-            return
+        if not info or not self._material_button_game_visible(info):
+            self._material_button_hide();return
         if self.ocr_busy: return
         # Paint acknowledgement before the common capture/OCR path starts.
         self._material_confirm_button.configure(text='확인 중…',state='disabled')
@@ -10689,24 +10713,12 @@ class App:
         self.root.after(1,lambda:action_request_current(self,epoch) and self._material_button_run_scan())
 
     def _material_button_run_scan(self):
-        # Fresh visual validation also rejects a page changed after mouse-down.
+        # Both the button and F7 use one fresh capture/registration path.
+        # A cached desktop title or old window rectangle must not veto a click.
         info=find_emulator_window_info()
         if not info or not self._material_button_game_visible(info):
             self._material_button_hide();return
-        context=(int(info['hwnd']),tuple(info['rect']))
-        if context!=self._material_button_context:
-            self._material_button_hide();return
-        try:
-            x,y,w,h=info['rect']
-            with mss.mss() as capture:
-                shot=capture.grab(dict(left=x,top=y,width=w,height=h))
-                image=Image.frombytes('RGB',shot.size,shot.rgb)
-            header=breakthrough_button_candidate(image)
-            cache=self._material_button_header_cache
-            fingerprint=material_title_fingerprint(header) if header is not None else None
-            if not fingerprint or not cache or cache!=(fingerprint,True):
-                self._material_button_hide();return
-            self.request_resource_ocr(manual=False,fallback_on_failure=True)
+        try:self.request_resource_ocr(manual=False,fallback_on_failure=True)
         except Exception as exc:
             self._material_button_hide()
             self.set_status(f'재료확인 캡처 보류: {exc}')
@@ -10990,7 +11002,10 @@ class App:
             x0,y0,x1,y1=box
             self._material_title_notes+='\n검증된 상세 이름: '+confirmed
             return [OCRToken(confirmed,x0*3,y0*3,x1*3,y1*3,min(score for _,score in readings))]
-        return self._read_material_title_tokens(image)
+        direct=self._material_title_notes
+        result=self._read_material_title_tokens(image)
+        self._material_title_notes=direct+'\n'+self._material_title_notes
+        return result
 
     def _recognize_number_crop(self, image, allow_multiplier=False):
         """Read an already isolated number without the text detector or rotation model."""
@@ -11232,8 +11247,12 @@ class App:
             return
         self.card_name_detected=card_name
         try:
-            key=self._register_farming_profile(card_name, targets)
+            auto_names=not manual and sys.platform=='win32' and bool(source_context and source_context.get('title_image'))
+            key=self._register_farming_profile(card_name, targets,show_window=not auto_names)
             self._arm_crystal_clicks(key,targets,source_context)
+            if not manual:
+                started=self._start_material_catalog(key,targets,source_context)
+                if auto_names and not started and hasattr(self,'toolbar'):self.toolbar.show_crystal_window()
         except (ValueError, OSError) as exc:
             self.set_status(f'재료 등록 보류: {exc}')
             if hasattr(self,'toolbar'): self.toolbar.refresh()
@@ -14910,6 +14929,8 @@ class App:
         return self.selected_goals()
 
     def calculate_clicked(self, use_current=False):
+        if getattr(self,'_material_catalog_busy',False):
+            self.set_status('크리스탈 이름 자동 등록 중입니다. F10으로 중지한 뒤 경로를 실행하세요.');return
         if getattr(self,'_background_running',False):
             self.set_status('자동파밍 중입니다. F10으로 중지한 뒤 수동 계산을 사용할 수 있습니다.');return
         self._background_failure_hold=False
@@ -16298,6 +16319,37 @@ class App:
             if not self._crystal_click_stopped and self.root.winfo_exists():
                 self._crystal_click_after=self.root.after(100,self._crystal_click_tick)
 
+    def _save_crystal_material_name(self,name,binding):
+        assert_action_active(self)
+        with self._crystal_db_lock:
+            ledger=self._load_crystal_ledger();db=self._load_crystal_db()
+            key,index,cid,revision=binding
+            group=ledger.get('farming_groups',{}).get(key,{})
+            if not 0<=index<len(group.get('materials',[])): raise ValueError('재료 목록이 바뀌었습니다.')
+            row=group['materials'][index]
+            entry=next((r for r in db['crystals'] if str(r['id'])==cid),None)
+            image_file=(entry or {}).get('image_file') or row.get('image_file')
+            if not image_file or not (self.data_paths['icons_dir']/image_file).is_file():
+                image_file=row.get('image_file')
+            if not image_file or not (self.data_paths['icons_dir']/image_file).is_file():
+                raise ValueError('클릭한 재료 이미지가 없습니다. 돌파 화면에서 F7로 다시 읽어 주세요.')
+            for saved in db['crystals']:
+                if (crystal_name_key(saved.get('crystal_name') or saved.get('label',''))==crystal_name_key(name)
+                        and not (self.data_paths['icons_dir']/str(saved.get('image_file') or '')).is_file()):
+                    saved['image_file']=''
+            # A known material name may only reuse a compatible existing image.
+            matches=[r for r in db['crystals'] if crystal_name_key(r.get('crystal_name') or r.get('label',''))==crystal_name_key(name)]
+            if (len(matches)==1 and str(matches[0]['id'])!=cid
+                    and matches[0].get('image_file')
+                    and (self.data_paths['icons_dir']/matches[0]['image_file']).is_file()):
+                with Image.open(self.data_paths['icons_dir']/image_file) as a, Image.open(self.data_paths['icons_dir']/matches[0]['image_file']) as b:
+                    score=min(float(np.abs(x-y).mean()) for x,y in zip(crystal_art_signatures(a),crystal_art_signatures(b)))
+                if score>=13: raise ValueError('같은 이름의 기존 이미지와 일치하지 않아 중복 등록을 보류했습니다.')
+            updated,database,canonical=name_crystal_material(ledger,db,binding,name,image_file)
+            _atomic_json_write(self.data_paths['database'],database)
+            _atomic_json_write(self.data_paths['ledger'],updated)
+        return updated,canonical
+
     def _on_crystal_detail_done(self,name,binding,error=None,background=False):
         if getattr(self,'_all_actions_stopped',False) is True:return
         self.ocr_busy=False
@@ -16315,33 +16367,8 @@ class App:
             self.set_status(f'{name} 확인 · 연결할 재료를 확정하지 못했습니다. 돌파 화면에서 F7로 읽은 뒤 게임에서 해당 재료를 클릭해 주세요.')
             return
         try:
-            with self._crystal_db_lock:
-                ledger=self._load_crystal_ledger();db=self._load_crystal_db()
-                key,index,cid,revision=binding
-                group=ledger.get('farming_groups',{}).get(key,{})
-                if not 0<=index<len(group.get('materials',[])): raise ValueError('재료 목록이 바뀌었습니다.')
-                row=group['materials'][index]
-                entry=next((r for r in db['crystals'] if str(r['id'])==cid),None)
-                image_file=(entry or {}).get('image_file') or row.get('image_file')
-                if not image_file or not (self.data_paths['icons_dir']/image_file).is_file():
-                    image_file=row.get('image_file')
-                if not image_file or not (self.data_paths['icons_dir']/image_file).is_file():
-                    raise ValueError('클릭한 재료 이미지가 없습니다. 돌파 화면에서 F7로 다시 읽어 주세요.')
-                for saved in db['crystals']:
-                    if (crystal_name_key(saved.get('crystal_name') or saved.get('label',''))==crystal_name_key(name)
-                            and not (self.data_paths['icons_dir']/str(saved.get('image_file') or '')).is_file()):
-                        saved['image_file']=''
-                # A known material name may only reuse a compatible existing image.
-                matches=[r for r in db['crystals'] if crystal_name_key(r.get('crystal_name') or r.get('label',''))==crystal_name_key(name)]
-                if (len(matches)==1 and str(matches[0]['id'])!=cid
-                        and matches[0].get('image_file')
-                        and (self.data_paths['icons_dir']/matches[0]['image_file']).is_file()):
-                    with Image.open(self.data_paths['icons_dir']/image_file) as a, Image.open(self.data_paths['icons_dir']/matches[0]['image_file']) as b:
-                        score=min(float(np.abs(x-y).mean()) for x,y in zip(crystal_art_signatures(a),crystal_art_signatures(b)))
-                    if score>=13: raise ValueError('같은 이름의 기존 이미지와 일치하지 않아 중복 등록을 보류했습니다.')
-                updated,database,canonical=name_crystal_material(ledger,db,binding,name,image_file)
-                _atomic_json_write(self.data_paths['database'],database)
-                _atomic_json_write(self.data_paths['ledger'],updated)
+            key,index,cid,revision=binding
+            updated,canonical=self._save_crystal_material_name(name,binding)
             if canonical!=cid:
                 if str((getattr(self,'active_target',None) or {}).get('id'))==cid:
                     self.active_target=updated.get('active_target')
@@ -16469,8 +16496,8 @@ class App:
         values=[]
         for token in tokens:
             if token.score>=.85 and token.cy<115:
-                found=re.search(r'(\d{1,2})\s*[-－–ー]\s*(\d{1,2})',token.text)
-                if found:values.append('-'.join(found.groups()))
+                found=farming_stage_number(token.text)
+                if found:values.append(found)
         if len(set(values))==1:return values[0]
         crop=frame.crop((720,45,910,105))
         _,views=material_title_line_views(crop)
@@ -16481,8 +16508,8 @@ class App:
         readings=[]
         for view in views:
             text,score=self._recognize_title_line(view)
-            found=re.search(r'(\d{1,2})\s*[-－–ー]\s*(\d{1,2})',text)
-            readings.append('-'.join(found.groups()) if found and score>=threshold else None)
+            found=farming_stage_number(text)
+            readings.append(found if found and score>=threshold else None)
         if len(readings)==2 and readings[0] and readings[0]==readings[1]:return readings[0]
         raise RuntimeError('스테이지 번호를 확정하지 못했습니다. 자동 재도전을 시작하지 않았습니다.')
 
@@ -17764,17 +17791,32 @@ class App:
 
     def show_farming_settings(self):
         if (getattr(self,'_background_running',False) or getattr(self,'_manual_reward_busy',False)
-                or getattr(self,'playback_active',False)):
+                or getattr(self,'playback_active',False) or getattr(self,'_material_catalog_busy',False)):
             self.set_status('진행 중인 파밍·집계가 끝난 뒤 목표 재료를 바꿔 주세요.');return
         self.show_farming_confirmation(settings_only=True)
 
+    def _show_material_scan_guide(self):
+        existing=getattr(self,'_material_scan_guide',None)
+        if existing is not None and existing.winfo_exists():existing.deiconify();existing.lift();return
+        win=tk.Toplevel(self.root);self._material_scan_guide=win
+        win.title('새 파밍 재료 등록');win.geometry('540x270')
+        body=ttk.Frame(win,padding=16);body.pack(fill='both',expand=True)
+        ttk.Label(body,text='새 재료는 게임의 생성·돌파 확인창에서 등록합니다.',font=('Malgun Gothic',11,'bold'),wraplength=500).pack(anchor='w',pady=(0,12))
+        ttk.Label(body,text='1. 게임에서 원하는 캐릭터의 생성 또는 돌파 확인창을 여세요.\n2. 필요 수량·재료 카드·보유 수량이 보이면 재료확인 또는 F7을 누르세요.\n3. 이미 등록된 이름은 건너뛰고 이름이 없는 크리스탈만 자동 등록합니다.\n4. 완료하면 원래 재료창으로 돌아와 크리스탈 창을 맨 위에 표시합니다.\n\n재료확인은 이름 등록까지 진행합니다. 파밍 설정에서 목표 재료를 골라 파밍을 시작하세요. F10으로 중지할 수 있습니다.',wraplength=500,justify='left').pack(anchor='w')
+        def scan():win.destroy();self.request_resource_ocr(manual=False,fallback_on_failure=True)
+        ttk.Button(body,text='현재 재료창 확인 (F7)',command=scan).pack(side='bottom',anchor='e',pady=(12,0))
+
     def show_farming_confirmation(self,settings_only=False,target_key=None):
+        if getattr(self,'_material_catalog_busy',False):
+            self.set_status('크리스탈 이름 등록 완료 후 파밍 설정을 열어주세요. F10으로 중지할 수 있습니다.');return
         existing=getattr(self,'_farming_confirm_window',None)
         if existing is not None and existing.winfo_exists():existing.deiconify();existing.lift();return
         try:
             ledger=self._load_crystal_ledger();key=target_key or background_target_key(ledger)
             group=ledger.get('farming_groups',{}).get(key)
-            if not group or not group.get('materials'):raise ValueError('돌파 화면에서 재료 목록을 먼저 확인해 주세요.')
+            if not group or not group.get('materials'):
+                self.set_status('게임의 생성·돌파 확인창에서 재료확인/F7 → 크리스탈 이미지·미등록 이름 자동 등록 → 파밍 설정 순서로 진행하세요.')
+                self._show_material_scan_guide();return
             rows=farming_group_rows(ledger,key);db=self._load_crystal_db()
         except Exception as error:self.set_status(str(error));return
         epoch=getattr(self,'_stop_epoch',0)
@@ -17795,7 +17837,10 @@ class App:
             chosen_key=keys[selector.current()]
             cancel();self.show_farming_confirmation(settings_only=settings_only,target_key=chosen_key)
         selector.bind('<<ComboboxSelected>>',change_group)
-        ttk.Label(body,style='FarmConfirm.TLabel',text='선택하지 않으면 보상 집계창과 자동 집계를 사용하지 않습니다.',wraplength=570).pack(anchor='w',pady=(0,10))
+        ttk.Label(body,style='FarmConfirm.TLabel',text='새 대상은 게임의 생성·돌파 확인창을 열고 [재료확인] 또는 F7을 누르세요. 등록된 이름은 건너뛰고 이름 없는 크리스탈만 등록합니다. 완료 후 원래 재료창으로 돌아와 크리스탈 창을 맨 위에 표시합니다. 선택하지 않으면 보상 집계를 사용하지 않습니다.',wraplength=570).pack(anchor='w',pady=(0,8))
+        def rescan_materials():
+            cancel();self.request_resource_ocr(manual=False,fallback_on_failure=True)
+        ttk.Button(body,text='게임의 현재 재료창 다시 확인 (F7)',command=rescan_materials).pack(anchor='w',pady=(0,8))
         area=ttk.Frame(body,style='FarmTable.TFrame');area.pack(fill='both',expand=True)
         canvas=tk.Canvas(area,highlightthickness=0,bg='white');scroll=ttk.Scrollbar(area,orient='vertical',command=canvas.yview)
         canvas.configure(yscrollcommand=scroll.set);scroll.pack(side='right',fill='y');canvas.pack(side='left',fill='both',expand=True)
@@ -17815,7 +17860,9 @@ class App:
             cid=row['id'];checks[cid]=tk.BooleanVar(value=cid in saved_ids);needs[cid]=tk.StringVar(value=str(row['required']))
             ttk.Checkbutton(listing,variable=checks[cid]).grid(row=index,column=0,sticky='w',padx=(2,6))
             entry=entries.get(cid,{})
-            label=ttk.Label(listing,text=crystal_display_name(entry,row,index),wraplength=235,style='FarmTable.TLabel')
+            stages=[number for number,saved in self._stage_db_load()['stages'].items() if saved.get('preview_verified') and any(str(drop.get('id'))==cid for drop in saved.get('drops',[]))]
+            destination='획득: '+', '.join('★'+n for n in sorted(stages)) if stages else '이름 확인 필요 · 재료확인/F7' if not row.get('confirmed',True) else '획득 스테이지 미확인 · 재료확인/F7'
+            label=ttk.Label(listing,text=crystal_display_name(entry,row,index)+'\n'+destination,wraplength=235,style='FarmTable.TLabel')
             try:
                 from PIL import ImageTk
                 path=self.data_paths['icons_dir']/str(entry.get('image_file') or row.get('image_file') or '')
@@ -18864,7 +18911,7 @@ class App:
         state={'record':None,'labels':None,'feedback':{},'cell':0,'ids':[],'loading':False,'dirty':False}
         self._ai_review_edit_state=state
         buttons=[]
-        color=tk.StringVar();spike=tk.StringVar(value='미확인');lock=tk.StringVar(value='미확인');cell_text=tk.StringVar(value='칸을 눌러 수정')
+        color=tk.StringVar();spike=tk.StringVar(value='미확인');lock=tk.StringVar(value='미확인');cloud=tk.StringVar(value='미확인');cell_text=tk.StringVar(value='칸을 눌러 수정')
         names={code:COLOR_INFO[code][0] for code in COLOR_ORDER}
         def paint():
             labels=state['labels'];board=labels.get('board',[]) if labels else []
@@ -18872,7 +18919,7 @@ class App:
                 if i<len(board):
                     code=board[i];s=labels['spikes'][i];l=labels['locks'][i]
                     record=state.get('record') or {}
-                    hidden_name='구름' if (record.get('cloud_cells') or [False]*30)[i] else '암흑' if (record.get('dark_cells') or [False]*30)[i] else ''
+                    hidden_name='구름' if labels['clouds'][i] else '암흑' if (record.get('dark_cells') or [False]*30)[i] else ''
                     button.configure(text=names[code]+(' ▲' if s else '')+('\n잠금 ●' if l else '')+('\n'+hidden_name if hidden_name else ''),bg=COLOR_INFO[code][1],relief='sunken' if i==state['cell'] else 'raised',state='normal')
                 else:button.configure(text='—',bg='#eeeeee',state='disabled')
         def select_cell(index):
@@ -18881,21 +18928,26 @@ class App:
             state['cell']=index;cell_text.set(f'{index//6+1}행 {index%6+1}열')
             color.set(names[labels['board'][index]])
             spike.set({None:'미확인',False:'없음',True:'있음'}[labels['spikes'][index]])
-            lock.set({None:'미확인',False:'없음',True:'있음'}[labels['locks'][index]]);paint()
+            lock.set({None:'미확인',False:'없음',True:'있음'}[labels['locks'][index]])
+            cloud.set({None:'미확인',False:'없음',True:'있음'}[labels['clouds'][index]]);paint()
         for i in range(30):
-            button=tk.Button(grid,width=7,height=2,command=lambda index=i:select_cell(index));button.grid(row=i//6,column=i%6,padx=1,pady=1);buttons.append(button)
+            # Pixel-sized holders keep every vertical grid line still when
+            # selection, lock and cloud labels change the button text.
+            holder=ttk.Frame(grid,width=58,height=58);holder.grid(row=i//6,column=i%6,padx=1,pady=1);holder.pack_propagate(False)
+            button=tk.Button(holder,font=('Malgun Gothic',9),command=lambda index=i:select_cell(index));button.pack(fill='both',expand=True);buttons.append(button)
         editor=ttk.Frame(body);editor.pack(fill='x',pady=8)
         ttk.Label(editor,textvariable=cell_text).pack(side='left',padx=(0,8))
         color_box=ttk.Combobox(editor,textvariable=color,values=tuple(names.values()),state='readonly',width=7);color_box.pack(side='left')
         ttk.Label(editor,text=' 가시').pack(side='left');spike_box=ttk.Combobox(editor,textvariable=spike,values=('미확인','없음','있음'),state='readonly',width=6);spike_box.pack(side='left')
         ttk.Label(editor,text=' 잠금').pack(side='left');lock_box=ttk.Combobox(editor,textvariable=lock,values=('미확인','없음','있음'),state='readonly',width=6);lock_box.pack(side='left')
+        ttk.Label(editor,text=' 구름').pack(side='left');cloud_box=ttk.Combobox(editor,textvariable=cloud,values=('미확인','없음','있음'),state='readonly',width=6);cloud_box.pack(side='left')
         def update_cell(e=None):
             labels=state['labels']
             if not labels or not labels.get('board'):return
             state['dirty']=True
             index=state['cell'];labels['board'][index]=next(code for code,name in names.items() if name==color.get())
-            mapping={'미확인':None,'없음':False,'있음':True};labels['spikes'][index]=mapping[spike.get()];labels['locks'][index]=mapping[lock.get()];paint()
-        for box in (color_box,spike_box,lock_box):box.bind('<<ComboboxSelected>>',update_cell)
+            mapping={'미확인':None,'없음':False,'있음':True};labels['spikes'][index]=mapping[spike.get()];labels['locks'][index]=mapping[lock.get()];labels['clouds'][index]=mapping[cloud.get()];paint()
+        for box in (color_box,spike_box,lock_box,cloud_box):box.bind('<<ComboboxSelected>>',update_cell)
         goal_titles={i:title for i,title,_ in ROUTE_GOAL_OPTIONS};goal=tk.StringVar();action=tk.StringVar()
         form=ttk.Frame(body);form.pack(fill='x',pady=5)
         ttk.Label(form,text='경로조건').grid(row=0,column=0,sticky='w',padx=(0,8),pady=4)
@@ -18913,6 +18965,7 @@ class App:
             cid=state['ids'][selected[0]];folder=self._ai_review_root()/cid
             record=_load_json_dict(folder/'record.json');feedback=_load_json_dict(folder/'feedback.json')
             labels=feedback.get('labels') or record['proposal'];state.update(record=record,labels=json.loads(json.dumps(labels)),feedback=feedback,cell=0)
+            state['labels'].setdefault('clouds',list(record.get('cloud_cells') or [False]*30))
             reason.set(time.strftime('%Y-%m-%d %H:%M:%S',time.localtime(record['created_at']))+'\n'+record['reason']+'\n'+record.get('condition_source','')+'\n상태: '+{'pending':'미확인','confirmed':'판단 확인','corrected':'수정 확인','unknown':'모르겠음'}.get(feedback.get('status','pending'),'미확인'))
             photo=None
             image_name=record.get('board_image')
@@ -18958,6 +19011,11 @@ class App:
             try:
                 labels=json.loads(json.dumps(state['labels']));labels['goal_index']=next(i for i,title in goal_titles.items() if title==goal.get());labels['action']=action.get()
                 previous=state['feedback']
+                # Preserve the legacy confirmation status when an old record
+                # has no cloud annotation and no cell was edited.
+                if ('clouds' not in record['proposal'] and 'clouds' not in (previous.get('labels') or {})
+                        and labels.get('clouds')==list(record.get('cloud_cells') or [False]*30)):
+                    labels.pop('clouds',None)
                 result=ai_review_feedback(self._ai_review_root(),record['id'],status,labels,previous.get('note',''),previous.get('outcome','미확인'))
                 state['dirty']=False
                 refresh(record['id']);notice.set('저장 완료 · '+('학습에서 제외합니다.' if result['status']=='unknown' else '확인된 정답으로 분리했습니다. 미확인 잠금/가시는 정답에 포함하지 않습니다.'))
@@ -19181,12 +19239,8 @@ class App:
             cid=self._farming_identify_art(item['crop'],templates)
             if cid in {row['id'] for row in rows}:available.append((cid,item))
         if not available:raise RuntimeError('돌파 확인창의 부족 재료를 등록 이미지와 연결하지 못했습니다.')
-        # Inspect the material with the largest remaining shortage first.
-        deficits={row['id']:row['deficit'] for row in rows}
-        best_known=choose_farming_stage(self._stage_db_load(),deficits)
-        best_ids={str(d.get('id')) for d in self._stage_db_load()['stages'].get(best_known,{}).get('drops',[]) if d.get('id')}
-        preferred=[pair for pair in available if pair[0] in best_ids]
-        cid,item=max(preferred or available,key=lambda pair:deficits[pair[0]])
+        # Match management/group order, which is the game's left-to-right order.
+        cid,item=min(available,key=lambda pair:next(i for i,row in enumerate(rows) if row['id']==pair[0]))
         box=item['crop_box'];device.tap(145+(box[0]+box[2])/2,240+(box[1]+box[3])/2)
         frame=self._nav_wait(device,{'크리스탈획득던전'})
         return self._background_pick_stage(device,frame,deficits,templates)
@@ -19204,12 +19258,15 @@ class App:
             if changed:self._stage_save(stage_number,drops=stage_row['drops'])
         return db
 
-    def _background_pick_stage(self,device,frame,deficits,templates):
+    def _stage_inspect_visible(self,device,frame,templates):
+        """Register each medal preview without starting a battle."""
         tokens=self._run_ocr_tokens(frame)
         stage_entries=stage_list_entries(frame,tokens,self._stage_db_load())
         stage_tokens=[(entry['number'],entry['token']) for entry in stage_entries]
         if not stage_tokens:raise RuntimeError('획득 가능한 스테이지 번호를 읽지 못했습니다.')
         for number,t in stage_tokens:
+            assert_action_active(self)
+            t=next(entry['token'] for entry in stage_entries if entry['number']==number)
             db=self._stage_db_load();saved=db['stages'].get(number,{})
             if saved.get('preview_verified') and saved.get('image_file'):continue
             image=frame.crop((max(0,int(t.cx-67)),max(40,int(t.cy-180)),min(1600,int(t.cx+67)),int(t.cy-12)))
@@ -19219,6 +19276,15 @@ class App:
             device.tap(*next(entry['medal'] for entry in stage_entries if entry['number']==number));preview=self._nav_wait(device,{'출현아이템'})
             self._stage_register_preview(device,preview,number,templates)
             device.back();frame=self._nav_wait(device,{'크리스탈획득던전'})
+            # Re-read after closing a preview; a dialog can restore a different
+            # scroll position, so old medal coordinates are not reusable.
+            stage_entries=stage_list_entries(frame,self._run_ocr_tokens(frame),self._stage_db_load())
+            if {entry['number'] for entry in stage_entries}!={n for n,_ in stage_tokens}:
+                raise RuntimeError('출현 목록 확인 후 스테이지 위치가 바뀌었습니다. 다시 재료확인을 눌러 주세요.')
+        return frame,[(entry['number'],entry['token']) for entry in stage_entries]
+
+    def _background_pick_stage(self,device,frame,deficits,templates):
+        frame,stage_tokens=self._stage_inspect_visible(device,frame,templates)
         db=self._stage_resolve_known(templates)
         best=choose_farming_stage(db,deficits,[n for n,t in stage_tokens])
         if best is None:raise RuntimeError('부족 재료를 얻는 스테이지를 DB에서 확인하지 못했습니다.')
@@ -19228,6 +19294,285 @@ class App:
         if actual!=best:raise RuntimeError('선택한 스테이지와 잠입 확인 번호가 다릅니다.')
         self._background_queue.put(('status',f'파밍 스테이지 ★{actual} · 부족 재료 포함 종류 우선 선택'))
         return frame
+
+    def _start_material_catalog(self,key,targets,source):
+        """F7 registers missing material names and returns to the cost dialog."""
+        if sys.platform!='win32' or not source or not source.get('title_image'):return False
+        if (getattr(self,'_material_catalog_busy',False) or getattr(self,'_background_running',False)
+                or getattr(self,'busy',False) or getattr(self,'playback_active',False)):
+            self.set_status('현재 작업이 끝난 뒤 재료확인을 다시 눌러 주세요.');return False
+        try:
+            if self._material_catalog_reuse_registered(key)==len(targets):
+                self._farming_sync_views(self._load_crystal_ledger())
+                if hasattr(self,'toolbar'):self.toolbar.show_crystal_window();self.toolbar.refresh()
+                self.set_status(f'크리스탈 {len(targets)}종 확인 완료 · 이름 모두 등록됨 · 자동 클릭 없이 완료')
+                return True
+            executable=find_background_adb(self.user_settings.get('background_adb_path',''))
+            settings=json.loads(json.dumps(self.user_settings))
+            settings.update(background_touch_mode='scrcpy',background_input_backend='mumu_sdk',background_defer_touch=True)
+            cancel=threading.Event()
+            device=BackgroundADB(executable,settings.get('background_adb_serial',''),cancel,capture_settings=settings)
+        except Exception as error:
+            self.set_status('재료 목록 저장 완료 · 자동 이름 등록 연결 보류: '+str(error));return False
+        self._material_catalog_busy=True;self.ocr_busy=True
+        self._background_cancel=cancel;self._material_catalog_device=device
+        self._background_run_settings=settings
+        self._prefind_cancel();self.overlay.hide();self._disarm_reward_watch('material catalog')
+        if hasattr(self,'toolbar'):self.toolbar.minimize_crystal_window()
+        self.set_status('크리스탈 이미지 확인 완료 · 등록된 이름은 건너뛰고 미등록 이름만 자동 확인 · F10 중지')
+        epoch=getattr(self,'_stop_epoch',0)
+        threading.Thread(target=self._material_catalog_worker,args=(key,list(targets),dict(source),device,epoch),kwargs={'names_only':True},daemon=True).start()
+        return True
+
+    def _material_catalog_registered_name(self,key,index):
+        """A confirmed flag alone is not proof that a real name is registered."""
+        ledger=self._load_crystal_ledger();row=ledger['farming_groups'][key]['materials'][index]
+        entry=next((item for item in self._load_crystal_db()['crystals'] if str(item.get('id'))==str(row['id'])),{})
+        return known_crystal_name(entry) or (known_crystal_name(row) if row.get('confirmed',True) else '')
+
+    def _material_catalog_reuse_registered(self,key):
+        """Attach already known names locally; never open or rename those cards."""
+        assert_action_active(self)
+        count=0
+        for index in range(len(self._load_crystal_ledger()['farming_groups'][key]['materials'])):
+            name=self._material_catalog_registered_name(key,index)
+            if not name:continue
+            ledger=self._load_crystal_ledger();group=ledger['farming_groups'][key];row=group['materials'][index]
+            if row.get('confirmed',True) is not True or crystal_name_key(row.get('crystal_name',''))!=crystal_name_key(name):
+                self._save_crystal_material_name(name,(key,index,row['id'],group['revision']))
+            count+=1
+        return count
+
+    def _material_catalog_parent(self,frame,source,targets):
+        """Bind SDK pixels to the exact F7 owner and all material positions."""
+        assert_action_active(self)
+        gx,gy,gw,gh=source['game_rect']
+        def box(roi):
+            x,y,w,h=roi
+            return (round((x-gx)*1600/gw),round((y-gy)*940/gh),round((x+w-gx)*1600/gw),round((y+h-gy)*940/gh))
+        material=frame.crop(box(source['roi'])).resize((735,290),Image.Resampling.LANCZOS)
+        if not self._auto_material_screen_valid(material):return False
+        expected=source['image'].resize((735,290),Image.Resampling.LANCZOS)
+        for target in targets:
+            rect=tuple(target['crop_box'])
+            a=crystal_art_signatures(material.crop(rect));b=crystal_art_signatures(expected.crop(rect))
+            if min(float(np.abs(x-y).mean()) for x,y in zip(a,b))>=9:return False
+        if source.get('sdk_native') is True:return True
+        title=frame.crop(box(source['title_roi'])).resize(source['title_image'].size,Image.Resampling.LANCZOS)
+        crop=source.get('title_box',(0,0,*title.size))
+        observed=np.asarray(title.crop(crop).convert('L'))<160
+        wanted=np.asarray(source['title_image'].crop(crop).convert('L'))<160
+        ink=max(int(wanted.sum()),int(observed.sum()),1)
+        return bool(wanted.size and wanted.sum()>=4 and float(np.mean(observed!=wanted))<.07
+                    and int(np.count_nonzero(observed!=wanted))/ink<.25)
+
+    def _material_catalog_bind_sdk(self,frame,source,targets):
+        """Locate input on the SDK frame itself, independent of desktop DPI.
+
+        Desktop glyph pixels are never compared to SDK-rendered glyphs. F7's
+        saved material identities are matched to the freshly located cards;
+        all subsequent clicks and return checks use this one capture source.
+        """
+        assert_action_active(self)
+        image=frame.crop((145,240,880,530)).convert('RGB')
+        if not self._auto_material_screen_valid(image):raise RuntimeError('게임의 생성·돌파 재료창을 열고 재료확인/F7을 눌러 주세요.')
+        badges=locate_material_badges(image)
+        if len(badges)!=len(targets):raise RuntimeError('현재 게임의 재료 수가 바뀌었습니다. 재료확인/F7로 다시 읽어 주세요.')
+        positioned=[]
+        for index,(badge,target) in enumerate(zip(badges,targets)):
+            x0,y0,x1,y1=badge;cx,cy=round((x0+x1)/2),round((y0+y1)/2)
+            rect=(max(0,cx-53),max(0,cy+18),min(735,cx+53),min(290,cy+153))
+            crop=image.crop(rect)
+            path=self.data_paths['icons_dir']/str(target.get('image_file') or '')
+            if path.is_file():
+                with Image.open(path) as opened:expected=opened.convert('RGB')
+            else:expected=source['image'].resize((735,290),Image.Resampling.LANCZOS).crop(target['crop_box'])
+            score=min(float(np.abs(a-b).mean()) for a,b in zip(crystal_art_signatures(crop),crystal_art_signatures(expected)))
+            if score>=18:raise RuntimeError(f'{index+1}번째 크리스탈이 바뀌었습니다. 재료확인/F7로 다시 읽어 주세요.')
+            positioned.append(dict(target,crop_box=rect))
+        native=dict(source,game_rect=(0,0,1600,940),roi=(145,240,735,290),image=image,
+            title_roi=(400,153,800,56),title_image=frame.crop((400,153,1200,209)).convert('RGB'),
+            title_box=(0,0,800,56),sdk_native=True)
+        return native,positioned
+
+    def _material_catalog_return(self,device,source,targets):
+        device.back()
+        for _ in range(12):
+            frame=self._nav_pause(device,.15)
+            if self._material_catalog_parent(frame,source,targets):return frame
+        raise RuntimeError('재료 확인창으로 돌아온 것을 확인하지 못했습니다. 저장한 이름·스테이지는 유지합니다.')
+
+    def _material_catalog_open(self,device,frame,index,source,targets,for_name=False):
+        if not self._material_catalog_parent(frame,source,targets):raise RuntimeError('F7으로 확인한 대상·재료 화면이 달라 자동 클릭을 중지했습니다.')
+        gx,gy,gw,gh=source['game_rect'];x,y,w,h=source['roi'];x0,y0,x1,y1=targets[index]['crop_box']
+        device.tap((x-gx+(x0+x1)*w/1470)*1600/gw,(y-gy+(y0+y1)*h/580)*940/gh)
+        if for_name:
+            # A crystal-name modal can leave the page header reading "돌파".
+            # Wait for its own stable white title band, not a dungeon page.
+            parent=material_title_fingerprint(source['title_image']);previous=None
+            for _ in range(20):
+                current=self._nav_pause(device,.12)
+                if self._material_catalog_parent(current,source,targets):
+                    previous=None;continue
+                located=locate_material_modal_title(current.crop((400,0,1200,340)))
+                fingerprint=material_title_fingerprint(located[1]) if located else None
+                if fingerprint and fingerprint!=parent and fingerprint==previous:return current
+                previous=fingerprint if fingerprint!=parent else None
+            raise RuntimeError(f'{index+1}번 크리스탈 이름창을 확인하지 못했습니다. 등록된 이름은 유지합니다.')
+        return self._nav_wait(device,{'크리스탈획득던전'})
+
+    def _material_catalog_fallback_name(self,title,diagnostics):
+        """Keep small gray Hangul strokes instead of relying on a binary view."""
+        from PIL import ImageFilter,ImageOps
+        box,_=material_title_line_views(title)
+        if box is None:return None
+        crop=title.crop(box).convert('RGB');votes={}
+        gray=ImageOps.autocontrast(crop.convert('L')).convert('RGB')
+        views=(('original_2x',crop.resize((crop.width*2,crop.height*2),Image.Resampling.LANCZOS)),
+               ('gray_3x',gray.resize((crop.width*3,crop.height*3),Image.Resampling.LANCZOS)),
+               ('sharp_3x',crop.resize((crop.width*3,crop.height*3),Image.Resampling.LANCZOS).filter(ImageFilter.UnsharpMask(radius=1,percent=130,threshold=2))))
+        for method,image in views:
+            assert_action_active(self)
+            text,score=self._recognize_title_line(ImageOps.expand(image,border=(12,8),fill='white'))
+            assert_action_active(self)
+            name=crystal_detail_name([OCRToken(text,0,0,200,30,score)]) if score>=.85 else None
+            diagnostics.append(dict(method=method,text=text,score=float(score),name=name))
+            if name:
+                key=crystal_name_key(name);votes.setdefault(key,[]).append(name)
+                if len(votes[key])>=2:return votes[key][0]
+        return None
+
+    def _material_catalog_detail_name(self,device,frame):
+        names=[];diagnostics=dict(material_index=getattr(self,'_material_name_index',None),attempts=[])
+        self._last_material_name_diagnostics=diagnostics
+        for attempt in range(4):
+            assert_action_active(self);self._last_material_name_frame=frame.copy()
+            entry=dict(attempt=attempt+1);diagnostics['attempts'].append(entry);name=None
+            located=locate_material_modal_title(frame.crop((400,0,1200,340)))
+            if located is not None:
+                title=located[1];self._last_material_name_title=title.copy();entry['title_box']=list(located[0])
+                try:
+                    tokens=self._read_material_detail_tokens(title)
+                    entry['readings']=str(getattr(self,'_material_title_notes',''))
+                    name=crystal_detail_name(tokens)
+                    if not name:
+                        entry['fallback']=[];name=self._material_catalog_fallback_name(title,entry['fallback'])
+                except (ValueError,RuntimeError) as error:
+                    assert_action_active(self);entry['error']=str(error)
+            else:entry['error']='이름 제목 영역 미확인'
+            assert_action_active(self);entry['name']=name
+            if name:
+                if names and crystal_name_key(names[0])!=crystal_name_key(name):raise RuntimeError('재료 이름이 두 화면에서 일치하지 않습니다.')
+                names.append(name)
+                if len(names)>=2:return names[0]
+            if attempt<3:frame=self._nav_pause(device,.15)
+        raise RuntimeError('재료 이름을 확정하지 못했습니다. 기존 이름은 유지합니다.')
+
+    def _material_catalog_save_failure(self,message):
+        """Save only cached SDK pixels and OCR evidence; never capture on stop."""
+        import io,zipfile
+        try:
+            folder=self.data_paths['root']/'debug'/'manual_errors';folder.mkdir(parents=True,exist_ok=True)
+            target=folder/debug_archive_name(dict(phase='material_name'),directory=folder)
+            pending=target.with_suffix('.pending')
+            with zipfile.ZipFile(pending,'w') as archive:
+                report=dict(version=APP_VERSION,phase='material_name',error=message,
+                    material_index=getattr(self,'_material_name_index',None),
+                    diagnostics=getattr(self,'_last_material_name_diagnostics',{}))
+                archive.writestr('report.json',json.dumps(report,ensure_ascii=False).encode('utf-8'),compress_type=zipfile.ZIP_DEFLATED)
+                for field,name in (('_last_material_name_frame','game.png'),('_last_material_name_title','title.png')):
+                    image=getattr(self,field,None)
+                    if isinstance(image,Image.Image):
+                        stream=io.BytesIO();image.save(stream,format='PNG');archive.writestr(name,stream.getvalue())
+            os.replace(pending,target);self._last_error_zip=target;return str(target)
+        except (OSError,ValueError,TypeError):return None
+
+    def _material_catalog_worker(self,key,targets,source,device,epoch,names_only=False):
+        ACTION_LOCAL.app=self;ACTION_LOCAL.epoch=epoch;ACTION_LOCAL.passive_display=False
+        message='재료 자동 확인 완료';failure=None;registered=0;skipped=0
+        self._material_name_index=None;self._last_material_name_diagnostics={}
+        self._last_material_name_frame=None;self._last_material_name_title=None
+        def status(text):post_action_result(self,epoch,lambda:self.set_status(text))
+        try:
+            frame=device.connect();self._last_android_input=device
+            if names_only and source:
+                source,targets=self._material_catalog_bind_sdk(frame,source,targets)
+            if not self._material_catalog_parent(frame,source,targets):raise RuntimeError('연결한 게임이 F7 재료 화면과 일치하지 않습니다.')
+            ledger=self._load_crystal_ledger();revision=ledger['farming_groups'][key]['revision']
+            if len(ledger['farming_groups'][key]['materials'])!=len(targets):raise RuntimeError('등록한 재료 수가 바뀌었습니다.')
+            # Finish ALL unnamed materials before inspecting any stage preview.
+            for index in range(len(targets)):
+                assert_action_active(self)
+                ledger=self._load_crystal_ledger();group=ledger['farming_groups'][key]
+                if group['revision']!=revision:raise RuntimeError('자동 확인 중 재료 구성이 바뀌었습니다.')
+                row=group['materials'][index]
+                known=self._material_catalog_registered_name(key,index)
+                if known:
+                    if row.get('confirmed',True) is not True or crystal_name_key(row.get('crystal_name',''))!=crystal_name_key(known):
+                        updated,_=self._save_crystal_material_name(known,(key,index,row['id'],revision))
+                        revision=updated['farming_groups'][key]['revision']
+                    skipped+=1;continue
+                status(f'재료 이름 확인 {index+1}/{len(targets)} · F10 중지')
+                self._material_name_index=index+1;self._last_material_name_title=None
+                self._last_material_name_diagnostics={};self._last_material_name_frame=frame.copy()
+                detail=self._material_catalog_open(device,frame,index,source,targets,for_name=True)
+                name=self._material_catalog_detail_name(device,detail)
+                updated,_=self._save_crystal_material_name(name,(key,index,row['id'],revision))
+                revision=updated['farming_groups'][key]['revision']
+                registered+=1
+                frame=self._material_catalog_return(device,source,targets)
+            ledger=self._load_crystal_ledger();group=ledger['farming_groups'][key]
+            if group['revision']!=revision:raise RuntimeError('스테이지 확인 전 재료 구성이 바뀌었습니다.')
+            deficits={row['id']:row['deficit'] for row in farming_group_rows(ledger,key) if row['deficit']>0}
+            if names_only:
+                message=f'크리스탈 이름 등록 완료 · 새로 등록 {registered}종 · 기존 이름 {skipped}종 건너뜀 · 원래 재료창으로 돌아왔습니다.'
+            elif not deficits:
+                message='재료 이름 등록 완료 · 부족 재료 없음'
+            else:
+                templates=self._farming_material_templates({key:group});available={}
+                for index,row in enumerate(group['materials']):
+                    assert_action_active(self)
+                    if self._load_crystal_ledger()['farming_groups'][key]['revision']!=revision:raise RuntimeError('자동 확인 중 목표 재료가 바뀌었습니다.')
+                    if row['id'] not in deficits:continue
+                    status(f"{row.get('crystal_name') or str(index+1)+'번 재료'} · 훈장으로 출현 목록 확인 중 · F10 중지")
+                    listing=self._material_catalog_open(device,frame,index,source,targets)
+                    listing,entries=self._stage_inspect_visible(device,listing,templates)
+                    for number,_ in entries:available.setdefault(number,index)
+                    frame=self._material_catalog_return(device,source,targets)
+                db=self._stage_resolve_known(templates);best=choose_farming_stage(db,deficits,available)
+                if best is None:raise RuntimeError('등록한 출현 목록에 부족 재료가 없습니다. 획득 스테이지를 확인해 주세요.')
+                # Return to the material list containing the globally best stage.
+                listing=self._material_catalog_open(device,frame,available[best],source,targets)
+                entries=stage_list_entries(listing,self._run_ocr_tokens(listing),db)
+                target=next((entry['token'] for entry in entries if entry['number']==best),None)
+                if target is None:raise RuntimeError('선택한 스테이지 위치를 다시 확인하지 못했습니다.')
+                assert_action_active(self);device.tap(target.cx,target.cy-90)
+                entry=self._nav_wait(device,{'잠입확인'})
+                if self._stage_entry_metadata(entry)!=best:raise RuntimeError('잠입 확인 스테이지가 선택한 번호와 다릅니다.')
+                overlap={str(drop.get('id')) for drop in db['stages'][best].get('drops',[])}&set(deficits)
+                message=f'재료 이름·스테이지 등록 완료 · ★{best}: 부족 재료 {len(overlap)}종 · 파밍 설정에서 선택 후 재료파밍 시작'
+        except Exception as error:
+            failure=str(error);message='재료 자동 확인 보류 · '+failure+' · 확인된 자료는 저장했습니다.'
+        finally:
+            try:
+                close=getattr(device,'close_touch',None)
+                if callable(close):close()
+            except Exception as error:message+=' · 터치 연결 정리: '+str(error)
+            try:device.close_capture()
+            except Exception as error:message+=' · 캡처 연결 정리: '+str(error)
+            if getattr(self,'_material_catalog_device',None) is device:
+                self._material_catalog_device=None;self._material_catalog_busy=False
+            if failure and action_request_current(self,epoch):
+                saved=self._material_catalog_save_failure(failure)
+                if saved:message+=' · 오류 ZIP: '+saved
+            def finish():
+                self.ocr_busy=False
+                self._farming_sync_views(self._load_crystal_ledger())
+                if hasattr(self,'toolbar'):
+                    if failure is None:self.toolbar.show_crystal_window()
+                    self.toolbar.refresh()
+                self.set_status(message)
+            post_action_result(self,epoch,finish)
 
     def _background_mana_result(self,frame,tokens):
         rgb=np.asarray(frame.convert('RGB'))
@@ -19534,7 +19879,7 @@ class App:
         self._farming_sync_views(self._load_crystal_ledger())
         self._farming_after = self.root.after(600, self._farming_tick)
 
-    def _register_farming_profile(self, name, targets):
+    def _register_farming_profile(self, name, targets,show_window=True):
         with self._crystal_db_lock:
             ledger, key = register_farming_group(self._load_crystal_ledger(), name, targets)
             _atomic_json_write(self.data_paths['ledger'], ledger)
@@ -19544,9 +19889,9 @@ class App:
         self._recent_material_scan_status = '성공'
         self.resource_last_read = time.strftime('%H:%M:%S')
         if hasattr(self, 'toolbar'):
-            self.toolbar.show_crystal_window()
+            if show_window:self.toolbar.show_crystal_window()
             self.toolbar.refresh()
-        self.set_status(f'{name}: 재료 {len(targets)}종 확인 · 게임에서 재료를 클릭하면 상세 이름을 자동 등록합니다.')
+        self.set_status(f'{name}: 재료 {len(targets)}종 확인 · 미등록 이름은 재료확인/F7로 자동 등록할 수 있습니다.')
         return key
 
     def _edit_farming_group_name(self):
@@ -20646,6 +20991,9 @@ class App:
 
 
     def close(self):
+        catalog=getattr(self,'_material_catalog_device',None)
+        if catalog is not None:
+            catalog.cancel.set();catalog.abort()
         training=getattr(self,'_ai_training_cancel',None)
         if training is not None:training.set()
         wizard=getattr(self,'_background_setup_wizard',None)
