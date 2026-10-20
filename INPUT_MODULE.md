@@ -26,6 +26,6 @@ PYTHONPATH=tests .venv/bin/python -m unittest discover -s tests
 
 ## 배포
 
-개발에서는 분리된 모듈을 일반 import합니다. tools/build_release_source.py는 기존 실행기가 받는 단일 배포 파일에 pad0_crystal·pad0_input·pad0_solver 모듈을 함께 포함합니다. 따라서 오래된 외부 모듈 파일이 남아 있거나 단일 백업 파일만 복원해도 해당 버전의 모듈로 실행합니다. 추가 다운로드·사용자 데이터 변경 없이 메모리에 로드하며 ZIP에도 모듈 파일을 포함합니다.
+개발에서는 분리된 모듈을 일반 import합니다. tools/build_release_source.py는 기존 실행기가 받는 단일 배포 파일에 공통·크리스탈·입력·탐색·AI 모듈을 함께 포함합니다. 따라서 오래된 외부 모듈 파일이 남아 있거나 단일 백업 파일만 복원해도 해당 버전의 모듈로 실행합니다. 추가 다운로드·사용자 데이터 변경 없이 메모리에 로드하며 ZIP에도 모듈 파일을 포함합니다.
 
 Android 실행 바이너리 재현 검증 도구 tools/build_android_batch.py는 이제 pad0_input.py의 바이너리와 해시를 확인합니다. Java 소스와 실제 바이너리는 변경하지 않았습니다.
