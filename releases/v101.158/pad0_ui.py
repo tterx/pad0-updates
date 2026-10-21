@@ -2064,6 +2064,7 @@ class AppUIMixin:
         ttk.Button(buttons, text="크리스탈 창", command=self.show_crystal_window_from_db).pack(side="left", padx=4)
         ttk.Button(buttons, text="이미지 폴더", command=self.open_crystal_icons_folder).pack(side="left", padx=4)
         ttk.Button(buttons, text="새로고침", command=self.refresh_crystal_ledger).pack(side="left", padx=4)
+        ttk.Button(buttons, text="스테이지 / 보상", command=self.show_stage_rewards).pack(side="left", padx=4)
         ttk.Button(buttons, text="닫기", command=win.withdraw).pack(side="right")
         self.refresh_crystal_ledger()
 
@@ -2773,6 +2774,204 @@ class AppUIMixin:
         scroll.pack(side='right',fill='y');text.pack(fill='both',expand=True)
         text.insert('1.0',ai_storage_guide_text(self.data_paths['root']));text.configure(state='disabled')
 
+    def show_stage_rewards(self):
+        """Inspect stage artwork and compare its recorded drops with farming targets."""
+        from PIL import ImageTk
+        from tkinter import filedialog
+        existing=getattr(self,'_stage_rewards_window',None)
+        if existing is not None and existing.winfo_exists():
+            self._stage_rewards_refresh();existing.deiconify();existing.lift();return
+        win=tk.Toplevel(self.root);self._stage_rewards_window=win
+        win.title('스테이지 DB · 보상 확인');win.geometry('1100x720');win.minsize(1000,650)
+        shell=ttk.Frame(win,padding=12);shell.pack(fill='both',expand=True)
+        ttk.Label(shell,text='스테이지와 등록 보상을 선택하고 오른쪽 파밍 재료와 비교하세요.',font=('Malgun Gothic',11,'bold')).pack(anchor='w')
+        ttk.Label(shell,text='보유 수량과 보상 수량은 다를 수 있습니다. 숫자가 아닌 테두리·캐릭터 그림으로 같은 재료인지 판단하세요.',wraplength=1050).pack(anchor='w',pady=(4,8))
+        status=tk.StringVar(value='스테이지를 선택하세요.')
+        footer=ttk.Frame(shell);footer.pack(side='bottom',fill='x',pady=(8,0))
+        ttk.Label(footer,textvariable=status,wraplength=830).pack(side='left',fill='x',expand=True)
+        ttk.Button(footer,text='닫기',command=win.withdraw).pack(side='right')
+        body=ttk.Frame(shell);body.pack(fill='both',expand=True)
+        stages_frame=ttk.Frame(body,width=180);stages_frame.pack(side='left',fill='y',padx=(0,8));stages_frame.pack_propagate(False)
+        ttk.Label(stages_frame,text='스테이지',font=('Malgun Gothic',10,'bold')).pack(anchor='w')
+        stages=ttk.Treeview(stages_frame,columns=('state',),show='tree headings',height=12,selectmode='browse')
+        stages.heading('#0',text='번호');stages.heading('state',text='보상 자료')
+        stages.column('#0',width=68,stretch=False);stages.column('state',width=100)
+        stages.pack(fill='both',expand=True,pady=4)
+        illustration=ttk.Label(stages_frame,anchor='center',text='스테이지 이미지 없음');illustration.pack(fill='x',pady=6)
+        ttk.Button(stages_frame,text='새로고침',command=lambda:refresh()).pack(fill='x')
+        originals=ttk.Button(stages_frame,text='원본 보상 화면',command=lambda:show_original());originals.pack(fill='x',pady=(5,0))
+        drops_frame=ttk.Frame(body,width=220);drops_frame.pack(side='left',fill='y',padx=(0,10));drops_frame.pack_propagate(False)
+        ttk.Label(drops_frame,text='등록된 보상',font=('Malgun Gothic',10,'bold')).pack(anchor='w')
+        drops=ttk.Treeview(drops_frame,columns=('name',),show='tree headings',height=12,selectmode='browse')
+        drops.heading('#0',text='순서');drops.heading('name',text='연결 재료');drops.column('#0',width=45,stretch=False);drops.column('name',width=160)
+        drops.pack(fill='both',expand=True,pady=4)
+        edit_buttons=ttk.Frame(drops_frame);edit_buttons.pack(fill='x',pady=(6,0))
+        replace=ttk.Button(edit_buttons,text='스샷 교체',command=lambda:replace_image());replace.pack(side='left',fill='x',expand=True,padx=(0,4))
+        delete=ttk.Button(edit_buttons,text='보상 삭제',command=lambda:delete_drop());delete.pack(side='left',fill='x',expand=True)
+        right=ttk.Frame(body);right.pack(side='left',fill='both',expand=True)
+        ttk.Label(right,text='비교할 현재 파밍 / 등록 크리스탈').pack(anchor='w')
+        choice=tk.StringVar();selector=ttk.Combobox(right,textvariable=choice,state='readonly');selector.pack(fill='x',pady=(4,8))
+        actions=ttk.Frame(right);actions.pack(fill='x',pady=(0,8))
+        same=ttk.Button(actions,text='같은 재료',command=lambda:decide(True));same.pack(side='left',padx=(0,6))
+        different=ttk.Button(actions,text='다른 재료',command=lambda:decide(False));different.pack(side='left',padx=(0,6))
+        pending=ttk.Button(actions,text='재료판단에 남기기',command=lambda:queue_pair());pending.pack(side='left')
+        views=ttk.Frame(right);views.pack(fill='both',expand=True)
+        labels=[]
+        for heading in ('스테이지에 등록된 보상','현재 파밍 / 등록 크리스탈'):
+            col=ttk.Frame(views);col.pack(side='left',fill='both',expand=True,padx=4)
+            ttk.Label(col,text=heading,font=('Malgun Gothic',10,'bold')).pack(pady=4)
+            label=ttk.Label(col,anchor='center',text='이미지 없음');label.pack(fill='both',expand=True);labels.append(label)
+        ttk.Label(right,text='오른쪽에서 올바른 재료를 고르고 ‘같은 재료’를 누르면 연결을 수정합니다.\n교체·삭제한 자료는 다음 스테이지 확인에서 다시 읽습니다.',wraplength=600).pack(fill='x',pady=6)
+        ttk.Button(right,text='재료판단 열기',command=self.show_quantity_management).pack(anchor='e')
+        state={'rows':{},'stage':None,'index':None,'drop':None,'crystals':{},'choices':{},'photos':[],'illustration':None}
+        self._stage_rewards_state=state
+        def busy():return bool(getattr(self,'_background_running',False) or getattr(self,'_material_catalog_busy',False))
+        def selected():
+            if busy():raise ValueError('자동파밍을 중지한 뒤 보상 자료를 수정해 주세요.')
+            if state['stage'] is None or state['drop'] is None:raise ValueError('스테이지의 보상을 선택하세요.')
+            return state['stage'],state['index'],state['drop'].get('image_file')
+        def selected_cid():
+            cid=state['choices'].get(choice.get())
+            if cid is None:raise ValueError('비교할 크리스탈을 선택하세요.')
+            return cid
+        def show_pair(event=None):
+            state['photos']=[]
+            for label in labels:label.configure(image='',text='이미지 없음')
+            row=state['drop'];cid=state['choices'].get(choice.get())
+            enabled=row is not None and not busy()
+            for button in (replace,delete):button.configure(state='normal' if enabled else 'disabled')
+            for button in (same,different,pending):button.configure(state='disabled')
+            try:
+                images=[self._stage_drop_image(state['stage'],state['index'],expected_image_file=row.get('image_file')) if row else None,None]
+                if cid:
+                    entry=state['crystals'][cid];name=str(entry.get('image_file') or '')
+                    if Path(name).name!=name or not name:raise ValueError('등록 크리스탈 이미지 경로를 확인하세요.')
+                    with Image.open(self.data_paths['icons_dir']/name) as image:images[1]=image.convert('RGB')
+                for image,label in zip(images,labels):
+                    if image is None:continue
+                    photo=ImageTk.PhotoImage(fit_image_preserve_aspect(image,(245,320)),master=win)
+                    state['photos'].append(photo);label.configure(image=photo,text='')
+                enabled=row is not None and not busy()
+                for button in (replace,delete):button.configure(state='normal' if enabled else 'disabled')
+                for button in (same,different,pending):button.configure(state='normal' if enabled and cid else 'disabled')
+            except (OSError,ValueError,RuntimeError,tk.TclError) as error:
+                status.set('보상 이미지 확인 실패: '+str(error))
+        def pick_drop(event=None):
+            chosen=drops.selection();state['index']=None;state['drop']=None
+            if chosen:
+                index=int(chosen[0]);row=state['rows'][state['stage']]['drops'][index]
+                state['index']=index;state['drop']=row
+                linked=str(row.get('id') or '')
+                if linked and not preferred:
+                    label=next((label for label,cid in state['choices'].items() if cid==linked),None)
+                    if label:choice.set(label)
+                status.set(f"★{state['stage']} · 보상 {index+1} · 숫자가 달라도 같은 재료일 수 있습니다.")
+            show_pair()
+        def pick_stage(event=None):
+            chosen=stages.selection();state['stage']=chosen[0] if chosen else None
+            state['index']=None;state['drop']=None;drops.delete(*drops.get_children());state['illustration']=None
+            illustration.configure(image='',text='스테이지 이미지 없음')
+            originals.configure(state='disabled')
+            if chosen:
+                row=state['rows'][chosen[0]]
+                originals.configure(state='normal' if row.get('preview_pages') else 'disabled')
+                for index,drop in enumerate(row.get('drops',[])):
+                    cid=str(drop.get('id') or '');entry=state['crystals'].get(cid,{})
+                    drops.insert('','end',iid=str(index),text=str(index+1),values=(entry.get('crystal_name') or entry.get('label') or ('미연결' if not cid else cid),))
+                name=str(row.get('image_file') or '')
+                if name and Path(name).name==name:
+                    try:
+                        with Image.open(self._stage_db_path().parent/'stage_images'/name) as image:small=fit_image_preserve_aspect(image,(165,145))
+                        photo=ImageTk.PhotoImage(small,master=win);state['illustration']=photo;illustration.configure(image=photo,text='')
+                    except OSError:illustration.configure(text='스테이지 이미지 읽기 실패')
+                status.set('다음 스테이지 확인에서 보상 자료를 갱신합니다.' if row.get('preview_refresh_required') or not row.get('preview_verified') else '등록된 보상과 현재 파밍 재료를 비교하세요.')
+                if drops.get_children():drops.selection_set(drops.get_children()[0]);pick_drop();return
+            show_pair()
+        def refresh(keep_stage=None,keep_drop=None):
+            nonlocal preferred
+            old=keep_stage or state['stage'];old_drop=state['index'] if keep_drop is None else keep_drop
+            try:
+                db=self._load_crystal_db();state['crystals']={str(c['id']):c for c in db.get('crystals',[])}
+                ledger=self._load_crystal_ledger();group=ledger.get('farming_groups',{}).get(ledger.get('active_farming_group'),{})
+                selected_ids={str(cid) for cid in (getattr(self,'_background_selected_material_ids',None) or [])}
+                preferred=[str(r['id']) for r in group.get('materials',[]) if not selected_ids or str(r['id']) in selected_ids]
+                preferred.extend(cid for cid in state['crystals'] if cid in selected_ids and cid not in preferred)
+                ranked=sorted(state['crystals'],key=lambda cid:(cid not in preferred,preferred.index(cid) if cid in preferred else 0,list(state['crystals']).index(cid)))
+                state['choices']={('파밍 · ' if cid in preferred else '')+str(state['crystals'][cid].get('crystal_name') or state['crystals'][cid].get('label') or cid)+' ['+cid+']':cid for cid in ranked}
+                selector.configure(values=list(state['choices']))
+                if choice.get() not in state['choices']:choice.set(next(iter(state['choices']),''))
+                rows=self._stage_review_rows();state['rows']={str(row['number']):row for row in rows}
+                stages.delete(*stages.get_children())
+                for number,row in state['rows'].items():
+                    flag='갱신 대기' if row.get('preview_refresh_required') or not row.get('preview_verified') else '등록됨'
+                    stages.insert('','end',iid=number,text='★'+number,values=(f"{len(row.get('drops',[]))}종 · {flag}",))
+                chosen=old if old in state['rows'] else next(iter(state['rows']),None)
+                if chosen is not None:
+                    stages.selection_set(chosen);pick_stage()
+                    if old_drop is not None and str(old_drop) in drops.get_children():drops.selection_set(str(old_drop));pick_drop()
+                else:
+                    state['stage']=None;state['drop']=None;drops.delete(*drops.get_children());show_pair();status.set('등록된 스테이지가 없습니다. 게임에서 스테이지를 확인하면 표시됩니다.')
+                if busy():status.set('자동파밍 중 · 보상 자료는 확인만 가능합니다. 수정하려면 파밍을 중지하세요.')
+            except (OSError,ValueError,RuntimeError,KeyError) as error:status.set('스테이지 DB 읽기 실패: '+str(error))
+        def show_original():
+            number=state['stage'];row=state['rows'].get(number,{})
+            pages=row.get('preview_pages') or []
+            if not pages:status.set('저장된 원본 보상 화면이 없습니다. 다음 스테이지 확인에서 저장됩니다.');return
+            viewer=tk.Toplevel(win);viewer.title('스테이지 ★'+str(number)+' · 등록 당시 보상 원본');viewer.geometry('1020x740');viewer.minsize(700,500)
+            controls=ttk.Frame(viewer,padding=8);controls.pack(fill='x')
+            ttk.Label(controls,text='등록 당시 원본 화면 · 아래 목록에서 페이지를 선택하세요.').pack(side='left')
+            page=tk.StringVar(value='1');choose=ttk.Combobox(controls,textvariable=page,values=[str(i+1) for i in range(len(pages))],state='readonly',width=5);choose.pack(side='left',padx=8)
+            ttk.Button(controls,text='닫기',command=viewer.destroy).pack(side='right')
+            image_label=ttk.Label(viewer,anchor='center');image_label.pack(fill='both',expand=True,padx=8,pady=8)
+            holder={}
+            def load_page(event=None):
+                try:
+                    name=str(pages[int(page.get())-1])
+                    if not name or Path(name).name!=name or '/' in name or '\\' in name:raise ValueError('원본 이미지 경로가 잘못됐습니다.')
+                    folder=self._stage_db_path().parent/'stage_images';path=folder/name
+                    if not path.resolve().is_relative_to(folder.resolve()):raise ValueError('원본 이미지 경로가 잘못됐습니다.')
+                    with Image.open(path) as image:display=fit_image_preserve_aspect(image,(990,650))
+                    holder['photo']=ImageTk.PhotoImage(display,master=viewer);image_label.configure(image=holder['photo'],text='')
+                except (OSError,ValueError,IndexError) as error:image_label.configure(image='',text='원본 보상 이미지 읽기 실패: '+str(error))
+            choose.bind('<<ComboboxSelected>>',load_page);load_page()
+            viewer._stage_source_images=holder
+        def decide(same_material):
+            try:
+                number,index,filename=selected();cid=selected_cid()
+                self._stage_review_decide(number,index,cid,same_material,expected_image_file=filename)
+                refresh(number,index);status.set(('같은 재료' if same_material else '다른 재료')+' 판단 저장 · 보유·획득 수량은 변경하지 않았습니다.')
+            except (OSError,ValueError,RuntimeError) as error:status.set(str(error))
+        def queue_pair():
+            try:
+                number,index,filename=selected();cid=selected_cid()
+                self._stage_review_pair(number,index,cid,expected_image_file=filename)
+                refresh_icons=getattr(self,'_icon_review_refresh',None)
+                if callable(refresh_icons):refresh_icons()
+                status.set('재료판단에 저장했습니다. 재료판단 열기에서 같은 재료 / 다른 재료로 확인하세요.')
+            except (OSError,ValueError,RuntimeError) as error:status.set(str(error))
+        def replace_image():
+            try:
+                number,index,filename=selected()
+                path=filedialog.askopenfilename(parent=win,title='올바른 보상 스크린샷 선택',filetypes=[('이미지','*.png *.jpg *.jpeg *.webp *.bmp'),('모든 파일','*')])
+                if not path:return
+                with Image.open(path) as opened:
+                    if opened.width*opened.height>16000000:raise ValueError('이미지가 너무 큽니다. 보상 아이콘 부분만 잘라 선택하세요.')
+                    image=opened.convert('RGB')
+                if not messagebox.askyesno('보상 스샷 교체','선택한 보상 이미지를 교체할까요? 다음 스테이지 확인에서 다시 갱신합니다.',parent=win):return
+                self._stage_review_edit(number,index,image=image,expected_image_file=filename)
+                refresh(number,index);status.set('보상 스샷 교체 완료 · 다음 스테이지 확인에서 갱신합니다.')
+            except (OSError,ValueError,RuntimeError) as error:status.set(str(error))
+        def delete_drop():
+            try:
+                number,index,filename=selected()
+                if not messagebox.askyesno('등록 보상 삭제','선택한 보상 자료만 삭제할까요? 다음 스테이지 확인에서 다시 등록합니다.',parent=win):return
+                self._stage_review_delete(number,index,expected_image_file=filename)
+                refresh(number,index);status.set('선택 보상 삭제 완료 · 다음 스테이지 확인에서 다시 등록합니다.')
+            except (OSError,ValueError,RuntimeError) as error:status.set(str(error))
+        preferred=[]
+        stages.bind('<<TreeviewSelect>>',pick_stage);drops.bind('<<TreeviewSelect>>',pick_drop);selector.bind('<<ComboboxSelected>>',show_pair)
+        self._stage_rewards_refresh=refresh;refresh()
+
     def _build_icon_review_tab(self,parent):
         from PIL import ImageTk
         from pad0_crystal_review import icon_review_list, icon_review_confirm
@@ -2801,7 +3000,7 @@ class AppUIMixin:
             try:index=state['choices'].index(candidate.get())
             except ValueError:return
             reference=record['candidates'][index]
-            titles=('새 사용 이미지','이전 사용 이미지') if record.get('category')=='image_update' else ('현재 화면의 아이콘','등록된 재료 이미지')
+            titles=(('새 사용 이미지','이전 사용 이미지') if record.get('category')=='image_update' else ('출현 / 보상 등록 이미지','현재 파밍 / 등록 크리스탈') if record.get('category')=='stage_reward' else ('실제 보상 화면의 크리스탈','현재 파밍 / 등록 크리스탈') if record.get('category')=='farming_reward' else ('현재 화면의 아이콘','등록된 재료 이미지'))
             for heading,title in zip(headings,titles):heading.configure(text=title)
             folder=Path(root)/'crystal_review'/'cases'/record['id'];photos=[]
             try:
@@ -2811,7 +3010,9 @@ class AppUIMixin:
                     photo=ImageTk.PhotoImage(image,master=parent);photos.append(photo);label.configure(image=photo,text='')
                 state['photos']=photos
                 verdict=record.get('decisions',{}).get(reference['cid'],'미확인')
-                status.set(f"{reference['label']} · 비교 차이 {reference['score']:.2f} · 판단 {verdict} · {record['reason']}")
+                stage=record.get('context',{}).get('stage_number')
+                prefix='★'+str(stage)+' · ' if stage else ''
+                status.set(prefix+f"{reference['label']} · 비교 차이 {reference['score']:.2f} · 판단 {verdict} · {record['reason']}")
             except (OSError,ValueError,tk.TclError) as error:status.set('비교 이미지 읽기 실패: '+str(error))
         def pick(event=None):
             indexes=cases.curselection()
@@ -2823,7 +3024,10 @@ class AppUIMixin:
             candidate.set(state['choices'][index]);show_pair()
         def refresh():
             state['records']=icon_review_list(root);state['record']=None;cases.delete(0,'end')
-            for record in state['records']:cases.insert('end',('미확인' if record['status']=='pending' else '확인 완료')+' · '+('이미지 갱신 · ' if record.get('category')=='image_update' else '')+record['candidates'][0]['label'])
+            for record in state['records']:
+                category=record.get('category');stage=record.get('context',{}).get('stage_number')
+                prefix='이미지 갱신 · ' if category=='image_update' else ('★'+str(stage)+' · ' if stage else '')+'보상 · ' if category in ('stage_reward','farming_reward') else ''
+                cases.insert('end',('미확인' if record['status']=='pending' else '확인 완료')+' · '+prefix+record['candidates'][0]['label'])
             if state['records']:cases.selection_set(0);pick()
             else:
                 status.set('아직 아이콘 비교 기록이 없습니다. 자동파밍에서 구분이 어려운 아이콘은 이곳에 기록됩니다.')
@@ -2833,9 +3037,13 @@ class AppUIMixin:
             if record is None:return
             try:
                 index=state['choices'].index(candidate.get());cid=record['candidates'][index]['cid']
-                icon_review_confirm(root,record['id'],cid,same);refresh()
+                if getattr(self,'_background_running',False):raise ValueError('자동파밍을 중지한 뒤 재료판단을 저장해 주세요.')
+                saved=self._stage_review_confirm_record(record,cid,same) if record.get('category')=='stage_reward' else icon_review_confirm(root,record['id'],cid,same)
+                refresh()
+                refresh_stages=getattr(self,'_stage_rewards_refresh',None)
+                if callable(refresh_stages):refresh_stages()
                 status.set('판단 저장 완료 · 다음 아이콘 비교부터 사용합니다.')
-            except (ValueError,OSError) as error:status.set(str(error))
+            except (ValueError,OSError,RuntimeError) as error:status.set(str(error))
         ttk.Button(actions,text='같은 재료',width=14,command=lambda:confirm(True)).pack(side='left',padx=(0,8))
         ttk.Button(actions,text='다른 재료',width=14,command=lambda:confirm(False)).pack(side='left')
         ttk.Button(actions,text='다시 읽기',command=refresh).pack(side='right')
