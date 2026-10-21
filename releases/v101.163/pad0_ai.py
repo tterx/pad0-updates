@@ -311,6 +311,25 @@ def _ai_case_folder_safe(root,folder):
         return folder.parent.resolve()==root.resolve() and all(not p.is_symlink() and not getattr(p,'is_junction',lambda:False)() for p in folder.rglob('*'))
     except OSError:return False
 
+def ai_cloud_probe_tile(folder,record):
+    """Only a changed, coloured held image of the explicitly probed cloud cell."""
+    index=record.get('cloud_probe_cell')
+    if type(index) is not int or not 0<=index<30 or record.get('game_image')!='game.png':return None
+    folder=Path(folder)
+    if (folder/'game.png').is_symlink():return None
+    try:
+        with Image.open(folder/'board.png') as source:before=source.convert('RGB')
+        with Image.open(folder/'game.png') as source:held=source.convert('RGB')
+        if held.size!=before.size or not obscured_cell_mask(before)[index]:return None
+        w,h=held.size;r,c=divmod(index,6)
+        box=(round((c+.05)*w/6),max(0,round((r-.4)*h/5)),round((c+.95)*w/6),round((r+.95)*h/5))
+        tile=held.crop(box);a=np.asarray(tile);b=np.asarray(before.crop(box))
+        _,sat,val=rgb_to_hsv_np(a)
+        changed=np.max(np.abs(a.astype(np.int16)-b.astype(np.int16)),axis=2)>32
+        if float(np.mean(changed & (sat>.3) & (val>.28)))<.025:return None
+        return tile
+    except (OSError,ValueError,TypeError):return None
+
 def _visual_training_case(root,folder):
     """A readable, approved original; malformed/ineligible records are retained."""
     folder=Path(folder)
@@ -318,7 +337,8 @@ def _visual_training_case(root,folder):
     record=_load_json_dict(folder/'record.json');feedback=_load_json_dict(folder/'feedback.json')
     proposal=record.get('proposal')
     if not isinstance(proposal,dict) or not isinstance(proposal.get('board'),list):return None
-    if record.get('id')!=folder.name or not ai_review_has_board(folder,record):return None
+    probe=ai_cloud_probe_tile(folder,record)
+    if record.get('id')!=folder.name or not (ai_review_has_board(folder,record) or (probe is not None and ai_review_has_display(folder,record))):return None
     if (feedback.get('human_confirmed') is not True or feedback.get('status') not in ('confirmed','corrected')
             or feedback.get('image_training_eligible') is not True):return None
     labels=feedback.get('labels') or {}
@@ -330,17 +350,19 @@ def _visual_training_case(root,folder):
     if any(len(visual_labels[name])!=30 or any(value is not None and type(value) is not bool for value in visual_labels[name]) for name in ('spikes','locks')):return None
     try:
         with Image.open(folder/'board.png') as original:image=original.convert('RGB')
-        digest=hashlib.sha256(image.tobytes()).hexdigest()
+        digest=hashlib.sha256(image.tobytes()+(str(record['cloud_probe_cell']).encode()+probe.tobytes() if probe is not None else b'')).hexdigest()
         version=_ai_case_version(folder)
     except (OSError,ValueError):return None
     return dict(id=folder.name,folder=folder,record=record,feedback=feedback,image=image,
         labels=visual_labels,effective_labels=visual_labels,digest=digest,
-        group=hashlib.sha256(''.join(board).encode()).hexdigest(),contributors=[],source_version=version)
+        group=hashlib.sha256(image.tobytes() if probe is not None else ''.join(board).encode()).hexdigest(),contributors=[],source_version=version,probe_tile=probe)
 
 def _ai_case_version(folder):
     """Small stable edit fingerprint plus the original image's file identity."""
     folder=Path(folder);board=folder/'board.png';info=board.stat()
-    return (hashlib.sha256((folder/'record.json').read_bytes()).hexdigest(),
+    game=folder/'game.png'
+    game_identity=hashlib.sha256(game.read_bytes()).hexdigest() if game.is_file() and _load_json_dict(folder/'record.json').get('cloud_probe_cell') is not None else None
+    return (game_identity,hashlib.sha256((folder/'record.json').read_bytes()).hexdigest(),
             hashlib.sha256((folder/'feedback.json').read_bytes()).hexdigest(),
             info.st_size,info.st_mtime_ns,getattr(info,'st_ino',None))
 
@@ -355,6 +377,12 @@ def visual_training_cases(root,limit=100):
         visual_labels=case['labels'];digest=case['digest']
         if digest in seen:
             previous=seen[digest]
+            if case.get('probe_tile') is not None:
+                focus=case['record']['cloud_probe_cell']
+                if previous['labels']['board'][focus]!=visual_labels['board'][focus]:
+                    raise ValueError('같은 구름 확인 이미지에 서로 다른 색상 정답이 있습니다. AI 관리에서 정답을 통일해 주세요.')
+                previous['contributors'].append({key:value for key,value in case.items() if key not in ('image','contributors')})
+                continue
             for name in visual_labels:
                 for i,value in enumerate(visual_labels[name]):
                     old=previous['labels'][name][i]
@@ -367,7 +395,13 @@ def visual_training_cases(root,limit=100):
     return records
 
 def visual_training_data(root):
-    return [(case['group'],case['image'],case['labels']) for case in visual_training_cases(root)]
+    result=[]
+    for case in visual_training_cases(root):
+        labels=dict(case['labels']);image=case['image']
+        if case.get('probe_tile') is not None:
+            image=case['probe_tile'];labels['_focus_cell']=case['record']['cloud_probe_cell']
+        result.append((case['group'],image,labels))
+    return result
 
 def _ai_case_retention_contents_safe(folder):
     for path in Path(folder).iterdir():
@@ -443,6 +477,12 @@ def visual_train_confirmed(root,current,cancel=None):
             if cancel is not None and cancel.is_set():raise RuntimeError('학습을 중지했습니다.')
             for iteration in range(augment):
                 view=image if iteration==0 else ImageEnhance.Brightness(image).enhance(float(rng.uniform(.85,1.15)))
+                focus=labels.get('_focus_cell')
+                if type(focus) is int:
+                    # Human approval covers this revealed colour only, never the hidden board or spikes.
+                    output['color'][0].append(visual_features([view])[0])
+                    output['color'][1].append(COLOR_ORDER.index(labels['board'][focus]))
+                    continue
                 features=visual_features(visual_board_tiles(view))
                 for name in output:
                     values=[COLOR_ORDER.index(c) for c in labels['board']] if name=='color' else labels.get(name,[None]*30)
@@ -699,15 +739,27 @@ def ai_review_has_board(folder,record):
     try:info=path.stat();return _ai_board_file_valid(str(path),info.st_mtime_ns,info.st_size)
     except OSError:return False
 
+@lru_cache(maxsize=512)
+def _ai_obscured_file_display_valid(path,modified,size,board):
+    """Cache only eligibility, never decoded pixels or training approval.
+
+    A cloud/darkened board is displayable against its recorded visible labels,
+    so both file identity and the proposal belong in this cache key.
+    """
+    try:
+        with Image.open(path) as opened:image=opened.convert('RGB')
+        mask=obscured_cell_mask(image)
+        return any(mask) and cloud_visible_board_valid(image,board,mask)
+    except (OSError,ValueError,TypeError):return False
+
 def ai_review_has_display(folder,record):
     if ai_review_has_board(folder,record):return True
     if record.get('board_image')!='board.png' or not record.get('obscured_cells'):return False
     board=record.get('proposal',{}).get('board',[])
     if len(board)!=30:return False
     try:
-        with Image.open(Path(folder)/'board.png') as opened:image=opened.convert('RGB')
-        mask=obscured_cell_mask(image)
-        return any(mask) and cloud_visible_board_valid(image,board,mask)
+        path=Path(folder)/'board.png';info=path.stat()
+        return _ai_obscured_file_display_valid(str(path),info.st_mtime_ns,info.st_size,tuple(board))
     except (OSError,ValueError,TypeError):return False
 
 def ai_share_case_fingerprint(case):
@@ -721,6 +773,8 @@ def ai_share_case_fingerprint(case):
     else:image=image.convert('RGB')
     digest=hashlib.sha256(f'{image.width}x{image.height}\n'.encode('ascii'))
     digest.update(image.tobytes())
+    probe=case.get('probe_tile')
+    if probe is not None:digest.update(str(case['record']['cloud_probe_cell']).encode()+probe.tobytes())
     digest.update(json.dumps(visual,ensure_ascii=False,sort_keys=True,separators=(',',':')).encode('utf-8'))
     return digest.hexdigest()
 
@@ -811,17 +865,35 @@ def ai_storage_guide_text(data_root):
         '사용자 데이터 위치: '+str(data_root)
     )
 
-def ai_review_list(root,mode='전체',limit=200):
+def ai_review_list(root,mode='전체',limit=200,on_batch=None,cancel_event=None):
+    """Publish validated rows early; superseded reads can stop between cases.
+
+    The ordinary return value remains ``(rows, total_record_count)``. Optional
+    callbacks receive snapshots after the first row, every 25 rows and the last
+    partial batch. Cancellation returns the already validated partial snapshot.
+    """
+    if cancel_event is not None and cancel_event.is_set():return [],0
     paths=sorted(Path(root).glob('*/record.json'),reverse=True);rows=[]
+    total=len(paths);published=0
+    def publish():
+        nonlocal published
+        if on_batch is not None:
+            on_batch(list(rows),total);published=len(rows)
     for path in paths:
+        if cancel_event is not None and cancel_event.is_set():break
         record=_load_json_dict(path)
-        if not record.get('id') or 'proposal' not in record or not ai_review_has_display(path.parent,record):continue
+        if not record.get('id') or 'proposal' not in record:continue
         feedback=_load_json_dict(path.parent/'feedback.json');status=feedback.get('status','pending')
         if mode=='미확인' and status!='pending':continue
         if mode=='확인 완료' and status not in ('confirmed','corrected'):continue
+        if cancel_event is not None and cancel_event.is_set():break
+        if not ai_review_has_display(path.parent,record):continue
+        if cancel_event is not None and cancel_event.is_set():break
         rows.append((record['id'],status,record.get('created_at',0)))
+        if len(rows)==1 or len(rows)%25==0:publish()
         if len(rows)>=limit:break
-    return rows,len(paths)
+    if (cancel_event is None or not cancel_event.is_set()) and (not rows or len(rows)!=published):publish()
+    return rows,total
 
 @ai_review_data_locked
 def ai_review_write(root,proposal,board_image=None,game_image=None):
@@ -855,7 +927,7 @@ def ai_review_feedback(root,cid,status,labels,note='',outcome='미확인'):
     if labels.get('action') not in AI_REVIEW_ACTIONS:raise ValueError('행동을 선택해 주세요.')
     if status=='confirmed' and labels!=record.get('proposal'):status='corrected'
     feedback=dict(schema_version=1,status=status,labels=labels if status!='unknown' else None,note=str(note)[:4000],outcome=str(outcome)[:80],confirmed_at=time.time(),human_confirmed=status!='unknown',
-                  image_training_eligible=bool(status!='unknown' and board and not any(labels.get('clouds',[])) and ai_review_has_board(folder,record)))
+                  image_training_eligible=bool(status!='unknown' and board and ((not any(labels.get('clouds',[])) and ai_review_has_board(folder,record)) or (ai_cloud_probe_tile(folder,record) is not None and ai_review_has_display(folder,record)))))
     # Preserve every explicit correction; feedback.json is just the current selection.
     _atomic_json_write(folder/('feedback_'+uuid.uuid4().hex+'.json'),feedback)
     _atomic_json_write(folder/'feedback.json',feedback)
@@ -917,7 +989,10 @@ def ai_confirmed_export_cases(root):
             files=[folder/name for name in ('record.json','feedback.json','board.png')]
             if any(path.is_symlink() or not path.is_file() or not path.resolve().is_relative_to(root.resolve()) for path in files):
                 raise ValueError('학습 원본 경로를 확인하세요.')
-            record=dict(selected['record']);record.pop('game_image',None)
+            record=dict(selected['record'])
+            probe=selected.get('probe_tile') is not None
+            if probe:files.append(folder/'game.png')
+            else:record.pop('game_image',None)
             feedback=dict(selected['feedback']);labels=dict(feedback.get('labels') or {})
             labels.update(selected['effective_labels']);feedback['labels']=labels
             payloads={
@@ -925,6 +1000,7 @@ def ai_confirmed_export_cases(root):
                 'feedback.json':json.dumps(feedback,ensure_ascii=False,sort_keys=True,separators=(',',':')).encode(),
                 'board.png':files[2].read_bytes(),
             }
+            if probe:payloads['game.png']=files[-1].read_bytes()
             source_digest=hashlib.sha256()
             for path in files:source_digest.update(path.name.encode());source_digest.update(path.read_bytes())
             cases.append(dict(id=selected['id'],digest=ai_share_case_fingerprint(selected),
