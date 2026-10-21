@@ -1239,7 +1239,8 @@ class FloatingPathExecuteButton:
                                       bg=('#177c71' if pinned else '#50697c'))
         self.crystal_window.attributes('-topmost',pinned or getattr(self,'_crystal_presentation_active',False))
         self.breakthrough_label.configure(text=('모든 재료 충족' if not pending and self.app.all_crystal_requirements_met() else ''))
-        self.read_stamp_label.configure(text='파밍할 재료를 선택한 뒤 자동파밍을 누르세요. Ctrl/Shift로 여러 재료 선택 · 위쪽 재료부터 획득 던전 확인 · F10 중지')
+        notice=getattr(self,'_farming_start_notice',None)
+        self.read_stamp_label.configure(text=notice[0] if notice and time.monotonic()<notice[1] else '파밍할 재료를 선택한 뒤 자동파밍을 누르세요. Ctrl/Shift로 여러 재료 선택 · 위쪽 재료부터 획득 던전 확인 · F10 중지')
         self.refresh_candidate_list()
 
     def refresh_owner_image(self,group,name,pending=False):
@@ -1332,27 +1333,58 @@ class FloatingPathExecuteButton:
             pass
 
     def start_selected_crystal_farming(self):
+        def feedback(text):
+            self._farming_start_notice=(str(text),time.monotonic()+8)
+            self.app.set_status(str(text))
+            label=getattr(self,'read_stamp_label',None)
+            if label is not None:
+                try:label.configure(text=str(text))
+                except tk.TclError:pass
+        if getattr(self,'_farming_start_pending',False):
+            feedback('이전 보상 판독이 끝나면 선택한 재료의 자동파밍을 시작합니다. F10으로 취소할 수 있습니다.');return
         if (getattr(self.app, '_background_running', False) or getattr(self.app, '_material_catalog_busy', False)
-                or any(getattr(self.app, flag, False) for flag in ('busy','playback_active','ocr_busy','_manual_reward_busy','reward_poll_busy'))):
-            self.app.set_status('현재 작업이 끝난 뒤 자동파밍을 눌러 주세요.');return
+                or any(getattr(self.app, flag, False) for flag in ('busy','playback_active','ocr_busy','_manual_reward_busy'))):
+            feedback('현재 작업이 끝난 뒤 자동파밍을 눌러 주세요.');return
         try:
             selected = {self._candidate_row_ids[iid] for iid in self.candidate_tree.selection()
                         if iid in self._candidate_row_ids}
             if not selected: raise ValueError('파밍할 재료를 하나 이상 선택해 주세요.')
-            key, snapshot = self._candidate_group_snapshot
+            saved=getattr(self,'_candidate_group_snapshot',None)
+            if not saved or len(saved)!=2:raise ValueError('재료확인/F7로 돌파 대상과 재료를 먼저 읽어 주세요.')
+            key,snapshot=saved
             with self.app._crystal_db_lock:
                 ledger = self.app._load_crystal_ledger()
                 group = ledger.get('farming_groups', {}).get(key)
-                if ledger.get('active_farming_group') != key or group != snapshot:
+                identity=lambda row:(row.get('name'),row.get('revision'),[(str(item['id']),item['required']) for item in row.get('materials',[])])
+                if ledger.get('active_farming_group') != key or not group or identity(group)!=identity(snapshot):
                     raise ValueError('재료 목록이 바뀌었습니다. 재료를 다시 선택해 주세요.')
                 requirements = {row['id']: row['required'] for row in group['materials']}
                 updated, chosen = save_farming_selection(ledger, key, requirements, selected)
                 if background_goal_complete(updated, key, material_ids=chosen):
                     raise ValueError('선택한 재료가 모두 충족되었습니다.')
                 _atomic_json_write(self.app.data_paths['ledger'], updated)
-            self.app.start_background_farming(confirmed=True, material_ids=chosen, confirmed_key=key)
+            epoch=getattr(self.app,'_stop_epoch',0);deadline=time.monotonic()+3
+            self._farming_start_pending=True
+            def begin():
+                if epoch!=getattr(self.app,'_stop_epoch',0):
+                    self._farming_start_pending=False;feedback('F10 중지로 자동파밍 시작을 취소했습니다.');return
+                if getattr(self.app,'reward_poll_busy',False) is True:
+                    if time.monotonic()<deadline:
+                        feedback('보상 판독 마무리 대기 중 · 끝나면 자동파밍 시작 · F10 취소')
+                        self.app.root.after(100,begin);return
+                    self._farming_start_pending=False;feedback('보상 판독이 아직 진행 중입니다. 잠시 후 자동파밍을 다시 눌러 주세요.');return
+                self._farming_start_pending=False
+                feedback('선택한 재료의 자동파밍을 준비합니다…')
+                try:self.app.start_background_farming(confirmed=True,material_ids=chosen,confirmed_key=key)
+                except Exception as error:feedback('자동파밍 시작 실패: '+str(error));return
+                if getattr(self.app,'_background_running',False) is True:feedback('자동파밍 시작 · F10 중지')
+                else:
+                    variable=getattr(self.app,'status_var',None)
+                    message=variable.get() if variable is not None else None
+                    if isinstance(message,str) and message:feedback(message)
+            begin()
         except (ValueError, RuntimeError, OSError) as error:
-            self.app.set_status(str(error))
+            self._farming_start_pending=False;feedback(str(error))
 
     def is_visible(self):
         """True when the floating execute button or crystal panel could contaminate a capture."""
@@ -3181,6 +3213,8 @@ class AppUIMixin:
     def show_ai_management(self,case_id=None):
         existing=getattr(self,'_ai_review_window',None)
         if existing is not None and existing.winfo_exists():
+            variable=getattr(self,'_ai_review_mode_var',None)
+            if case_id is not None and variable is not None and variable.get()!='전체':variable.set('전체')
             self._ai_review_refresh(case_id);existing.deiconify();existing.lift();return
         win=tk.Toplevel(self.root);self._ai_review_window=win
         win.title('AI 관리 · 판단 확인과 로컬 학습 데이터');win.geometry(f'1080x{min(800,max(580,win.winfo_screenheight()-90))}');win.minsize(940,580)
@@ -3193,7 +3227,7 @@ class AppUIMixin:
             if not enabled.get() and getattr(self,'_ai_training_busy',False):self._ai_training_cancel.set();self._ai_training_busy=False
             self.save_user_settings();self._configure_visual_model();self._update_visual_model_status()
         ttk.Checkbutton(model_controls,text='이미지 AI 사용',variable=enabled,command=model_changed).pack(side='left')
-        ttk.Button(model_controls,text='확인 데이터로 학습',command=self.train_visual_model).pack(side='left',padx=6)
+        train_button=ttk.Button(model_controls,text='확인 데이터로 학습',command=self.train_visual_model);train_button.pack(side='left',padx=6)
         ttk.Button(model_controls,text='이전 모델 복구',command=self.rollback_visual_model).pack(side='left')
         ttk.Button(model_controls,text='보관 안내',command=self.show_ai_storage_guide).pack(side='left',padx=6)
         self._visual_model_status_var=tk.StringVar(value=self._visual_model_status_text())
@@ -3208,7 +3242,8 @@ class AppUIMixin:
         ttk.Label(shell,textvariable=notice,wraplength=1000).pack(side='bottom',fill='x',pady=(6,0))
         main=ttk.Frame(shell);main.pack(fill='both',expand=True)
         left=ttk.Frame(main,width=220);left.pack(side='left',fill='y',padx=(0,12));left.pack_propagate(False)
-        mode=tk.StringVar(value='전체');ttk.Combobox(left,textvariable=mode,values=('전체','미확인','확인 완료'),state='readonly',width=22).pack(fill='x')
+        mode=tk.StringVar(value='미확인' if case_id is None else '전체');ttk.Combobox(left,textvariable=mode,values=('전체','미확인','확인 완료'),state='readonly',width=22).pack(fill='x')
+        self._ai_review_mode_var=mode
         cases=tk.Listbox(left,width=27,exportselection=False);cases.pack(fill='both',expand=True,pady=6)
         count=tk.StringVar();ttk.Label(left,textvariable=count,wraplength=210).pack(anchor='w')
         right=ttk.Frame(main);right.pack(side='left',fill='both',expand=True)
@@ -3226,9 +3261,12 @@ class AppUIMixin:
         original_holder=ttk.Frame(boards,width=360,height=300);original_holder.pack(side='left',anchor='n',padx=(0,12));original_holder.pack_propagate(False)
         original=ttk.Label(original_holder,text='원본 이미지 없음',anchor='center');original.pack(fill='both',expand=True)
         grid=ttk.Frame(boards);grid.pack(side='left',anchor='n')
-        state={'record':None,'labels':None,'feedback':{},'cell':0,'ids':[],'loading':False,'dirty':False}
+        state={'record':None,'labels':None,'feedback':{},'cell':0,'ids':[],'loading':False,'dirty':False,
+            'rows':[],'total':0,'mode':mode.get(),'saving':False,'closed':False,'selection_epoch':0,
+            'load_generation':0,'refresh_generation':0,'load_active':False,'refresh_active':False,
+            'pending_load':None,'pending_refresh':None,'status_overrides':{}}
         self._ai_review_edit_state=state
-        buttons=[]
+        buttons=[];decision_buttons=[]
         color=tk.StringVar();spike=tk.StringVar(value='미확인');lock=tk.StringVar(value='미확인');cloud=tk.StringVar(value='미확인');cell_text=tk.StringVar(value='칸을 눌러 수정')
         names={code:COLOR_INFO[code][0] for code in COLOR_ORDER}
         def paint():
@@ -3237,10 +3275,12 @@ class AppUIMixin:
                 if i<len(board):
                     code=board[i];s=labels['spikes'][i];l=labels['locks'][i]
                     record=state.get('record') or {}
-                    hidden_name='구름' if labels['clouds'][i] else '암흑' if (record.get('dark_cells') or [False]*30)[i] else ''
-                    button.configure(text=names[code]+(' ▲' if s else '')+('\n잠금 ●' if l else '')+('\n'+hidden_name if hidden_name else ''),bg=COLOR_INFO[code][1],relief='sunken' if i==state['cell'] else 'raised',state='normal')
+                    dark=record.get('dark_cells');dark=dark if isinstance(dark,list) else []
+                    hidden_name='구름' if labels['clouds'][i] else '암흑' if i<len(dark) and dark[i] else ''
+                    button.configure(text=names[code]+(' ▲' if s else '')+('\n잠금 ●' if l else '')+('\n'+hidden_name if hidden_name else ''),bg=COLOR_INFO[code][1],relief='sunken' if i==state['cell'] else 'raised',state='disabled' if state['loading'] or state['saving'] else 'normal')
                 else:button.configure(text='—',bg='#eeeeee',state='disabled')
         def select_cell(index):
+            if state['loading'] or state['saving']:return
             labels=state['labels']
             if not labels or index>=len(labels['board']):return
             state['cell']=index;cell_text.set(f'{index//6+1}행 {index%6+1}열')
@@ -3260,6 +3300,7 @@ class AppUIMixin:
         ttk.Label(editor,text=' 잠금').pack(side='left');lock_box=ttk.Combobox(editor,textvariable=lock,values=('미확인','없음','있음'),state='readonly',width=6);lock_box.pack(side='left')
         ttk.Label(editor,text=' 구름').pack(side='left');cloud_box=ttk.Combobox(editor,textvariable=cloud,values=('미확인','없음','있음'),state='readonly',width=6);cloud_box.pack(side='left')
         def update_cell(e=None):
+            if state['loading'] or state['saving']:return
             labels=state['labels']
             if not labels or not labels.get('board'):return
             state['dirty']=True
@@ -3269,59 +3310,173 @@ class AppUIMixin:
         goal_titles={i:title for i,title,_ in ROUTE_GOAL_OPTIONS};goal=tk.StringVar();action=tk.StringVar()
         form=ttk.Frame(body);form.pack(fill='x',pady=5)
         ttk.Label(form,text='경로조건').grid(row=0,column=0,sticky='w',padx=(0,8),pady=4)
-        ttk.Combobox(form,textvariable=goal,values=tuple(goal_titles.values()),state='readonly',width=26).grid(row=0,column=1,sticky='w')
+        goal_box=ttk.Combobox(form,textvariable=goal,values=tuple(goal_titles.values()),state='readonly',width=26);goal_box.grid(row=0,column=1,sticky='w')
         ttk.Label(form,text='행동').grid(row=1,column=0,sticky='w',pady=4)
-        ttk.Combobox(form,textvariable=action,values=AI_REVIEW_ACTIONS,state='readonly',width=26).grid(row=1,column=1,sticky='w')
-        def load(e=None):
-            if getattr(self,'_ai_retention_busy',False) or getattr(self,'_ai_training_busy',False):
-                notice.set('학습·정리 중입니다. 완료 후 다른 기록을 선택해 주세요.');return
-            if state['loading']:return
-            if state['dirty']:notice.set('현재 수정 내용을 먼저 저장하거나 창을 닫아 주세요.');return
-            selected=cases.curselection()
-            if not selected:return
-            state['loading']=True
-            cid=state['ids'][selected[0]];folder=self._ai_review_root()/cid
-            record=_load_json_dict(folder/'record.json');feedback=_load_json_dict(folder/'feedback.json')
-            labels=feedback.get('labels') or record['proposal'];state.update(record=record,labels=json.loads(json.dumps(labels)),feedback=feedback,cell=0)
-            state['labels'].setdefault('clouds',list(record.get('cloud_cells') or [False]*30))
-            reason.set(time.strftime('%Y-%m-%d %H:%M:%S',time.localtime(record['created_at']))+'\n'+record['reason']+'\n'+record.get('condition_source','')+'\n상태: '+{'pending':'미확인','confirmed':'판단 확인','corrected':'수정 확인','unknown':'모르겠음'}.get(feedback.get('status','pending'),'미확인'))
-            photo=None
-            image_name=record.get('board_image')
-            if image_name:
-                from PIL import ImageTk
-                with Image.open(folder/image_name) as image:
-                    image=image.convert('RGB');image.thumbnail((360,300));photo=ImageTk.PhotoImage(image)
-            # Keep the previous image intact until its replacement is ready.
-            # Refreshing status/list text must not shrink either image column.
-            original.configure(image=photo or '',text='' if photo is not None else '원본 이미지 없음');win._ai_photo=photo
-            goal.set(goal_titles[labels['goal_index']]);action.set(labels['action'])
-            paint();select_cell(0);state['loading']=False;state['dirty']=False
-        def refresh(selected_id=None):
-            if state['dirty']:notice.set('새 기록도 로컬에 보관 중입니다. 현재 수정 내용을 먼저 저장해 주세요.');return
-            if selected_id is None and state['record']:selected_id=state['record']['id']
-            root=self._ai_review_root();root.mkdir(parents=True,exist_ok=True)
-            state['refresh_generation']=state.get('refresh_generation',0)+1;generation=state['refresh_generation']
-            wanted=mode.get();results=queue.SimpleQueue();state['loading']=True
-            count.set('로컬 기록 읽는 중… 창은 계속 사용할 수 있습니다.')
+        action_box=ttk.Combobox(form,textvariable=action,values=AI_REVIEW_ACTIONS,state='readonly',width=26);action_box.grid(row=1,column=1,sticky='w')
+        def controls():
+            ready=bool(state['record'] and state['labels'] and not state['loading'] and not state['saving'])
+            for button in decision_buttons:button.configure(state='normal' if ready else 'disabled')
+            for box in (color_box,spike_box,lock_box,cloud_box,goal_box,action_box):box.configure(state='readonly' if ready else 'disabled')
+            cases.configure(state='disabled' if state['saving'] else 'normal')
+            train_button.configure(state='disabled' if state['saving'] else 'normal')
+            paint()
+        def show_reason():
+            record=state['record'];feedback=state['feedback']
+            reason.set(time.strftime('%Y-%m-%d %H:%M:%S',time.localtime(record['created_at']))+'\n'+record.get('reason','')+'\n'+record.get('condition_source','')+'\n상태: '+{'pending':'미확인','confirmed':'판단 확인','corrected':'수정 확인','unknown':'모르겠음'}.get(feedback.get('status','pending'),'미확인'))
+        def start_load():
+            request=state['pending_load']
+            if state['closed'] or request is None or state['load_active']:return
+            state['pending_load']=None;state['load_active']=True
+            cid,generation=request;folder=self._ai_review_root()/cid;results=queue.SimpleQueue()
             def worker():
-                try:rows,total=ai_review_list(root,wanted);results.put((rows,total,None))
-                except Exception as error:results.put(([],0,str(error)))
+                try:
+                    record=_load_json_dict(folder/'record.json');feedback=_load_json_dict(folder/'feedback.json')
+                    if record.get('id')!=cid or not isinstance(record.get('proposal'),dict):raise ValueError('검토 기록을 읽지 못했습니다.')
+                    labels=json.loads(json.dumps(feedback.get('labels') or record['proposal']))
+                    if len(labels.get('board',[]))!=30 or any(code not in COLOR_ORDER for code in labels['board']):raise ValueError('드롭 30칸 정보가 올바르지 않습니다.')
+                    labels.setdefault('clouds',list(record.get('cloud_cells') or [False]*30))
+                    for field in ('spikes','locks','clouds'):
+                        values=labels.get(field)
+                        if not isinstance(values,list) or len(values)!=30 or any(value is not None and type(value) is not bool for value in values):raise ValueError('가시·잠금·구름 정보가 올바르지 않습니다.')
+                    if labels.get('goal_index') not in goal_titles or labels.get('action') not in AI_REVIEW_ACTIONS:raise ValueError('경로 조건·행동 정보가 올바르지 않습니다.')
+                    record['created_at']=float(record.get('created_at',0))
+                    if not math.isfinite(record['created_at']):raise ValueError('기록 시각이 올바르지 않습니다.')
+                    image_name=record.get('board_image')
+                    if image_name!='board.png':raise ValueError('퍼즐판 원본 이미지가 없습니다.')
+                    with Image.open(folder/image_name) as image:
+                        preview=image.convert('RGB');preview.thumbnail((360,300))
+                    results.put(((record,feedback,labels,preview),None))
+                except Exception as error:results.put((None,str(error)))
             def finish():
-                if not win.winfo_exists() or generation!=state.get('refresh_generation'):return
-                try:rows,total,error=results.get_nowait()
-                except queue.Empty:win.after(50,finish);return
-                state['loading']=False
-                if state['dirty']:notice.set('수정 내용을 먼저 저장해 주세요.');return
-                if error:notice.set('기록 읽기 보류: '+error);return
+                if state['closed'] or not win.winfo_exists():return
+                try:data,error=results.get_nowait()
+                except queue.Empty:self.root.after(30,finish);return
+                state['load_active']=False
+                if generation==state['load_generation']:
+                    if not error:
+                        try:
+                            from PIL import ImageTk
+                            record,feedback,labels,preview=data;photo=ImageTk.PhotoImage(preview)
+                            state.update(record=record,feedback=feedback,labels=labels,cell=0)
+                            original.configure(image=photo,text='');win._ai_photo=photo
+                            goal.set(goal_titles[labels['goal_index']]);action.set(labels['action']);show_reason()
+                            notice.set('이미지 확인 완료 · 판단 맞음·수정 저장·모르겠음을 선택하세요.')
+                        except Exception as exc:error=str(exc)
+                    state['loading']=False;state['dirty']=False
+                    if error:
+                        state.update(record=None,labels=None,feedback={})
+                        original.configure(image='',text='이미지를 읽지 못했습니다.');win._ai_photo=None
+                        reason.set('기록 읽기 실패');notice.set('이미지 읽기 실패: '+error)
+                    controls()
+                    if state['record']:select_cell(0)
+                start_load()
+            threading.Thread(target=worker,daemon=True).start();self.root.after(30,finish)
+        def restore_selection():
+            current=(state['record'] or {}).get('id') or state.get('requested_cid')
+            clear=getattr(cases,'selection_clear',None)
+            if current in state['ids']:
+                if callable(clear):clear(0,'end')
+                cases.selection_set(state['ids'].index(current))
+        def load(e=None,cid=None):
+            if state['closed']:return
+            if state['saving']:
+                restore_selection();notice.set('판단 저장 중입니다. 완료 후 다른 기록을 선택해 주세요.');return
+            if getattr(self,'_ai_retention_busy',False) or getattr(self,'_ai_training_busy',False):
+                restore_selection();notice.set('학습·정리 중입니다. 완료 후 다른 기록을 선택해 주세요.');return
+            if state['dirty']:
+                restore_selection();notice.set('현재 수정 내용을 먼저 저장하거나 창을 닫아 주세요.');return
+            if cid is None:
+                selected=cases.curselection()
+                if not selected or selected[0]>=len(state['ids']):return
+                cid=state['ids'][selected[0]]
+                state['selection_epoch']+=1
+            if state['loading'] and cid==state.get('requested_cid'):return
+            if not state['loading'] and state['record'] and cid==state['record']['id']:return
+            state['load_generation']+=1;state['loading']=True;state['requested_cid']=cid
+            state.update(record=None,feedback={})
+            state['pending_load']=(cid,state['load_generation'])
+            reason.set('선택한 기록의 이미지 읽는 중…');notice.set('이미지 읽는 중… 창은 계속 사용할 수 있습니다.')
+            controls();start_load()
+        def apply_rows(rows,total,done,request):
+            # Tk ignores list edits while saving has disabled the listbox.
+            # Keep its displayed rows and the ID mapping together; the save
+            # completion requests a fresh list before either is updated.
+            if state['dirty'] or state['saving']:return
+            # Keep the visible list stable during a refresh. The first opening
+            # still streams its first usable record before the scan finishes.
+            if not done and not request['initial']:return
+            filtered=[]
+            for cid,status,created in rows:
+                status=state['status_overrides'].get(cid,status)
+                if request['mode']=='미확인' and status!='pending':continue
+                if request['mode']=='확인 완료' and status not in ('confirmed','corrected'):continue
+                filtered.append((cid,status,created))
+            if state.get('display_rows')!=filtered:
                 cases.delete(0,'end');state['ids']=[]
-                for cid,status,created in rows:
+                for cid,status,created in filtered:
                     state['ids'].append(cid)
                     cases.insert('end',{'pending':'미확인','confirmed':'확인','corrected':'수정','unknown':'보류'}.get(status,'미확인')+' · '+time.strftime('%m/%d %H:%M:%S',time.localtime(created)))
-                count.set(f'최근 {len(rows)}건 표시 · 전체 원본 기록 {total}건\n이미지·정답은 로컬 보관')
-                if state['ids']:
-                    index=state['ids'].index(selected_id) if selected_id in state['ids'] else 0;cases.selection_set(index);load()
-            threading.Thread(target=worker,daemon=True).start();win.after(50,finish)
+                state['display_rows']=filtered
+            state['rows']=filtered;state['total']=total
+            count.set(f'최근 {len(filtered)}건 표시 · 전체 원본 기록 {total}건\n'+('이미지·정답은 로컬 보관' if done else '나머지 목록 읽는 중… 먼저 검토할 수 있습니다.'))
+            current=state.get('requested_cid') if state['loading'] else (state['record'] or {}).get('id')
+            requested=request['selected'] if request['selection_epoch']==state['selection_epoch'] else None
+            target=requested if requested in state['ids'] else current if current in state['ids'] else None
+            if target is None and state['ids'] and (done or current is None and requested is None):target=state['ids'][0]
+            if target is not None:
+                cases.selection_set(state['ids'].index(target));load(cid=target)
+            elif done and not state['saving']:
+                state['load_generation']+=1;state['pending_load']=None;state['loading']=False
+                state.update(record=None,labels=None,feedback={},requested_cid=None)
+                original.configure(image='',text='표시할 기록이 없습니다.');win._ai_photo=None
+                reason.set('이 필터에 해당하는 기록이 없습니다.');controls()
+        def start_refresh():
+            request=state['pending_refresh']
+            if state['closed'] or request is None or state['refresh_active']:return
+            state['pending_refresh']=None;state['refresh_active']=True
+            cancel=threading.Event();state['refresh_cancel']=cancel;results=queue.SimpleQueue()
+            root=self._ai_review_root()
+            def worker():
+                try:
+                    rows,total=ai_review_list(root,request['mode'],on_batch=lambda rows,total:results.put(('batch',rows,total,None)),cancel_event=cancel)
+                    results.put(('done',rows,total,None))
+                except Exception as error:results.put(('done',[],0,str(error)))
+            def finish():
+                if state['closed'] or not win.winfo_exists():return
+                latest=None;done=False
+                while True:
+                    try:entry=results.get_nowait()
+                    except queue.Empty:break
+                    latest=entry;done=done or entry[0]=='done'
+                if latest is not None and request['generation']==state['refresh_generation']:
+                    _,rows,total,error=latest
+                    if error:notice.set('기록 읽기 보류: '+error)
+                    else:
+                        try:apply_rows(rows,total,done,request)
+                        except (ValueError,TypeError,OverflowError,tk.TclError) as exc:notice.set('목록 표시 실패: '+str(exc))
+                if done:
+                    state['refresh_active']=False;start_refresh()
+                else:self.root.after(30,finish)
+            threading.Thread(target=worker,daemon=True).start();self.root.after(30,finish)
+        def refresh(selected_id=None):
+            if state['closed']:return
+            if state['dirty']:notice.set('새 기록도 로컬에 보관 중입니다. 현재 수정 내용을 먼저 저장해 주세요.');return
+            if state['saving']:state['refresh_after_save']=True;return
+            if selected_id is None and state['record']:selected_id=state['record']['id']
+            wanted=mode.get()
+            if wanted!=state['mode']:
+                state['mode']=wanted;state['selection_epoch']+=1;state['load_generation']+=1
+                state['pending_load']=None;state['loading']=False
+                state.update(record=None,labels=None,feedback={},requested_cid=None)
+                selected_id=None;reason.set('선택한 목록 읽는 중…');controls()
+            state['refresh_generation']+=1
+            state['pending_refresh']=dict(generation=state['refresh_generation'],mode=wanted,selected=selected_id,selection_epoch=state['selection_epoch'],initial=not state['ids'])
+            cancel=state.get('refresh_cancel')
+            if cancel is not None:cancel.set()
+            count.set('로컬 기록 읽는 중… 창은 계속 사용할 수 있습니다.')
+            start_refresh()
         def save(status):
+            if state['loading'] or state['saving']:notice.set('이미지 읽기·판단 저장이 끝난 뒤 다시 눌러 주세요.');return
             if getattr(self,'_ai_retention_busy',False) or getattr(self,'_ai_training_busy',False):
                 notice.set('학습·정리 중입니다. 완료 후 저장해 주세요.');return
             record=state['record']
@@ -3334,13 +3489,38 @@ class AppUIMixin:
                 if ('clouds' not in record['proposal'] and 'clouds' not in (previous.get('labels') or {})
                         and labels.get('clouds')==list(record.get('cloud_cells') or [False]*30)):
                     labels.pop('clouds',None)
-                result=ai_review_feedback(self._ai_review_root(),record['id'],status,labels,previous.get('note',''),previous.get('outcome','미확인'))
-                state['dirty']=False
-                refresh(record['id']);notice.set('저장 완료 · '+('학습에서 제외합니다.' if result['status']=='unknown' else '확인된 정답으로 분리했습니다. 미확인 잠금/가시는 정답에 포함하지 않습니다.'))
             except (OSError,ValueError,StopIteration) as error:notice.set('저장 실패: '+str(error))
+            else:
+                root=self._ai_review_root();cid=record['id'];results=queue.SimpleQueue()
+                state['saving']=True;controls();notice.set('판단 저장 중… 창은 계속 사용할 수 있습니다.')
+                def worker():
+                    try:results.put((ai_review_feedback(root,cid,status,labels,previous.get('note',''),previous.get('outcome','미확인')),None))
+                    except Exception as error:results.put((None,str(error)))
+                def finish():
+                    if state['closed'] or not win.winfo_exists():return
+                    try:result,error=results.get_nowait()
+                    except queue.Empty:self.root.after(30,finish);return
+                    state['saving']=False;controls()
+                    if error:
+                        state['close_pending']=False;notice.set('저장 실패: '+error);return
+                    state['dirty']=False;state['feedback']=result;state['status_overrides'][cid]=result['status']
+                    show_reason();notice.set('저장 완료 · '+('학습에서 제외합니다.' if result['status']=='unknown' else '확인된 정답으로 분리했습니다. 미확인 잠금/가시는 정답에 포함하지 않습니다.'))
+                    if state.get('close_pending'):close()
+                    else:refresh(cid)
+                threading.Thread(target=worker,daemon=True).start();self.root.after(30,finish)
         def add_current():
-            record=self._ai_review_needed('사용자 판단 검토 요청',popup=False)
-            if record:refresh(record['id'])
+            queued=getattr(self,'_queue_ai_review_needed',None)
+            if callable(queued):
+                def complete(record,error):
+                    if state['closed']:return
+                    if error:notice.set('현재 판 추가 실패: '+str(error))
+                    elif record:notice.set('현재 판 기록을 추가했습니다.')
+                    else:notice.set('기록할 수 있는 퍼즐판이 없습니다.')
+                accepted=queued('사용자 판단 검토 요청',popup=False,on_complete=complete)
+                notice.set('현재 판 기록을 준비 중입니다. 저장되면 목록에 표시합니다.' if accepted else '중지 상태이거나 기록할 수 있는 퍼즐판이 없습니다.')
+            else:
+                record=self._ai_review_needed('사용자 판단 검토 요청',popup=False)
+                if record:refresh(record['id'])
         def open_folder():
             folder=self._ai_review_root();folder.mkdir(parents=True,exist_ok=True)
             if hasattr(os,'startfile'):os.startfile(str(folder))
@@ -3365,19 +3545,33 @@ class AppUIMixin:
         ttk.Button(footer,text='현재 판 추가',command=add_current).pack(side='left')
         ttk.Button(footer,text='데이터 폴더',command=open_folder).pack(side='left',padx=6)
         ttk.Button(footer,text='공유 설정',command=self.show_ai_share_settings).pack(side='left')
-        ttk.Button(footer,text='모르겠음',command=lambda:save('unknown')).pack(side='right')
-        ttk.Button(footer,text='수정 저장',command=lambda:save('corrected')).pack(side='right',padx=6)
-        ttk.Button(footer,text='판단 맞음',command=lambda:save('confirmed'),style='Accent.TButton').pack(side='right')
+        for title,status,options in (('모르겠음','unknown',{}),('수정 저장','corrected',{'padx':6}),('판단 맞음','confirmed',{})):
+            button=ttk.Button(footer,text=title,command=lambda value=status:save(value),**({'style':'Accent.TButton'} if status=='confirmed' else {}))
+            button.pack(side='right',**options);decision_buttons.append(button)
         def mark_dirty(*_):
-            if state['record'] and not state['loading']:state['dirty']=True
+            if state['record'] and not state['loading'] and not state['saving']:state['dirty']=True
         for variable in (goal,action):variable.trace_add('write',mark_dirty)
         self._ai_review_refresh=refresh
-        cases.bind('<<ListboxSelect>>',load);mode.trace_add('write',lambda *_:refresh())
+        def filter_changed(*_):
+            if state.get('resetting_mode'):return
+            if state['dirty'] or state['saving']:
+                state['resetting_mode']=True
+                try:mode.set(state['mode'])
+                finally:state['resetting_mode']=False
+                notice.set('현재 수정·저장을 마친 뒤 목록을 바꿔 주세요.');return
+            refresh()
+        cases.bind('<<ListboxSelect>>',load);mode.trace_add('write',filter_changed)
         def close():
+            if state['saving']:
+                state['close_pending']=True;notice.set('판단 저장을 마치면 창을 닫습니다.');return
+            state['closed']=True;state['load_generation']+=1;state['pending_load']=None;state['pending_refresh']=None
+            cancel=state.get('refresh_cancel')
+            if cancel is not None:cancel.set()
             self._ai_review_refresh=None;self._ai_review_window=None;self._ai_review_edit_state=None;win.destroy()
             if getattr(self,'_ai_retention_retry',False):self._start_ai_retention()
         win.protocol('WM_DELETE_WINDOW',close);win.deiconify();win.lift()
-        win.after_idle(lambda:refresh(case_id) if win.winfo_exists() else None)
+        controls()
+        self.root.after_idle(lambda:refresh(case_id) if win.winfo_exists() else None)
 
     def _farming_show_stats(self, message):
         if getattr(self,'_root_tree_active',False) is True:return
