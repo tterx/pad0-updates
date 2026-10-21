@@ -1,10 +1,10 @@
 # PAD0 개인용 업데이트 배포
 
-[최신 실행 패키지 다운로드](https://raw.githubusercontent.com/tterx/pad0-updates/main/pad0_overlay_windows_v101_153.zip)
+[최신 실행 패키지 다운로드](https://raw.githubusercontent.com/tterx/pad0-updates/main/pad0_overlay_windows_v101_154.zip)
 
-프로그램을 완전히 종료하고 `시작.vbs`로 재실행하면 **v101.153**를 확인합니다. 개인 DB와 설정은 유지합니다.
+프로그램을 완전히 종료하고 `시작.vbs`로 재실행하면 **v101.154**를 확인합니다. 개인 DB와 설정은 유지합니다.
 
-이번 버전은 결과 제목만 먼저 뜨는 전환 화면에서 즉시 중지하던 문제를 수정합니다. 보상창과 다음 버튼을 최대10초 동안 다시 확인한 뒤 집계·진행합니다. 대기 중에도 F10으로 중지할 수 있습니다. [보상 집계 안내](FARMING_STATS.md)
+이번 버전은 자동파밍 시작 후 첫 크리스탈을 열기 전에 전체 재료 수량을 다시 읽던 단계를 줄입니다. 등록 아이콘으로 선택한 재료를 확인해 이동하며, F7·보상 집계의 수량 판독은 유지합니다. [보상·시작 처리 안내](FARMING_STATS.md)
 
 ## 백그라운드 재료 파밍 — 첫 구현
 
