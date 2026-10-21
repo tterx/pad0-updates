@@ -21,13 +21,15 @@ GUI·OCR·캡처·Android 입력·크리스탈 기능을 import하지 않습니�
 .venv/bin/python -m unittest discover -s tests -p 'test_solver_core*.py'
 ```
 
-기존 검사 12개를 옮겼습니다. 최초 분리 검증에서 테스트 본체는 약 0.16초에 통과했으며 실행 환경과 시작 비용에 따라 달라집니다. 수송 비용의 전수 검증과 화면·UI·스킬·백그라운드 실행을 포함한 전체 검사는 별도입니다.
+기존 검사 12개를 옮겼습니다. 최초 분리 검증에서 테스트 본체는 약 0.16초에 통과했으며 실행 환경과 시작 비용에 따라 달라집니다. 일반 탐색 변경은 핵심 검사와 탐색 영역을 함께 실행합니다.
 
 ```sh
-PYTHONPATH=tests .venv/bin/python -m unittest discover -s tests
+DISPLAY=:99 .venv/bin/python tools/run_tests.py --area solver
 ```
 
 기존 벤치마크는 --solver pad0_solver.py로 모듈을 직접 불러올 수 있습니다. App 기반 워커를 검증하는 benchmark_master_latency.py --workers 옵션은 기존처럼 pad0_overlay.py를 사용합니다.
+
+공통 모듈 경계 등 영향이 큰 변경의 전체 검사는 [검사 실행 안내](TESTING.md)를 따릅니다.
 
 ## 배포와 자식 프로세스
 

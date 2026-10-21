@@ -2,6 +2,7 @@
 from __future__ import annotations
 import base64
 import hashlib
+import json
 from pathlib import Path
 import re
 import threading
@@ -26,18 +27,44 @@ def _unpack(value):
 
 def _distance(a,b):return min(float(np.abs(x-y).mean()) for x,y in zip(a,b))
 
+
+def crystal_artwork_score(probe,references):
+    """Compare portrait interiors; a shared frame cannot supply identity evidence.
+
+    Keep the persisted signature format unchanged. Small capture shifts are
+    checked inside the artwork, outside the frame and the amount badge.
+    """
+    best=float('inf')
+    for left,right in zip(probe,references):
+        a=np.asarray(left,dtype=np.float32);b=np.asarray(right,dtype=np.float32)
+        if a.shape!=(64,48,3) or b.shape!=a.shape:continue
+        for dy,dx in ((0,0),(-2,0),(2,0),(0,-2),(0,2)):
+            x=a[12:53,10:38];y=b[12+dy:53+dy,10+dx:38+dx]
+            distance=float(np.abs(x-y).mean())
+            if distance<=3:
+                best=min(best,distance);continue
+            if distance>=25:continue
+            l=x[:,:,0]-x[:,:,0].mean();r=y[:,:,0]-y[:,:,0].mean()
+            scale=float(np.sqrt(np.sum(l*l)*np.sum(r*r)))
+            if scale>1 and float(np.sum(l*r))/scale>=.60:best=min(best,distance)
+    return best
+
 def icon_review_list(root):
     with LOCK:
         records=[_load_json_dict(path) for path in (_root(root)/'cases').glob('*/record.json')]
         return sorted((r for r in records if r.get('id')),key=lambda r:r.get('created',0),reverse=True)[:200]
 
-def icon_review_record(root,image,references,reason,category='icon'):
+def icon_review_record(root,image,references,reason,category='icon',context=None):
     probe=_pack(crystal_art_signatures(image));candidates=[]
     for cid,label,reference,score in references:
         candidates.append(dict(cid=str(cid),label=str(label),signature=_pack(crystal_art_signatures(reference)),score=float(score)))
     if not candidates:return None
     identity=(probe+repr([(c['cid'],c['signature']) for c in candidates])).encode()
     if category=='image_update':identity+=image.convert('RGB').tobytes()+b''.join(ref.convert('RGB').tobytes() for _,_,ref,_ in references)
+    if context is not None:
+        if not isinstance(context,dict):raise ValueError('비교 자료의 연결 정보가 잘못됐습니다.')
+        context=json.loads(json.dumps(context,ensure_ascii=False,sort_keys=True))
+        identity+=json.dumps(dict(category=category,context=context),ensure_ascii=False,sort_keys=True,separators=(',',':')).encode('utf-8')
     digest=hashlib.sha256(identity).hexdigest()
     folder=_root(root)/'cases'/digest
     with LOCK:
@@ -46,6 +73,7 @@ def icon_review_record(root,image,references,reason,category='icon'):
         folder.mkdir(parents=True,exist_ok=True);image.convert('RGB').save(folder/'probe.png')
         for index,(_,_,reference,_) in enumerate(references):reference.convert('RGB').save(folder/f'reference_{index}.png')
         record=dict(id=digest,created=time.time(),probe=probe,candidates=candidates,reason=str(reason),decisions={},status='pending',category=category)
+        if context is not None:record['context']=context
         _atomic_json_write(folder/'record.json',record);return record
 
 def icon_review_confirm(root,case_id,cid,same):

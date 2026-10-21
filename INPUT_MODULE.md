@@ -18,10 +18,10 @@
 
 기존 검사 14개를 그대로 옮긴 마우스 보호·취소·SDK 제스처·타이머 검사입니다. GUI·OCR·게임을 시작하지 않습니다. 실제 Windows 훅과 SDK 함수는 모의 객체로 검증하므로 실제 MuMu 실행 검증과는 구별됩니다.
 
-입력 변경 시 장치·캡처·UI 통합 검사도 확인하고, 배포 전에는 전체 검사를 실행합니다.
+일반 입력 변경은 핵심 검사와 입력 영역을 함께 실행합니다. 공통 모듈 경계 등 영향이 큰 변경은 [검사 실행 안내](TESTING.md)에 따라 전체 검사를 실행합니다.
 
 ```sh
-PYTHONPATH=tests .venv/bin/python -m unittest discover -s tests
+DISPLAY=:99 .venv/bin/python tools/run_tests.py --area input
 ```
 
 ## 배포

@@ -22,13 +22,13 @@
 
 기존 변경 기록 검사 8개를 그대로 옮겼습니다. 실제 업로드 없이 임시 자료로 100개 보관 이후 공유 누적, 같은 정답 재확인, 새 수정의 전송 완료 처리, 정답 철회, 잘못된 자료, 저장 실패와 병합 정답을 검증합니다.
 
-학습·보관·동기화 단위 검사 파일도 pad0_ai를 직접 import합니다. AI 창과 저장 결과 적용·F10 취소 검사는 메인과 연동해 확인합니다. 배포 전 전체 검사:
+학습·보관·동기화 단위 검사 파일도 pad0_ai를 직접 import합니다. AI 창과 저장 결과 적용·F10 취소 검사는 메인과 연동해 확인합니다. 일반 AI 변경은 핵심 검사와 AI 영역을 함께 실행합니다:
 
 ```sh
-PYTHONPATH=tests .venv/bin/python -m unittest discover -s tests
+DISPLAY=:99 .venv/bin/python tools/run_tests.py --area ai
 ```
 
-tools/train_visual_bootstrap.py도 AI 모듈을 직접 불러옵니다. 이번 분리에서 새 모델을 학습해 배포하지 않았습니다.
+공통 자료 형식·모듈 경계 등 영향이 큰 변경의 전체 검사는 [검사 실행 안내](TESTING.md)를 따릅니다. tools/train_visual_bootstrap.py도 AI 모듈을 직접 불러옵니다. 이번 분리에서 새 모델을 학습해 배포하지 않았습니다.
 
 ## 배포
 
