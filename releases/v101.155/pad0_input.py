@@ -28,6 +28,38 @@ def _input_resource_root():
 
 MANUAL_MASTER_MOVE_SECONDS=.075
 
+def release_emulator_mouse_buttons(hwnd):
+    """Explicit F10 cleanup only: UP/CANCEL to the known host, no move/focus/DOWN."""
+    if sys.platform!='win32' or not hwnd:return dict(attempted=False)
+    from ctypes import wintypes as w
+    api=ctypes.WinDLL('user32',use_last_error=True)
+    callback_type=ctypes.WINFUNCTYPE(w.BOOL,w.HWND,w.LPARAM)
+    api.IsWindow.argtypes=(w.HWND,);api.IsWindow.restype=w.BOOL
+    api.EnumChildWindows.argtypes=(w.HWND,callback_type,w.LPARAM);api.EnumChildWindows.restype=w.BOOL
+    api.PostMessageW.argtypes=(w.HWND,w.UINT,ctypes.c_size_t,ctypes.c_ssize_t);api.PostMessageW.restype=w.BOOL
+    api.GetCursorPos.argtypes=(ctypes.POINTER(w.POINT),);api.GetCursorPos.restype=w.BOOL
+    api.ScreenToClient.argtypes=(w.HWND,ctypes.POINTER(w.POINT));api.ScreenToClient.restype=w.BOOL
+    if not api.IsWindow(hwnd):return dict(attempted=False,reason='window_closed')
+    windows=[int(hwnd)]
+    def child(handle,_):
+        if len(windows)<128:windows.append(int(handle))
+        return True
+    api.EnumChildWindows(hwnd,callback_type(child),0)
+    cursor=w.POINT();have_cursor=bool(api.GetCursorPos(ctypes.byref(cursor)))
+    errors=[]
+    for handle in windows:
+        point=w.POINT(cursor.x,cursor.y)
+        local=bool(have_cursor and api.ScreenToClient(handle,ctypes.byref(point)))
+        packed=((int(point.x)&0xffff)|((int(point.y)&0xffff)<<16)) if local else 0
+        for message in (0x0202,0x001F):
+            if not api.PostMessageW(handle,message,0,packed if message==0x0202 else 0):errors.append((handle,message))
+    # Release a Windows button state even when this session used SDK only.
+    # This does not move the cursor, activate a window, or issue any press.
+    api.mouse_event.argtypes=(w.DWORD,w.DWORD,w.DWORD,w.DWORD,ctypes.c_size_t);api.mouse_event.restype=None
+    api.mouse_event(0x0004,0,0,0,0x50414430)
+    if errors:raise RuntimeError('MuMu 마우스 놓기 전달 미확인: '+str(errors))
+    return dict(attempted=True,windows=windows,released_messages=True)
+
 
 class WindowsDragInput:
     """Mouse-only hook: allow tagged playback input, keep the keyboard usable."""
@@ -710,11 +742,17 @@ class MuMuSDKTouch(PersistentAndroidTouch):
         request=dict(op='input',points=[list(pt) for pt in points],hold=hold,limit=limit)
         if probe:request['probe']=True
         result=self.client.input_request(request)
-        self.pressed=not result.get('released',False);self.last=tuple(points[-1]);self.last_up_at=time.monotonic() if not self.pressed else None
+        self.pressed=not result.get('released',False)
+        delivered=[event['native'] for event in result.get('events',[]) if event.get('action') in (0,2)]
+        if delivered:self.last=tuple(delivered[-1])
+        self.last_up_at=time.monotonic() if not self.pressed else None
         for event in result.get('events',[]):
             self.device.input_trace.append(dict(event,seconds=round(started-self.device._input_trace_started+event['seconds'],6),transport='mumu_native_sdk',finger_id=1))
         if len(self.device.input_trace)>1024:del self.device.input_trace[:-1024]
         self.device.input_diagnostics.update(sdk_dispatch_confirmed=not result.get('error'),sdk_release_confirmed=not self.pressed,sdk_execute_seconds=result.get('execute_seconds'))
+        self.device.input_diagnostics.update(sdk_preflight_release=result.get('preflight_release'),
+            sdk_cleanup=result.get('cleanup'),sdk_pacer_mode=result.get('pacer_mode'),
+            sdk_move_gap_max_seconds=result.get('move_gap_max_seconds'),sdk_move_gap_over_50ms=result.get('move_gap_over_50ms'))
         held=result.get('held_image');self.device.last_before_up_frame=self.device._normalize_capture(held) if held is not None else None
         if result.get('error'):raise RuntimeError(result['error'])
     def tap(self,x,y):self._execute([(x,y)],.06,1.5)
@@ -734,7 +772,8 @@ class MuMuSDKTouch(PersistentAndroidTouch):
             finally:client.close()
         else:
             client.input_cancel.set();result=client.input_request(dict(op='release'))
-        if result.get('error') or result.get('released') is not True:raise RuntimeError(result.get('error') or 'MuMu SDK 손가락 해제 응답 미확인')
+        if result.get('error') or result.get('released') is not True or result.get('all_fingers_confirmed') is False:
+            raise RuntimeError(result.get('error') or 'MuMu SDK 전체 손가락 해제 응답 미확인')
         self.pressed=False;self.last_up_at=time.monotonic();self.device.cancel_command_sent=True
         self.device.input_diagnostics.update(sdk_release_fingers=result.get('fingers',[]),sdk_release_results=result.get('release_results',[]),sdk_single_touch_release_result=result.get('single_touch_release_result'),sdk_all_fingers_confirmed=result.get('all_fingers_confirmed'),sdk_release_confirmed=True)
     def release(self,cancel=False):
@@ -770,31 +809,50 @@ class NativeSDKInputMixin:
         if not .01<=hold<=1 or not .1<=limit<=15:raise ValueError('MuMu 입력 시간 범위가 잘못됐습니다.')
         if probe and len(points)!=1:raise ValueError('구름 확인은 한 위치의 누름만 허용합니다.')
         trace=[];started=time.perf_counter();error=None;released=False;held=False
+        preflight=None;cleanup=None;last_point=list(points[0])
         pacer=AndroidTouchPacer(cancel)
         def down(x,y,action):
             if cancel.is_set():raise RuntimeError('MuMu 입력 중지')
             self.touch_active=True
             if self.touch_down(self.handle,self.display_id,1,x,y)!=0:raise RuntimeError('MuMu SDK 누름/이동 전달 실패')
+            last_point[:]=[x,y]
             trace.append(dict(action=action,native=[x,y],seconds=time.perf_counter()-started))
         def wait(seconds):
             if pacer.wait(seconds):raise RuntimeError('MuMu 입력 중지')
             if time.perf_counter()-started>limit-.08:raise RuntimeError('MuMu 입력 시간 한도 초과')
         try:
+            # A previous UP acknowledgement can leave the emulator's default
+            # pointer latched. Clear both SDK finger and default touch streams
+            # before a NEW gesture, never by injecting another DOWN to recover.
+            preflight=self.release_fingers()
+            wait(.035)
             down(*points[0],0);wait(hold)
             if probe:self.capture();held=True
+            deadline=time.perf_counter();last_sent=deadline
             for one,two in zip(points,points[1:]):
                 for part in range(1,5):
-                    wait(.01875);down(round(one[0]+(two[0]-one[0])*part/4),round(one[1]+(two[1]-one[1])*part/4),2)
+                    deadline+=.01875
+                    # Bound catch-up to one display frame; never burst points
+                    # or omit mandatory corners after a scheduling stall.
+                    wait(max(0,deadline-time.perf_counter(),last_sent+ANDROID_TOUCH_SAMPLE_SECONDS-time.perf_counter()))
+                    down(round(one[0]+(two[0]-one[0])*part/4),round(one[1]+(two[1]-one[1])*part/4),2)
+                    last_sent=time.perf_counter()
             if len(points)>1:
                 # The last swap is still animating at 60 ms (reported v119).
                 # Keep DOWN stationary until it settles; do not weaken board equality.
                 wait(.22);self.capture();held=True
         except Exception as exc:error=str(exc)
         finally:
-            try:released=int(self.touch_up(self.handle,self.display_id,1))==0
+            try:
+                cleanup=self.release_fingers(require_active=self.touch_active)
+                released=cleanup.get('released') is True
             except Exception as exc:error=(error+'; ' if error else '')+str(exc);released=False
             self.touch_active=not released
-            trace.append(dict(action=1,native=list(points[-1]),seconds=time.perf_counter()-started))
+            trace.append(dict(action=1,native=list(last_point),seconds=time.perf_counter()-started))
             pacer.close()
             if not released:error=(error+'; ' if error else '')+'MuMu SDK 손가락 해제 실패'
-        return dict(ready=True,events=trace,released=released,held_frame=held,error=error,execute_seconds=time.perf_counter()-started)
+        moves=[event['seconds'] for event in trace if event['action']==2]
+        gaps=[b-a for a,b in zip(moves,moves[1:])]
+        return dict(ready=True,events=trace,released=released,held_frame=held,error=error,execute_seconds=time.perf_counter()-started,
+            preflight_release=preflight,cleanup=cleanup,pacer_mode=pacer.mode,
+            move_gap_max_seconds=max(gaps,default=0),move_gap_over_50ms=sum(gap>.05 for gap in gaps))
