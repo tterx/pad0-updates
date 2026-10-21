@@ -699,15 +699,27 @@ def ai_review_has_board(folder,record):
     try:info=path.stat();return _ai_board_file_valid(str(path),info.st_mtime_ns,info.st_size)
     except OSError:return False
 
+@lru_cache(maxsize=512)
+def _ai_obscured_file_display_valid(path,modified,size,board):
+    """Cache only eligibility, never decoded pixels or training approval.
+
+    A cloud/darkened board is displayable against its recorded visible labels,
+    so both file identity and the proposal belong in this cache key.
+    """
+    try:
+        with Image.open(path) as opened:image=opened.convert('RGB')
+        mask=obscured_cell_mask(image)
+        return any(mask) and cloud_visible_board_valid(image,board,mask)
+    except (OSError,ValueError,TypeError):return False
+
 def ai_review_has_display(folder,record):
     if ai_review_has_board(folder,record):return True
     if record.get('board_image')!='board.png' or not record.get('obscured_cells'):return False
     board=record.get('proposal',{}).get('board',[])
     if len(board)!=30:return False
     try:
-        with Image.open(Path(folder)/'board.png') as opened:image=opened.convert('RGB')
-        mask=obscured_cell_mask(image)
-        return any(mask) and cloud_visible_board_valid(image,board,mask)
+        path=Path(folder)/'board.png';info=path.stat()
+        return _ai_obscured_file_display_valid(str(path),info.st_mtime_ns,info.st_size,tuple(board))
     except (OSError,ValueError,TypeError):return False
 
 def ai_share_case_fingerprint(case):
@@ -811,17 +823,35 @@ def ai_storage_guide_text(data_root):
         '사용자 데이터 위치: '+str(data_root)
     )
 
-def ai_review_list(root,mode='전체',limit=200):
+def ai_review_list(root,mode='전체',limit=200,on_batch=None,cancel_event=None):
+    """Publish validated rows early; superseded reads can stop between cases.
+
+    The ordinary return value remains ``(rows, total_record_count)``. Optional
+    callbacks receive snapshots after the first row, every 25 rows and the last
+    partial batch. Cancellation returns the already validated partial snapshot.
+    """
+    if cancel_event is not None and cancel_event.is_set():return [],0
     paths=sorted(Path(root).glob('*/record.json'),reverse=True);rows=[]
+    total=len(paths);published=0
+    def publish():
+        nonlocal published
+        if on_batch is not None:
+            on_batch(list(rows),total);published=len(rows)
     for path in paths:
+        if cancel_event is not None and cancel_event.is_set():break
         record=_load_json_dict(path)
-        if not record.get('id') or 'proposal' not in record or not ai_review_has_display(path.parent,record):continue
+        if not record.get('id') or 'proposal' not in record:continue
         feedback=_load_json_dict(path.parent/'feedback.json');status=feedback.get('status','pending')
         if mode=='미확인' and status!='pending':continue
         if mode=='확인 완료' and status not in ('confirmed','corrected'):continue
+        if cancel_event is not None and cancel_event.is_set():break
+        if not ai_review_has_display(path.parent,record):continue
+        if cancel_event is not None and cancel_event.is_set():break
         rows.append((record['id'],status,record.get('created_at',0)))
+        if len(rows)==1 or len(rows)%25==0:publish()
         if len(rows)>=limit:break
-    return rows,len(paths)
+    if (cancel_event is None or not cancel_event.is_set()) and (not rows or len(rows)!=published):publish()
+    return rows,total
 
 @ai_review_data_locked
 def ai_review_write(root,proposal,board_image=None,game_image=None):

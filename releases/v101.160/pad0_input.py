@@ -27,6 +27,7 @@ def _input_resource_root():
 
 
 MANUAL_MASTER_MOVE_SECONDS=.075
+SDK_FEEDBACK_MOVE_SECONDS=.08125
 
 def release_emulator_mouse_buttons(hwnd):
     """Explicit F10 cleanup only: UP/CANCEL to the known host, no move/focus/DOWN."""
@@ -741,6 +742,9 @@ class MuMuSDKTouch(PersistentAndroidTouch):
         self.pressed=True;started=time.perf_counter()
         request=dict(op='input',points=[list(pt) for pt in points],hold=hold,limit=limit)
         if probe:request['probe']=True
+        start_context=getattr(self.device,'sdk_start_context',None)
+        if len(points)>1 and not probe and start_context is not None:
+            request['start_context']=dict(start_context,point=list(points[0]))
         result=self.client.input_request(request)
         self.pressed=not result.get('released',False)
         delivered=[event['native'] for event in result.get('events',[]) if event.get('action') in (0,2)]
@@ -752,6 +756,7 @@ class MuMuSDKTouch(PersistentAndroidTouch):
         self.device.input_diagnostics.update(sdk_dispatch_confirmed=not result.get('error'),sdk_release_confirmed=not self.pressed,sdk_execute_seconds=result.get('execute_seconds'))
         self.device.input_diagnostics.update(sdk_preflight_release=result.get('preflight_release'),
             sdk_cleanup=result.get('cleanup'),sdk_pacer_mode=result.get('pacer_mode'),
+            sdk_start_feedback=result.get('start_feedback'),sdk_display_id=result.get('display_id'),
             sdk_move_gap_max_seconds=result.get('move_gap_max_seconds'),sdk_move_gap_over_50ms=result.get('move_gap_over_50ms'))
         held=result.get('held_image');self.device.last_before_up_frame=self.device._normalize_capture(held) if held is not None else None
         if result.get('error'):raise RuntimeError(result['error'])
@@ -803,13 +808,16 @@ class NativeSDKInputMixin:
         if self.touch_active:raise RuntimeError('MuMu SDK 기본 손가락 해제 실패: '+str(results))
         return dict(ready=True,released=True,fingers=list(range(1,11)),release_results=results,all_fingers_confirmed=not any(results),single_touch_release_result=single_result)
 
-    def play_input(self,points,hold,limit,cancel,probe=False):
+    def play_input(self,points,hold,limit,cancel,probe=False,start_context=None):
         if not self.input_supported:raise RuntimeError('MuMu SDK 손가락 입력 API가 없습니다.')
         if not points or len(points)>66 or any(len(pt)!=2 or any(type(v) is not int for v in pt) or not (0<=pt[0]<self.size[0] and 0<=pt[1]<self.size[1]) for pt in points):raise ValueError('MuMu 입력 좌표가 잘못됐습니다.')
         if not .01<=hold<=1 or not .1<=limit<=15:raise ValueError('MuMu 입력 시간 범위가 잘못됐습니다.')
         if probe and len(points)!=1:raise ValueError('구름 확인은 한 위치의 누름만 허용합니다.')
         trace=[];started=time.perf_counter();error=None;released=False;held=False
         preflight=None;cleanup=None;last_point=list(points[0])
+        feedback_active=start_context is not None and len(points)>1 and not probe
+        start_feedback=None;start_checks=0;feedback_started=None
+        move_reserve=(len(points)-1)*SDK_FEEDBACK_MOVE_SECONDS+.22+.08
         pacer=AndroidTouchPacer(cancel)
         def down(x,y,action):
             if cancel.is_set():raise RuntimeError('MuMu 입력 중지')
@@ -826,10 +834,50 @@ class NativeSDKInputMixin:
             # before a NEW gesture, never by injecting another DOWN to recover.
             preflight=self.release_fingers()
             wait(.035)
+            baseline=None
+            if feedback_active:
+                feedback_started=time.perf_counter()
+                start_feedback=dict(confirmed=False,reason='not_checked',checks=0,seconds=0.0)
+                if limit-(time.perf_counter()-started)<move_reserve+hold:
+                    raise RuntimeError('제한시간부족 · 시작 드롭 확인과 전체 경로 이동 시간을 확보하지 못했습니다.')
+                try:baseline=self.prepare_input_feedback(start_context)
+                except Exception as exc:raise RuntimeError('MuMu 시작 드롭 확인 준비 실패: '+str(exc)) from exc
+                if cancel.is_set():raise RuntimeError('MuMu 입력 중지')
+                if limit-(time.perf_counter()-started)<move_reserve+hold:
+                    raise RuntimeError('제한시간부족 · 시작 판 캡처 후 전체 경로 이동 시간을 확보하지 못했습니다.')
             down(*points[0],0);wait(hold)
+            if feedback_active:
+                for check in range(4):
+                    if cancel.is_set():raise RuntimeError('MuMu 입력 중지')
+                    if limit-(time.perf_counter()-started)<move_reserve:
+                        raise RuntimeError('제한시간부족 · 시작 드롭 확인 중 전체 경로 이동 시간을 확보하지 못했습니다.')
+                    try:feedback=self.check_input_start(start_context,baseline)
+                    except Exception as exc:raise RuntimeError('MuMu 시작 드롭 확인 실패: '+str(exc)) from exc
+                    held=True;start_checks+=1
+                    if not isinstance(feedback,dict):raise RuntimeError('MuMu 시작 드롭 확인 응답이 잘못됐습니다.')
+                    start_feedback=dict(feedback,checks=start_checks,seconds=round(time.perf_counter()-feedback_started,6))
+                    if cancel.is_set():raise RuntimeError('MuMu 입력 중지')
+                    if limit-(time.perf_counter()-started)<move_reserve:
+                        raise RuntimeError('제한시간부족 · 시작 드롭 확인 후 전체 경로 이동 시간을 확보하지 못했습니다.')
+                    if start_feedback.get('confirmed') is True:break
+                    if check<3:
+                        if limit-(time.perf_counter()-started)<move_reserve+.04:
+                            raise RuntimeError('제한시간부족 · 시작 드롭 재확인 시간을 확보하지 못했습니다.')
+                        wait(.04)
+                if start_feedback.get('confirmed') is not True:
+                    raise RuntimeError('MuMu 시작 드롭이 잡힌 것을 확인하지 못했습니다. 경로 이동을 보내지 않았습니다.')
             if probe:self.capture();held=True
             deadline=time.perf_counter();last_sent=deadline
-            for one,two in zip(points,points[1:]):
+            for edge,(one,two) in enumerate(zip(points,points[1:])):
+                if feedback_active and edge:
+                    previous=points[edge-1]
+                    before=(one[0]-previous[0],one[1]-previous[1])
+                    after=(two[0]-one[0],two[1]-one[1])
+                    if before[0]*after[1]!=before[1]*after[0] or before[0]*after[0]+before[1]*after[1]<=0:
+                        # Let the corner reach a game frame without another
+                        # DOWN/UP or a capture. Keep the absolute schedule;
+                        # the frame-sized catch-up floor still applies.
+                        wait(max(0,last_sent+.03125-time.perf_counter()))
                 for part in range(1,5):
                     deadline+=.01875
                     # Bound catch-up to one display frame; never burst points
@@ -855,4 +903,5 @@ class NativeSDKInputMixin:
         gaps=[b-a for a,b in zip(moves,moves[1:])]
         return dict(ready=True,events=trace,released=released,held_frame=held,error=error,execute_seconds=time.perf_counter()-started,
             preflight_release=preflight,cleanup=cleanup,pacer_mode=pacer.mode,
+            start_feedback=start_feedback,display_id=int(self.display_id),
             move_gap_max_seconds=max(gaps,default=0),move_gap_over_50ms=sum(gap>.05 for gap in gaps))

@@ -2,6 +2,7 @@
 from __future__ import annotations
 import base64
 import hashlib
+import json
 from pathlib import Path
 import re
 import threading
@@ -31,13 +32,17 @@ def icon_review_list(root):
         records=[_load_json_dict(path) for path in (_root(root)/'cases').glob('*/record.json')]
         return sorted((r for r in records if r.get('id')),key=lambda r:r.get('created',0),reverse=True)[:200]
 
-def icon_review_record(root,image,references,reason,category='icon'):
+def icon_review_record(root,image,references,reason,category='icon',context=None):
     probe=_pack(crystal_art_signatures(image));candidates=[]
     for cid,label,reference,score in references:
         candidates.append(dict(cid=str(cid),label=str(label),signature=_pack(crystal_art_signatures(reference)),score=float(score)))
     if not candidates:return None
     identity=(probe+repr([(c['cid'],c['signature']) for c in candidates])).encode()
     if category=='image_update':identity+=image.convert('RGB').tobytes()+b''.join(ref.convert('RGB').tobytes() for _,_,ref,_ in references)
+    if context is not None:
+        if not isinstance(context,dict):raise ValueError('비교 자료의 연결 정보가 잘못됐습니다.')
+        context=json.loads(json.dumps(context,ensure_ascii=False,sort_keys=True))
+        identity+=json.dumps(dict(category=category,context=context),ensure_ascii=False,sort_keys=True,separators=(',',':')).encode('utf-8')
     digest=hashlib.sha256(identity).hexdigest()
     folder=_root(root)/'cases'/digest
     with LOCK:
@@ -46,6 +51,7 @@ def icon_review_record(root,image,references,reason,category='icon'):
         folder.mkdir(parents=True,exist_ok=True);image.convert('RGB').save(folder/'probe.png')
         for index,(_,_,reference,_) in enumerate(references):reference.convert('RGB').save(folder/f'reference_{index}.png')
         record=dict(id=digest,created=time.time(),probe=probe,candidates=candidates,reason=str(reason),decisions={},status='pending',category=category)
+        if context is not None:record['context']=context
         _atomic_json_write(folder/'record.json',record);return record
 
 def icon_review_confirm(root,case_id,cid,same):
