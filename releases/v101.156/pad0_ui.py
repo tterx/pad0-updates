@@ -2779,7 +2779,7 @@ class AppUIMixin:
         root=self.data_paths['root']
         shell=ttk.Frame(parent,padding=12);shell.pack(fill='both',expand=True)
         ttk.Label(shell,text='현재 화면과 등록된 재료를 좌우로 비교해 주세요.',font=('Malgun Gothic',11,'bold')).pack(anchor='w')
-        ttk.Label(shell,text='같은 재료/다른 재료 판단은 즉시 이후 아이콘 비교에 적용됩니다. 크리스탈 DB 이미지는 유지합니다.',wraplength=830).pack(anchor='w',pady=6)
+        ttk.Label(shell,text='테두리·캐릭터 그림으로 판단하세요. 이미지 갱신 기록은 숫자가 달라도 같은 재료일 수 있습니다.',wraplength=830).pack(anchor='w',pady=6)
         status=tk.StringVar(value='자동파밍에서 아이콘을 확정하지 못하면 비교 기록이 쌓입니다.')
         ttk.Label(shell,textvariable=status,wraplength=830).pack(side='bottom',fill='x',pady=8)
         body=ttk.Frame(shell);body.pack(fill='both',expand=True)
@@ -2789,10 +2789,10 @@ class AppUIMixin:
         candidate=tk.StringVar();selector=ttk.Combobox(right,textvariable=candidate,state='readonly',width=48);selector.pack(fill='x',pady=(0,8))
         actions=ttk.Frame(right);actions.pack(fill='x',pady=(0,8))
         views=ttk.Frame(right);views.pack(fill='both',expand=True)
-        labels=[]
+        labels=[];headings=[]
         for title in ('현재 화면의 아이콘','등록된 재료 이미지'):
             column=ttk.Frame(views);column.pack(side='left',fill='both',expand=True,padx=4)
-            ttk.Label(column,text=title,font=('Malgun Gothic',10,'bold')).pack(anchor='center',pady=5)
+            heading=ttk.Label(column,text=title,font=('Malgun Gothic',10,'bold'));heading.pack(anchor='center',pady=5);headings.append(heading)
             label=ttk.Label(column,anchor='center');label.pack(fill='both',expand=True);labels.append(label)
         state={'records':[],'record':None,'choices':[],'photos':[]}
         def show_pair(event=None):
@@ -2801,6 +2801,8 @@ class AppUIMixin:
             try:index=state['choices'].index(candidate.get())
             except ValueError:return
             reference=record['candidates'][index]
+            titles=('새 사용 이미지','이전 사용 이미지') if record.get('category')=='image_update' else ('현재 화면의 아이콘','등록된 재료 이미지')
+            for heading,title in zip(headings,titles):heading.configure(text=title)
             folder=Path(root)/'crystal_review'/'cases'/record['id'];photos=[]
             try:
                 for path,label in zip((folder/'probe.png',folder/f'reference_{index}.png'),labels):
@@ -2821,7 +2823,7 @@ class AppUIMixin:
             candidate.set(state['choices'][index]);show_pair()
         def refresh():
             state['records']=icon_review_list(root);state['record']=None;cases.delete(0,'end')
-            for record in state['records']:cases.insert('end',('미확인' if record['status']=='pending' else '확인 완료')+' · '+record['candidates'][0]['label'])
+            for record in state['records']:cases.insert('end',('미확인' if record['status']=='pending' else '확인 완료')+' · '+('이미지 갱신 · ' if record.get('category')=='image_update' else '')+record['candidates'][0]['label'])
             if state['records']:cases.selection_set(0);pick()
             else:
                 status.set('아직 아이콘 비교 기록이 없습니다. 자동파밍에서 구분이 어려운 아이콘은 이곳에 기록됩니다.')
