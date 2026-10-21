@@ -9,3 +9,7 @@
 UI 경계 검사: `PYTHONPATH=tests .venv/bin/python -m unittest test_ui_module144 test_attribute_strip91`
 
 재료 수량 검토 화면은 [재료 수량 AI 안내](QUANTITY_AI.md)를 참고하세요.
+
+## v101.157 스테이지 / 보상 확인
+
+DB 관리 버튼으로 로컬 스테이지·등록 보상·파밍 대상 이미지를 조회합니다. 원본 페이지 보기·좌우 같은/다른 판단·이미지 교체·등록 삭제와 기존 재료판단 열기는 AppUIMixin이 표시하고, 실제 DB 검증·저장은 메인 App의 stage review API를 사용합니다. 이미지 변경·작업 진행 상태를 저장 전에 확인하며 수량 집계와는 분리합니다. 실제 Tk 창에서 버튼 위치·선택·확인·교체·삭제·원본 페이지 열기·중지 상태를 검사합니다.
