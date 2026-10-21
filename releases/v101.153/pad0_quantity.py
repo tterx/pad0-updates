@@ -40,7 +40,7 @@ def _feature(image):
     return np.asarray(rgb, dtype=np.uint8)
 
 
-def quantity_record(root, kind, image, value=None, reason='', card=None):
+def quantity_record(root, kind, image, value=None, reason='', card=None, context=None):
     if kind not in QUANTITY_KINDS:
         raise ValueError('알 수 없는 수량 구분입니다.')
     image = image.convert('RGB')
@@ -52,6 +52,12 @@ def quantity_record(root, kind, image, value=None, reason='', card=None):
     folder = quantity_root(root) / 'samples' / digest
     with QUANTITY_LOCK:
         record = _load_json_dict(folder / 'record.json')
+        if context is not None and not (folder / 'context.png').is_file():
+            # Review context is separate from original card/number pixels and labels.
+            folder.mkdir(parents=True, exist_ok=True)
+            temporary=folder / 'context.tmp'
+            context.convert('RGB').save(temporary,format='PNG')
+            temporary.replace(folder / 'context.png')
         if record:
             return record  # Preserve the original prediction and human feedback.
         folder.mkdir(parents=True, exist_ok=True)
@@ -167,7 +173,7 @@ def quantity_predict(root, kind, image):
     return None, max(0.0, 1-distance)
 
 
-def quantity_resolve(root, kind, image, read, card=None):
+def quantity_resolve(root, kind, image, read, card=None, context=None):
     """Collect successful/failed OCR and reject disagreements with the model."""
     learned, confidence = quantity_predict(root, kind, image)
     reason = 'OCR 판독';value = None
@@ -184,7 +190,7 @@ def quantity_resolve(root, kind, image, read, card=None):
         value = learned;reason = f'확인 이미지 학습 판독 ({confidence:.3f})'
     elif value is None:
         reason = '수량 미확인 · '+reason
-    quantity_record(root, kind, image, value, reason, card)
+    quantity_record(root, kind, image, value, reason, card, context=context)
     if value is None:
         raise ValueError(reason)
     return value
