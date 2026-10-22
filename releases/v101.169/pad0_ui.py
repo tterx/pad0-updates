@@ -2618,18 +2618,13 @@ class AppUIMixin:
         window.title('백그라운드 파밍 연결 설정');window.geometry(f'800x{min(880,window.winfo_screenheight()-70)}')
         self._party_bring_forward(window)
         body=ttk.Frame(window,padding=16);body.pack(fill='both',expand=True)
-        ttk.Label(body,text='MuMu SDK 또는 ADB로 화면을 읽고, 선택한 Android 기기에 터치합니다.',wraplength=595).pack(anchor='w')
+        ttk.Label(body,text='ADB로 화면을 읽고, 선택한 Android 기기에 연속 터치를 보냅니다.',wraplength=595).pack(anchor='w')
         path=tk.StringVar(value=self.user_settings.get('background_adb_path',''))
         serial=tk.StringVar(value=self.user_settings.get('background_adb_serial',''))
         skills=tk.BooleanVar(value=self.user_settings.get('background_auto_skills',True))
-        capture_modes={'auto':'자동 · MuMu 우선 / 실패 시 ADB','mumu':'MuMu 고속 · 실패 시 ADB','adb':'ADB 기본'}
-        capture_mode=tk.StringVar(value=capture_modes.get(self.user_settings.get('background_capture_mode','auto'),capture_modes['auto']))
-        install=tk.StringVar(value=self.user_settings.get('background_mumu_root',''))
-        instance=tk.StringVar(value=str(self.user_settings.get('background_mumu_index','')))
         def capture_values():
             return dict(self.user_settings,background_adb_path=services.portable_adb_path(path.get()) if path.get().strip() else '',background_adb_serial=serial.get().strip(),
-                        background_capture_mode=next(k for k,v in capture_modes.items() if v==capture_mode.get()),
-                        background_mumu_root=install.get().strip().strip('"'),background_mumu_index=instance.get().strip())
+                        background_capture_mode='adb',background_adb_raw_capture=True,background_input_backend='adb_batch')
         def apply_wizard(found_path,found_serial):
             if window.winfo_exists():path.set(found_path);serial.set(found_serial)
         wizard_row=ttk.Frame(body);wizard_row.pack(fill='x',pady=(12,0))
@@ -2639,14 +2634,12 @@ class AppUIMixin:
         def apply_official(found_path,found_root):
             if window.winfo_exists():
                 path.set(found_path)
-                if found_root:install.set(found_root)
         ttk.Button(official_row,text='Google 공식 ADB로 강제 교체',command=lambda:self.install_google_adb_ui(path.get(),apply_official,window)).pack(side='left')
         ttk.Button(official_row,text='이전 ADB로 되돌리기',command=lambda:self.restore_previous_adb(apply_official,window)).pack(side='left',padx=8)
         ttk.Label(body,text=r'설치 위치: 프로그램 폴더\platform-tools\adb.exe · 업데이트 후 유지',foreground='#526776').pack(anchor='w',pady=(4,0))
 
         help_row=ttk.Frame(body);help_row.pack(fill='x',pady=(12,0))
         ttk.Button(help_row,text='경로 설정 방법',command=lambda:self.show_background_path_help(path.get(),serial.get())).pack(side='left')
-        ttk.Button(help_row,text='MuMu 고속 캡처 설정 예시',command=lambda:__import__('webbrowser').open('https://arca.live/b/hx3n/148912243')).pack(side='left',padx=6)
         ttk.Button(help_row,text='MAA 연결 문서',command=lambda:__import__('webbrowser').open('https://docs.maa.plus/ko-kr/manual/connection.html')).pack(side='left')
         ttk.Label(body,text='ADB 파일 (비우면 자동 탐색)').pack(anchor='w',pady=(12,0))
         row=ttk.Frame(body);row.pack(fill='x');ttk.Entry(row,textvariable=path).pack(side='left',fill='x',expand=True)
@@ -2656,26 +2649,13 @@ class AppUIMixin:
         ttk.Button(row,text='찾기',command=browse).pack(side='left')
         ttk.Label(body,text='기기 주소 (비우면 한 대만 연결됐을 때 자동 선택)').pack(anchor='w',pady=(8,0))
         ttk.Entry(body,textvariable=serial).pack(fill='x')
-        capture_box=ttk.LabelFrame(body,text='화면 캡처 · MuMu 고속 연결',padding=10);capture_box.pack(fill='x',pady=(12,4))
-        ttk.Combobox(capture_box,textvariable=capture_mode,values=list(capture_modes.values()),state='readonly',width=42).pack(anchor='w')
-        ttk.Label(capture_box,text='MuMu 설치 루트 (ADB 파일 경로와 다름 · 비우면 ADB 기준 탐색)').pack(anchor='w',pady=(8,0))
-        capture_row=ttk.Frame(capture_box);capture_row.pack(fill='x');ttk.Entry(capture_row,textvariable=install).pack(side='left',fill='x',expand=True)
-        def choose_install():
-            folder=filedialog.askdirectory(parent=window,title='MuMuPlayer 설치 루트 선택 (nx_main의 상위 폴더)')
-            if folder:install.set(folder)
-        ttk.Button(capture_row,text='폴더 선택',command=choose_install).pack(side='left',padx=(6,0))
-        number_row=ttk.Frame(capture_box);number_row.pack(fill='x',pady=(8,0))
-        ttk.Label(number_row,text='MuMu 기기 번호 #').pack(side='left');ttk.Entry(number_row,textvariable=instance,width=8).pack(side='left',padx=5)
-        ttk.Label(number_row,text='빈칸: 표준 16384 포트 계열에서 자동 확인').pack(side='left')
-        ttk.Label(capture_box,text='예: C:\\Program Files\\Netease\\MuMuPlayer / #0 → 16384, #1 → 16416\n5555·emulator 주소는 기기 번호를 직접 확인하세요. SDK 오류 시 ADB로 복귀합니다.',wraplength=710).pack(anchor='w',pady=6)
+        capture_box=ttk.LabelFrame(body,text='ADB 화면 캡처',padding=10);capture_box.pack(fill='x',pady=(12,4))
+        ttk.Label(capture_box,text='ADB 원본 화면을 우선 사용하고, 미지원 형식이면 PNG로 읽습니다.',wraplength=590).pack(anchor='w',pady=6)
         ttk.Button(capture_box,text='스크린샷 테스트',command=lambda:self.show_background_capture_test(capture_values(),capture_box)).pack(anchor='w')
         ttk.Checkbutton(body,text='상세에서 확인한 스킬 자동 사용',variable=skills).pack(anchor='w',pady=8)
         ttk.Label(body,text='MuMu를 종료하거나 PC를 절전하면 멈춥니다. F10은 파밍 중지입니다.',wraplength=590).pack(anchor='w')
         def save():
             values=capture_values()
-            try:
-                if values['background_mumu_index']:services.instance_index(values['background_adb_serial'],values['background_mumu_index'])
-            except ValueError as error:messagebox.showwarning('기기 번호 확인',str(error),parent=window);return
             self.user_settings.update(values,background_auto_skills=skills.get())
             self.save_user_settings();window.destroy()
         ttk.Button(body,text='저장',command=save).pack(anchor='e',pady=8)
@@ -3125,7 +3105,7 @@ class AppUIMixin:
     def show_quantity_management(self):
         from PIL import ImageTk
         from pad0_quantity import (quantity_list, quantity_confirm, quantity_train,
-                                   quantity_root)
+                                   quantity_root, quantity_model_status)
         root = self.data_paths['root']
         existing = getattr(self,'_quantity_window',None)
         if existing is not None and existing.winfo_exists():
@@ -3203,7 +3183,9 @@ class AppUIMixin:
             number_label.configure(image='');card_label.configure(image='');state['photos']=[]
             for record in state['records']:
                 value=record.get('truth') if record.get('status')=='confirmed' else record.get('predicted')
-                cases.insert('end',f"{record['kind']} · {'?' if value is None else value} · {'확인 완료' if record.get('status')=='confirmed' else '미확인'}")
+                status_text={'confirmed':'확인 완료','recognized':'모델·OCR 일치'}.get(record.get('status'),'미확인')
+                if record.get('status')=='confirmed':status_text+=' · '+('학습 반영' if record.get('model_included') else '재학습 필요')
+                cases.insert('end',f"{record['kind']} · {'?' if value is None else value} · {status_text}")
             if state['records']:
                 cases.selection_set(0);pick()
             else:
@@ -3233,7 +3215,9 @@ class AppUIMixin:
         def train():
             try:
                 count=quantity_train(root)
-                notice.set(f'수량 이미지 {count}개 학습 완료 · 다음 재료 확인·자동파밍·보상 판독부터 사용합니다.')
+                summary=quantity_model_status(root)
+                refresh()
+                notice.set(f'수량 정답 {count}개 반영 · 숫자 {summary["digits"]}/10종 · 다음 재료 확인·보상 판독부터 적용합니다.')
             except (ValueError,OSError) as exc:notice.set('학습 보류: '+str(exc))
         confirm_button=ttk.Button(actions,text='판단 맞음',width=14,command=lambda:save(True))
         confirm_button.pack(side='left',padx=(0,8))
