@@ -464,6 +464,8 @@ def prepare_farming_selection(ledger,key,requirements,selected,require_target=Tr
 
 
 def farming_stage_number(text, full=False):
+    import unicodedata
+    text=unicodedata.normalize('NFKC',str(text))
     text = str(text).strip()
     numeric = r'[★☆]?\s*(\d{1,2})\s*[-－–ー]\s*(\d{1,2})'
     match = re.fullmatch(numeric, text) if full else re.search(numeric, text)
@@ -475,11 +477,38 @@ def farming_stage_number(text, full=False):
     return None
 
 
+def joined_stage_tokens(tokens):
+    """Join adjacent SP/number OCR pieces without guessing missing digits."""
+    from types import SimpleNamespace
+    result=list(tokens)
+    ordered=sorted(tokens,key=lambda token:(token.cy,token.x1))
+    for first in ordered:
+        text=re.sub(r'\s+','',str(first.text)).upper()
+        if text not in ('S','SP') or first.score<.9:continue
+        last=first;parts=[first]
+        for _ in range(2):
+            height=max(first.y2-first.y1,last.y2-last.y1)
+            nearby=[token for token in ordered if token.x1>=last.x2-2
+                    and token.x1-last.x2<=height*1.2 and abs(token.cy-first.cy)<=height*.3
+                    and token.score>=.9 and token not in parts
+                    and re.fullmatch('P' if text=='S' else r'\d{1,3}',re.sub(r'\s+','',str(token.text)).upper())]
+            if len(nearby)!=1:break
+            last=nearby[0];parts.append(last)
+            text+=re.sub(r'\s+','',str(last.text)).upper()
+            if re.fullmatch(r'SP\d{1,3}',text):
+                result.append(SimpleNamespace(text=text,score=min(token.score for token in parts),
+                    x1=first.x1,x2=last.x2,y1=min(token.y1 for token in parts),y2=max(token.y2 for token in parts),
+                    cx=(first.x1+last.x2)/2,cy=(min(token.y1 for token in parts)+max(token.y2 for token in parts))/2))
+                break
+            if text!='SP':break
+    return result
+
+
 def stage_list_entries(frame,tokens,database=None):
     import numpy as np
     import cv2
     entries=[];rgb=np.asarray(frame.convert('RGB'))
-    for token in tokens:
+    for token in joined_stage_tokens(tokens):
         number=farming_stage_number(token.text,full=True)
         if not number or token.score<.9 or not 300<token.cy<850:continue
         x0=max(0,int(token.cx-100));x1=min(frame.width,int(token.cx+100))
