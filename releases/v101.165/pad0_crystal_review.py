@@ -27,6 +27,28 @@ def _unpack(value):
 
 def _distance(a,b):return min(float(np.abs(x-y).mean()) for x,y in zip(a,b))
 
+
+def crystal_artwork_score(probe,references):
+    """Compare portrait interiors; a shared frame cannot supply identity evidence.
+
+    Keep the persisted signature format unchanged. Small capture shifts are
+    checked inside the artwork, outside the frame and the amount badge.
+    """
+    best=float('inf')
+    for left,right in zip(probe,references):
+        a=np.asarray(left,dtype=np.float32);b=np.asarray(right,dtype=np.float32)
+        if a.shape!=(64,48,3) or b.shape!=a.shape:continue
+        for dy,dx in ((0,0),(-2,0),(2,0),(0,-2),(0,2)):
+            x=a[12:53,10:38];y=b[12+dy:53+dy,10+dx:38+dx]
+            distance=float(np.abs(x-y).mean())
+            if distance<=3:
+                best=min(best,distance);continue
+            if distance>=25:continue
+            l=x[:,:,0]-x[:,:,0].mean();r=y[:,:,0]-y[:,:,0].mean()
+            scale=float(np.sqrt(np.sum(l*l)*np.sum(r*r)))
+            if scale>1 and float(np.sum(l*r))/scale>=.60:best=min(best,distance)
+    return best
+
 def icon_review_list(root):
     with LOCK:
         records=[_load_json_dict(path) for path in (_root(root)/'cases').glob('*/record.json')]
