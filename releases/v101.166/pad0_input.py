@@ -21,6 +21,33 @@ import time
 import uuid
 
 
+def park_background_cursor(hwnd,window_rect,board_rect,api=None):
+    """Move once only if the visible emulator board is under the PC cursor."""
+    if api is None and sys.platform!='win32':return dict(moved=False,reason='not_windows')
+    if not hwnd:return dict(moved=False,reason='window_unavailable')
+    from ctypes import wintypes
+    if api is None:
+        api=ctypes.windll.user32
+        api.GetCursorPos.argtypes=[ctypes.POINTER(wintypes.POINT)];api.GetCursorPos.restype=wintypes.BOOL
+        api.WindowFromPoint.argtypes=[wintypes.POINT];api.WindowFromPoint.restype=wintypes.HWND
+        api.GetAncestor.argtypes=[wintypes.HWND,wintypes.UINT];api.GetAncestor.restype=wintypes.HWND
+        api.SetCursorPos.argtypes=[ctypes.c_int,ctypes.c_int];api.SetCursorPos.restype=wintypes.BOOL
+    point=wintypes.POINT()
+    if not api.GetCursorPos(ctypes.byref(point)):raise RuntimeError('자동 시작 전 마우스 위치를 확인하지 못했습니다.')
+    gx,gy,gw,gh=window_rect;bx,by,bw,bh=board_rect
+    left=gx+bx*gw/1600;top=gy+by*gh/940;right=left+bw*gw/1600;bottom=top+bh*gh/940
+    if not (left<=point.x<right and top<=point.y<bottom):return dict(moved=False,reason='outside_board')
+    window=api.WindowFromPoint(point);root=api.GetAncestor(window,2) or window
+    target=api.GetAncestor(hwnd,2) or hwnd
+    if root!=target:return dict(moved=False,reason='another_window')
+    destination=(round(left-20*gw/1600),round(top+12*gh/940))
+    before=[point.x,point.y]
+    if not api.SetCursorPos(*destination):raise RuntimeError('자동 시작 전 마우스를 퍼즐판 밖으로 옮기지 못했습니다.')
+    if not api.GetCursorPos(ctypes.byref(point)) or left<=point.x<right and top<=point.y<bottom:
+        raise RuntimeError('자동 시작 전 마우스가 퍼즐판 밖으로 나갔는지 확인하지 못했습니다.')
+    return dict(moved=True,reason='parked_outside_board',before=before,after=[point.x,point.y])
+
+
 def _input_resource_root():
     # Same existing Pad0Overlay tools directory; no crystal DB initialization.
     return Path(os.environ.get('LOCALAPPDATA') or (Path.home()/'AppData'/'Local'))/'Pad0Overlay'
@@ -751,12 +778,12 @@ class MuMuSDKTouch(PersistentAndroidTouch):
         if delivered:self.last=tuple(delivered[-1])
         self.last_up_at=time.monotonic() if not self.pressed else None
         for event in result.get('events',[]):
-            self.device.input_trace.append(dict(event,seconds=round(started-self.device._input_trace_started+event['seconds'],6),transport='mumu_native_sdk',finger_id=1))
+            self.device.input_trace.append(dict(event,seconds=round(started-self.device._input_trace_started+event['seconds'],6),transport='mumu_native_sdk',finger_id=0 if result.get('input_stream')=='single_pointer' else 1))
         if len(self.device.input_trace)>1024:del self.device.input_trace[:-1024]
         self.device.input_diagnostics.update(sdk_dispatch_confirmed=not result.get('error'),sdk_release_confirmed=not self.pressed,sdk_execute_seconds=result.get('execute_seconds'))
         self.device.input_diagnostics.update(sdk_preflight_release=result.get('preflight_release'),
             sdk_cleanup=result.get('cleanup'),sdk_pacer_mode=result.get('pacer_mode'),
-            sdk_start_feedback=result.get('start_feedback'),sdk_display_id=result.get('display_id'),
+            sdk_start_feedback=result.get('start_feedback'),sdk_display_id=result.get('display_id'),sdk_input_stream=result.get('input_stream','finger'),
             sdk_move_gap_max_seconds=result.get('move_gap_max_seconds'),sdk_move_gap_over_50ms=result.get('move_gap_over_50ms'))
         held=result.get('held_image');self.device.last_before_up_frame=self.device._normalize_capture(held) if held is not None else None
         if result.get('error'):raise RuntimeError(result['error'])
@@ -796,6 +823,7 @@ class NativeSDKInputMixin:
     def release_fingers(self,require_active=False):
         if not self.input_supported:raise RuntimeError('MuMu SDK 손가락 입력 API가 없습니다.')
         was_active=self.touch_active or require_active
+        active_stream=getattr(self,'_active_input_stream','finger')
         results=[]
         for finger in range(1,11):
             try:results.append(int(self.touch_up(self.handle,self.display_id,finger)))
@@ -804,7 +832,8 @@ class NativeSDKInputMixin:
         if getattr(self,"single_touch_up",None) is not None:
             try:single_result=int(self.single_touch_up(self.handle,0))
             except Exception as exc:single_result=str(exc)
-        self.touch_active=bool(was_active and results[0]!=0)
+        failed=single_result!=0 if active_stream=='single_pointer' else results[0]!=0
+        self.touch_active=bool(was_active and failed)
         if self.touch_active:raise RuntimeError('MuMu SDK 기본 손가락 해제 실패: '+str(results))
         return dict(ready=True,released=True,fingers=list(range(1,11)),release_results=results,all_fingers_confirmed=not any(results),single_touch_release_result=single_result)
 
@@ -817,12 +846,16 @@ class NativeSDKInputMixin:
         preflight=None;cleanup=None;last_point=list(points[0])
         feedback_active=start_context is not None and len(points)>1 and not probe
         start_feedback=None;start_checks=0;feedback_started=None
+        single=(self.display_id==0 and callable(getattr(self,'single_touch_down',None)) and callable(getattr(self,'single_touch_up',None)))
+        stream='single_pointer' if single else 'finger'
         move_reserve=(len(points)-1)*SDK_FEEDBACK_MOVE_SECONDS+.22+.08
         pacer=AndroidTouchPacer(cancel)
         def down(x,y,action):
             if cancel.is_set():raise RuntimeError('MuMu 입력 중지')
             self.touch_active=True
-            if self.touch_down(self.handle,self.display_id,1,x,y)!=0:raise RuntimeError('MuMu SDK 누름/이동 전달 실패')
+            self._active_input_stream=stream
+            result=self.single_touch_down(self.handle,0,x,y) if single else self.touch_down(self.handle,self.display_id,1,x,y)
+            if result!=0:raise RuntimeError('MuMu SDK 누름/이동 전달 실패')
             last_point[:]=[x,y]
             trace.append(dict(action=action,native=[x,y],seconds=time.perf_counter()-started))
         def wait(seconds):
@@ -865,6 +898,9 @@ class NativeSDKInputMixin:
                             raise RuntimeError('제한시간부족 · 시작 드롭 재확인 시간을 확보하지 못했습니다.')
                         wait(.04)
                 if start_feedback.get('confirmed') is not True:
+                    if start_feedback.get('observed_start_cell') is not None:
+                        wanted=start_feedback['expected_start_cell'];observed=start_feedback['observed_start_cell']
+                        raise RuntimeError(f'MuMu 시작 위치 불일치 · {wanted//6+1}행 {wanted%6+1}열 대신 {observed//6+1}행 {observed%6+1}열이 들렸습니다. 경로 이동을 보내지 않았습니다.')
                     raise RuntimeError('MuMu 시작 드롭이 잡힌 것을 확인하지 못했습니다. 경로 이동을 보내지 않았습니다.')
             if probe:self.capture();held=True
             deadline=time.perf_counter();last_sent=deadline
@@ -903,5 +939,5 @@ class NativeSDKInputMixin:
         gaps=[b-a for a,b in zip(moves,moves[1:])]
         return dict(ready=True,events=trace,released=released,held_frame=held,error=error,execute_seconds=time.perf_counter()-started,
             preflight_release=preflight,cleanup=cleanup,pacer_mode=pacer.mode,
-            start_feedback=start_feedback,display_id=int(self.display_id),
+            start_feedback=start_feedback,display_id=int(self.display_id),input_stream=stream,
             move_gap_max_seconds=max(gaps,default=0),move_gap_over_50ms=sum(gap>.05 for gap in gaps))

@@ -1,3 +1,5 @@
+현재 자동 첫 퍼즐 시작 전 커서가 퍼즐판 위일 때 한 번 판 밖으로 이동합니다(v101.166). 아래의 이전 버전별 커서 처리 기록과 구분해 주세요.
+
 # 입력 모듈 구조
 
 `pad0_input.py`는 WindowsDragInput·WindowsMaterialClickObserver, AndroidTouchPacer, PersistentAndroidTouch·AndroidBatchTouch·MuMuSDKTouch와 NativeSDKInputMixin을 담당합니다. 마우스 훅과 입력 태그, 타이밍, 한 경로의 DOWN/MOVE/UP, 취소·손가락 해제, 전송 결과·추적을 여기서 관리합니다. scrcpy/Android 일괄 실행의 기존 바이너리·해시·라이선스도 여기에 있습니다.
@@ -73,3 +75,9 @@ PAD0의 SDK 자동 입력에는 Windows 커서를 별도로 숨기는 ShowCursor
 ## v101.164 첨부 들림과 등록 정리
 
 실제 017의 높은 들림과 반투명 무늬를 확인합니다. 원래 칸의 유의미한 변화·같은 색 무늬·다른 칸 유지를 함께 요구합니다. 일반 등록 종료에도 터치 연결을 닫고 기본 터치를 정리하며, 정리 오류는 완료 이벤트를 막지 않습니다. 구름 지속 턴 배지는 같은 칸 안의 다른 지점에서 제자리 확인합니다.
+
+## v101.166
+
+MuMu 기본 디스플레이의 단일 포인터 SDK 입력과 기존 손가락 입력을 세션별로 구분합니다. 새 SDK 결과의 input_stream·sdk_input_stream 값으로 기록하며 단일 포인터의 논리 ID는 0, 기존 손가락 ID는 1입니다. 들린 최종 드롭 예외 검증도 같은 스트림의 완전한 경로만 허용합니다. 구버전 진단은 기존 손가락 ID로 계속 판독합니다.
+
+park_background_cursor는 실제 게임 퍼즐판 위 커서만 판 밖으로 이동합니다. 자동 첫 경로 시작 전 한 번 호출하며 클릭·창 활성화·전역 커서 숨김은 하지 않습니다. 수동 경로는 기존 Windows 입력을 사용하며 UP 이후 게임 반응을 별도로 캡처·확인합니다.
