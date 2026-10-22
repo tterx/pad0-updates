@@ -21,6 +21,33 @@ import time
 import uuid
 
 
+def park_background_cursor(hwnd,window_rect,board_rect,api=None):
+    """Move once only if the visible emulator board is under the PC cursor."""
+    if api is None and sys.platform!='win32':return dict(moved=False,reason='not_windows')
+    if not hwnd:return dict(moved=False,reason='window_unavailable')
+    from ctypes import wintypes
+    if api is None:
+        api=ctypes.windll.user32
+        api.GetCursorPos.argtypes=[ctypes.POINTER(wintypes.POINT)];api.GetCursorPos.restype=wintypes.BOOL
+        api.WindowFromPoint.argtypes=[wintypes.POINT];api.WindowFromPoint.restype=wintypes.HWND
+        api.GetAncestor.argtypes=[wintypes.HWND,wintypes.UINT];api.GetAncestor.restype=wintypes.HWND
+        api.SetCursorPos.argtypes=[ctypes.c_int,ctypes.c_int];api.SetCursorPos.restype=wintypes.BOOL
+    point=wintypes.POINT()
+    if not api.GetCursorPos(ctypes.byref(point)):raise RuntimeError('자동 시작 전 마우스 위치를 확인하지 못했습니다.')
+    gx,gy,gw,gh=window_rect;bx,by,bw,bh=board_rect
+    left=gx+bx*gw/1600;top=gy+by*gh/940;right=left+bw*gw/1600;bottom=top+bh*gh/940
+    if not (left<=point.x<right and top<=point.y<bottom):return dict(moved=False,reason='outside_board')
+    window=api.WindowFromPoint(point);root=api.GetAncestor(window,2) or window
+    target=api.GetAncestor(hwnd,2) or hwnd
+    if root!=target:return dict(moved=False,reason='another_window')
+    destination=(round(left-20*gw/1600),round(top+12*gh/940))
+    before=[point.x,point.y]
+    if not api.SetCursorPos(*destination):raise RuntimeError('자동 시작 전 마우스를 퍼즐판 밖으로 옮기지 못했습니다.')
+    if not api.GetCursorPos(ctypes.byref(point)) or left<=point.x<right and top<=point.y<bottom:
+        raise RuntimeError('자동 시작 전 마우스가 퍼즐판 밖으로 나갔는지 확인하지 못했습니다.')
+    return dict(moved=True,reason='parked_outside_board',before=before,after=[point.x,point.y])
+
+
 def _input_resource_root():
     # Same existing Pad0Overlay tools directory; no crystal DB initialization.
     return Path(os.environ.get('LOCALAPPDATA') or (Path.home()/'AppData'/'Local'))/'Pad0Overlay'
@@ -28,6 +55,24 @@ def _input_resource_root():
 
 MANUAL_MASTER_MOVE_SECONDS=.075
 SDK_FEEDBACK_MOVE_SECONDS=.08125
+
+def android_touch_state(text):
+    """True for an explicitly down Android touch, False for idle, None unknown.
+
+    Hover-only display records must not be mistaken for a held touch.
+    """
+    lines=str(text).splitlines()
+    for index,line in enumerate(lines):
+        if 'TouchStates:' not in line:continue
+        if '<no displays touched>' in line:return False
+        indent=len(line)-len(line.lstrip());block=[]
+        for candidate in lines[index+1:index+41]:
+            if candidate.strip() and len(candidate)-len(candidate.lstrip())<=indent:break
+            block.append(candidate)
+        downs=re.findall(r'\bdown\s*=\s*(true|false)\b','\n'.join(block),re.I)
+        return any(value.lower()=='true' for value in downs) if downs else None
+    return None
+
 
 def release_emulator_mouse_buttons(hwnd):
     """Explicit F10 cleanup only: UP/CANCEL to the known host, no move/focus/DOWN."""
@@ -549,10 +594,10 @@ class PersistentAndroidTouch:
             self.release(cancel=device.cancel.is_set() or not completed)
 
 
-ANDROID_BATCH_SHA256='c33fb8b23312cc5dc8be4f35d996b759dcddf91f726c6cf44e60655e7deb69b0'
+ANDROID_BATCH_SHA256='e6719e507afe6c5e3e7e5318d3464a368d11dc7ca0b4881371d779a812d41341'
 
 
-ANDROID_BATCH_B85='P)h>@6aWAK2mk;8Q(cAk)AiCA0000j000XB003ibVRLh3b1r0Mc#T>Kcw5z#KKCtpk}O;Dlb2Yr9mRIAV<%o>$7BPtI0h#+1V;%?94NB&VhijiMUt}+nkH-k%D#l9kO@mlp_C>ew6ukm4lOW1XG)k38NRRc(H3U-TKW~bO}}ZUng87P<R~GX*2@3Rx##ZZo^$TKFE3$j_qTU0plvT68~H=`v4<LeCTcD{@A}7ITSiNsdh{EkG?yq%MBCSQndJVp&msCTIr90y_f?{9(EBx_TF|ILGyod%5-D8QPjo>Y(et3wW)Rf?bwCr)3d{q}0agN+0dXJ!i~?5zHjn|f0apRLfNOvofSZBafqQ_*fJ4BKf!_nuqeP2<^}rV3R^TA;0`NBQOMqq)g@I<^9AFU00XG2m15X1l0sjX40?;v!Dqt?q1AG>^3fKoc1H1~n3w#3j>!Ax^9?%190k#7-0=EJ80QUi31Revv3OoyZ3wRlL6?hZ)5%6Q+UEn?71K`)dZ-GAne*u&RA_FJ_f<QS?3(N-20S19l;5y(Y;7(va@EC9e_zCa{5ST^O0GtC{0(>6$3h*rO67UM}7H}N+FW`5;3BY$2Q5jGT)C0{xC$I#F0U2N$a1C$^un+hWa2R+Icm;R|_yzC>-~?baVm?3^m<6l=27nk~0a;)ta6NDfa5u0YcpP{V_!jUI@G9^Y@E^eYz(>IE0Hq1@1;RixumD&FtOhOtE(el82G|MQ3fu?m2Mz*H0f&K?f!Ba{fS&`O0Dl71*+eBk4Nwm>10BFZU<EJ$Tn20ga=<R&Cg5IRKkyXrb>Kzd72t=!JHXF?kAPnTzX9N8<OASd6aXrKN?;mL1w?@9Ks8W9j*re@KXuHXV5$TYA}l{)DG914sE05GLi5xNv;c5>4hPf<v~e5&I)HgVC(z}_1C9k}0}FtKz#?EVumm_4SOLU<OMuS+n}AD!%Ye@Um%DRO+;~&u@*mYW^HW`UvCIDs@)DQ-Gx#7mAeV*;_<RrxyF9na`DK6x#gu}UvmR@meAZ)Gty4GR)-7}S>RP8P^9{8p<#P(;U2ffKw{EGs2Hbww<(CxjJf5(-Cd`++Yt!SFX>jF1cb)R{nq9y*yZj1w&G@g!<+<OLF5eHn*X1{XKi}ok;4g6btHJlV{EgsOxjgG+waecR{$iIu0KVVlj~4JR)H-_t^WO)5q06(bE^_%d!LM=o;{|njzIpz=f-)b1A9VST!LN1sKNi&W&TwpPuB(T2F3&n&@A9D;j^5e}blB<g8tL?sqzb*_(pM$zqSxH?Ke_aEm%ah2gPtd83#D9|mNY_HNmZJ3%iSz#J>BBw-|ouqb?H7g|A3?cdPLH>^n_dfNjLv#mwv;g-*)Nu-FE(2+FvOx<Mo4eFDJGyhgP~&gN1n{olZw&z3DQo!#cN1I+J!v+D`XNT1SsdT1#J&w2i(hX_OAR<9wFbhiA!l*q5J@w3NQW_6RHXNIIQ%NLo$*B557{NYWO1i`c(gWVupAn{C9t>7}bAEvG$_R?xMQ&Zp}n4bXmKpDCs9$@%)|hjPAx9+T8B(-m&Jl^7AHr(xy~NUG9d;`pi1eZ;=(=pjM|?I!kTXB;)Iyaqi^NE&u&nM<AiYthcb#BsM-mY;!j`HrO1>AS?Scn&3q<8hF7Nm?w&KNB-|=xln9I4(5OHzjSNZxP3aQo3H!F4`+;i0+oOmA+0KFDmKt#BqIw>~|Js7MFB7Z6S^!d8*Sjl6vR{Nn7a!;(frGUlV4&l{n6H&`pvC=pTq<%{&^Bw2JN_C-%HZykE4+dM)szjHDfMUMzo3+L!akG4g%*_fpW;u*v+&4PH7qu`(ZXIsZN6hk&sb-t)XzNuo!poj5&&#E_!W2361o%|jb>g*JF}+F)pu4%JHwsz40`dVLyoeva~9QBD!%8LIO)qRetw#1^^F6%|E_b7amiy)lH`SV-k4>Fv?UJH>k_Xllk2;x_I1oT0*2V%S6m!-Dp7R+cVZ9;Am=wbX9+P`f5Rj)hg4**U-c3ncz%uIOH{hq&FrG7s(PsqlQLzL?;WD|EMa^@V5mqxN9ALdSLe(4KW2s;VzhFC}j0xJD;>RaNUz)sk!Hvji#PRIC!bVQ4*uQF1tY<l1Y`tqO;hK2uT>e&d5J(V1jXk$&Aew}xic$`-m$X`u?d=F@sKt>o|uw9xsCs)pa_=Gt2^uIsva+-3vjeS3c1$Gt%zer=XC-BV0v?QF8ip&6GxL*g%W(0xSx9HpaSM2$vBjuQzJN2A;c@fSyPIy84uXO7-Ea{I^*@jm0nX+k6Mev@KqvW6aXbnXd}@dS^?i_u^lWyMsd)?hu)LfVebh9?9RJK6;Q3!p7FuRyWc>a^}96M6mcKG~M3k$tI;qR-5xFJSyl22c#FF2<O>A+|KLZ8rRb({?B#<C7dKw*JADL5KE+$SgZKrl#=UF(Qh=h+}makILhjC)0yr4gJ|`d^GQCP0OLrHXeicxM>;pZ?;9Sqx{X@{~mpywZGQC?ERT0wOD#kG073U$Gt8jr^i^2vql>EwFMe_R86f(5%0%vbQxTSGB}P7ZZ2FU@prD0V;g^cm70`dY79AXViSCu_fsD%h2!0Yh{HdWak`p3@O1;VX9#D1s~3FcYorS~20(tf;PYh*4NG||-R72mSa5uvNB=I<-Bh%z;wMV@VdY+BSH;&v_$%TGv8&>4C48rHyCTBB6ryCGO7DO@s?Y<f2>%xBcT`dGQ&s9%o=<;+*s~7paZD;g6mKC@q@#W4cj%B$rt>K;Z8{uA{JVm-gye}7u_`Hf1>C611r#$}-_=gldNmE`nuzE(lHFcOgIYj|Xm?OUr~`8jXr^wrFL0%ntjp4fXS3uz6!6ra-A)4@Lqt5bY$0I;G_K8kaNU>^P==21IXi}@9cplLLenIj*&r&+#`(R|sn@G`>`*r}8}LQ^w_<f?;e_J%E%5nK>uf2X`9S9mm5l3;dpx4)g9ZAlH1u3C+AT)uh0u6J8K0V8M7wfoyj!9j$PMU2&y^ALU6SW^d7lpG5ziOULIn+DK6d+jT94WMV_u@LWKfMALEZLFGWFOIr>1O~B^u}DXBIo^mptc&^%AOI*G|Kp8t6zDfI94{X5KK*me2DC6g&q9G+i-=AyLc>KZlj+6xO_iTrI5m9IE)arV>_)TpDm`v7`~@fLwv7&KfU;HlC*XvUW$Nv8<fx=V3G&MxZGoqJ3NDEtM-&>Ex-%Q<0}WFZ0^b$Izh)*wa{nJ^g^{OWk$_=TC!=%V;fblhHaP?}6}L_?4g;HO^jJ;|m)~$ed=}As!J&#LLFNY9Hi$2A^_#h!Or;U!$MzZ}4>df~aH2-MYEPxf2@SjNJjBE`?XOuR_m$#F7y9-WATM#MNZhiP!9lee{OHK3+oNwb&hqGBO6#!6)nd8X1omM~t_{`-)yl3U&eU-&=7J7O4LyrQ7Gw0bz$)Wz;H?=S_@7lvH{^HQ4*P?wO+wCyjK7Z<nU%6}s3GszwRFs8eQP&(fi*MVLoGHOtaV7n9j#hnBE)h+bXS>~=qe^aVnPot%qWcIX`BK?9KaU0IXPHr<9^8uen`DN!h!CeK1b-VgasQ19w(uB5uWTXX)|GHrnG#u=+a-lu(#@Hwil#<_dD=Lh<BIyUOWWP|+1LStq=$9TvfqXLudPz+@WPD>?JsVrUHPg|BoY45xu11X$c_G^an-Nx&-ZE2rNF{A0-Is<m&O~WE;amH*krpumnT8DmbmgguFvkH@<l#!yAlUJ)CMUPO8X`aQqcIV}Oid7blXjH^1r;+Kczo~;vKS!4*d;w#IQH3&fC{t8qRxZRUZJb_2n<~S!wx)<Ga4qZb6$cmkG%1f&;k*`Y$7wX+V?Xs_$B2|1livO-3Y1*aX190I{$Ql!?US<e^0F^a$;yMf&odXzJBWQQZBXX{-oeEGH0fb%D~i9AWDS4B|Dvq%RSNi7@?bDlRd#y+{z$PCZQhlo=F@|Eth|)M@QV5eI^-<2L}zfX{sF(w%lsP-Z)_8MbCA4eOQ;4q2>8v#NEO8*xT~#pI6s-2zy-L3mrIPFlDgVSO^43~{NVti&M9dh6_ySM{HLXhWSU1(CDVb^@{48KS+9e>fF7$tthuU#+!}#_fZxk`8~m}V3Yp{9Eyx-6MJN_QtgnVnCOWWZ6??f9cA%1hl465Py<QCMMa$e>qm4G0LD~=wQD<7CP1C}(0CBJWn{Bkm-w!SBX~xsoGp}EP<{Ud$9#WJ_K3RWf*ldTKGSOb#PGX3A_1AO|_pwH)H4*ESl7e$cL^I@BWCi@)jyAI2Po0oB8Y<L?XcRNi%C$}_gK8rp2)sjayd#QuSxmKNql}ZkfZzU^_#Kx<F?og%bgAGwr3RgGToq_@uS$R5sA0(by*19Ar^Z;|Eh4kSNQ=9~W5!YK2YlW}lqx-4QfnaMcx#PDug^Kl;a3T*>oPjrUE{o0t5IX^CT^p#4ij?>(K3p4Ib2L~na~AT1HbM_GNJQ%MYK$)htGBT0(}l-D|s)}XXtGd>&8h~tVF!Lu9Rz3IFiy&NoIaZ(!mnDy_71Hrnj6in3Quy6AGe-TB=nsBdwMiH9XZuO}H_UW8EOQ4Mg%ZwNX;m;gEcfSOu96^ZqjC{5_6K{t7aud!Y?Gx{MA{9V|R2&O<tYGglE}ZXI^LoLI^dtRMCn8hV7s5kT5cWny8^vNfHdeb`BgiDh18nmo@a@;-92$d}x3po&iN0UAWQ>rh4vg6}$H3r>d>TG|~Qld|q;Lc|U@`iH&`ICH0|He8B(is|h<bj#^-&850aJuWrS7lp-g>JD8&i?lKDAFADD30kBNQ+N607(;@(&e{Ze|Dx`*K0{rV>oLm%HwfykyqFrIt@IvrGptl2PR-+YD8dNOP`gO%nJ*SnucGE>>|5<qyr-p$INhTt-bFa`<oUrTt7!gR;e5Ji5j-f*4?Y<{o=(Sw5KTXF&K(D*&K+KX`}(n*!MopVy3IY8+&Pus`Q8nu>qW#KbxsLKs4nQ->4W*bFBI{8jn+Mi=%Hv>pCAc!-2tRv=Yt2}iF{`%GfnQ*_`Qzv1m9I)UAy@f=-%~w;yts&%!E}xH7sqV!}9{Bw;U&<o4np~GMCM->ZTsW^o7GpG+c(;C~iV0+cR!cyoe!TA1S^v;`5Rq<HM$D#bk&&a$*pCUwKf*peV;4+=oI1G05<m(c`|bFk72mH*T{p^U=E>^P8CebZ*$<<tg1DN<HFe;xMgy1hW*SH27GM1|P@mF#n#x<IL8Xr>t|psdI=N&HSx8`Lp6(Q~f&WqXlP2_SHiu>yvTMpjm?7wF!CmQc;HQLQU+=pD(^o{a<BQ_;JN$-gcPvhWiGngf5|yPeeoT;L#JJE+}RMm7Vu0MH?>YQ?6Qdcj_CWIw;D6d+%y)X}j)<6Cw=O+H^vc1^4c&Rd&{hdYQcsvno+`F8;V9xlz;xlOhtV6{SH@R(#If?aAcJ$M*eHtPYB4!JnQ`ay2-r$-Zk|Zl;Sp?l_Jfn~_w?M0v>)x=}z2FQ3@BH$uz74edRKwj$J$AM;zsPHaDT5M$s0hlB7I5y8LU>eU$Sc4g-rQDrLWd#|T+-F}Yln@y|ayRn)jT%jv?u(k!mr3swcO3?UGOakNn(%#kF>WtvAB_~96;G7$i%8og=&OLTi%nXU1;Og3zy`nRyTv2nqjFHa&{|IvaA40gJQ)FCKWjYVVrK-#G$<Cpzl1AKg1ZPm;zMoTMyY2Fwog#nDvc7RjT5<bxWDVrJ19Wn$<-0-!r&wj`N3xC~&&8+8x!<5mLvH^O_kPXe%a3U~Rm(C_H+`0yo=eXA#kmDzW%)d}++6(BrrGQ9=<6d54}NaMQ-RReG4JfwcKkZXvm|LJbLUd!GCPq;B@@w%b%iyOvl7u<YI0;ON}`8EF9}ra>nE{_lvO>Xu3EK<L_aD0y#TWMA@A=ewI2yQ`l+~oO+3-QJf0gFYv@=^MJJPsslGoEAK#k1vMp}gsa!mlOxbNK?UC_RHffIzSh=xOVlma8p-`V~TbUK(@oaW6HJl;esk<hgiBDKLD}z!sXDGEcIcmpqlNoC<Mb3~N8_T4&p=wqC74fa{wq&ZUC!UM<+3CsL+FZtpPjI!utcxad1$h-yc`GmKUAcY4N^`4=seDS_chQ-}_8D6_we_$gACKFkZOc=saVw5CN(+RpcFGGx1-%uP>>W?VbEmf0XXmU@E3=rQrwKEe$uvx&pruejiT;#5da7g~p2Iqu1(FLVCx*G@LfJ*bY-x+BtUxw6Y1{GPaqHBQn0}J`sQQ#_`DAiDaeBjRcVu(c#HlhYs})b2su{V|PH%-RXROWR7+Bk~OeVhL%vrrjYdkS!2&ZJ_4cJ{m+sZ+OR&H4$k+FDbDo@JSTA8g@W^HQZN-H<DI5NW(xr3d|CC8o7^e3~qsV1a&MQWV8#iC@VG$}Lsux#;MDl@e*QtC8tx?~Bp6i7x=_Q+%=W7)YjG%%4IX<H`Al)>o(%g*mxK_yc@-O80oiw&;B`8u{?%}NsMNm<`Vp7jVk2o7F{au5R7PdY#Q$yndl-^ZazS-*<Z^{bdc6j_h3f(IAw@000%w9qe$a*>T_ccW}qY$RnPN^IN+W(avht4JGKb?#y^__>N>on-p@z?ws!_LT6@87%S?Vcz(r5B)!@tq!4gPke+Ogo>DEv%TZ-(JZO)M1qR(SUZ_cvk6!UnjLq7ZR=P(lh_u|SglF+{?<Mj1P0=E9B$aKHa9s;X1-`D+uFB0X~Wp5szAmzlpL|#I#f}ZCEZ}fIE;xZ^YX1pYg?=AX606_FikrpV<5$r<m8<7*K!)xq>>yIR-{syM3$QWR=G8qRNBhql2#TPN~bM50S#qkT-h8Su}B-9%<drHNZcN=V9W{9c`vZ2cqBEEhH|hot+k-l5$-RE*o}sK32QtF=Rs+2BDKwqB_}NMSrh4;^bzt{TPEY<S<)>z7k%^iWOj^<&8f_V*c`|hwX(bgP=(7x<KrA3c0}XwrL7iK=jAyx937raj9R&<h4^PB(4~qL`S4i2LpJ9HEA2^gGB{8PxPq82i#ygr{wX%gBgx4&f?x`RJ(WT*wU@<qq%mu*=q@-JWAW^T)^<#F%u0@q<w!{;$dk0$f+^(Cf_1JwT@szNVa>^Lj(_BJa#I=7r6p1@X>W~><2aC4R3I<NCa<!%pRK7Yxt<$kNXPVZpK-_r@{MCpSRWss#OhAOlQyXncmyX>lUWNV41|%awJ1uO%`?~e3DwzgJ0;h#$hNli+1VT$1j@)sriOFejwdBmM1eG7&)odryfBlj)yE5+j-v}IPqXPoQ8=4SSkXi>n;wtvKrP229hDe)cl1hz8}g@5+N!|@!EH)rU96XxksTvYm*Gx<LM{{C3{6@IOv&p?V8t0LJ-!1ZH3^GXGm|#yS&sM=%Az}XNpvEao#6OMY8D1njK?w=Ig-34ek6PH13$_4VZ2Dm?VCJVHZs^E=-Sj|2KwSwVk7AbQ#}^f)Z}{U*>THCgXH2F)XI$|vkmR!&83{+#$0NgZH$7G_LVjqDhlVDfM=5jTR$&Kz@Y=l@$n=U3&zkemV%x8n45@iAAor>D^(2bF`u=zI6{mm$5WDg&PuO?XKt0|VMub(X41DM6S*<+Zp*-?<eVhOhYMH8OCYwB*g>0j?dn;uvu-$!ZPHHEEvidc+w11kalC**a{!t<kxE!HV|a2DS#XxQBV*RcmD$OOY~7;Ghz-`9IvC~Lcsg0PXkPc6Iz$s*6jWN!+S%H9cHQSl@hZdBMo(xrHH1Q^{d-7M8@0}#;uCL*YEemw2TVj$3}slOFN#{lFEgfvof2xLQh840#=^u<KB3ASw|s>o)hh+08!B5XwR}zqZrXzGh>B1Bqusl;=gWoos9czeVNCOe1poN{f0B||Dne5~Qc&l^TGjXQEOqy8@8b=E-fvLog+_tY(I$T0*v8M}ZGztH5D9*l<lHYd;yS;l+2L;ny|dZ5e>~{Q9&0|yA1dHqba^iOx+{Ad^nKv!7UxcvzuWO&y5%JAEx7aD*y7y7?r3rDL7e9M*U=W|&h}7?Q~t{>&Ub|`v^d}6ak)}DwI8PWZ-Ke({P)1ze*T+azUSq?3+Ddv-v)c=<oCfM>U<l--w3NN&);^4kn^n~e<Pwqoxb=RV$ChXy5tKUx5M9#=uu}({Edhja^}H$@VI688xy`XavA=P`Tqb=O928D0~7!N00;m808?Fs_tW*#7ytkOEdT%u00000000000001h0RR910Ap-nb8}^LE@WkRP)h{{000000RRC2IRF3v`xpQK000'
+ANDROID_BATCH_B85='P)h>@6aWAK2mk;8Q(gDoY>pNp008Vh000XB003ibVRLh3b1r0Mc#V4rV3gIh|GD2X-|RE_CJPyoFj+8RNytW60>~23KtN0eGz6=YWPs6RCQK#}v{k5B?DA?vYOU2iyV%y(R)M0gz832%zHavUx3vG3wzhrN+I_L>>-)F=$NQc8-AN`$Ukm)cbMCqOz2}~DzWXu5$w_Z>+j4R}w0FUKe|mlQt@qvfj&sAy*L<t)vrBI-dgl|rSVJ^MM3Xz)ZBl<KAo~+J^5wvGg9svOHi?#i&T$j%2A%Q{nOx3K^im5^I6!1H5qW?hPz*$YDqsQ70&E7h0^5N;;Cf&;a3e4T>;rBAGQc=+5V#FE4BQ2r06qwu2L2Uz0r(vd!N67k*8@4=9^hlZIpEvCZvam-#saheR|5mU7;qf;5bzZ6W#D_j?*TXFR0}Kvwg7{`n}7#^Gr(7XSAjnPp;n>>U=6Sx7zFMC?gu^$d>l9pJPAAvJOg|lcmcQoyaN0b_$}~XfYwIj0(?LSC<e-bYM>ry0Xl%SKo`&hTm$q0*8{tOn}9t)2DlY?3-BQD1n?a2GVmkdSHPbEZ#((|s(^0b24E7H0v-d-0Y3-ImJ-ba76WZSC$J9a0s4SJAOqYA90l$H-VMAD_%QGZ;3?p<z&C+E0D1@38;AgvKs~SwSPyIit^@V~w*kk1Dc}L%H1ITV7B~ky4}2H+Ghi+w@&h$M8_*402iypxfHB}8a0GY<a2$9y@DT6;;4$Enz_Y;Tffs;p0KWwO3$SoFB0vmS2($oK13Q76fpOqXz*~Xiz<YrY0iOUq3w#OqI`AFf72s#UuYo@T?iEA<paQ4|+JJSy7N8G!1277V1GfT4fVTqo0S^O@15W|Z0q24513v|R570`S1)v0|1{#1Rz#3p9unpJ&+z8wZ<bZ>~tpJWb;n<TGz;UNCwg*5t5C!J4{QxR~DqtQE1FC@<pcbeD<^xv%^*{r#09Xht0u}>}0FJe^H#mxfBSttD1T`h7AVFmaTTIK8jZ)L1PGA+VnjD*TC9oD)4_pPj0Z0IYz+PY<kOFQ7Zc+2nlpXXbehdThD}HjZGjCm$2`c_D<RQi14L%H-H>k`<3iuMm7b~9IEK+MZwb-f0Yx=-qryj5CBdX0xRkuX(ABDVB@h2D0$Ujvee^%9<r|Q~jPq_VJ#ecDYpH%#O#h0qRdQr*il{~EWEkCct1$?98dCiw7{%XZ@zuk)GwcV`v3*fgX{wLsj6#pmiTNUp|!`l=e1HWDIi@{%`_~qcQRs7Z9dlk=X*r)jGA>XO^o4{YE_<i8}6+a1nK=JPYAJ4Z_z<(6{4#l4=Xp`6f`aBQ$F2z4rP?y&*&wr($%-0(o|H}MJ;BQd;4-4x4zR}U;X0^6ADxUZ8CdL1y(b<c(f_>>wyn&PaJxMkCk)l7AbQ%3brGKjE&lLSRvA=ifnW~<t$}#<gqQ3-nsd6rrZ>h9}^bZw%RZ^!vYr34%pQZY9gKkhXEol?INzvOSt)wH8>U5`~|Dei0DCrgSkE+}Ul>DC*{g^8MaaHaqNkjC{k~Y)lRK4d^{udPezlwfK(I2SxenWgdifJS9SuUYX#OK(dQAG`$5|^YE^nc`fEtF|frCm5tE=irV1&ipC)JeNRU6RhD+a!(ATO_TbV`@BalXN*fE@?eIBWX1~D`^e=tE9{5i;~vSS0tTJ|1RlLdQr9aD`NZBDEnhO_ivKg^m$@i*Cgd3jOT7iE9tkA*3<7KZKK~4+qE`Xt{B$&E@J!Sp|?s}O7}`yM)yg&nodX>pfkiar(MRMrReYbay`BDnp{tf&PwW&>2lS66c(D(b4kz>lA3f<QiEO~_DMQ@g4iB9>sN^xP7&KgXIwEQkHO*|lC)US5=EVHRHL0w68o}NS-u7*>g$r$(@T;zC|W_^CH8mDJnC@z-YIEN&aVzD<j@v6Pi$+K&^IM*rVGUO)~0t!x{BT{X%T%?(hm9>u??O>_YnKeS~-peti*_<6?6x&UCvV%9hcOi`z7t5Zxj1kXTFQDLPv>h_X>KCqyc)8*nY31jHFR|j2wIZ9b%u{A?r24(;k*|g`5}5&r7{_{;=QK2V2wy8izCfT&E*9FOxrl{8v@J>oWOAk*}?C<kn^KA3}bq%6F6FOY?q`^UolE1@fO*#rbY%2-b0-;|B+j7|?X;*9G+(F6uWm>UWvcZy7WeZk8HfiW(Nyr3H0fL3y_*p{VvHs_`yFnQNh$`(+H`^F;%1CVQUkj>B!o!#baMcNa|NH1DF2ZCD=>?=(J@v%JuyIE->{M9`78vZA%?L-eq&7p0qn)NF{?;t?J3{?g{RllYUpp=0?G;&ywBU38?Y)b$hn>@b(yV5;8r&wTQIsNGwl(FM~yd1Ob6uA8g$8;IMvV9>=)x^8sodhpJrEJ2Dm6)yvCSw@#-1y7BizVpsC<&p5($AiJh^RMoYHBpj$=FuIhhGAF97CL6NP!8Vk7+r=DJhcHWv^}otk>@+O_5qCRXa|qmuEV_V$<O<OJ0!%f?O?-+0NGUwVA~y<RrGNZ|6PNfjOy>8u~-#OMLi@q8Nv=Opxj0A-_FXJSh<-sbJm@`<Qz(e*`Io`HU^0wHfXjXYnbz#HFw3x`UsDv2&2I`iUU-m$FQGmNT*{RI9Glx9a{=}<40Q@XZiznlhb+`*~lA!Rgi7j2BmMXDfajRdOOD7U;zPOO8{ebhgs9?B@5`y#OZXHV=2Gf%Q(WR-i`Adx(PO>cxFruk-uX^6o(SWYcL+2$I~j)y%7WbrMKJE`b5KetmhIQgLtiB9rtf9iNbUK&EEf>^+0QXt$*43;|+R1o}d895&Q@Dx&oGudyIEEdt{K;SZ<(4-8LFD@xwSm*xnr&6~fNmJ%zg@{?1);bmOn@QiB$t`mkdscH?YM5WmxSrM=t+`~UCKU%);Jwl^`FC)lplQLW$@s-Ct9$M4=G_?=)84N7?vy;GHcSg>DdrEke}2l;L<|E^a0u=XzP_VOo0>Bq!J#O>wxX{GmS_h_Q@=Ry?SuhTcdp3&$%x+wh}*k^Q6^s>(O&?W8F!G(?w9uOAwYaZAuFYJ{M_R2kNr~J}RS#$(tIR>b)9Q$O!8#!wRKPlcQ*DZ|Fy{A0j+a<5o&TV_*CoSqd?WNvN`Y3+NqP~*3WD6_D=N7BVxu@K8q^L}1dv&&jPhMDKIj=ac_mnDy)~~lIe5j!fdiP*MD>QMT(tfurkJfwbc@B-lW_l~)-gtL-r?_Olr<DGe9&Y7wtYzFnyvQkYuhZ^nr%W}M5%u!@lw*X|(wCU>-GgIcey4~)2ZmHSt?~~`8YJ_M(yKR$q60K}N9o|CD7stlyPhuh=EOqB?+ge(_9igBA6~g1I=y$H^WG7k!kWXI^xhkwws3LYYf${SpZaR5`5jm5L`$XYQDU9gmxdp6ol1(|i<(8Kc^oyX8)Q0OG>2@PXId@Ow$^W#N^VC{9W95C;&x@t;&~1&iAma5hBc1ZE?#2|abANN5LHw!oU@wuuR{9JR;&iUR|))uT5jhTvAhp`Y}$tgG4C)9=ta=UV(4TDJ~RR!YEQ34iChaeJ&8IGN*`KGH6BMlJ%#$IJtXxr#`<Z8rGCa{^wVq46(?<f+%BT(nrPr1v^4fp63^J{JDOfbe%mwG(Xx{}i1RP#@OYZ0cWIhGUW~L!|GmjDOn52(sr5&$;4&)T$N4JHhrBwKN3!l5@NT!><#zi|z1jNyk;MhMKAEc{SJ!=~T94E`9Cm3B+lIfz9ky4vgLL-uXX`$_sZ=9s(OlXpP1-rF!4#((bnE-J7LNpJx#q)Mi?L53?E7L`PhPD-XUUPeLO&n3gVb9CEr^7vt#vT3KU%yvNPS(^ROX^H&l#T?ZqYQOQ|q0z3bujK8h6ew7`qWKD`L;D!}A-bvZsG=XMMRpy!M4JJU^lQzHzjxaFu4&_Q~41rDl%WH7|Vb`T44*c62_EmS@+u4BA#}-Ou&|kx4Kptp9KO7f}60_V3nj*}KPJRoS;MpvXn*d_0VKMj{*&nbOAeDeum5QuA-F$<JSBd7p{-TeNFX`^-cO>1HQ1ljXC$0Jm#XdY4Vj#~U_q|M}hnWFbOmSPdJsSlKAAQ-6-MCMRWWoG}e&jAzDe8S@-!I&Jq^e6Dz=e6FPJy4(nCX9Tf_@>a{z#B<Xnr5|mcJ=PP_V`+SU!xo3%|NjiSQu-H*)(eteVw?0sK6-;-TNb3-RQ{Bt#cadAqJ2>lMR)3Smwrd-Z?(JNWggJkZ}7d<uW&YRKv_PsKAg!W*!{8C^=Nb8<Q$pKr^;yesXFRERZ6VcyH3vqs_~|9fcA%DGBSv26Oz}!jVsQt*^%1zHmX1jw$(I5)O>)_*vDSOuSJayQeC(m*2ZtxX1e(*CEYLUvNY<-O5R0&SM9Pk+Ul}I)OD+DVc7B;T$}sgx^c~~4V>ot$2gwpaEp@@u9dX9PL$g9OE=BMxz=3i@J84rzbEQ_1Uub|w;iu%xyOrIo20z@J#B|{vhKRza*2jlmz!UpfhS>+PgkP!)v%9IZE|{kQRCqBc=yNFBG+#YJUO43Z<l;I+O6ZVX4LgCTBxQ$%qQL4MLRK@|Hw-;mh|fJ)2Q3Lo@_II+Nmj9W{JUh`I*JfluMp-BW93lceK%<s|jml3P2xpH8OA6%jEN_ts0)aTMbjQ2O-hyEI$Xe#S}5zgj^$HcpR#ExuzC@jdG}8(SW2;?J2nfF_Txk2CMM}sx5AFWCqKwpxRc9#=r;+O+<}v$-K34hZ>wb9eFzP^l!+#X7n*|vL5=BE6}G`sJ2M8D>#1vG+e$Ri1*7=9G3TzAr&!IE^_Yfc1+bF;_QL%#n}?@m(Bf%R=kkG60eO<Ij1{J{STH-`{P|xbEywF@=D(Re7bqpR5jHEYtW-fmTsL8kBX<n7sQ1FE)6Y3eNWR^^9l<3(&5!SE+0zzU62{{kT>f6w9I|pn~tqSyvSvID79bSO!|FM|J%uKOz*bov9mbo-XJ-5oE$$OIP4GO^m@RzEpq&Ar6*!(VSA1>CEhPii*wf3jaPFXzJ0Fpz@B)kJoR3$vK0a=5&*}s%o@}`$o0LKj|`umjttrBK07Na-0=uv3Rs@rM@p&f*+mrpc$tje{p9tp@Yf<eryxCddM*1tfVjqwxW->Zy&srIy&sHG-=i|3d?X*`^*>fh4fAVIB1-R-d+Dcof56Xn*w3*d+P1^IPkvc;Ry##A?O^Tv_5zOf{^d{=Rx#kK^49xE#wv60<a>19_qg-!BJWB4Sc8mOE1hz8l=cCmIjplKqnsU!oNo!%(~c%Bb~LF779E-t6H1d}c}<ED>qw2)AnX0sY3pm^hnfj*;0lxYPw~YAZXQik{EO6wM+9pE&1eF0pb0hNT>4s@p4S}z;N18699`&S-8P`%ql=vH8a2f6KS!Uo*d$D`Kiq&4UQwep;N988`RT^^{JLE{wstew?dk9qwisfQX&UL~VhWqfg^8WpidyM#5Av{Xka?91u_5NQ2HI0^227_!p=^$fmxcW1W1^>8wU&*Nn(~_s=P#3K3w#GHM5Nm(-??;oUo^SM`KFWCnNN?!_d42Sk=I&bRp)c8hv3efSjv*IRFKNFwOe{<|Jp`6*6Op6!g+n4VQHVOKYDO~^D2s44d1S@$|>r;9h$X}j#0f;EZ_D79bKfpk@#${bxM3rV7IJ4nAj`LZIkASP|k~eqbi^D(xS@e#K_LMvN30`oa4P{=WQ~kMJ;$<O)Dl%FCn*4N}3s^O547IZz0-l@>0C4aAtc&yles4?%KDulkH{C^%0NXnrBs@%o3FG`RuY4*zH|&qqMuMj`}L2REmS%;t7OScnm3zmzTr8TuE<*uVNqI!5eTi_y_4peo6k|o0p`UH_-b+(cm9vWLM^8=cZ*Pp~F|&D_bA+Q0tgQZI5uID*j)C8Nt!gyhS8yz?OYS*7yYCBbGcEikHv7w100j;CQlc%TitRpcyZzp$M!~?R(ngEcVA1aj)L3UXPpk=N;ZU$T6V9yY`3q))Fy)CsMw6bUxWz9Il+~-QfIO!p$W{W~JWfr0QY&{N9Kk9&J|IBh%c|T$%P#VeN?DH=SQD)Ba2H12XOG*P|Z4883$)yS1HE4gXfZ*UfqT-gtSv%u#g<at1xHp;5#U6;)I_+KzZA;O0_@Zh~8b0gFq0Ie^uR%~KJ{66(jhazEaa+r|vqJqPyKsG!=XTj_|m2dj8wA)eNe)*cNjr``-6(zG&ugLr1pZibw)u^n^*u_b)+o7;)|*sfI}nyt}_3hq^+h9y102G|Yu1bV@Z4_jvqu_$6&8?D^ww9>2B!xG_?Y0fEgBI+u;Uizz_;k5jP_<NW^aT$vW8E2LweNe`%c(<fuI{i_ju#8v@dQRDdO8(f)_h(|cx0LKQ>$o^0{>}P^@nh$G!jA5ST^5h<otq^<^?=uUKcetU$~6Q7-Ue^LyMk{7+2Y0K!ynX3Un#w&I@jz+G@R*bnfAzUng()>J4(yv-%(lu)X%5+*iBPfukS5#zQa}O@#b27Q*Wt7+jD6h#oHY&F1c*@I_$02bR^mEPTpxF8}8%#FLSxM7_vCWZ{|F+mEs+>nDIu~^P@#vqtuZUy-rg7I!Oyl(#;i!%p1PyjG+>7l;pxu^iV}rI_7KOjo-jiuQ!C6JKN%3aQ*UqUzgt_<$FIOsq5t~I6m=ri=6L`j!#^USfzKWl*HHCn!8E*L3Q)G0;@0`2b_@i8%8HQflZr4kh+AR-sAJAt-493Z5tA;_XPBN-F%AQi}(T_R^(%~xsG48q+b<Zv*1@@r(H$LuezjP{mftWtM9#xU%ht5uig-m-U(J28{PpA<93J1E_Xv8(y{F{g`R_y6WfsX<DIA!x>F-UkX*wO=zKZa892gg%wMX!R4i6>t=rxf_TjB#4$^*dYqos9(Bz%;MUgMre|RCy@D<dHbo<ngMKAdFsaFK2BO0ykh<#VeI%3}v@xzX8g-LQ@j%;jSz7<9N5%Ivvh&D_SeLWQ$kGuswt1)8!L~onAi!LeaQq)p3sA#BtYA<y(CuyZ?h&pyAXr*-{bzFA?wKok=M^!(y-*_E$T(g7fVlDI{)@D#^gl%7kJ@yMLGEZMd;?z>Hf;MS-e#XWYL-Spd_HdeS6;^6<DbM#FT}VsUNAhXUO6*&n?>$<9Jd-X6AsSwE-UB{6{T|>JuqmGt!(u}GNc?Bc;%ILH-kF_pk4~3sdvU8;0p}S%JV)Ix_P@Op@xBu!2lHC&iqiY2GQ8sm->+Q(9r!Z!-icWBXbjrReOj+_Bnpi>+fWvOhBy`#nyGzCTGVQ+3g1?X0*l(9iL+H<zAyjcFBibp!*0S;*&S^+HRX3l&#%<$cCEPtUSK6=)v-N9?N<b-qtut5y_s`)<h<`t^ZxMkyzO;u;nbx%ApV*ztfnp0{?%^kXt@e{un~H&f!eQIM;%vPN$t0<rjBi$a{s@IH&K3<<NfD*d8=-of&D+d)Q-_6-OyBf<`z@;U6S^2ns1UenV_cWkux(dXqsqvS<OcmNpV2Ho<}$?jW~1q(9E2!Z43Kn=G5$y-?tagg!3IqygXeJzU#;wbw|wm?CfXJ%wFcdsJWb7b@o)&o24H+4zu<9TlMm9sUMl{-${RUI?dMd440JmI2LRN+a)jbhvQQVV{`2D8bR_F^-9nu*h1eCew*<toz7}^l)hg(s~IT8|3~RY_5XnQy!3`~hT!>E>U`IZGgHe^GyD6f?wprac=Kfbvucp`Q1CaRF7)V`i=rkZ=7qG|-lh5aukO}v-F#o>pG8GTl!T5QU$|(=(VH)d2-xKAi=sGm?EWh4wn|Yev+t+F!c^@Y;dw<vq9QEp0NT4)L2nTn=iKe&tP)M3U5#{~m>I(f&Z!8$T(w2SLZUJxN_{n=EF|WHcubWcZQ_$-+T=kku=%{06aLH1-J(7uib559>!ls)e66W*B(+Oag;Hp~3K^m}u)1+Fl{$C+{+GoTZs+BTTCS4bs0R64ZrqNn`cg{ERMJ96T6u0E{S%M05`AD|FVDSO%nfbP4lSme)K}`D2-~}~Vo@4grR}XePcOrz1<zgFbu3EPf*Uw?9-T+2ar&e6YYVB_trGOr^A{%{eH3fQlZu3J{6rN0LR+?Al_#~^7K?IQ8++GXv_TE1s%p!*yC1~B+hf|qTeQGp>X)C}D_3##_RynMi?rK1X-Z5FZ&{HVU8<6vl&g*boxv7iaXyT-K;Olo^Q$h33jgZ6AH~%Eq4E5g*p|jKqRdxQwQAvNZu!{c!n;>-Q9E>AREJK!?a4*Q#IlgqUwIdumW`gPknh-4<oq8w4SzX3kDPaJQu6%wk~}m;b;Xy+noL_HtyJksM1q2xZ~B^Sw@v;(0&V&)6{H(wd)BP9Q^x%|nWp;I<lT{>_(t^LQv5Pi&Pgwu)#psRn(W_QkY}m%ve(IGw;{;6(_tD>^Q%<%u{{6$oU1S<E>o-03skyU&Aqu`?kr!b$~EJ!-mqXN9^Kt!;K9#bcxn)OT3VMiHREp!xmKmpsoWYWTbCZrW>UkkZ1U#hP%b$f%Vj2p_Qgnak=R6{n{;kN>+T`3nY7Jaq;KB5nM4n1J(~bz^+4X!LwXMqc=S-9XM19}d3_=`w6CtEb5^o-cCu}Dvb~dhGs#Y>?HNvt97x@=B#};Ma*13jlU}khJv5RTPo?*6P3HDxhC8Y1GKIR+>11}pNMd{(uIe)RPTlQ^Y+^K-OJ-53@-n6RQhU>h+(b6nNzuz>$M<D32T`@W=jOzL#FA8INmnA5=uVGK<oa^iWMY)76=q#Ckt@h6ozB~M&8Cf$L&-62wUbJw<=xj@UYx#cE3;dVIP#H1dhe3;naoHsfi{W?glct43Pc6H6_(sIl1b!dx7eM|CHE$?ofNx7n9WX%L5T`l3Kx{<$)xwrmTXPru+MgZWZT5(Ah%p7yJnDevy+MoWW5vVbYgHMIlCmLpW;5sUng5Xks2AkwBf!(<GJMMY#FvSnHZkEGIFb(-U?gJCijeBU`y6zvx!5O&)SqqjtoyL!mO;k0;?@dCv#ZBWNzK?a5l+XQ#K>-OJ)xwvwfMNTavly&5;>Oqy{^YON}_A=}C>}rkjxB4Ve+{7Mn6Yy^=Dc8{3x1WwO&dBc)CQmr7RAq5{cKCOtHf%_h^iC1_wYHMC@%B-09KZe4d(_XY}1pXny9Oh&wS$3{H+w{Ik|leC>M96MoUTzGWnDa?x7p^$j;9LyQm9<un!Ns}3w?vZu1otx3vW@ccMcEU*E!A&~Z251i&?oq{&DU&_js`f4v-6eY$yGYxGHg@d-Gl0B-&14L0UeieyKR2^Ml}vXxSg&H4w+CK-&>{nuQRrF1yzb5&_+OMoAHYali6K5;<YPKMzG)<}cbozVZ0>>NRmpKSS)?b1hanpt?wc4JV}(i%(}IL!?3?x_vcm@x*<@3SZAnwNG$~sX=>!gSU0-fuknDWX%y?7x`cxW6hsq0NtdXgqq^d)ug<0}YZ5V-SQdwSpAeB7WB)i#o0Qy36W@T*6uwFVjSNye{y6u@1o0tumOm=vj7XGbr+q0RmWHy&dj$^^b#**n_EZDfTQhO3ZNiqkMdsAt0flQ=Vk})_jeuz9niS$qsCuNvSb~H%}3}r^guvT!CeMzkO5O<$~V?eu};p7O`Jd4uq;mpBwJT;mmPjYlDCl4UGlKUqTBjaQy<<wkz;B?3Lk-2AN0>s*r$!>!OB5SYOv{J>y5+iJc4#k{3rHZ^fhYn(c6T^FxxmXfLHaU#0{VKOFm&oQwM;>|bSbs=1?glG$P;$~9Q4m~#8<E8w4I}R~JI>?E$u>e@3jGTeK``w;<A=tu7F<zj1zGzN<J*#xnDM@3YVSU5_dawR%g<sW4gF4yut6o0b5@d;8YUw(41p_^=EFf@hZg8e#if#24Y{4%OqNWk)l{5HA4rTKw1Jt*rP349Yf~sM&9C`%vBDveKQA3m-73d)Aae`%p=>3YSkc_|4(TU1%-wi$BQ(r20w1?CF*1=PV>AKv(nk}Mcz`p~yp$$Cu@~t?IwRG^mrfq+PLJnU?@&grT4pfEbzK>`=2QaJnvTq}N!i)T7<tEFRvR5H_DeoLdM8JgBcJ490VY@(pvmJ&oB=Y&5);TR8RNqeLr3GO;bd$$H9j_yIE3b$GvqA1U6|@hI$NAKDsIU*z0RCCi}jcLk<5<xCT4~X4Pm1!H3JGOCbkEAm>kB8+)9FV%yTQr%qGW14v|Yu!OUhRu+VyTB2DHvJ4OnRV+7dT*l22el-&&J<2VEXJl07InPLU;Ala2jjzS5%%;u*$!*^pgNXdYQT;qI3a<W=qW+IC@bA$1rv2B^IB-b>gZkXdE$>bP_JbkX*zSMYKGr4ma$DT8n8Q~*Bp^5Y@X>27Fa&#2di(CknSOxqJ-I^L1NsW^qidQ$3$s&Z^F-|^C<@eRiiG3NIU=MRpt*tnC%*q|YvNJ!P-0ui6+#DwE@VVp|nlqW7bjTqJNF9eMlO|J2p}3YL*X$wlU}`wGkK6~d(0jQSlH)K=33+41B#A?`=l0vXmfu!0m_R_19<EtgGn|~PSzN=$69<%!UgKzHI4Ls*C-x!>HllH8UvlUcZ0mT<$~`cY$;CA|DUFG-RL#oPj>R=Ft-P<Ow7jXUscl)!n@IC%qZL+H_%PLl!<YO!Eh?-k=a1$WzZMmuj5H6Js9*DHqXwN4RkFT$X?@f*oqDpkN0!o5DP(H-oQM{X4bLfcdeF<XvUO#{g^6TgVoyGy%VMf>xg#~p1f)Y{tz||&r-(mm&{Ryk?jIdKY)nOkcrHq&5Z3HW4Vll@>f#r*qzU1dG6S-gt}w-4uHZI<muu67B42N?#N7)-iRLevQ@U1!<zEtO0f%Egte*M5<VMX8HJhFnJ3aK;QgQgO`?+QOJi1)ar&en8&}vSdSi{ek<n!c4eqPul=qpzX`sijszvvUgd~L4YU4Ov8Q|xqj8?;>UHJvl^bp`UP3*-Yz&hNs5N_I=<3_n@G-&MdLS3KAIM<x3x=+jEZ^f~oggZ$kF|M?VTFI^(%x-VWv&i4#If$aB}$X%+P{2!m9^2TVj^V>xCYDeC)+W8$K%lTWz^3~4o4~thjzw?T%cK(0!;?>Um!rIl&Z}+%-iK<^jv-@Y7|J^r_J^$NpzEjBm{+q|1{|z|bJLG={?xLCBf{U2*U7ddqt}C8@Zz00Y?+E#K8(Pfii+?X}#GEnne)A6yxgGw!h#7On#J}6n!_GW;eO#&x|E`29avA>3`u_k>O928D0~7!N00;m808?G}-fWH*A^-sFJ^%m<00000000000001h0RR910Ap-nb8}^LE@WkRP)h{{000000RRC2IRF3vKOz7C000'
 
 
 class AndroidBatchTouch(PersistentAndroidTouch):
@@ -566,7 +611,7 @@ class AndroidBatchTouch(PersistentAndroidTouch):
     @staticmethod
     def server_file():
         import base64
-        root=_input_resource_root()/'tools'/'pad0-batch-1';root.mkdir(parents=True,exist_ok=True)
+        root=_input_resource_root()/'tools'/'pad0-batch-3';root.mkdir(parents=True,exist_ok=True)
         path=root/'pad0-batch.jar'
         if not path.exists() or hashlib.sha256(path.read_bytes()).hexdigest()!=ANDROID_BATCH_SHA256:
             data=base64.b85decode(ANDROID_BATCH_B85)
@@ -617,7 +662,7 @@ class AndroidBatchTouch(PersistentAndroidTouch):
             with self._responses_lock:self._responses.pop(seq,None)
     def open(self):
         import socket,struct
-        device=self.device;path=self.server_file();remote='/data/local/tmp/pad0-batch-1.jar'
+        device=self.device;path=self.server_file();remote='/data/local/tmp/pad0-batch-3.jar'
         try:present=device._shell(['sha256sum',remote],timeout=2).split()[0]==ANDROID_BATCH_SHA256
         except (RuntimeError,IndexError):present=False
         if not present:device._run(['push',str(path),remote],timeout=5)
@@ -691,13 +736,14 @@ class AndroidBatchTouch(PersistentAndroidTouch):
         import struct
         if not self._authenticated or self.closed:return
         status,events,message=self._request(2,struct.pack('>ii',*self.last),timeout=3,allow_cancel=True)
-        if status:raise RuntimeError('Android 터치 해제 실패: '+message)
+        self.device.input_diagnostics.update(release_scope='owned_pointer',release_message=message,release_dispatch_confirmed=status==0)
         trace=getattr(self.device,'input_trace',None)
         if isinstance(trace,list):
             started=time.perf_counter()-self.device._input_trace_started
             for action,x,y,micros in events:trace.append(dict(action=action,native=[x,y],encoded=[x,y],input_size=list(self.input_size),
                 seconds=round(started+micros/1000000,6),android_elapsed_us=micros))
             if len(trace)>1024:del trace[:-1024]
+        if status:raise RuntimeError('Android 터치 해제 실패: '+message)
         self.device.cancel_command_sent=True
         self.device.input_diagnostics['release_dispatch_confirmed']=True
         self.pressed=False;self.last_up_at=time.monotonic()
@@ -751,12 +797,12 @@ class MuMuSDKTouch(PersistentAndroidTouch):
         if delivered:self.last=tuple(delivered[-1])
         self.last_up_at=time.monotonic() if not self.pressed else None
         for event in result.get('events',[]):
-            self.device.input_trace.append(dict(event,seconds=round(started-self.device._input_trace_started+event['seconds'],6),transport='mumu_native_sdk',finger_id=1))
+            self.device.input_trace.append(dict(event,seconds=round(started-self.device._input_trace_started+event['seconds'],6),transport='mumu_native_sdk',finger_id=0 if result.get('input_stream')=='single_pointer' else 1))
         if len(self.device.input_trace)>1024:del self.device.input_trace[:-1024]
         self.device.input_diagnostics.update(sdk_dispatch_confirmed=not result.get('error'),sdk_release_confirmed=not self.pressed,sdk_execute_seconds=result.get('execute_seconds'))
         self.device.input_diagnostics.update(sdk_preflight_release=result.get('preflight_release'),
             sdk_cleanup=result.get('cleanup'),sdk_pacer_mode=result.get('pacer_mode'),
-            sdk_start_feedback=result.get('start_feedback'),sdk_display_id=result.get('display_id'),
+            sdk_start_feedback=result.get('start_feedback'),sdk_display_id=result.get('display_id'),sdk_input_stream=result.get('input_stream','finger'),
             sdk_move_gap_max_seconds=result.get('move_gap_max_seconds'),sdk_move_gap_over_50ms=result.get('move_gap_over_50ms'))
         held=result.get('held_image');self.device.last_before_up_frame=self.device._normalize_capture(held) if held is not None else None
         if result.get('error'):raise RuntimeError(result['error'])
@@ -796,6 +842,7 @@ class NativeSDKInputMixin:
     def release_fingers(self,require_active=False):
         if not self.input_supported:raise RuntimeError('MuMu SDK 손가락 입력 API가 없습니다.')
         was_active=self.touch_active or require_active
+        active_stream=getattr(self,'_active_input_stream','finger')
         results=[]
         for finger in range(1,11):
             try:results.append(int(self.touch_up(self.handle,self.display_id,finger)))
@@ -804,7 +851,8 @@ class NativeSDKInputMixin:
         if getattr(self,"single_touch_up",None) is not None:
             try:single_result=int(self.single_touch_up(self.handle,0))
             except Exception as exc:single_result=str(exc)
-        self.touch_active=bool(was_active and results[0]!=0)
+        failed=single_result!=0 if active_stream=='single_pointer' else results[0]!=0
+        self.touch_active=bool(was_active and failed)
         if self.touch_active:raise RuntimeError('MuMu SDK 기본 손가락 해제 실패: '+str(results))
         return dict(ready=True,released=True,fingers=list(range(1,11)),release_results=results,all_fingers_confirmed=not any(results),single_touch_release_result=single_result)
 
@@ -817,12 +865,16 @@ class NativeSDKInputMixin:
         preflight=None;cleanup=None;last_point=list(points[0])
         feedback_active=start_context is not None and len(points)>1 and not probe
         start_feedback=None;start_checks=0;feedback_started=None
+        single=(self.display_id==0 and callable(getattr(self,'single_touch_down',None)) and callable(getattr(self,'single_touch_up',None)))
+        stream='single_pointer' if single else 'finger'
         move_reserve=(len(points)-1)*SDK_FEEDBACK_MOVE_SECONDS+.22+.08
         pacer=AndroidTouchPacer(cancel)
         def down(x,y,action):
             if cancel.is_set():raise RuntimeError('MuMu 입력 중지')
             self.touch_active=True
-            if self.touch_down(self.handle,self.display_id,1,x,y)!=0:raise RuntimeError('MuMu SDK 누름/이동 전달 실패')
+            self._active_input_stream=stream
+            result=self.single_touch_down(self.handle,0,x,y) if single else self.touch_down(self.handle,self.display_id,1,x,y)
+            if result!=0:raise RuntimeError('MuMu SDK 누름/이동 전달 실패')
             last_point[:]=[x,y]
             trace.append(dict(action=action,native=[x,y],seconds=time.perf_counter()-started))
         def wait(seconds):
@@ -865,6 +917,9 @@ class NativeSDKInputMixin:
                             raise RuntimeError('제한시간부족 · 시작 드롭 재확인 시간을 확보하지 못했습니다.')
                         wait(.04)
                 if start_feedback.get('confirmed') is not True:
+                    if start_feedback.get('observed_start_cell') is not None:
+                        wanted=start_feedback['expected_start_cell'];observed=start_feedback['observed_start_cell']
+                        raise RuntimeError(f'MuMu 시작 위치 불일치 · {wanted//6+1}행 {wanted%6+1}열 대신 {observed//6+1}행 {observed%6+1}열이 들렸습니다. 경로 이동을 보내지 않았습니다.')
                     raise RuntimeError('MuMu 시작 드롭이 잡힌 것을 확인하지 못했습니다. 경로 이동을 보내지 않았습니다.')
             if probe:self.capture();held=True
             deadline=time.perf_counter();last_sent=deadline
@@ -903,5 +958,159 @@ class NativeSDKInputMixin:
         gaps=[b-a for a,b in zip(moves,moves[1:])]
         return dict(ready=True,events=trace,released=released,held_frame=held,error=error,execute_seconds=time.perf_counter()-started,
             preflight_release=preflight,cleanup=cleanup,pacer_mode=pacer.mode,
-            start_feedback=start_feedback,display_id=int(self.display_id),
+            start_feedback=start_feedback,display_id=int(self.display_id),input_stream=stream,
             move_gap_max_seconds=max(gaps,default=0),move_gap_over_50ms=sum(gap>.05 for gap in gaps))
+
+
+class AndroidControlTouch(PersistentAndroidTouch):
+    """Android InputManager coordinates with read-only ADB visual proof.
+
+    The capture owner supplies callbacks; this module stays image/GUI independent.
+    Only one control socket owns DOWN, every MOVE, and UP for a gesture.
+    """
+    def drag(self,points,checkpoint=None,max_seconds=None,hold_seconds=.20):
+        if checkpoint is not None:raise RuntimeError('Android 경로 중 중간 캡처 콜백을 허용하지 않습니다.')
+        owner=self;device=self.device
+        class Session(NativeSDKInputMixin):
+            input_supported=True;touch_active=False;display_id=0;handle=0
+            size=device.native_size
+            def touch_down(self,handle,display,finger,x,y):
+                owner.event(2 if owner.pressed else 0,x,y)
+                return 0
+            def release_fingers(self,require_active=False):
+                if owner.pressed:owner.repeat_release(cancel=device.cancel.is_set())
+                return dict(ready=True,released=not owner.pressed,all_fingers_confirmed=True)
+            def prepare_input_feedback(self,context):return device.prepare_path_feedback(context)
+            def check_input_start(self,context,before):return device.check_path_start(context,before)
+            def capture(self):device.last_before_up_frame=device.capture_path_feedback()
+        context=getattr(device,'sdk_start_context',None)
+        if context is not None:context=dict(context,point=list(points[0]))
+        # Capture latency is charged to the same bounded start/move budget.
+        # A missing selected connection must never cause a blind DOWN.
+        if len(points)>1 and context is not None and not device.feedback_ready():
+            raise RuntimeError('시작 드롭 확인용 ADB 연결이 없습니다. 입력하지 않았습니다.')
+        started=time.perf_counter();previous_trace=list(device.input_trace);session=Session()
+        result=session.play_input(points,hold_seconds,float(max_seconds or 5),device.cancel,start_context=context)
+        events=[dict(event,seconds=round(started-device._input_trace_started+event['seconds'],6),
+                     transport='android_control',finger_id=0) for event in result['events']]
+        # _send already records transport packets; replace only this gesture's
+        # packet traces with the common logical trace used by layout verification.
+        device.input_trace[:]=previous_trace+events
+        if len(device.input_trace)>1024:del device.input_trace[:-1024]
+        device.input_diagnostics.update(input_transport='android_control',input_size=list(device.native_size),
+            control_dispatch_confirmed=not result['error'],control_release_confirmed=result['released'],
+            control_start_feedback=result['start_feedback'],control_execute_seconds=result['execute_seconds'],
+            control_move_gap_max_seconds=result['move_gap_max_seconds'],control_input_size=list(self.input_size))
+        if result['error']:raise RuntimeError(result['error'].replace('MuMu SDK','Android 직접 입력').replace('MuMu 시작','Android 시작').replace('MuMu 입력','Android 입력'))
+
+    def probe(self,x,y):
+        if not self.device.feedback_ready():raise RuntimeError('구름 확인용 ADB 연결이 없습니다.')
+        try:
+            self.event(0,x,y)
+            if self.device.cancel.wait(.18):raise RuntimeError('구름 확인을 중지했습니다.')
+            return self.device.capture_path_feedback()
+        finally:self.release(cancel=self.device.cancel.is_set())
+
+
+ANDROID_VERIFIED_MOVE_SECONDS=.11
+ANDROID_VERIFIED_FIXED_RESERVE=1.65
+
+class AndroidVerifiedBatchTouch(AndroidBatchTouch):
+    """One Android-owned route between acknowledged DOWN and final UP.
+
+    Image proof is supplied by the device. No per-MOVE host timer or socket
+    packet is used, and continuation never emits a second DOWN.
+    """
+    def open(self):
+        super().open()
+        self.device.input_diagnostics['input_transport']='android_verified_batch'
+        return self
+    def _record_phase(self,events,started):
+        for action,x,y,micros in events:
+            self.last=(x,y)
+            self.device.input_trace.append(dict(action=action,native=[x,y],finger_id=0,
+                transport='android_verified_batch',seconds=round(started-self.device._input_trace_started+micros/1e6,6),android_elapsed_us=micros))
+        if len(self.device.input_trace)>1024:del self.device.input_trace[:-1024]
+    def drag(self,points,checkpoint=None,max_seconds=None,hold_seconds=.12):
+        import struct
+        device=self.device;limit=float(max_seconds or 5);context=getattr(device,'sdk_start_context',None)
+        if context is None:return super().drag(points,checkpoint,max_seconds,hold_seconds)
+        if checkpoint is not None:raise RuntimeError('Android 이동 중 PC 캡처 콜백을 허용하지 않습니다.')
+        width,height=device.native_size
+        if (not 2<=len(points)<=66 or any(len(pt)!=2 or any(type(v) is not int for v in pt) or not(0<=pt[0]<width and 0<=pt[1]<height) for pt in points)
+                or not .1<=limit<=15):raise ValueError('Android 전체 경로 정보가 잘못됐습니다.')
+        context=dict(context,point=list(points[0]))
+        # Read a fresh baseline before DOWN, outside the in-game touch lease.
+        if not device.feedback_ready():raise RuntimeError('시작 드롭 확인용 ADB 연결이 없습니다.')
+        capture_started=time.perf_counter();baseline=device.prepare_path_feedback(context)
+        capture_seconds=time.perf_counter()-capture_started
+        reserve=max(.40,capture_seconds*1.3)+.18
+        movement=(len(points)-1)*ANDROID_VERIFIED_MOVE_SECONDS
+        if movement+hold_seconds+reserve*2>limit:raise RuntimeError('제한시간부족 · ADB 확인과 전체 경로 시간을 확보하지 못했습니다.')
+        diagnostics=device.input_diagnostics
+        diagnostics.update(input_transport='android_verified_batch',input_size=list(device.native_size),
+            control_dispatch_confirmed=False,control_release_confirmed=False,control_start_feedback=None,
+            control_capture_before_seconds=round(capture_seconds,6),control_android_acknowledged=False)
+        self.pressed=True;device.cancel_command_sent=False;started=time.perf_counter();gesture=None;complete=False
+        try:
+            status,events,message=self._request(3,struct.pack('>iiii',*points[0],round(hold_seconds*1000),round(limit*1000)),timeout=2)
+            self._record_phase(events,started)
+            if status or not re.fullmatch(r'begun:[1-9]\d*',message):raise RuntimeError('Android 시작 누름 실패: '+message)
+            gesture=int(message.split(':')[1])
+            if len(events)!=1 or events[0][0]!=0 or tuple(events[0][1:3])!=tuple(points[0]):raise RuntimeError('Android 시작 누름 응답이 좌표와 다릅니다.')
+            for attempt in range(4):
+                if device.cancel.is_set():raise RuntimeError('자동 이동을 중지했습니다.')
+                if time.perf_counter()-started+movement+reserve>limit:raise RuntimeError('제한시간부족 · 시작 드롭 확인 시간을 초과했습니다.')
+                feedback=device.check_path_start(context,baseline)
+                diagnostics['control_start_feedback']=dict(feedback,checks=attempt+1,seconds=round(time.perf_counter()-started,6))
+                if device.cancel.is_set():raise RuntimeError('자동 이동을 중지했습니다.')
+                if feedback.get('confirmed') is True:break
+                if attempt<3 and device.cancel.wait(.04):raise RuntimeError('자동 이동을 중지했습니다.')
+            if feedback.get('confirmed') is not True:raise RuntimeError('시작 드롭을 확인하지 못했습니다. 경로를 보내지 않았습니다.')
+            if time.perf_counter()-started+movement+reserve>limit:raise RuntimeError('제한시간부족 · 전체 Android 이동 시간을 확보하지 못했습니다.')
+            body=struct.pack('>iiiii',gesture,len(points),100,22000,38000)+b''.join(struct.pack('>ii',*point) for point in points)
+            status,events,message=self._request(4,body,timeout=max(.1,limit-(time.perf_counter()-started))+.3)
+            self._record_phase(events,started)
+            if status or message!='held:'+str(gesture):raise RuntimeError('Android 경로 실행 실패: '+message)
+            expected=[]
+            for one,two in zip(points,points[1:]):
+                expected.extend((math.floor(one[0]+(two[0]-one[0])*part/4+.5),math.floor(one[1]+(two[1]-one[1])*part/4+.5)) for part in range(1,5))
+            if len(events)!=len(expected) or any(event[0]!=2 or tuple(event[1:3])!=point for event,point in zip(events,expected)):
+                raise RuntimeError('Android 경로의 처리 응답이 전체 경유점과 다릅니다.')
+            if device.cancel.is_set():raise RuntimeError('자동 이동을 중지했습니다.')
+            device.last_before_up_frame=None
+            device.last_before_up_frame=device.capture_path_feedback()
+            if device.cancel.is_set():raise RuntimeError('자동 이동을 중지했습니다.')
+            if time.perf_counter()-started>=limit-.08:raise RuntimeError('제한시간부족 · 최종 판 확인 시간을 초과했습니다.')
+            status,events,message=self._request(5,struct.pack('>i',gesture),timeout=2)
+            self._record_phase(events,started)
+            if status or message!='released:'+str(gesture) or len(events)!=1 or events[0][0]!=1 or tuple(events[0][1:3])!=tuple(points[-1]):
+                raise RuntimeError('Android 손 떼기 처리 응답을 확인하지 못했습니다: '+message)
+            self.pressed=False;self.last_up_at=time.monotonic();complete=True
+            diagnostics.update(control_dispatch_confirmed=True,control_release_confirmed=True,control_android_acknowledged=True)
+        finally:
+            if not complete:
+                try:self.repeat_release(cancel=True)
+                except Exception as error:device.cancel_release_error=str(error)
+            diagnostics['control_execute_seconds']=round(time.perf_counter()-started,6)
+    def probe(self,x,y):
+        import struct
+        device=self.device;started=time.perf_counter()
+        if not device.feedback_ready():raise RuntimeError('구름 확인용 ADB 연결이 없습니다.')
+        try:
+            self.pressed=True
+            status,events,message=self._request(3,struct.pack('>iiii',x,y,120,2500),timeout=2)
+            self._record_phase(events,started)
+            if status or not re.fullmatch(r'begun:[1-9]\d*',message):raise RuntimeError('구름 드롭 누름 실패: '+message)
+            if device.cancel.is_set():raise RuntimeError('구름 확인을 중지했습니다.')
+            frame=device.capture_path_feedback()
+            if device.cancel.is_set():raise RuntimeError('구름 확인을 중지했습니다.')
+            gesture=int(message.split(':')[1])
+            status,events,message=self._request(5,struct.pack('>i',gesture),timeout=2)
+            self._record_phase(events,started)
+            if status or message!='released:'+str(gesture) or len(events)!=1 or events[0][0]!=1 or tuple(events[0][1:3])!=(x,y):
+                raise RuntimeError('구름 드롭 해제 미확인: '+message)
+            self.pressed=False;self.last_up_at=time.monotonic()
+            return frame
+        finally:
+            if self.pressed:self.repeat_release(cancel=True)
