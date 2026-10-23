@@ -55,6 +55,14 @@ def _input_resource_root():
 
 MANUAL_MASTER_MOVE_SECONDS=.075
 SDK_FEEDBACK_MOVE_SECONDS=.08125
+ANDROID_CONTROL_CORNER_DWELL_SECONDS=.0625
+ANDROID_CONTROL_FEEDBACK_MOVE_SECONDS=.1125
+
+def _update_input_diagnostics(device,**values):
+    """Keep capture identity and failed backend reasons when opening input."""
+    current=getattr(device,'input_diagnostics',None)
+    if not isinstance(current,dict):current={};device.input_diagnostics=current
+    current.update(values)
 
 # Official, replaceable runtime. No MAA game resources or modified native DLLs.
 MAA_PACKAGES=('MaaFw==5.14.3','MaaAgentBinary==1.0.1','StrEnum==0.4.15')
@@ -487,8 +495,8 @@ class PersistentAndroidTouch:
                 if (width>=height)!=(nw>=nh):width,height=height,width
                 if 320<=min(width,height) and max(width,height)<=16384 and abs((width/height)/(nw/nh)-1)<.03:
                     self.input_size=(width,height)
-            device.input_diagnostics=dict(capture_size=list(device.native_size),input_size=list(self.input_size),wm_size=wm[:300])
-        except RuntimeError:device.input_diagnostics=dict(capture_size=list(device.native_size),input_size=list(self.input_size))
+            _update_input_diagnostics(device,capture_size=list(device.native_size),input_size=list(self.input_size),wm_size=wm[:300])
+        except RuntimeError:_update_input_diagnostics(device,capture_size=list(device.native_size),input_size=list(self.input_size))
         try:present=device._shell(['sha256sum',remote],timeout=2).split()[0]==SCRCPY_SERVER_SHA256
         except (RuntimeError,IndexError):present=False
         if not present:device._run(['push',str(path),remote],timeout=5)
@@ -730,7 +738,7 @@ class AndroidBatchTouch(PersistentAndroidTouch):
                 if struct.unpack('>i',ack)[0]!=self.MAGIC:raise RuntimeError('Android 경로 실행 버전 불일치')
                 self.socket=sock;self.socket.settimeout(.2);self._authenticated=True
                 self._reader=threading.Thread(target=self._read_responses,daemon=True);self._reader.start()
-                device.input_diagnostics=dict(capture_size=list(device.native_size),input_size=list(device.native_size),
+                _update_input_diagnostics(device,capture_size=list(device.native_size),input_size=list(device.native_size),
                     touch_timer='android_batch',input_transport='android_path_executor')
                 self.read_touch_device()
                 return self
@@ -838,7 +846,7 @@ class MuMuSDKTouch(PersistentAndroidTouch):
         if self.client is None or not self.client.input_supported:raise RuntimeError('MuMu SDK 입력을 사용할 수 없습니다.')
         # Capability/target verification is read-only. An unopened SDK session
         # owns no pressed finger; idle-finger UP rejection must not block startup.
-        self.device.input_diagnostics=dict(input_transport='mumu_native_sdk',input_size=list(self.device.native_size),finger_id=1)
+        _update_input_diagnostics(self.device,input_transport='mumu_native_sdk',input_size=list(self.device.native_size),finger_id=1)
         return self
     def _execute(self,points,hold,limit,probe=False):
         if self.device.cancel.is_set():raise RuntimeError('재료 파밍을 중지했습니다.')
@@ -861,6 +869,9 @@ class MuMuSDKTouch(PersistentAndroidTouch):
             sdk_cleanup=result.get('cleanup'),sdk_pacer_mode=result.get('pacer_mode'),
             sdk_start_feedback=result.get('start_feedback'),sdk_display_id=result.get('display_id'),sdk_input_stream=result.get('input_stream','finger'),
             sdk_move_gap_max_seconds=result.get('move_gap_max_seconds'),sdk_move_gap_over_50ms=result.get('move_gap_over_50ms'))
+        self.device.input_diagnostics.update(sdk_motion_seconds=result.get('motion_seconds'),sdk_motion_estimate_seconds=result.get('motion_estimate_seconds'),
+            sdk_corner_count=result.get('corner_count'),sdk_corner_dwell_seconds=result.get('corner_dwell_seconds'),sdk_feedback_capture_seconds=result.get('feedback_capture_seconds'),
+            sdk_moving_gap_max_seconds=result.get('moving_gap_max_seconds'))
         held=result.get('held_image');self.device.last_before_up_frame=self.device._normalize_capture(held) if held is not None else None
         if result.get('error'):raise RuntimeError(result['error'])
     def tap(self,x,y):self._execute([(x,y)],.06,1.5)
@@ -962,7 +973,14 @@ class NativeSDKInputMixin:
         start_feedback=None;start_checks=0;feedback_started=None
         single=(self.display_id==0 and callable(getattr(self,'single_touch_down',None)) and callable(getattr(self,'single_touch_up',None)))
         stream='single_pointer' if single else 'finger'
-        move_reserve=(len(points)-1)*SDK_FEEDBACK_MOVE_SECONDS+.22+.08
+        corner_dwell=float(getattr(self,'corner_dwell_seconds',.03125))
+        edge_budget=float(getattr(self,'feedback_move_seconds',SDK_FEEDBACK_MOVE_SECONDS))
+        corners=[i for i in range(1,len(points)-1) if
+            (points[i][0]-points[i-1][0])*(points[i+1][1]-points[i][1])!=(points[i][1]-points[i-1][1])*(points[i+1][0]-points[i][0]) or
+            (points[i][0]-points[i-1][0])*(points[i+1][0]-points[i][0])+(points[i][1]-points[i-1][1])*(points[i+1][1]-points[i][1])<=0]
+        motion_estimate=(len(points)-1)*.075+(len(corners)*max(0,corner_dwell-.01875) if feedback_active else 0)
+        motion_seconds=None;motion_started=None;capture_seconds=dict(baseline=0.0,start_checks=0.0,before_up=0.0)
+        move_reserve=(len(points)-1)*edge_budget+.22+.08
         pacer=AndroidTouchPacer(cancel)
         def down(x,y,action):
             if cancel.is_set():raise RuntimeError('MuMu 입력 중지')
@@ -987,8 +1005,10 @@ class NativeSDKInputMixin:
                 start_feedback=dict(confirmed=False,reason='not_checked',checks=0,seconds=0.0)
                 if limit-(time.perf_counter()-started)<move_reserve+hold:
                     raise RuntimeError('제한시간부족 · 시작 드롭 확인과 전체 경로 이동 시간을 확보하지 못했습니다.')
+                capture_started=time.perf_counter()
                 try:baseline=self.prepare_input_feedback(start_context)
                 except Exception as exc:raise RuntimeError('MuMu 시작 드롭 확인 준비 실패: '+str(exc)) from exc
+                finally:capture_seconds['baseline']+=time.perf_counter()-capture_started
                 if cancel.is_set():raise RuntimeError('MuMu 입력 중지')
                 if limit-(time.perf_counter()-started)<move_reserve+hold:
                     raise RuntimeError('제한시간부족 · 시작 판 캡처 후 전체 경로 이동 시간을 확보하지 못했습니다.')
@@ -998,8 +1018,10 @@ class NativeSDKInputMixin:
                     if cancel.is_set():raise RuntimeError('MuMu 입력 중지')
                     if limit-(time.perf_counter()-started)<move_reserve:
                         raise RuntimeError('제한시간부족 · 시작 드롭 확인 중 전체 경로 이동 시간을 확보하지 못했습니다.')
+                    capture_started=time.perf_counter()
                     try:feedback=self.check_input_start(start_context,baseline)
                     except Exception as exc:raise RuntimeError('MuMu 시작 드롭 확인 실패: '+str(exc)) from exc
+                    finally:capture_seconds['start_checks']+=time.perf_counter()-capture_started
                     held=True;start_checks+=1
                     if not isinstance(feedback,dict):raise RuntimeError('MuMu 시작 드롭 확인 응답이 잘못됐습니다.')
                     start_feedback=dict(feedback,checks=start_checks,seconds=round(time.perf_counter()-feedback_started,6))
@@ -1018,17 +1040,17 @@ class NativeSDKInputMixin:
                         raise RuntimeError(f'MuMu 시작 위치 불일치 · {wanted//6+1}행 {wanted%6+1}열 대신 {observed//6+1}행 {observed%6+1}열이 들렸습니다. 경로 이동을 보내지 않았습니다.')
                     raise RuntimeError('MuMu 시작 드롭이 잡힌 것을 확인하지 못했습니다. 경로 이동을 보내지 않았습니다.')
             if probe:self.capture();held=True
-            deadline=time.perf_counter();last_sent=deadline
+            deadline=time.perf_counter();last_sent=deadline;motion_started=deadline
             for edge,(one,two) in enumerate(zip(points,points[1:])):
                 if feedback_active and edge:
                     previous=points[edge-1]
                     before=(one[0]-previous[0],one[1]-previous[1])
                     after=(two[0]-one[0],two[1]-one[1])
                     if before[0]*after[1]!=before[1]*after[0] or before[0]*after[0]+before[1]*after[1]<=0:
-                        # Let the corner reach a game frame without another
-                        # DOWN/UP or a capture. Keep the absolute schedule;
-                        # the frame-sized catch-up floor still applies.
-                        wait(max(0,last_sent+.03125-time.perf_counter()))
+                        # Async scrcpy can coalesce a corner before the game
+                        # consumes it (reported 032, cell 7). Keep that center
+                        # for several frames without adding input/capture.
+                        wait(max(0,last_sent+corner_dwell-time.perf_counter()))
                 for part in range(1,5):
                     deadline+=.01875
                     # Bound catch-up to one display frame; never burst points
@@ -1036,12 +1058,16 @@ class NativeSDKInputMixin:
                     wait(max(0,deadline-time.perf_counter(),last_sent+ANDROID_TOUCH_SAMPLE_SECONDS-time.perf_counter()))
                     down(round(one[0]+(two[0]-one[0])*part/4),round(one[1]+(two[1]-one[1])*part/4),2)
                     last_sent=time.perf_counter()
+            motion_seconds=time.perf_counter()-motion_started
             if len(points)>1:
                 # The last swap is still animating at 60 ms (reported v119).
                 # Keep DOWN stationary until it settles; do not weaken board equality.
-                wait(.22);self.capture();held=True
+                wait(.22);capture_started=time.perf_counter()
+                try:self.capture();held=True
+                finally:capture_seconds['before_up']+=time.perf_counter()-capture_started
         except Exception as exc:error=str(exc)
         finally:
+            if motion_started is not None and motion_seconds is None:motion_seconds=time.perf_counter()-motion_started
             try:
                 cleanup=self.release_fingers(require_active=self.touch_active)
                 released=cleanup.get('released') is True
@@ -1052,10 +1078,14 @@ class NativeSDKInputMixin:
             if not released:error=(error+'; ' if error else '')+'MuMu SDK 손가락 해제 실패'
         moves=[event['seconds'] for event in trace if event['action']==2]
         gaps=[b-a for a,b in zip(moves,moves[1:])]
+        corner_gaps={4*i-1 for i in corners} if feedback_active else set()
+        moving_gaps=[gap for i,gap in enumerate(gaps) if i not in corner_gaps]
         return dict(ready=True,events=trace,released=released,held_frame=held,error=error,execute_seconds=time.perf_counter()-started,
             preflight_release=preflight,cleanup=cleanup,pacer_mode=pacer.mode,
             start_feedback=start_feedback,display_id=int(self.display_id),input_stream=stream,
-            move_gap_max_seconds=max(gaps,default=0),move_gap_over_50ms=sum(gap>.05 for gap in gaps))
+            move_gap_max_seconds=max(gaps,default=0),move_gap_over_50ms=sum(gap>.05 for gap in gaps),
+            motion_seconds=motion_seconds,motion_estimate_seconds=motion_estimate,corner_count=len(corners) if feedback_active else 0,
+            corner_dwell_seconds=corner_dwell,feedback_capture_seconds=capture_seconds,moving_gap_max_seconds=max(moving_gaps,default=0))
 
 
 class AndroidControlTouch(PersistentAndroidTouch):
@@ -1069,6 +1099,8 @@ class AndroidControlTouch(PersistentAndroidTouch):
         owner=self;device=self.device
         class Session(NativeSDKInputMixin):
             input_supported=True;touch_active=False;display_id=0;handle=0
+            corner_dwell_seconds=ANDROID_CONTROL_CORNER_DWELL_SECONDS
+            feedback_move_seconds=ANDROID_CONTROL_FEEDBACK_MOVE_SECONDS
             size=device.native_size
             def touch_down(self,handle,display,finger,x,y):
                 owner.event(2 if owner.pressed else 0,x,y)
@@ -1097,6 +1129,9 @@ class AndroidControlTouch(PersistentAndroidTouch):
             control_dispatch_confirmed=not result['error'],control_release_confirmed=result['released'],
             control_start_feedback=result['start_feedback'],control_execute_seconds=result['execute_seconds'],
             control_move_gap_max_seconds=result['move_gap_max_seconds'],control_input_size=list(self.input_size))
+        device.input_diagnostics.update(control_motion_seconds=result['motion_seconds'],control_motion_estimate_seconds=result['motion_estimate_seconds'],
+            control_corner_count=result['corner_count'],control_corner_dwell_seconds=result['corner_dwell_seconds'],control_feedback_capture_seconds=result['feedback_capture_seconds'],
+            control_moving_gap_max_seconds=result['moving_gap_max_seconds'],control_pacer_mode=result['pacer_mode'])
         if result['error']:raise RuntimeError(result['error'].replace('MuMu SDK','Android 직접 입력').replace('MuMu 시작','Android 시작').replace('MuMu 입력','Android 입력'))
 
     def probe(self,x,y):
