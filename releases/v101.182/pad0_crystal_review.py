@@ -25,7 +25,10 @@ def _pack(signatures):
 def _unpack(value):
     return np.frombuffer(zlib.decompress(base64.b85decode(value)),dtype=np.int16).reshape(3,64,48,3)
 
-def _distance(a,b):return min(float(np.abs(x-y).mean()) for x,y in zip(a,b))
+def _distance(a,b):
+    # Retain the stored 3 x 64 x 48 LAB format, but never score the lower
+    # quantity area. Old reviewed pairs and new captures use the same mask.
+    return min(float(np.abs(np.asarray(x)[:46]-np.asarray(y)[:46]).mean()) for x,y in zip(a,b))
 
 
 def crystal_artwork_score(probe,references):
@@ -39,7 +42,7 @@ def crystal_artwork_score(probe,references):
         a=np.asarray(left,dtype=np.float32);b=np.asarray(right,dtype=np.float32)
         if a.shape!=(64,48,3) or b.shape!=a.shape:continue
         for dy,dx in ((0,0),(-2,0),(2,0),(0,-2),(0,2)):
-            x=a[12:53,10:38];y=b[12+dy:53+dy,10+dx:38+dx]
+            x=a[12:46,10:38];y=b[12+dy:46+dy,10+dx:38+dx]
             distance=float(np.abs(x-y).mean())
             if distance<=3:
                 best=min(best,distance);continue
@@ -48,6 +51,11 @@ def crystal_artwork_score(probe,references):
             scale=float(np.sqrt(np.sum(l*l)*np.sum(r*r)))
             if scale>1 and float(np.sum(l*r))/scale>=.60:best=min(best,distance)
     return best
+
+
+def crystal_identity_score(probe,references):
+    """Require both the upper card and portrait to agree, ignoring ×1..×999."""
+    return max(_distance(probe,references),crystal_artwork_score(probe,references))
 
 def icon_review_list(root):
     with LOCK:
@@ -59,7 +67,8 @@ def icon_review_record(root,image,references,reason,category='icon',context=None
     for cid,label,reference,score in references:
         candidates.append(dict(cid=str(cid),label=str(label),signature=_pack(crystal_art_signatures(reference)),score=float(score)))
     if not candidates:return None
-    identity=(probe+repr([(c['cid'],c['signature']) for c in candidates])).encode()
+    identity=(_pack([a[:46] for a in _unpack(probe)])+repr([
+        (c['cid'],_pack([a[:46] for a in _unpack(c['signature'])])) for c in candidates])).encode()
     if category=='image_update':identity+=image.convert('RGB').tobytes()+b''.join(ref.convert('RGB').tobytes() for _,_,ref,_ in references)
     if context is not None:
         if not isinstance(context,dict):raise ValueError('비교 자료의 연결 정보가 잘못됐습니다.')
@@ -70,6 +79,19 @@ def icon_review_record(root,image,references,reason,category='icon',context=None
     with LOCK:
         previous=_load_json_dict(folder/'record.json')
         if previous:return previous
+        if category!='image_update':
+            # A new amount must not create another identity question. Keep the
+            # original images and all human verdicts; image-update reviews
+            # deliberately retain their separate full-image history.
+            for previous in icon_review_list(root):
+                old=previous.get('candidates',[])
+                if (previous.get('category','icon')!=category or previous.get('context')!=context
+                        or [c.get('cid') for c in old]!=[c['cid'] for c in candidates]):continue
+                try:
+                    if (_distance(_unpack(previous['probe']),_unpack(probe))<=1.5
+                            and all(_distance(_unpack(a['signature']),_unpack(b['signature']))<=.25 for a,b in zip(old,candidates))):
+                        return previous
+                except (KeyError,ValueError,TypeError,zlib.error):continue
         folder.mkdir(parents=True,exist_ok=True);image.convert('RGB').save(folder/'probe.png')
         for index,(_,_,reference,_) in enumerate(references):reference.convert('RGB').save(folder/f'reference_{index}.png')
         record=dict(id=digest,created=time.time(),probe=probe,candidates=candidates,reason=str(reason),decisions={},status='pending',category=category)
