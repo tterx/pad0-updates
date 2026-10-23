@@ -818,8 +818,8 @@ class FloatingPathExecuteButton:
         self.attribute_strip=tk.Frame(self.path_body,bg='#172432')
         self.attribute_strip.grid(row=1,column=0,sticky='ew',padx=(7,7),pady=(5,0))
         self.five_state_label=tk.Label(self.attribute_strip,text='5속성: 확인 대기',
-            bg='#172432',fg='#f8d67b',font=('Malgun Gothic',9),anchor='w')
-        # Route feasibility remains available internally; inventory is the visible first status row.
+            bg='#172432',fg='#f8d67b',font=('Malgun Gothic',9),anchor='w',justify='left',wraplength=220)
+        self.five_state_label.pack(fill='x')
         self.attribute_counts_frame=tk.Frame(self.attribute_strip,bg='#172432',width=220,height=38)
         self.attribute_counts_frame.pack(fill='x',pady=(3,0))
         self.attribute_counts_frame.pack_propagate(False)
@@ -928,7 +928,10 @@ class FloatingPathExecuteButton:
             text, color = self.app._attribute_status
             if strip is not None and mode in (2,9):
                 first=text.splitlines()[0] if text else '5속성: 확인 대기'
-                five=first.split(' · ',1)[0] if first.startswith('5속성') else '5속성: 확인 대기'
+                five=first if first.startswith('5속성') else '5속성: 확인 대기'
+                if first.startswith('5속성:'):
+                    self.five_state_label.pack(fill='x',before=self.attribute_counts_frame)
+                else:self.five_state_label.pack_forget()
                 five_color=('#ffb2a9' if any(word in five for word in ('부족','미확보'))
                             else '#84edbc' if any(word in five for word in ('경로 확인','수량 충족')) else '#f8d67b')
                 if self.five_state_label.cget('text')!=five or self.five_state_label.cget('fg')!=five_color:
@@ -936,7 +939,7 @@ class FloatingPathExecuteButton:
                 board=getattr(self.app,'_attribute_probe_candidate',None)
                 if getattr(self.app,'_live_board_ready',False):self.refresh_attribute_counts(board)
                 if first.startswith('5속성') and not isinstance(getattr(self.app,'_route_result_notice',None),dict):
-                    text=(next((line for line in text.splitlines() if line.startswith('6콤보:')),'')
+                    text=(next((line for line in text.splitlines() if line.startswith(('6콤보:','6콤보·회복:'))),'')
                           if mode==9 else '' if '수량 부족' in first else first.partition(' · ')[2])
                     color=('#84edbc' if '경로 확인' in text else '#ffb2a9' if any(word in text for word in ('부족','미확보')) else '#f8d67b')
             if self.attr_state_var.get()!=text:self.attr_state_var.set(text)
@@ -2333,12 +2336,14 @@ class AppUIMixin:
         policies={'auto':'상황에 따라 자동','locked_only':'5속성 부족·잠금 존재 시','shortage_only':'속성 부족일 때만','time_only':'조작시간 감소 시에만','cleanse_only':'바인드 / 각성 무효 시에만'}
         policy=tk.StringVar();policyrow=ttk.Frame(auto_body);policyrow.pack(fill='x')
         ttk.Label(policyrow,text='사용 조건: ').pack(side='left');ttk.Combobox(policyrow,textvariable=policy,values=list(policies.values()),state='readonly',width=30).pack(side='left')
-        opts=ttk.Frame(auto_body);opts.pack(fill='x',pady=8)
+        opts=ttk.Frame(footer);opts.pack(fill='x',pady=(6,0))
         ttk.Label(opts,text='5속성 부족 시 잠금 해제 → 5속성 생성 → 재탐색').pack(anchor='w')
         notice=tk.BooleanVar(value=self.user_settings.get('background_complete_notify',True))
         ttk.Checkbutton(opts,text='파밍 완료 바탕화면 알림',variable=notice).pack(side='left')
+        sound=tk.BooleanVar(value=self.user_settings.get('background_complete_sound',True))
+        ttk.Checkbutton(opts,text='작은 완료음',variable=sound).pack(side='left',padx=(8,0))
         def save_common():
-            self.user_settings.update(background_complete_notify=notice.get());self.save_user_settings();status.set('완료 알림 설정을 저장했습니다.')
+            self.user_settings.update(background_complete_notify=notice.get(),background_complete_sound=sound.get());self.save_user_settings();status.set('완료 알림 설정을 저장했습니다.')
         ttk.Button(opts,text='공통 설정 저장',command=save_common).pack(side='right')
         def current():
             data=self.user_settings.get('background_party_profiles',[])
@@ -2547,7 +2552,7 @@ class AppUIMixin:
                 self.user_settings.setdefault('monster_overrides',{})[number]=override
                 data=self.user_settings.setdefault('background_party_profiles',[])
                 while len(data)<6:data.append(dict(slot=len(data)))
-                data[selected.get()]=p;self.user_settings.update(background_complete_notify=notice.get());self.save_user_settings();refresh();status.set('정정 내용을 저장했습니다. 이미지 원본과 함께 유지합니다.')
+                data[selected.get()]=p;self.user_settings.update(background_complete_notify=notice.get(),background_complete_sound=sound.get());self.save_user_settings();refresh();status.set('정정 내용을 저장했습니다. 이미지 원본과 함께 유지합니다.')
             except ValueError as exc:status.set(str(exc))
         ttk.Button(actions,text='번호로 DB 정보 불러오기',command=db_fill).pack(side='left')
         ttk.Button(actions,text='설명에서 효과 다시 읽기',command=lambda:[v.set(k in services.skill_details(skill.get('1.0','end'))['effects']) for k,v in effects.items()]).pack(side='left',padx=8)
