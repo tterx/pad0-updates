@@ -1,3 +1,7 @@
+# v101.172 실패 시 소유한 UP 우선, 실제 해제 후 관찰
+
+드래그도 Android 표준 InputManagerGlobal/InputManager API 래퍼를 사용하고 legacy binder 직접 주입으로 대체하지 않습니다. 실패/중지에서 먼저 소유한 터치의 UP을 보냅니다. UP 실패 때만 CANCEL을 시도하며 CANCEL 성공을 게임의 UP 성공으로 취급하지 않습니다. idle 이벤트는 없습니다. 지정 드롭이 그대로인데 떨어진 셀만 변한 시작점 불일치는 즉시 이동을 막습니다. 일반 실패 후 released.png와 정지 판 복원 관찰을 저장하고 F10 뒤 캡처는 하지 않습니다. 030의 잘못된 시작점 원인과 실제 MuMu 재발 해소는 미확정입니다. REVIEW172.md에 근거와 검증 한계를 기록합니다.
+
 # v101.171 실제 touchscreen 선택과 실패 시 소유 터치 취소
 
 UI의 Android input touchscreen과 같은 InputDevice를 선택하여 자동 경로의 DOWN/MOVE/UP/CANCEL을 보냅니다. 선택한 ID는 touch_device_id에 기록합니다. 정상 UP 전 최종 판이 다른 경우 소유한 DOWN을 CANCEL/UP으로 정리하고 중지합니다. idle 정리에서는 이벤트를 보내지 않습니다. ADB 전용과 게임 반응 검증을 유지합니다. Android 처리 응답은 게임 성공과 다릅니다. 029 상세와 실기 확인 한계는 REVIEW171.md를 참고하세요.
