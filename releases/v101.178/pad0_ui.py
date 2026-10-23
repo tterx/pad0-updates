@@ -2626,17 +2626,20 @@ class AppUIMixin:
         canvas.bind('<Configure>',lambda e:canvas.itemconfigure(item,width=e.width))
         def wheel(event):canvas.yview_scroll(-1 if event.delta>0 else 1,'units')
         window.bind('<MouseWheel>',wheel)
-        ttk.Label(body,text='MuMu 강화 스크린샷으로 화면을 읽고, ADB로 클릭·드래그를 보냅니다.',wraplength=595).pack(anchor='w')
+        ttk.Label(body,text='MuMu 고속 연결로 화면과 입력을 처리합니다. 처음 연결할 때 연결 도구를 설치할 수 있습니다.',wraplength=595).pack(anchor='w')
         path=tk.StringVar(value=self.user_settings.get('background_adb_path',''))
         serial=tk.StringVar(value=self.user_settings.get('background_adb_serial',''))
         skills=tk.BooleanVar(value=self.user_settings.get('background_auto_skills',True))
-        enhanced=tk.BooleanVar(value=self.user_settings.get('background_mumu_enhanced',True))
         mumu_root=tk.StringVar(value=self.user_settings.get('background_mumu_root',''))
         mumu_index=tk.StringVar(value=self.user_settings.get('background_mumu_index',''))
-        def capture_values():
-            return dict(self.user_settings,background_adb_path=services.portable_adb_path(path.get()) if path.get().strip() else '',background_adb_serial=serial.get().strip(),
-                        background_mumu_enhanced=enhanced.get(),background_mumu_root=mumu_root.get().strip(),background_mumu_index=mumu_index.get().strip(),
-                        background_capture_mode='mumu_enhanced' if enhanced.get() else 'adb',background_adb_raw_capture=True,background_input_backend='adb_batch')
+        def capture_values(probe_input=False):
+            values=dict(self.user_settings,background_adb_path=services.portable_adb_path(path.get()) if path.get().strip() else '',background_adb_serial=serial.get().strip(),
+                        background_connection_profile='fast',background_mumu_enhanced=True,background_mumu_root=mumu_root.get().strip(),background_mumu_index=mumu_index.get().strip(),
+                        background_capture_preference='auto',background_input_preference='auto',
+                        background_capture_mode='mumu_enhanced',background_adb_raw_capture=True,background_input_backend='auto')
+            values.pop('background_probe_input',None)
+            if probe_input:values['background_probe_input']=True
+            return values
         def apply_wizard(found_path,found_serial):
             if window.winfo_exists():path.set(found_path);serial.set(found_serial)
         wizard_row=ttk.Frame(body);wizard_row.pack(fill='x',pady=(12,0))
@@ -2662,9 +2665,8 @@ class AppUIMixin:
         ttk.Button(row,text='찾기',command=browse).pack(side='left')
         ttk.Label(body,text='기기 주소 (비우면 한 대만 연결됐을 때 자동 선택)').pack(anchor='w',pady=(8,0))
         ttk.Entry(body,textvariable=serial).pack(fill='x')
-        capture_box=ttk.LabelFrame(body,text='화면 캡처',padding=10);capture_box.pack(fill='x',pady=(12,4))
-        ttk.Checkbutton(capture_box,text='MuMu 강화 스크린샷 사용 (MAA 방식)',variable=enhanced).pack(anchor='w')
-        ttk.Label(capture_box,text='선택한 기기의 화면을 확인한 뒤 적용합니다. 사용할 수 없으면 ADB로 읽고, 누른 상태의 캡처 실패는 이동을 중지합니다.',wraplength=690).pack(anchor='w',pady=4)
+        capture_box=ttk.LabelFrame(body,text='MuMu 고속 연결',padding=10);capture_box.pack(fill='x',pady=(12,4))
+        ttk.Label(capture_box,text='선택한 기기의 화면을 확인한 뒤 고속 캡처와 입력을 준비합니다. 드롭을 누른 뒤에는 다른 입력으로 전환하지 않습니다.',wraplength=690).pack(anchor='w',pady=4)
         ttk.Label(capture_box,text='MuMu 설치 폴더 (비우면 자동 탐색)').pack(anchor='w')
         cap_row=ttk.Frame(capture_box);cap_row.pack(fill='x')
         ttk.Entry(cap_row,textvariable=mumu_root).pack(side='left',fill='x',expand=True)
@@ -2675,11 +2677,12 @@ class AppUIMixin:
         index_row=ttk.Frame(capture_box);index_row.pack(fill='x',pady=4)
         ttk.Label(index_row,text='MuMu 기기 번호 # (표준 포트면 자동)').pack(side='left')
         ttk.Entry(index_row,textvariable=mumu_index,width=8).pack(side='left',padx=8)
-        ttk.Button(capture_box,text='스크린샷 테스트',command=lambda:self.show_background_capture_test(capture_values(),capture_box)).pack(anchor='w')
+        ttk.Button(capture_box,text='고속 연결 테스트 (누름 없음)',command=lambda:self.show_background_capture_test(capture_values(True),capture_box)).pack(anchor='w',pady=(4,0))
         ttk.Checkbutton(body,text='상세에서 확인한 스킬 자동 사용',variable=skills).pack(anchor='w',pady=8)
         ttk.Label(body,text='MuMu를 종료하거나 PC를 절전하면 멈춥니다. F10은 파밍 중지입니다.',wraplength=590).pack(anchor='w')
         def save():
             values=capture_values()
+            self.user_settings.pop('background_probe_input',None)
             self.user_settings.update(values,background_auto_skills=skills.get())
             self.save_user_settings();window.destroy()
         ttk.Button(footer,text='저장',command=save).pack(anchor='e')
