@@ -818,8 +818,8 @@ class FloatingPathExecuteButton:
         self.attribute_strip=tk.Frame(self.path_body,bg='#172432')
         self.attribute_strip.grid(row=1,column=0,sticky='ew',padx=(7,7),pady=(5,0))
         self.five_state_label=tk.Label(self.attribute_strip,text='5속성: 확인 대기',
-            bg='#172432',fg='#f8d67b',font=('Malgun Gothic',9),anchor='w')
-        # Route feasibility remains available internally; inventory is the visible first status row.
+            bg='#172432',fg='#f8d67b',font=('Malgun Gothic',9),anchor='w',justify='left',wraplength=220)
+        self.five_state_label.pack(fill='x')
         self.attribute_counts_frame=tk.Frame(self.attribute_strip,bg='#172432',width=220,height=38)
         self.attribute_counts_frame.pack(fill='x',pady=(3,0))
         self.attribute_counts_frame.pack_propagate(False)
@@ -928,7 +928,10 @@ class FloatingPathExecuteButton:
             text, color = self.app._attribute_status
             if strip is not None and mode in (2,9):
                 first=text.splitlines()[0] if text else '5속성: 확인 대기'
-                five=first.split(' · ',1)[0] if first.startswith('5속성') else '5속성: 확인 대기'
+                five=first if first.startswith('5속성') else '5속성: 확인 대기'
+                if first.startswith('5속성:'):
+                    self.five_state_label.pack(fill='x',before=self.attribute_counts_frame)
+                else:self.five_state_label.pack_forget()
                 five_color=('#ffb2a9' if any(word in five for word in ('부족','미확보'))
                             else '#84edbc' if any(word in five for word in ('경로 확인','수량 충족')) else '#f8d67b')
                 if self.five_state_label.cget('text')!=five or self.five_state_label.cget('fg')!=five_color:
@@ -936,7 +939,7 @@ class FloatingPathExecuteButton:
                 board=getattr(self.app,'_attribute_probe_candidate',None)
                 if getattr(self.app,'_live_board_ready',False):self.refresh_attribute_counts(board)
                 if first.startswith('5속성') and not isinstance(getattr(self.app,'_route_result_notice',None),dict):
-                    text=(next((line for line in text.splitlines() if line.startswith('6콤보:')),'')
+                    text=(next((line for line in text.splitlines() if line.startswith(('6콤보:','6콤보·회복:'))),'')
                           if mode==9 else '' if '수량 부족' in first else first.partition(' · ')[2])
                     color=('#84edbc' if '경로 확인' in text else '#ffb2a9' if any(word in text for word in ('부족','미확보')) else '#f8d67b')
             if self.attr_state_var.get()!=text:self.attr_state_var.set(text)
