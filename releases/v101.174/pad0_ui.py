@@ -2617,14 +2617,36 @@ class AppUIMixin:
         window=tk.Toplevel(self.root);self._background_settings_window=window
         window.title('백그라운드 파밍 연결 설정');window.geometry(f'800x{min(880,window.winfo_screenheight()-70)}')
         self._party_bring_forward(window)
-        body=ttk.Frame(window,padding=16);body.pack(fill='both',expand=True)
-        ttk.Label(body,text='ADB로 화면을 읽고, 선택한 Android 기기에 연속 터치를 보냅니다.',wraplength=595).pack(anchor='w')
+        footer=ttk.Frame(window,padding=(16,8));footer.pack(side='bottom',fill='x')
+        area=ttk.Frame(window);area.pack(fill='both',expand=True)
+        canvas=tk.Canvas(area,highlightthickness=0);scroll=ttk.Scrollbar(area,orient='vertical',command=canvas.yview)
+        canvas.configure(yscrollcommand=scroll.set);scroll.pack(side='right',fill='y');canvas.pack(side='left',fill='both',expand=True)
+        body=ttk.Frame(canvas,padding=16);item=canvas.create_window((0,0),window=body,anchor='nw')
+        body.bind('<Configure>',lambda _e:canvas.configure(scrollregion=canvas.bbox('all')))
+        canvas.bind('<Configure>',lambda e:canvas.itemconfigure(item,width=e.width))
+        def wheel(event):canvas.yview_scroll(-1 if event.delta>0 else 1,'units')
+        window.bind('<MouseWheel>',wheel)
+        ttk.Label(body,text='MAA 연결 방식을 자동 선택합니다. 처음 연결할 때 공식 도구를 설치할 수 있습니다.',wraplength=595).pack(anchor='w')
         path=tk.StringVar(value=self.user_settings.get('background_adb_path',''))
         serial=tk.StringVar(value=self.user_settings.get('background_adb_serial',''))
         skills=tk.BooleanVar(value=self.user_settings.get('background_auto_skills',True))
+        enhanced=tk.BooleanVar(value=self.user_settings.get('background_mumu_enhanced',True))
+        mumu_root=tk.StringVar(value=self.user_settings.get('background_mumu_root',''))
+        mumu_index=tk.StringVar(value=self.user_settings.get('background_mumu_index',''))
+        captures={'자동 선택 (MuMu 강화 → MAA 무손실)':'auto','MuMu 강화':'mumu_enhanced','MAA 자동 (무손실)':'maa_auto',
+            'MAA 네트워크 RAW':'maa_netcat','MAA RAW 압축':'maa_gzip','MAA minicap Stream (JPEG)':'maa_minicap_stream',
+            'MAA minicap Direct (JPEG)':'maa_minicap_direct','ADB 원본/PNG':'adb'}
+        inputs={'자동 선택 (MAA → scrcpy → Android)':'auto','MAA MuMu SDK':'maa_mumu','MAA MaaTouch':'maa_touch',
+            'MAA minitouch':'minitouch','scrcpy 제어 소켓':'scrcpy','Android 경로 일괄 입력':'adb_batch'}
+        capture_choice=tk.StringVar(value=next((k for k,v in captures.items() if v==self.user_settings.get('background_capture_preference','auto')),next(iter(captures))))
+        input_choice=tk.StringVar(value=next((k for k,v in inputs.items() if v==self.user_settings.get('background_input_preference','auto')),next(iter(inputs))))
         def capture_values():
+            preference=captures[capture_choice.get()];backend=inputs[input_choice.get()]
+            mode=preference if preference!='auto' else ('mumu_enhanced' if enhanced.get() else 'adb')
             return dict(self.user_settings,background_adb_path=services.portable_adb_path(path.get()) if path.get().strip() else '',background_adb_serial=serial.get().strip(),
-                        background_capture_mode='adb',background_adb_raw_capture=True,background_input_backend='adb_batch')
+                        background_mumu_enhanced=enhanced.get(),background_mumu_root=mumu_root.get().strip(),background_mumu_index=mumu_index.get().strip(),
+                        background_capture_preference=preference,background_input_preference=backend,
+                        background_capture_mode=mode,background_adb_raw_capture=True,background_input_backend=backend)
         def apply_wizard(found_path,found_serial):
             if window.winfo_exists():path.set(found_path);serial.set(found_serial)
         wizard_row=ttk.Frame(body);wizard_row.pack(fill='x',pady=(12,0))
@@ -2634,6 +2656,7 @@ class AppUIMixin:
         def apply_official(found_path,found_root):
             if window.winfo_exists():
                 path.set(found_path)
+                if found_root:mumu_root.set(found_root)
         ttk.Button(official_row,text='Google 공식 ADB로 강제 교체',command=lambda:self.install_google_adb_ui(path.get(),apply_official,window)).pack(side='left')
         ttk.Button(official_row,text='이전 ADB로 되돌리기',command=lambda:self.restore_previous_adb(apply_official,window)).pack(side='left',padx=8)
         ttk.Label(body,text=r'설치 위치: 프로그램 폴더\platform-tools\adb.exe · 업데이트 후 유지',foreground='#526776').pack(anchor='w',pady=(4,0))
@@ -2649,16 +2672,32 @@ class AppUIMixin:
         ttk.Button(row,text='찾기',command=browse).pack(side='left')
         ttk.Label(body,text='기기 주소 (비우면 한 대만 연결됐을 때 자동 선택)').pack(anchor='w',pady=(8,0))
         ttk.Entry(body,textvariable=serial).pack(fill='x')
-        capture_box=ttk.LabelFrame(body,text='ADB 화면 캡처',padding=10);capture_box.pack(fill='x',pady=(12,4))
-        ttk.Label(capture_box,text='ADB 원본 화면을 우선 사용하고, 미지원 형식이면 PNG로 읽습니다.',wraplength=590).pack(anchor='w',pady=6)
+        capture_box=ttk.LabelFrame(body,text='화면 캡처',padding=10);capture_box.pack(fill='x',pady=(12,4))
+        ttk.Combobox(capture_box,textvariable=capture_choice,values=list(captures),state='readonly').pack(fill='x',pady=4)
+        ttk.Checkbutton(capture_box,text='MuMu 강화 스크린샷 사용 (MAA 방식)',variable=enhanced).pack(anchor='w')
+        ttk.Label(capture_box,text='선택한 기기의 화면을 확인한 뒤 적용합니다. 사용할 수 없으면 ADB로 읽고, 누른 상태의 캡처 실패는 이동을 중지합니다.',wraplength=690).pack(anchor='w',pady=4)
+        ttk.Label(capture_box,text='MuMu 설치 폴더 (비우면 자동 탐색)').pack(anchor='w')
+        cap_row=ttk.Frame(capture_box);cap_row.pack(fill='x')
+        ttk.Entry(cap_row,textvariable=mumu_root).pack(side='left',fill='x',expand=True)
+        def browse_mumu():
+            selected=filedialog.askdirectory(parent=window,title='MuMu 설치 폴더 선택')
+            if selected:mumu_root.set(selected)
+        ttk.Button(cap_row,text='찾기',command=browse_mumu).pack(side='left')
+        index_row=ttk.Frame(capture_box);index_row.pack(fill='x',pady=4)
+        ttk.Label(index_row,text='MuMu 기기 번호 # (표준 포트면 자동)').pack(side='left')
+        ttk.Entry(index_row,textvariable=mumu_index,width=8).pack(side='left',padx=8)
         ttk.Button(capture_box,text='스크린샷 테스트',command=lambda:self.show_background_capture_test(capture_values(),capture_box)).pack(anchor='w')
+        input_box=ttk.LabelFrame(body,text='클릭·경로 입력',padding=10);input_box.pack(fill='x',pady=8)
+        ttk.Combobox(input_box,textvariable=input_choice,values=list(inputs),state='readonly').pack(fill='x')
+        ttk.Label(input_box,text='연결 전에 지원 여부를 확인합니다. 드롭을 누른 뒤에는 다른 입력으로 전환하거나 다시 누르지 않습니다.',wraplength=690).pack(anchor='w',pady=4)
+        ttk.Button(input_box,text='캡처·입력 연결 테스트 (누름 없음)',command=lambda:self.show_background_capture_test(dict(capture_values(),background_probe_input=True),input_box)).pack(anchor='w')
         ttk.Checkbutton(body,text='상세에서 확인한 스킬 자동 사용',variable=skills).pack(anchor='w',pady=8)
         ttk.Label(body,text='MuMu를 종료하거나 PC를 절전하면 멈춥니다. F10은 파밍 중지입니다.',wraplength=590).pack(anchor='w')
         def save():
             values=capture_values()
             self.user_settings.update(values,background_auto_skills=skills.get())
             self.save_user_settings();window.destroy()
-        ttk.Button(body,text='저장',command=save).pack(anchor='e',pady=8)
+        ttk.Button(footer,text='저장',command=save).pack(anchor='e')
 
     def show_farming_confirmation(self,settings_only=False,target_key=None):
         if getattr(self,'_material_catalog_busy',False):
