@@ -1876,6 +1876,7 @@ class AppUIMixin:
         ttk.Button(outer,text='등록한 크리처·각성 확인',command=self.show_creature_registry).pack(fill='x',pady=3)
         ttk.Button(outer,text='파밍 설정 · 목표 재료 선택',command=self.show_farming_settings).pack(fill='x',pady=3)
         ttk.Button(farm_row,text='파밍 연결 설정',command=self.background_settings).pack(side='left',padx=(6,0))
+        ttk.Button(outer,text='자동 속도 테스트 · 실제 퍼즐 이동',command=self.show_input_speed_test).pack(fill='x',pady=3)
         attribute_host = ttk.Frame(outer)
         attribute_host.pack(fill="x")
         self.attribute_status_frame = ttk.Frame(attribute_host)
@@ -2606,6 +2607,7 @@ class AppUIMixin:
         self._party_bring_forward(win)
 
     def show_background_setup_wizard(self,path='',serial='',on_saved=None):
+        if getattr(self,'_speed_test_running',False):self.set_status('속도 테스트 입력 정리가 끝난 뒤 연결 설정을 확인하세요.');return
         if getattr(self,'_background_running',False):self.set_status('F10으로 파밍을 중지한 뒤 설정 마법사를 열어주세요.');return
         current=getattr(self,'_background_setup_wizard',None)
         if current is not None and not current.closed and current.win.winfo_exists():
@@ -2617,7 +2619,7 @@ class AppUIMixin:
 
     def background_settings(self):
         services = self._ui_backend_services()
-        if getattr(self,'_background_running',False):self.set_status('F10으로 파밍을 중지한 뒤 연결 설정을 바꿀 수 있습니다.');return
+        if getattr(self,'_background_running',False) or getattr(self,'_speed_test_running',False):self.set_status('F10으로 파밍·속도 테스트를 중지한 뒤 연결 설정을 바꿀 수 있습니다.');return
         from tkinter import filedialog
         window=tk.Toplevel(self.root);self._background_settings_window=window
         window.title('백그라운드 파밍 연결 설정');window.geometry(f'800x{min(880,window.winfo_screenheight()-70)}')
@@ -2721,7 +2723,7 @@ class AppUIMixin:
         selector.current(keys.index(key));selector.pack(fill='x',pady=(8,6))
         def change_group(_event):
             chosen_key=keys[selector.current()]
-            cancel();self.show_farming_confirmation(settings_only=settings_only,target_key=chosen_key)
+            cancel(keep_connection=True);self.show_farming_confirmation(settings_only=settings_only,target_key=chosen_key)
         selector.bind('<<ComboboxSelected>>',change_group)
         ttk.Label(body,style='FarmConfirm.TLabel',text='새 대상은 게임의 생성·돌파 확인창을 열고 [재료확인] 또는 F7을 누르세요. 등록된 이름은 건너뛰고 이름 없는 크리스탈만 등록합니다. 완료 후 원래 재료창으로 돌아와 크리스탈 창을 맨 위에 표시합니다. 선택하지 않으면 보상 집계를 사용하지 않습니다.',wraplength=570).pack(anchor='w',pady=(0,8))
         def rescan_materials():
@@ -2768,7 +2770,10 @@ class AppUIMixin:
         hide_stats=tk.BooleanVar(value=self.user_settings.get('farming_hide_stats',False))
         ttk.Checkbutton(body,text='보상 집계창 숨기기 (수량은 계속 집계)',variable=hide_stats).pack(side='bottom',anchor='w',before=area)
         controls=ttk.Frame(body,style='FarmConfirm.TFrame');controls.pack(side='bottom',fill='x',pady=(8,0),before=area)
-        def cancel():
+        def cancel(keep_connection=False):
+            if not keep_connection and not settings_only:
+                discard=getattr(self,'_discard_farming_warmup',None)
+                if discard is not None:discard()
             if win.winfo_exists():win.destroy()
             self._farming_confirm_window=None
         def confirm():
@@ -2781,7 +2786,7 @@ class AppUIMixin:
                     if not settings_only and not chosen:raise ValueError('파밍할 재료를 하나 이상 선택해 주세요.')
                     _atomic_json_write(self.data_paths['ledger'],updated)
                 self.user_settings['farming_hide_stats']=hide_stats.get();self.save_user_settings()
-                cancel()
+                cancel(keep_connection=not settings_only)
                 if settings_only:
                     self._prefind_cancel();self._prefind_paused_key=None;self._prefind_failed_key=None
                     self._prefind_condition_wait=None;self._prefind_probe_next=0.0
