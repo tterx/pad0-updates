@@ -56,17 +56,12 @@ def _input_resource_root():
 
 MANUAL_MASTER_MOVE_SECONDS=.075
 SDK_FEEDBACK_MOVE_SECONDS=.08125
+MAA_AUTOPLAY_SAMPLE_SECONDS=1.0/48.0
+MAA_AUTOPLAY_MOVE_SECONDS=.100
 ANDROID_CONTROL_CORNER_DWELL_SECONDS=.0625
 ANDROID_CONTROL_FEEDBACK_MOVE_SECONDS=.1125
 
 # Slower first. A measured setting is local to this verified device/controller.
-INPUT_SPEED_CANDIDATES=(
-    dict(sample_seconds=.030,corner_seconds=.090),
-    dict(sample_seconds=.03125,corner_seconds=.03125),
-    dict(sample_seconds=.025,corner_seconds=.025),
-    dict(sample_seconds=.021875,corner_seconds=.021875),
-    dict(sample_seconds=.01875,corner_seconds=.01875),
-)
 
 def validated_input_timing(value):
     if not isinstance(value,dict):raise ValueError('이동 속도 형식이 잘못됐습니다.')
@@ -107,6 +102,20 @@ def calibrated_input_timing(device):
         return validated_input_timing(record['timing'])
     except (ValueError,TypeError,KeyError):return None
 
+
+def maa_playback_timing(device):
+    """MaaTouch cadence; old speed-test profiles never override this policy."""
+    settings=getattr(device,'capture_settings',{}) or {}
+    sample=float(settings.get('background_maa_sample_ms',27.5))
+    extra=float(settings.get('background_maa_corner_ms',0))
+    if not math.isfinite(sample) or not 25<=sample<=40 or not math.isfinite(extra) or not 0<=extra<=80:
+        raise ValueError('MaaTouch 간격은 25~40ms, 코너 추가 대기는 0~80ms여야 합니다.')
+    return validated_input_timing(dict(sample_seconds=sample/1000,corner_seconds=(sample+extra)/1000))
+
+def maa_playback_move_budget(device):
+    return input_timing_move_budget(maa_playback_timing(device))+.020
+
+
 def selected_input_speed_result(report,index):
     """Explicit user choice requires a complete passed layout/UP trial."""
     rows=report.get('trials',[])
@@ -120,43 +129,6 @@ def selected_input_speed_result(report,index):
     if result.get('error'):result['calibration_error']=result.pop('error')
     return result
 
-def run_input_speed_trials(trial,cancel,progress=None,selection=None):
-    """A trial supplies fresh-board/held-layout/visible-UP proof, never just ACK."""
-    records=[];passed=[];chosen=None
-    def selected():
-        if cancel.is_set():raise RuntimeError('속도 테스트를 중지했습니다.')
-        index=selection() if selection is not None else None
-        if type(index) is int and 0<=index<len(records) and records[index].get('passed') is True:
-            return dict(trials=records,timing=dict(records[index]['timing']),verified_runs=1,selection='user',selected_trial=index)
-        return None
-    def run(timing,confirmation):
-        if cancel.is_set():raise RuntimeError('속도 테스트를 중지했습니다.')
-        row=trial(dict(timing),len(records),confirmation)
-        if cancel.is_set():raise RuntimeError('속도 테스트를 중지했습니다.')
-        if not isinstance(row,dict):raise RuntimeError('속도 테스트 결과 형식 오류')
-        row=dict(row,timing=dict(timing),confirmation=confirmation);records.append(row)
-        if progress is not None:progress(row,len(records))
-        return row.get('passed') is True
-    for timing in INPUT_SPEED_CANDIDATES:
-        picked=selected()
-        if picked is not None:return picked
-        success=run(timing,False)
-        picked=selected()
-        if picked is not None:return picked
-        if not success:break
-        passed.append(dict(timing))
-    if passed:
-        # Keep a tested margin rather than selecting the edge of the passing
-        # range. The selected setting must then pass two more fresh trials.
-        chosen=passed[-2] if len(passed)>=2 else passed[-1]
-        for _ in range(2):
-            picked=selected()
-            if picked is not None:return picked
-            success=run(chosen,True)
-            picked=selected()
-            if picked is not None:return picked
-            if not success:chosen=None;break
-    return dict(trials=records,timing=chosen,verified_runs=3 if chosen is not None else 0)
 
 def _update_input_diagnostics(device,**values):
     """Keep capture identity and failed backend reasons when opening input."""
@@ -955,6 +927,44 @@ class AndroidBatchTouch(PersistentAndroidTouch):
             if error is not None:raise error
 
 
+def _execute_worker_gesture(self,points,hold,limit,probe=False):
+    if self.device.cancel.is_set():raise RuntimeError('재료 파밍을 중지했습니다.')
+    started=time.perf_counter()
+    request=dict(op='input',points=[list(pt) for pt in points],hold=hold,limit=limit)
+    if isinstance(self,MaaFrameworkTouch) and len(points)>1:
+        timing=maa_playback_timing(self.device)
+        if timing is not None:request['timing']=timing
+    if probe:request['probe']=True
+    start_context=getattr(self.device,'sdk_start_context',None)
+    if len(points)>1 and not probe and start_context is not None:
+        request['start_context']=dict(start_context,point=list(points[0]))
+    self.pressed=True # Own release only once the command may be sent.
+    result=self.client.input_request(request)
+    self.pressed=not result.get('released',False)
+    delivered=[event['native'] for event in result.get('events',[]) if event.get('action') in (0,2)]
+    if delivered:self.last=tuple(delivered[-1])
+    self.last_up_at=time.monotonic() if not self.pressed else None
+    for event in result.get('events',[]):
+        self.device.input_trace.append(dict(event,seconds=round(started-self.device._input_trace_started+event['seconds'],6),transport=self.client.input_transport if isinstance(self,MaaFrameworkTouch) else 'mumu_native_sdk',finger_id=0 if isinstance(self,MaaFrameworkTouch) or result.get('input_stream')=='single_pointer' else 1))
+    if len(self.device.input_trace)>1024:del self.device.input_trace[:-1024]
+    self.device.input_diagnostics.update(sdk_dispatch_confirmed=not result.get('error'),sdk_release_confirmed=not self.pressed,sdk_execute_seconds=result.get('execute_seconds'))
+    self.device.input_diagnostics.update(sdk_preflight_release=result.get('preflight_release'),
+        sdk_cleanup=result.get('cleanup'),sdk_pacer_mode=result.get('pacer_mode'),
+        sdk_start_feedback=result.get('start_feedback'),sdk_start_feedback_history=result.get('start_feedback_history',[]),sdk_display_id=result.get('display_id'),sdk_input_stream=result.get('input_stream','finger'),
+        sdk_move_gap_max_seconds=result.get('move_gap_max_seconds'),sdk_move_gap_over_50ms=result.get('move_gap_over_50ms'))
+    self.device.input_diagnostics.update(sdk_motion_seconds=result.get('motion_seconds'),sdk_motion_estimate_seconds=result.get('motion_estimate_seconds'),
+        sdk_corner_count=result.get('corner_count'),sdk_corner_dwell_seconds=result.get('corner_dwell_seconds'),sdk_feedback_capture_seconds=result.get('feedback_capture_seconds'),
+        sdk_moving_gap_max_seconds=result.get('moving_gap_max_seconds'),sdk_route_pacing=result.get('route_pacing'),
+        sdk_dispatch_gap_min_seconds=result.get('dispatch_gap_min_seconds'),sdk_dispatch_gap_max_seconds=result.get('dispatch_gap_max_seconds'))
+    self.device.input_diagnostics['input_timing']=result.get('input_timing')
+    if len(points)>1:
+        self.device.input_diagnostics['last_drag_timing']=dict(timing=result.get('input_timing'),
+            input_backend=result.get('input_backend'),maa_api_timing=result.get('maa_api_timing'),
+            dispatch_gap_min_seconds=result.get('dispatch_gap_min_seconds'),dispatch_gap_max_seconds=result.get('dispatch_gap_max_seconds'))
+    self.device.input_diagnostics.update(input_backend=result.get('input_backend'),maa_api_timing=result.get('maa_api_timing'),maa_api_completion_scope=result.get('maa_api_completion_scope'),before_up_verification=result.get('before_up_verification'))
+    held=result.get('held_image');self.device.last_before_up_frame=self.device._normalize_capture(held) if held is not None else None
+    if result.get('error'):raise RuntimeError(result['error'])
+
 class MuMuSDKTouch(PersistentAndroidTouch):
     """One SDK worker owns a complete gesture; no host cursor or ADB moves."""
     def __init__(self,device):
@@ -966,35 +976,7 @@ class MuMuSDKTouch(PersistentAndroidTouch):
         _update_input_diagnostics(self.device,input_transport='mumu_native_sdk',input_size=list(self.device.native_size),finger_id=1)
         return self
     def _execute(self,points,hold,limit,probe=False):
-        if self.device.cancel.is_set():raise RuntimeError('재료 파밍을 중지했습니다.')
-        self.pressed=True;started=time.perf_counter()
-        request=dict(op='input',points=[list(pt) for pt in points],hold=hold,limit=limit)
-        if isinstance(self,MaaFrameworkTouch) and len(points)>1:
-            timing=calibrated_input_timing(self.device)
-            if timing is not None:request['timing']=timing
-        if probe:request['probe']=True
-        start_context=getattr(self.device,'sdk_start_context',None)
-        if len(points)>1 and not probe and start_context is not None:
-            request['start_context']=dict(start_context,point=list(points[0]))
-        result=self.client.input_request(request)
-        self.pressed=not result.get('released',False)
-        delivered=[event['native'] for event in result.get('events',[]) if event.get('action') in (0,2)]
-        if delivered:self.last=tuple(delivered[-1])
-        self.last_up_at=time.monotonic() if not self.pressed else None
-        for event in result.get('events',[]):
-            self.device.input_trace.append(dict(event,seconds=round(started-self.device._input_trace_started+event['seconds'],6),transport='mumu_native_sdk',finger_id=0 if result.get('input_stream')=='single_pointer' else 1))
-        if len(self.device.input_trace)>1024:del self.device.input_trace[:-1024]
-        self.device.input_diagnostics.update(sdk_dispatch_confirmed=not result.get('error'),sdk_release_confirmed=not self.pressed,sdk_execute_seconds=result.get('execute_seconds'))
-        self.device.input_diagnostics.update(sdk_preflight_release=result.get('preflight_release'),
-            sdk_cleanup=result.get('cleanup'),sdk_pacer_mode=result.get('pacer_mode'),
-            sdk_start_feedback=result.get('start_feedback'),sdk_start_feedback_history=result.get('start_feedback_history',[]),sdk_display_id=result.get('display_id'),sdk_input_stream=result.get('input_stream','finger'),
-            sdk_move_gap_max_seconds=result.get('move_gap_max_seconds'),sdk_move_gap_over_50ms=result.get('move_gap_over_50ms'))
-        self.device.input_diagnostics.update(sdk_motion_seconds=result.get('motion_seconds'),sdk_motion_estimate_seconds=result.get('motion_estimate_seconds'),
-            sdk_corner_count=result.get('corner_count'),sdk_corner_dwell_seconds=result.get('corner_dwell_seconds'),sdk_feedback_capture_seconds=result.get('feedback_capture_seconds'),
-            sdk_moving_gap_max_seconds=result.get('moving_gap_max_seconds'))
-        self.device.input_diagnostics['input_timing']=result.get('input_timing')
-        held=result.get('held_image');self.device.last_before_up_frame=self.device._normalize_capture(held) if held is not None else None
-        if result.get('error'):raise RuntimeError(result['error'])
+        return _execute_worker_gesture(self,points,hold,limit,probe)
     def tap(self,x,y):self._execute([(x,y)],.06,1.5)
     def drag(self,points,checkpoint=None,max_seconds=None,hold_seconds=.20):
         if checkpoint is not None:raise RuntimeError('MuMu SDK 경로 중 PC 캡처를 허용하지 않습니다.')
@@ -1027,17 +1009,26 @@ class MuMuSDKTouch(PersistentAndroidTouch):
 
 class MaaFrameworkTouch(MuMuSDKTouch):
     """A complete route stays inside one official MaaFramework controller worker."""
+    def __init__(self,device):
+        PersistentAndroidTouch.__init__(self,device)
+        self.client=device._fast # Never select the legacy _input_sdk_client.
     def open(self):
         if self.client is None or not self.client.input_supported:raise RuntimeError('MAA 입력 연결이 없습니다.')
+        info=self.client.ready.get('info',{})
+        if self.client.input_transport=='maa_touch' and info.get('input_methods')!=4:
+            raise RuntimeError('MaaTouch 전용 컨트롤러가 아닙니다. SDK로 전환하지 않고 중지합니다.')
         self.device.input_diagnostics.update(input_transport=self.client.input_transport,
-            input_size=list(self.device.native_size),finger_id=0,maa_info=self.client.ready.get('info',{}))
+            input_size=list(self.device.native_size),finger_id=0,maa_info=self.client.ready.get('info',{}),
+            input_backend=info.get('pad0_input_backend'),controller_instance=info.get('pad0_controller_instance'))
         return self
     def _execute(self,*args,**kwargs):
         previous=list(self.device.input_trace);existing={id(event) for event in previous}
         self.device.last_before_up_frame=None
         self.device.input_diagnostics.update(sdk_dispatch_confirmed=False,sdk_release_confirmed=False)
         if self.client.closed:raise RuntimeError('MAA 입력 연결이 종료됐습니다. 자동 입력을 중지합니다.')
-        try:super()._execute(*args,**kwargs)
+        if self.device.capture_settings.get('background_input_backend','auto') in ('auto','maa_auto','maa_touch') and self.client.ready.get('info',{}).get('input_methods')!=4:
+            raise RuntimeError('MaaTouch 전용 입력 확인 실패 · 다른 입력을 사용하지 않았습니다.')
+        try:_execute_worker_gesture(self,*args,**kwargs)
         finally:
             d=self.device;transport=self.client.input_transport
             for event in d.input_trace:
@@ -1091,13 +1082,15 @@ class NativeSDKInputMixin:
         trace=[];started=time.perf_counter();error=None;released=False;held=False
         preflight=None;cleanup=None;last_point=list(points[0])
         feedback_active=start_context is not None and len(points)>1 and not probe
-        start_feedback=None;start_checks=0;feedback_started=None;start_history=[]
+        start_feedback=None;start_checks=0;feedback_started=None;start_history=[];dispatch_times=[]
         single=(self.display_id==0 and callable(getattr(self,'single_touch_down',None)) and callable(getattr(self,'single_touch_up',None)))
         stream='single_pointer' if single else 'finger'
         timing=validated_input_timing(timing) if timing is not None else None
-        sample=timing['sample_seconds'] if timing is not None else .01875
-        corner_dwell=timing['corner_seconds'] if timing is not None else float(getattr(self,'corner_dwell_seconds',.03125))
-        edge_budget=input_timing_move_budget(timing) if timing is not None else float(getattr(self,'feedback_move_seconds',SDK_FEEDBACK_MOVE_SECONDS))
+        smooth=getattr(self,'smooth_route_input',False) is True
+        backend_name='MaaTouch' if getattr(self,'info',{}).get('pad0_input_backend')=='maatouch' else 'MuMu'
+        sample=timing['sample_seconds'] if timing is not None else MAA_AUTOPLAY_SAMPLE_SECONDS if smooth else .01875
+        corner_dwell=timing['corner_seconds'] if timing is not None else sample if smooth else float(getattr(self,'corner_dwell_seconds',.03125))
+        edge_budget=input_timing_move_budget(timing) if timing is not None else MAA_AUTOPLAY_MOVE_SECONDS if smooth else float(getattr(self,'feedback_move_seconds',SDK_FEEDBACK_MOVE_SECONDS))
         corners=[i for i in range(1,len(points)-1) if
             (points[i][0]-points[i-1][0])*(points[i+1][1]-points[i][1])!=(points[i][1]-points[i-1][1])*(points[i+1][0]-points[i][0]) or
             (points[i][0]-points[i-1][0])*(points[i+1][0]-points[i][0])+(points[i][1]-points[i-1][1])*(points[i+1][1]-points[i][1])<=0]
@@ -1109,6 +1102,7 @@ class NativeSDKInputMixin:
             if cancel.is_set():raise RuntimeError('MuMu 입력 중지')
             self.touch_active=True
             self._active_input_stream=stream
+            if action==2:dispatch_times.append(time.perf_counter())
             result=self.single_touch_down(self.handle,0,x,y) if single else self.touch_down(self.handle,self.display_id,1,x,y)
             if result!=0:raise RuntimeError('MuMu SDK 누름/이동 전달 실패')
             last_point[:]=[x,y]
@@ -1162,9 +1156,9 @@ class NativeSDKInputMixin:
                     if start_feedback.get('observed_start_cell') is not None:
                         wanted=start_feedback['expected_start_cell'];observed=start_feedback['observed_start_cell']
                         raise RuntimeError(f'MuMu 시작 위치 불일치 · {wanted//6+1}행 {wanted%6+1}열 대신 {observed//6+1}행 {observed%6+1}열이 들렸습니다. 경로 이동을 보내지 않았습니다.')
-                    raise RuntimeError('MuMu 시작 드롭이 잡힌 것을 확인하지 못했습니다. 경로 이동을 보내지 않았습니다.')
+                    raise RuntimeError(f'{backend_name} 시작 드롭이 잡힌 것을 확인하지 못했습니다. 경로 이동을 보내지 않았습니다.')
             if probe:self.capture();held=True
-            deadline=time.perf_counter();last_sent=deadline;motion_started=deadline
+            deadline=time.perf_counter();last_sent=deadline;last_dispatch=deadline;motion_started=deadline
             for edge,(one,two) in enumerate(zip(points,points[1:])):
                 if feedback_active and edge:
                     previous=points[edge-1]
@@ -1174,12 +1168,17 @@ class NativeSDKInputMixin:
                         # Async scrcpy can coalesce a corner before the game
                         # consumes it (reported 032, cell 7). Keep that center
                         # for several frames without adding input/capture.
-                        wait(max(0,last_sent+corner_dwell-time.perf_counter()))
+                        wait(max(0,(last_dispatch if smooth else last_sent)+corner_dwell-time.perf_counter()))
                 for part in range(1,5):
-                    deadline+=sample
-                    # Bound catch-up to one display frame; never burst points
-                    # or omit mandatory corners after a scheduling stall.
-                    wait(max(0,deadline-time.perf_counter(),last_sent+(sample if timing is not None else ANDROID_TOUCH_SAMPLE_SECONDS)-time.perf_counter()))
+                    if smooth:
+                        # Anchor to the actual preceding dispatch, not its ACK.
+                        # A late call starts a new interval; never catch up by
+                        # compressing later samples or skipping a corner.
+                        wait(max(0,last_dispatch+sample-time.perf_counter()))
+                        last_dispatch=time.perf_counter()
+                    else:
+                        deadline+=sample
+                        wait(max(0,deadline-time.perf_counter(),last_sent+(sample if timing is not None else ANDROID_TOUCH_SAMPLE_SECONDS)-time.perf_counter()))
                     down(round(one[0]+(two[0]-one[0])*part/4),round(one[1]+(two[1]-one[1])*part/4),2)
                     last_sent=time.perf_counter()
             motion_seconds=time.perf_counter()-motion_started
@@ -1187,7 +1186,13 @@ class NativeSDKInputMixin:
                 # The last swap is still animating at 60 ms (reported v119).
                 # Keep DOWN stationary until it settles; do not weaken board equality.
                 wait(.22);capture_started=time.perf_counter()
-                try:self.capture();held=True
+                try:
+                    self.capture();held=True
+                    settle=getattr(self,'confirm_before_up',None)
+                    if feedback_active and callable(settle):
+                        checked=settle(start_context,limit-(time.perf_counter()-started)-.08)
+                        self._before_up_checked=checked
+                        if checked.get('confirmed') is not True:raise RuntimeError('손 떼기 전 드롭 교환 안정화 미확인 · 이동 재시도 없이 중지')
                 finally:capture_seconds['before_up']+=time.perf_counter()-capture_started
         except Exception as exc:error=str(exc)
         finally:
@@ -1207,6 +1212,9 @@ class NativeSDKInputMixin:
         return dict(ready=True,events=trace,released=released,held_frame=held,error=error,execute_seconds=time.perf_counter()-started,
             preflight_release=preflight,cleanup=cleanup,pacer_mode=pacer.mode,
             start_feedback=start_feedback,start_feedback_history=start_history,display_id=int(self.display_id),input_stream=stream,
+            route_pacing='steady_dispatch' if smooth else 'measured_samples' if timing is not None else 'legacy',
+            dispatch_gap_min_seconds=min((b-a for a,b in zip(dispatch_times,dispatch_times[1:])),default=0),
+            dispatch_gap_max_seconds=max((b-a for a,b in zip(dispatch_times,dispatch_times[1:])),default=0),
             move_gap_max_seconds=max(gaps,default=0),move_gap_over_50ms=sum(gap>.05 for gap in gaps),
             motion_seconds=motion_seconds,motion_estimate_seconds=motion_estimate,corner_count=len(corners) if feedback_active else 0,
             corner_dwell_seconds=corner_dwell,feedback_capture_seconds=capture_seconds,moving_gap_max_seconds=max(moving_gaps,default=0),input_timing=timing)

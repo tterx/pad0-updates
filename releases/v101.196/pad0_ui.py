@@ -1876,7 +1876,7 @@ class AppUIMixin:
         ttk.Button(outer,text='등록한 크리처·각성 확인',command=self.show_creature_registry).pack(fill='x',pady=3)
         ttk.Button(outer,text='파밍 설정 · 목표 재료 선택',command=self.show_farming_settings).pack(fill='x',pady=3)
         ttk.Button(farm_row,text='파밍 연결 설정',command=self.background_settings).pack(side='left',padx=(6,0))
-        ttk.Button(outer,text='자동 속도 테스트 · 실제 퍼즐 이동',command=self.show_input_speed_test).pack(fill='x',pady=3)
+        ttk.Button(outer,text='매칭 속도 조절 (±0.5ms)',command=self.show_maa_timing_settings).pack(fill='x',pady=3)
         attribute_host = ttk.Frame(outer)
         attribute_host.pack(fill="x")
         self.attribute_status_frame = ttk.Frame(attribute_host)
@@ -2617,6 +2617,67 @@ class AppUIMixin:
         self._background_setup_wizard=wizard
         return wizard
 
+    def show_maa_timing_settings(self):
+        existing=getattr(self,'_maa_timing_window',None)
+        if existing is not None and existing.winfo_exists():
+            existing.deiconify();self._party_bring_forward(existing);return
+        win=tk.Toplevel(self.root);self._maa_timing_window=win
+        win.title('자동플레이 매칭 속도 조절');win.geometry('560x460');win.resizable(False,False)
+        self._party_bring_forward(win)
+        footer=ttk.Frame(win,padding=(14,8));footer.pack(side='bottom',fill='x')
+        body=ttk.Frame(win,padding=16);body.pack(fill='both',expand=True)
+        sample=tk.StringVar(value=str(self.user_settings.get('background_maa_sample_ms',27.5)))
+        corner=tk.StringVar(value=str(self.user_settings.get('background_maa_corner_ms',0)))
+        notice=tk.StringVar(value='값이 작을수록 빠릅니다. 0.5ms씩 조절할 수 있습니다.')
+        estimate=tk.StringVar()
+        ttk.Label(body,text='MaaTouch 매칭 속도',font=('Malgun Gothic',12,'bold')).pack(anchor='w')
+        ttk.Label(body,text='실행 중 저장하면 다음 턴부터 적용합니다. 이동 중인 경로의 속도는 유지합니다.',wraplength=515).pack(anchor='w',pady=(6,10))
+        row=ttk.Frame(body);row.pack(fill='x')
+        ttk.Label(row,text='이동 간격 (25~40ms)').pack(side='left')
+        ttk.Spinbox(row,textvariable=sample,from_=25,to=40,increment=.5,width=8).pack(side='left',padx=8)
+        ttk.Label(body,textvariable=estimate).pack(anchor='w',pady=5)
+        row=ttk.Frame(body);row.pack(fill='x',pady=5)
+        def values():
+            step=float(sample.get());extra=float(corner.get())
+            if not math.isfinite(step) or not 25<=step<=40 or not math.isfinite(extra) or not 0<=extra<=80:
+                raise ValueError('이동 간격은 25~40ms, 코너 추가 대기는 0~80ms여야 합니다.')
+            return dict(background_maa_sample_ms=step,background_maa_corner_ms=extra)
+        def apply():
+            previous={k:(k in self.user_settings,self.user_settings.get(k)) for k in ('background_maa_sample_ms','background_maa_corner_ms')}
+            try:
+                pending=values()
+                self.user_settings.update(pending);self.save_user_settings()
+                saved=_load_json_dict(self.data_paths['settings'])
+                if any(saved.get(k)!=v for k,v in pending.items()):raise OSError('이동 속도 설정을 파일에 저장하지 못했습니다.')
+            except (ValueError,TypeError,OSError) as error:
+                for k,(existed,value) in previous.items():
+                    if existed:self.user_settings[k]=value
+                    else:self.user_settings.pop(k,None)
+                messagebox.showerror('매칭 속도',str(error),parent=win);return
+            # One immutable reference is consumed by the battle worker at the
+            # next turn boundary, so its search budget and gesture agree.
+            self._background_timing_request=pending
+            notice.set('저장했습니다. '+('다음 턴부터 적용됩니다.' if getattr(self,'_background_running',False) else '다음 자동플레이부터 적용됩니다.'))
+        def adjust(delta):
+            try:current=values()['background_maa_sample_ms']
+            except (ValueError,TypeError) as error:
+                messagebox.showerror('매칭 속도',str(error),parent=win);return
+            sample.set(f'{min(40,max(25,round(current+delta,3))):g}');apply()
+        ttk.Button(row,text='더 빠르게 (-0.5ms)',command=lambda:adjust(-.5)).pack(side='left',padx=(0,8))
+        ttk.Button(row,text='더 느리게 (+0.5ms)',command=lambda:adjust(.5)).pack(side='left')
+        row=ttk.Frame(body);row.pack(fill='x',pady=8)
+        ttk.Label(row,text='코너 추가 대기 (기본 0ms)').pack(side='left')
+        ttk.Spinbox(row,textvariable=corner,from_=0,to=80,increment=.5,width=8).pack(side='left',padx=8)
+        def reset():sample.set('27.5');corner.set('0');apply()
+        ttk.Label(body,textvariable=notice,wraplength=515).pack(anchor='w',pady=5)
+        def update_estimate(*_):
+            try:estimate.set(f'한 칸 기본 이동 약 {4*float(sample.get()):g}ms · 실제 처리 시간은 별도')
+            except (ValueError,TypeError):estimate.set('이동 간격을 숫자로 입력하세요.')
+        sample.trace_add('write',update_estimate);update_estimate()
+        ttk.Button(footer,text='기본값 복원',command=reset).pack(side='left')
+        ttk.Button(footer,text='저장 · 적용',command=apply).pack(side='right')
+        ttk.Button(footer,text='닫기',command=win.destroy).pack(side='right',padx=8)
+
     def background_settings(self):
         services = self._ui_backend_services()
         if getattr(self,'_background_running',False) or getattr(self,'_speed_test_running',False):self.set_status('F10으로 파밍·속도 테스트를 중지한 뒤 연결 설정을 바꿀 수 있습니다.');return
@@ -2639,11 +2700,22 @@ class AppUIMixin:
         skills=tk.BooleanVar(value=self.user_settings.get('background_auto_skills',True))
         mumu_root=tk.StringVar(value=self.user_settings.get('background_mumu_root',''))
         mumu_index=tk.StringVar(value=self.user_settings.get('background_mumu_index',''))
+        maa_sample=tk.StringVar(value=str(self.user_settings.get('background_maa_sample_ms',27.5)))
+        maa_corner=tk.StringVar(value=str(self.user_settings.get('background_maa_corner_ms',0)))
+        timing_row=ttk.Frame(body);timing_row.pack(fill='x',pady=8)
+        ttk.Label(timing_row,text='이동 간격(ms, 25~40)').pack(side='left')
+        ttk.Spinbox(timing_row,textvariable=maa_sample,from_=25,to=40,increment=.5,width=7).pack(side='left',padx=6)
+        ttk.Label(timing_row,text='코너 추가 대기(ms, 기본 0)').pack(side='left')
+        ttk.Spinbox(timing_row,textvariable=maa_corner,from_=0,to=80,increment=.5,width=7).pack(side='left',padx=6)
         def capture_values(probe_input=False):
-            values=dict(self.user_settings,background_adb_path=services.portable_adb_path(path.get()) if path.get().strip() else '',background_adb_serial=serial.get().strip(),
+            values=dict(self.user_settings,background_maa_sample_ms=float(maa_sample.get()),background_maa_corner_ms=float(maa_corner.get()),background_adb_path=services.portable_adb_path(path.get()) if path.get().strip() else '',background_adb_serial=serial.get().strip(),
                         background_connection_profile='fast',background_mumu_enhanced=True,background_mumu_root=mumu_root.get().strip(),background_mumu_index=mumu_index.get().strip(),
                         background_capture_preference='auto',background_input_preference='auto',
-                        background_capture_mode='mumu_enhanced',background_adb_raw_capture=True,background_input_backend='auto')
+                        background_capture_mode='mumu_enhanced',background_adb_raw_capture=True,background_input_backend='maa_touch')
+            import math
+            sample=values['background_maa_sample_ms'];extra=values['background_maa_corner_ms']
+            if not math.isfinite(sample) or not 25<=sample<=40 or not math.isfinite(extra) or not 0<=extra<=80:
+                raise ValueError('이동 간격은 25~40ms, 코너 추가 대기는 0~80ms여야 합니다.')
             values.pop('background_probe_input',None)
             if probe_input:values['background_probe_input']=True
             return values
@@ -2684,14 +2756,23 @@ class AppUIMixin:
         index_row=ttk.Frame(capture_box);index_row.pack(fill='x',pady=4)
         ttk.Label(index_row,text='MuMu 기기 번호 # (표준 포트면 자동)').pack(side='left')
         ttk.Entry(index_row,textvariable=mumu_index,width=8).pack(side='left',padx=8)
-        ttk.Button(capture_box,text='고속 연결 테스트 (누름 없음)',command=lambda:self.show_background_capture_test(capture_values(True),capture_box)).pack(anchor='w',pady=(4,0))
+        def preview_connection():
+            try:values=capture_values(False)
+            except (ValueError,TypeError) as error:
+                messagebox.showerror('MaaTouch 이동 설정',str(error),parent=window);return
+            self.show_background_capture_test(values,capture_box)
+        ttk.Button(capture_box,text='연결 화면 확인 (입력 없음)',command=preview_connection).pack(anchor='w',pady=(4,0))
         ttk.Checkbutton(body,text='상세에서 확인한 스킬 자동 사용',variable=skills).pack(anchor='w',pady=8)
         ttk.Label(body,text='MuMu를 종료하거나 PC를 절전하면 멈춥니다. F10은 파밍 중지입니다.',wraplength=590).pack(anchor='w')
         def save():
-            values=capture_values()
+            try:values=capture_values()
+            except (ValueError,TypeError) as error:
+                messagebox.showerror('MaaTouch 이동 설정',str(error),parent=window);return
             self.user_settings.pop('background_probe_input',None)
             self.user_settings.update(values,background_auto_skills=skills.get())
-            self.save_user_settings();window.destroy()
+            self.save_user_settings()
+            self._background_timing_request={key:values[key] for key in ('background_maa_sample_ms','background_maa_corner_ms')}
+            window.destroy()
         ttk.Button(footer,text='저장',command=save).pack(anchor='e')
 
     def show_farming_confirmation(self,settings_only=False,target_key=None):
