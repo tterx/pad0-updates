@@ -7,7 +7,7 @@ from pathlib import Path
 import uuid
 
 
-APP_VERSION = "v101.189"
+APP_VERSION = "v101.194"
 
 COLOR_INFO = {
     "R": ("불", "#ee5547", 5),

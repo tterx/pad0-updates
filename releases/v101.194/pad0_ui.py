@@ -1876,7 +1876,6 @@ class AppUIMixin:
         ttk.Button(outer,text='등록한 크리처·각성 확인',command=self.show_creature_registry).pack(fill='x',pady=3)
         ttk.Button(outer,text='파밍 설정 · 목표 재료 선택',command=self.show_farming_settings).pack(fill='x',pady=3)
         ttk.Button(farm_row,text='파밍 연결 설정',command=self.background_settings).pack(side='left',padx=(6,0))
-        ttk.Button(outer,text='자동 속도 테스트 · 실제 퍼즐 이동',command=self.show_input_speed_test).pack(fill='x',pady=3)
         attribute_host = ttk.Frame(outer)
         attribute_host.pack(fill="x")
         self.attribute_status_frame = ttk.Frame(attribute_host)
@@ -2639,11 +2638,22 @@ class AppUIMixin:
         skills=tk.BooleanVar(value=self.user_settings.get('background_auto_skills',True))
         mumu_root=tk.StringVar(value=self.user_settings.get('background_mumu_root',''))
         mumu_index=tk.StringVar(value=self.user_settings.get('background_mumu_index',''))
+        maa_sample=tk.StringVar(value=str(self.user_settings.get('background_maa_sample_ms',27.5)))
+        maa_corner=tk.StringVar(value=str(self.user_settings.get('background_maa_corner_ms',0)))
+        timing_row=ttk.Frame(body);timing_row.pack(fill='x',pady=8)
+        ttk.Label(timing_row,text='이동 간격(ms, 25~40)').pack(side='left')
+        ttk.Entry(timing_row,textvariable=maa_sample,width=7).pack(side='left',padx=6)
+        ttk.Label(timing_row,text='코너 추가 대기(ms, 기본 0)').pack(side='left')
+        ttk.Entry(timing_row,textvariable=maa_corner,width=7).pack(side='left',padx=6)
         def capture_values(probe_input=False):
-            values=dict(self.user_settings,background_adb_path=services.portable_adb_path(path.get()) if path.get().strip() else '',background_adb_serial=serial.get().strip(),
+            values=dict(self.user_settings,background_maa_sample_ms=float(maa_sample.get()),background_maa_corner_ms=float(maa_corner.get()),background_adb_path=services.portable_adb_path(path.get()) if path.get().strip() else '',background_adb_serial=serial.get().strip(),
                         background_connection_profile='fast',background_mumu_enhanced=True,background_mumu_root=mumu_root.get().strip(),background_mumu_index=mumu_index.get().strip(),
                         background_capture_preference='auto',background_input_preference='auto',
-                        background_capture_mode='mumu_enhanced',background_adb_raw_capture=True,background_input_backend='auto')
+                        background_capture_mode='mumu_enhanced',background_adb_raw_capture=True,background_input_backend='maa_touch')
+            import math
+            sample=values['background_maa_sample_ms'];extra=values['background_maa_corner_ms']
+            if not math.isfinite(sample) or not 25<=sample<=40 or not math.isfinite(extra) or not 0<=extra<=80:
+                raise ValueError('이동 간격은 25~40ms, 코너 추가 대기는 0~80ms여야 합니다.')
             values.pop('background_probe_input',None)
             if probe_input:values['background_probe_input']=True
             return values
@@ -2684,11 +2694,18 @@ class AppUIMixin:
         index_row=ttk.Frame(capture_box);index_row.pack(fill='x',pady=4)
         ttk.Label(index_row,text='MuMu 기기 번호 # (표준 포트면 자동)').pack(side='left')
         ttk.Entry(index_row,textvariable=mumu_index,width=8).pack(side='left',padx=8)
-        ttk.Button(capture_box,text='고속 연결 테스트 (누름 없음)',command=lambda:self.show_background_capture_test(capture_values(True),capture_box)).pack(anchor='w',pady=(4,0))
+        def preview_connection():
+            try:values=capture_values(False)
+            except (ValueError,TypeError) as error:
+                messagebox.showerror('MaaTouch 이동 설정',str(error),parent=window);return
+            self.show_background_capture_test(values,capture_box)
+        ttk.Button(capture_box,text='연결 화면 확인 (입력 없음)',command=preview_connection).pack(anchor='w',pady=(4,0))
         ttk.Checkbutton(body,text='상세에서 확인한 스킬 자동 사용',variable=skills).pack(anchor='w',pady=8)
         ttk.Label(body,text='MuMu를 종료하거나 PC를 절전하면 멈춥니다. F10은 파밍 중지입니다.',wraplength=590).pack(anchor='w')
         def save():
-            values=capture_values()
+            try:values=capture_values()
+            except (ValueError,TypeError) as error:
+                messagebox.showerror('MaaTouch 이동 설정',str(error),parent=window);return
             self.user_settings.pop('background_probe_input',None)
             self.user_settings.update(values,background_auto_skills=skills.get())
             self.save_user_settings();window.destroy()
