@@ -2336,12 +2336,14 @@ class AppUIMixin:
         policies={'auto':'상황에 따라 자동','locked_only':'5속성 부족·잠금 존재 시','shortage_only':'속성 부족일 때만','time_only':'조작시간 감소 시에만','cleanse_only':'바인드 / 각성 무효 시에만'}
         policy=tk.StringVar();policyrow=ttk.Frame(auto_body);policyrow.pack(fill='x')
         ttk.Label(policyrow,text='사용 조건: ').pack(side='left');ttk.Combobox(policyrow,textvariable=policy,values=list(policies.values()),state='readonly',width=30).pack(side='left')
-        opts=ttk.Frame(auto_body);opts.pack(fill='x',pady=8)
+        opts=ttk.Frame(footer);opts.pack(fill='x',pady=(6,0))
         ttk.Label(opts,text='5속성 부족 시 잠금 해제 → 5속성 생성 → 재탐색').pack(anchor='w')
         notice=tk.BooleanVar(value=self.user_settings.get('background_complete_notify',True))
         ttk.Checkbutton(opts,text='파밍 완료 바탕화면 알림',variable=notice).pack(side='left')
+        sound=tk.BooleanVar(value=self.user_settings.get('background_complete_sound',True))
+        ttk.Checkbutton(opts,text='작은 완료음',variable=sound).pack(side='left',padx=(8,0))
         def save_common():
-            self.user_settings.update(background_complete_notify=notice.get());self.save_user_settings();status.set('완료 알림 설정을 저장했습니다.')
+            self.user_settings.update(background_complete_notify=notice.get(),background_complete_sound=sound.get());self.save_user_settings();status.set('완료 알림 설정을 저장했습니다.')
         ttk.Button(opts,text='공통 설정 저장',command=save_common).pack(side='right')
         def current():
             data=self.user_settings.get('background_party_profiles',[])
@@ -2550,7 +2552,7 @@ class AppUIMixin:
                 self.user_settings.setdefault('monster_overrides',{})[number]=override
                 data=self.user_settings.setdefault('background_party_profiles',[])
                 while len(data)<6:data.append(dict(slot=len(data)))
-                data[selected.get()]=p;self.user_settings.update(background_complete_notify=notice.get());self.save_user_settings();refresh();status.set('정정 내용을 저장했습니다. 이미지 원본과 함께 유지합니다.')
+                data[selected.get()]=p;self.user_settings.update(background_complete_notify=notice.get(),background_complete_sound=sound.get());self.save_user_settings();refresh();status.set('정정 내용을 저장했습니다. 이미지 원본과 함께 유지합니다.')
             except ValueError as exc:status.set(str(exc))
         ttk.Button(actions,text='번호로 DB 정보 불러오기',command=db_fill).pack(side='left')
         ttk.Button(actions,text='설명에서 효과 다시 읽기',command=lambda:[v.set(k in services.skill_details(skill.get('1.0','end'))['effects']) for k,v in effects.items()]).pack(side='left',padx=8)
