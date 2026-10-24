@@ -1876,6 +1876,7 @@ class AppUIMixin:
         ttk.Button(outer,text='등록한 크리처·각성 확인',command=self.show_creature_registry).pack(fill='x',pady=3)
         ttk.Button(outer,text='파밍 설정 · 목표 재료 선택',command=self.show_farming_settings).pack(fill='x',pady=3)
         ttk.Button(farm_row,text='파밍 연결 설정',command=self.background_settings).pack(side='left',padx=(6,0))
+        ttk.Button(outer,text='자동 속도 테스트 · 실제 퍼즐 이동',command=self.show_input_speed_test).pack(fill='x',pady=3)
         attribute_host = ttk.Frame(outer)
         attribute_host.pack(fill="x")
         self.attribute_status_frame = ttk.Frame(attribute_host)
@@ -2606,6 +2607,7 @@ class AppUIMixin:
         self._party_bring_forward(win)
 
     def show_background_setup_wizard(self,path='',serial='',on_saved=None):
+        if getattr(self,'_speed_test_running',False):self.set_status('속도 테스트 입력 정리가 끝난 뒤 연결 설정을 확인하세요.');return
         if getattr(self,'_background_running',False):self.set_status('F10으로 파밍을 중지한 뒤 설정 마법사를 열어주세요.');return
         current=getattr(self,'_background_setup_wizard',None)
         if current is not None and not current.closed and current.win.winfo_exists():
@@ -2617,7 +2619,7 @@ class AppUIMixin:
 
     def background_settings(self):
         services = self._ui_backend_services()
-        if getattr(self,'_background_running',False):self.set_status('F10으로 파밍을 중지한 뒤 연결 설정을 바꿀 수 있습니다.');return
+        if getattr(self,'_background_running',False) or getattr(self,'_speed_test_running',False):self.set_status('F10으로 파밍·속도 테스트를 중지한 뒤 연결 설정을 바꿀 수 있습니다.');return
         from tkinter import filedialog
         window=tk.Toplevel(self.root);self._background_settings_window=window
         window.title('백그라운드 파밍 연결 설정');window.geometry(f'800x{min(880,window.winfo_screenheight()-70)}')
