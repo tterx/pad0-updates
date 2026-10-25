@@ -1050,17 +1050,65 @@ class MaaFrameworkTouch(MuMuSDKTouch):
                 control_dispatch_confirmed=d.input_diagnostics.get('sdk_dispatch_confirmed',False),
                 control_release_confirmed=d.input_diagnostics.get('sdk_release_confirmed',False),
                 control_start_feedback=d.input_diagnostics.get('sdk_start_feedback'))
-    def repeat_release(self,cancel=False):
+    def click_ui(self,point,purpose='skill_ui'):
+        if self.device.cancel.is_set():raise RuntimeError('재료 파밍을 중지했습니다.')
+        if self.pressed or getattr(self.device,'sdk_start_context',None) is not None:
+            raise RuntimeError('퍼즐 드래그가 정리되지 않아 스킬 클릭을 보내지 않았습니다.')
+        if self.client.closed:raise RuntimeError('원래 MaaTouch 연결이 닫혔습니다.')
+        info=self.client.ready.get('info',{})
+        if info.get('input_methods')!=4 or info.get('pad0_input_coordinates',{}).get('size')!=list(self.device.native_size):
+            raise RuntimeError('MaaTouch UI 연결/원본 좌표가 다릅니다.')
+        began=time.perf_counter();self.pressed=True;self.device.last_before_up_frame=None
+        request=dict(op='ui_click',point=list(point),purpose=purpose,limit=2.0)
+        result=self.client.input_request(request)
+        self.pressed=not result.get('released',False);self.last=tuple(point)
+        if not self.pressed:self.last_up_at=time.monotonic()
+        details=dict(transport='maa_touch',api=result.get('api'),native=list(point),purpose=purpose,
+            command_completed=not bool(result.get('error')),game_effect_confirmed=False,
+            controller_instance=info.get('pad0_controller_instance'),
+            completion_scope=result.get('completion_scope'),preflight_release=result.get('preflight_release'),
+            cleanup=result.get('cleanup'),api_timing=result.get('api_timing'),execute_seconds=result.get('execute_seconds'),
+            requested_hold_ms=result.get('requested_hold_ms'),host_hold_seconds=result.get('host_hold_seconds'),
+            host_down_request_seconds=result.get('host_down_request_seconds'),host_up_request_seconds=result.get('host_up_request_seconds'))
+        self.device.input_diagnostics.update(skill_click_delivery=details,control_release_confirmed=not self.pressed,
+            control_dispatch_confirmed=not bool(result.get('error')),sdk_dispatch_confirmed=not bool(result.get('error')),
+            sdk_release_confirmed=not self.pressed,input_ui_pipeline=dict(details),
+            input_pipeline=dict(policy='held_ui_touch_sequence',purpose=purpose,
+                controller_id=info.get('pad0_controller_instance'),raw_size=list(self.device.native_size),
+                events=result.get('api_timing',[]),android_execution_timestamps=None))
+        self.device.input_trace.append(dict(action='ui_click',native=list(point),purpose=purpose,api=result.get('api'),
+            transport='maa_touch',finger_id=0,seconds=began-self.device._input_trace_started,
+            requested_hold_ms=result.get('requested_hold_ms'),host_hold_seconds=result.get('host_hold_seconds'),
+            command_seconds=time.perf_counter()-began,scope='pc_observed_sequence_not_android_event_timestamps'))
+        if len(self.device.input_trace)>1024:del self.device.input_trace[:-1024]
+        if result.get('error'):raise RuntimeError(result['error'])
+
+    def repeat_release(self,cancel=False,force=False):
         # Never create another controller/pointer stream to release an old one.
         self.client.input_cancel.set()
         if self.client.closed:
             if self.pressed:raise RuntimeError('MAA 입력 연결 종료 · 원래 손가락 해제를 확인하지 못했습니다.')
             return
-        result=self.client.input_request(dict(op='release',require_active=self.pressed))
-        if result.get('error') or result.get('released') is not True:
-            raise RuntimeError(result.get('error') or 'MAA 손가락 해제 미확인')
-        self.pressed=False;self.last_up_at=time.monotonic()
-        self.device.input_diagnostics.update(control_release_confirmed=True,sdk_release_confirmed=True)
+        # Keep the release acknowledgement and capture resumption atomic to
+        # captures queued on this same controller (its lock is reentrant).
+        with self.client.io_lock:
+            result=self.client.input_request(dict(op='release',require_active=self.pressed or cancel or force))
+            if result.get('error') or result.get('released') is not True:
+                raise RuntimeError(result.get('error') or 'MAA 손가락 해제 미확인')
+            self.pressed=False;self.last_up_at=time.monotonic()
+            self.device.input_diagnostics.update(control_release_confirmed=True,sdk_release_confirmed=True,
+                last_control_release=dict(result,cancel=bool(cancel),scope='original_controller_command_not_game_ack'))
+            if not cancel:
+                # Release interrupts the worker, including its capture wait. A normal
+                # handoff to Android UI taps must permit the next capture again.
+                # F10 owns device.cancel and must never be cleared by this handoff.
+                if self.device.cancel.is_set():
+                    raise RuntimeError('재료 파밍을 중지했습니다.')
+                self.client.input_cancel.clear()
+                if self.device.cancel.is_set():
+                    self.client.input_cancel.set()
+                    raise RuntimeError('재료 파밍을 중지했습니다.')
+                self.device.input_diagnostics['normal_release_capture_resumed']=True
     def close(self):
         try:
             if self.pressed:self.repeat_release(cancel=True)
