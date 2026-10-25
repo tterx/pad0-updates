@@ -502,6 +502,21 @@ def visual_train_confirmed(root,current,cancel=None):
     metadata=dict(schema=1,features=520,id='local-'+time.strftime('%Y%m%d-%H%M%S')+'-'+uuid.uuid4().hex[:6],source='human_confirmed_local',training_boards=len(groups)-len(heldout),validation_boards=len(heldout),reports=reports,updated_heads=approved)
     return dict(metadata=metadata,heads=heads)
 
+def _cell_has_lock_badge(tile):
+    """Require a yellow badge surrounding a dark keyhole, not a Light star."""
+    import cv2
+    rgb=np.asarray(tile.convert('RGB').resize((116,114),Image.Resampling.BILINEAR))
+    badge=rgb[5:62,5:65]
+    yellow=((badge[...,0]>140)&(badge[...,1]>140)&(badge[...,2]<125)).astype('uint8')
+    _,_,stats,_=cv2.connectedComponentsWithStats(yellow)
+    for x,y,w,h,area in stats[1:]:
+        if not (14<=w<=40 and 23<=h<=50 and .4<=w/h<=1.05 and area>=90 and x+w/2<49 and y+h/2<48):continue
+        hole=badge[y+round(h*.35):y+round(h*.85),x+round(w*.28):x+round(w*.72)]
+        fraction=float((hole.max(axis=2)<110).mean()) if hole.size else 0
+        if .12<=fraction<=.70:return True
+    return False
+
+
 def classify_board(image: Image.Image) -> tuple[list[str], list[list[float]]]:
     arr = np.asarray(image.convert("RGB"))
     h, w, _ = arr.shape
@@ -525,6 +540,15 @@ def classify_board(image: Image.Image) -> tuple[list[str], list[list[float]]]:
                 bottom_code,bottom_hue=classify_cell(crop[int(crop.shape[0]*.23):,:])
                 if right_code==bottom_code and right_code in ('R','B','G','P','H'):
                     code,hue=right_code,bottom_hue
+                if code=='Y':
+                    # 069: the 23% bottom crop still contains the keyhole's
+                    # yellow body. Require a real lock plus two further, badge-
+                    # free halves agreeing. Never substitute the planned colour.
+                    right_code,right_hue=classify_cell(crop[:,crop.shape[1]//2:])
+                    bottom_code,bottom_hue=classify_cell(crop[crop.shape[0]//2:,:])
+                    if right_code==bottom_code and right_code in ('R','B','G','P','H'):
+                        tile=image.crop((round(c*cw),round(r*ch),round((c+1)*cw),round((r+1)*ch)))
+                        if _cell_has_lock_badge(tile):code,hue=right_code,right_hue
             # v72: re-evaluate suspicious blue/spike-like cores using a broader
             # cell crop. Dust-shaped jammer graphics are dark in the centre and
             # can resemble a blue orb with crossed blades at certain frames.

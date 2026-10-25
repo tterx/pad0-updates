@@ -68,7 +68,7 @@ def validated_input_timing(value):
     result={key:value.get(key) for key in ('sample_seconds','corner_seconds')}
     if any(type(v) not in (int,float) or not math.isfinite(v) for v in result.values()):
         raise ValueError('이동 속도 숫자가 잘못됐습니다.')
-    if not .01875<=result['sample_seconds']<=.04 or not .01875<=result['corner_seconds']<=.12:
+    if not .010<=result['sample_seconds']<=.04 or not .010<=result['corner_seconds']<=.12:
         raise ValueError('이동 속도 범위를 벗어났습니다.')
     if result['corner_seconds']<result['sample_seconds']:raise ValueError('모서리 대기가 너무 짧습니다.')
     return result
@@ -115,8 +115,8 @@ def maa_playback_timing(device):
     sdk=maa_requested_input_methods(settings.get('background_input_backend','auto'))==8
     sample=float(settings.get('background_sdk_sample_ms' if sdk else 'background_maa_sample_ms',18.75))
     extra=float(settings.get('background_sdk_corner_ms' if sdk else 'background_maa_corner_ms',12.5 if sdk else 0))
-    if not math.isfinite(sample) or not 18.75<=sample<=40 or not math.isfinite(extra) or not 0<=extra<=80:
-        raise ValueError('이동 간격은 18.75~40ms, 코너 추가 대기는 0~80ms여야 합니다.')
+    if not math.isfinite(sample) or not 10<=sample<=40 or not math.isfinite(extra) or not 0<=extra<=80:
+        raise ValueError('이동 간격은 10~40ms, 코너 추가 대기는 0~80ms여야 합니다.')
     return validated_input_timing(dict(sample_seconds=sample/1000,corner_seconds=(sample+extra)/1000))
 
 
@@ -965,7 +965,7 @@ def _execute_worker_gesture(self,points,hold,limit,probe=False):
         sdk_moving_gap_max_seconds=result.get('moving_gap_max_seconds'),sdk_route_pacing=result.get('route_pacing'),
         sdk_dispatch_gap_min_seconds=result.get('dispatch_gap_min_seconds'),sdk_dispatch_gap_max_seconds=result.get('dispatch_gap_max_seconds'))
     self.device.input_diagnostics['input_timing']=result.get('input_timing')
-    self.device.input_diagnostics.update(input_pipeline=result.get('input_pipeline'),move_schedule=result.get('move_schedule'))
+    self.device.input_diagnostics.update(input_pipeline=result.get('input_pipeline'),move_schedule=result.get('move_schedule'),maa_mapping_log=result.get('maa_mapping_log'))
     if len(points)>1:
         self.device.input_diagnostics['last_drag_timing']=dict(move_schedule=result.get('move_schedule'),input_pipeline=result.get('input_pipeline'),timing=result.get('input_timing'),
             input_backend=result.get('input_backend'),maa_api_timing=result.get('maa_api_timing'),
@@ -1056,11 +1056,26 @@ class MaaFrameworkTouch(MuMuSDKTouch):
         if self.client.closed:
             if self.pressed:raise RuntimeError('MAA 입력 연결 종료 · 원래 손가락 해제를 확인하지 못했습니다.')
             return
-        result=self.client.input_request(dict(op='release',require_active=self.pressed))
-        if result.get('error') or result.get('released') is not True:
-            raise RuntimeError(result.get('error') or 'MAA 손가락 해제 미확인')
-        self.pressed=False;self.last_up_at=time.monotonic()
-        self.device.input_diagnostics.update(control_release_confirmed=True,sdk_release_confirmed=True)
+        # Keep the release acknowledgement and capture resumption atomic to
+        # captures queued on this same controller (its lock is reentrant).
+        with self.client.io_lock:
+            result=self.client.input_request(dict(op='release',require_active=self.pressed or cancel))
+            if result.get('error') or result.get('released') is not True:
+                raise RuntimeError(result.get('error') or 'MAA 손가락 해제 미확인')
+            self.pressed=False;self.last_up_at=time.monotonic()
+            self.device.input_diagnostics.update(control_release_confirmed=True,sdk_release_confirmed=True,
+                last_control_release=dict(result,cancel=bool(cancel),scope='original_controller_command_not_game_ack'))
+            if not cancel:
+                # Release interrupts the worker, including its capture wait. A normal
+                # handoff to Android UI taps must permit the next capture again.
+                # F10 owns device.cancel and must never be cleared by this handoff.
+                if self.device.cancel.is_set():
+                    raise RuntimeError('재료 파밍을 중지했습니다.')
+                self.client.input_cancel.clear()
+                if self.device.cancel.is_set():
+                    self.client.input_cancel.set()
+                    raise RuntimeError('재료 파밍을 중지했습니다.')
+                self.device.input_diagnostics['normal_release_capture_resumed']=True
     def close(self):
         try:
             if self.pressed:self.repeat_release(cancel=True)
