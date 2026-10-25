@@ -31,5 +31,8 @@
     "pad0_solver": "4e1ba983b4b5933020b9c13b5d463db69518d4d44e74cf88b25530e97e0da400",
     "pad0_ai": "4f35b2993b425ab9d5d97baa153f0ccc6db7c7a1d51d33b39c0f9c96bd2f2fa7",
     "pad0_ui": "b1c56ea5a9321c0d3adb9574c152d817c622d1a1a8c529fcbccac7ffdd083cd4"
-  }
+  },
+  "publication_workflow_run": 40186666199,
+  "public_release_zip_download_verified": true,
+  "release_asset_digest": "sha256:a851fee4c6cc8666673c8700b4df461ae133d4aa0c47258fb6287fd5c426c82c"
 }
