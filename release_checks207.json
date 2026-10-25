@@ -43,5 +43,8 @@
     "recovery_included": false,
     "game_input_sent": false
   },
-  "reported_081_skill_policy": "ready Aten considered when preferred unlock/haste unavailable; ready unlock and ally cleanse keep priority"
+  "reported_081_skill_policy": "ready Aten considered when preferred unlock/haste unavailable; ready unlock and ally cleanse keep priority",
+  "publication_workflow_run": 40193935921,
+  "public_release_zip_download_verified": true,
+  "release_asset_digest": "sha256:70941b2965f437e6a308f7000db2a077d51d37b4d3a264c9bd2c2906442f4c03"
 }
