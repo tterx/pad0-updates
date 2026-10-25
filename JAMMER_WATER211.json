@@ -1,0 +1,256 @@
+{
+  "schema": 1,
+  "features": 520,
+  "id": "jammer-water-real-211",
+  "kind": "jammer_water_specialist",
+  "source": "visually_reviewed_user_game_screens",
+  "seed": 212,
+  "epochs": 320,
+  "fit_runs": 3,
+  "optimizer_steps": 960,
+  "threshold": 0.985,
+  "split_unit": "entire_source_screenshot",
+  "reports": [
+    {
+      "seed": 211,
+      "epochs": 320,
+      "seconds": 0.626,
+      "training": {
+        "total": 584,
+        "correct": 584,
+        "accepted": 584,
+        "accepted_errors": 0,
+        "min_confidence": 0.999606192111969,
+        "per_class": {
+          "B": {
+            "total": 272,
+            "correct": 272
+          },
+          "J": {
+            "total": 312,
+            "correct": 312
+          }
+        }
+      },
+      "validation": {
+        "total": 36,
+        "correct": 36,
+        "accepted": 36,
+        "accepted_errors": 0,
+        "min_confidence": 0.9996161460876465,
+        "per_class": {
+          "B": {
+            "total": 14,
+            "correct": 14
+          },
+          "J": {
+            "total": 22,
+            "correct": 22
+          }
+        }
+      }
+    },
+    {
+      "seed": 212,
+      "epochs": 320,
+      "seconds": 0.484,
+      "training": {
+        "total": 584,
+        "correct": 584,
+        "accepted": 584,
+        "accepted_errors": 0,
+        "min_confidence": 0.9995905756950378,
+        "per_class": {
+          "B": {
+            "total": 272,
+            "correct": 272
+          },
+          "J": {
+            "total": 312,
+            "correct": 312
+          }
+        }
+      },
+      "validation": {
+        "total": 36,
+        "correct": 36,
+        "accepted": 36,
+        "accepted_errors": 0,
+        "min_confidence": 0.9997209906578064,
+        "per_class": {
+          "B": {
+            "total": 14,
+            "correct": 14
+          },
+          "J": {
+            "total": 22,
+            "correct": 22
+          }
+        }
+      }
+    },
+    {
+      "seed": 213,
+      "epochs": 320,
+      "seconds": 0.48,
+      "training": {
+        "total": 584,
+        "correct": 584,
+        "accepted": 584,
+        "accepted_errors": 0,
+        "min_confidence": 0.9995019435882568,
+        "per_class": {
+          "B": {
+            "total": 272,
+            "correct": 272
+          },
+          "J": {
+            "total": 312,
+            "correct": 312
+          }
+        }
+      },
+      "validation": {
+        "total": 36,
+        "correct": 36,
+        "accepted": 36,
+        "accepted_errors": 0,
+        "min_confidence": 0.9997065663337708,
+        "per_class": {
+          "B": {
+            "total": 14,
+            "correct": 14
+          },
+          "J": {
+            "total": 22,
+            "correct": 22
+          }
+        }
+      }
+    }
+  ],
+  "test": {
+    "total": 13,
+    "correct": 13,
+    "accepted": 13,
+    "accepted_errors": 0,
+    "min_confidence": 0.9998780488967896,
+    "predictions": [
+      {
+        "id": "g10_c02_J",
+        "wanted": "J",
+        "predicted": "J",
+        "confidence": 0.999902606010437,
+        "accepted": true
+      },
+      {
+        "id": "g10_c03_J",
+        "wanted": "J",
+        "predicted": "J",
+        "confidence": 0.9999144077301025,
+        "accepted": true
+      },
+      {
+        "id": "g10_c05_J",
+        "wanted": "J",
+        "predicted": "J",
+        "confidence": 0.9999071359634399,
+        "accepted": true
+      },
+      {
+        "id": "g10_c06_B",
+        "wanted": "B",
+        "predicted": "B",
+        "confidence": 0.9999103546142578,
+        "accepted": true
+      },
+      {
+        "id": "g10_c14_J",
+        "wanted": "J",
+        "predicted": "J",
+        "confidence": 0.999914288520813,
+        "accepted": true
+      },
+      {
+        "id": "g10_c17_B",
+        "wanted": "B",
+        "predicted": "B",
+        "confidence": 0.9999091625213623,
+        "accepted": true
+      },
+      {
+        "id": "g10_c18_J",
+        "wanted": "J",
+        "predicted": "J",
+        "confidence": 0.9998997449874878,
+        "accepted": true
+      },
+      {
+        "id": "g10_c20_B",
+        "wanted": "B",
+        "predicted": "B",
+        "confidence": 0.9999098777770996,
+        "accepted": true
+      },
+      {
+        "id": "g10_c27_B",
+        "wanted": "B",
+        "predicted": "B",
+        "confidence": 0.9999089241027832,
+        "accepted": true
+      },
+      {
+        "id": "g10_c29_J",
+        "wanted": "J",
+        "predicted": "J",
+        "confidence": 0.9999148845672607,
+        "accepted": true
+      },
+      {
+        "id": "g10_held1.08_J",
+        "wanted": "J",
+        "predicted": "J",
+        "confidence": 0.9999129772186279,
+        "accepted": true
+      },
+      {
+        "id": "g10_held1.16_J",
+        "wanted": "J",
+        "predicted": "J",
+        "confidence": 0.9999035596847534,
+        "accepted": true
+      },
+      {
+        "id": "g10_held1.24_J",
+        "wanted": "J",
+        "predicted": "J",
+        "confidence": 0.9998780488967896,
+        "accepted": true
+      }
+    ]
+  },
+  "limitations": "11 distinct mixed boards plus one held Water image; 085 test group unseen during fitting and selection; small held-Water validation set; no real Android action test",
+  "validation_legacy_whole_crop": {
+    "total": 36,
+    "correct": 22,
+    "scope": "same whole-sprite crop classified by legacy classify_cell; not full board AI pipeline"
+  },
+  "test_legacy_whole_crop": {
+    "total": 13,
+    "correct": 7,
+    "scope": "same whole-sprite crop classified by legacy classify_cell; not full board AI pipeline"
+  },
+  "source_groups": {
+    "train": 7,
+    "validation": 4,
+    "test": 1
+  },
+  "original_crops": {
+    "train": 73,
+    "validation": 36,
+    "test": 13
+  },
+  "augmentation_training_examples": 584,
+  "cross_split_duplicate_image_hashes": 0,
+  "weights_sha256": "1fa7ac85a41ddea6cf01efcf0a761d4221579688ccefdc561cffbf8a6b4f159d"
+}
