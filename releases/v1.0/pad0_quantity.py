@@ -245,13 +245,14 @@ def quantity_confirm(root, sample_id, truth):
         return record
 
 
-def quantity_train(root):
+def quantity_train(root,cancel=None):
     """Publish a model only after checking contradictory human labels."""
     with QUANTITY_LOCK:
         samples = []
         records = quantity_list(root, '확인 완료', limit=None)
         digits=[];glyph_labels={};sources=[];numbers={};strip_labels={};normal_keys={}
         for record in records:
+            if cancel is not None and cancel.is_set():raise RuntimeError("수량 학습을 중지했습니다.")
             folder = _sample_folder(root, record['id'])
             with Image.open(folder / 'number.png') as image:
                 feature = _feature(image)
@@ -310,6 +311,7 @@ def quantity_train(root):
                      numbers=[dict(key=key,value=next(iter(values))) for key,values in numbers.items() if len(values)==1],
                      allow_digit_approximation=validation['tested']>=10 and validation['accepted']>=5 and not validation['wrong'])
 
+        if cancel is not None and cancel.is_set():raise RuntimeError('수량 학습을 중지했습니다.')
         folder = quantity_root(root);path = folder / 'model.json'
         previous = _load_json_dict(path)
         if previous:
@@ -390,3 +392,31 @@ def quantity_resolve(root, kind, image, read, card=None, context=None):
     if value is None:
         raise ValueError(reason)
     return value
+
+
+def quantity_cleanup_training_data(root,protected_ids=(),cancel=None):
+    """Remove only exact duplicate confirmed images after their model was saved.
+
+    Keep unique examples (including rare digits) for the next learning run.
+    Pending/unconfirmed records and any unknown files remain untouched.
+    """
+    with QUANTITY_LOCK:
+        model=_load_json_dict(quantity_root(root)/'model.json')
+        trained={(row.get('sample_id'),row.get('kind'),row.get('value')) for row in model.get('samples',[])}
+        if not trained:raise ValueError('저장된 수량 모델을 확인하지 못해 원본을 정리하지 않았습니다.')
+        seen=set();deleted=0;protected=set(protected_ids)
+        for record in quantity_list(root,'확인 완료',limit=None):
+            if cancel is not None and cancel.is_set():return dict(deleted=deleted,cancelled=True)
+            cid=record.get('id');folder=_sample_folder(root,cid)
+            if (cid,record.get('kind'),record.get('truth')) not in trained or folder.is_symlink():continue
+            image=folder/'number.png'
+            if not image.is_file() or image.is_symlink():continue
+            identity=(record['kind'],record['truth'],hashlib.sha256(image.read_bytes()).hexdigest())
+            if identity not in seen:seen.add(identity);continue
+            if cid in protected:continue
+            contents=list(folder.iterdir())
+            if any(not path.is_file() or path.is_symlink() or path.name not in ('record.json','number.png','card.png','context.png') for path in contents):continue
+            for path in contents:path.unlink()
+            folder.rmdir();deleted+=1
+        _REVIEW_INDEX.pop(str(quantity_root(root).resolve()),None)
+        return dict(deleted=deleted,cancelled=False)

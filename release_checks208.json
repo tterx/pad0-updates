@@ -1,0 +1,32 @@
+{
+  "release": 208,
+  "version": "v1.0",
+  "source_commit": "8b7b33e2fb5c2352a1104bc15205034f641f5a19",
+  "source_sha256": "64e6086e7d9d168327a519ce565b7137b1af0e2c4293cae4f5dc27430d623c67",
+  "zip_sha256": "4498a96235c3bb8615fff85d89689c253a948def458823e9d099988eafbf98bb",
+  "windows_run": 40228899045,
+  "windows_tests_passed": 74,
+  "windows_package_source_sha256": "64e6086e7d9d168327a519ce565b7137b1af0e2c4293cae4f5dc27430d623c67",
+  "linux_tests_selected": 366,
+  "linux_tests_passed": 366,
+  "linux_tests_skipped": 0,
+  "linux_failures": 0,
+  "linux_errors": 0,
+  "real_tk_settings_and_speed_tests": 5,
+  "direct_emulator_operations": 0,
+  "modified_program_full_mumu_gameplay_verified": false,
+  "product_input_backend": "mumu_sdk",
+  "product_skill_click_backend": "controller",
+  "capture_methods": 64,
+  "feature_sha256": {
+    "pad0_install": "1917d1fc368ff3848dc6b19d3c01bc32b6eb6a8cededa3aaf917a182c4345ba6",
+    "pad0_common": "e5d333b48c926e532e40faa5f463b96f60aac5844dfe1cf5a0c88ede26235d2f",
+    "pad0_quantity": "670150dbc5eec9b7015a7d9f83414e4a9ea1ca1edcf8523477fb4835d861481e",
+    "pad0_crystal": "77ab76b4b642f7c2d3cacc06b2c6a0881878c6f75a07cab5bc902127ac2fd77d",
+    "pad0_crystal_review": "6725b6997d273b1c83e43a921d7e816951a98adc52f1c4c64e633b6edb5015ae",
+    "pad0_input": "e5fbf910bc067094d418803db0f5733488b5720501991bb821bddf33117d7883",
+    "pad0_solver": "4e1ba983b4b5933020b9c13b5d463db69518d4d44e74cf88b25530e97e0da400",
+    "pad0_ai": "4f35b2993b425ab9d5d97baa153f0ccc6db7c7a1d51d33b39c0f9c96bd2f2fa7",
+    "pad0_ui": "c0b7b994137168cc70bee1a2438075055bcfb8c38b3dd8fc783c17c28574ae27"
+  }
+}

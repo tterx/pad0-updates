@@ -2584,8 +2584,14 @@ class AppUIMixin:
 
     def _party_bring_forward(self,window):
         window.deiconify();window.attributes('-topmost',True);window.lift()
-        window.after_idle(lambda:window.winfo_exists() and window.focus_force())
-        window.after(800,lambda:window.winfo_exists() and window.attributes('-topmost',False))
+        jobs=(window.after_idle(lambda:window.winfo_exists() and window.focus_force()),
+              window.after(800,lambda:window.winfo_exists() and window.attributes('-topmost',False)))
+        def cleanup(event):
+            if event.widget is not window:return
+            for job in jobs:
+                try:window.after_cancel(job)
+                except tk.TclError:pass
+        window.bind('<Destroy>',cleanup,add='+')
 
     def show_background_path_help(self,path='',serial=''):
         services = self._ui_backend_services()
@@ -2618,11 +2624,10 @@ class AppUIMixin:
         return wizard
 
     def show_maa_timing_settings(self):
-        backend='mumu_sdk' if self.user_settings.get('background_input_backend') in ('mumu_sdk','maa_mumu') else 'maa_touch'
-        is_sdk=backend=='mumu_sdk';label='MuMu SDK' if is_sdk else 'MaaTouch'
-        sample_key='background_sdk_sample_ms' if is_sdk else 'background_maa_sample_ms'
-        corner_key='background_sdk_corner_ms' if is_sdk else 'background_maa_corner_ms'
-        sample_default,corner_default=(18.75,12.5) if is_sdk else (18.75,0)
+        backend='mumu_sdk'
+        label='MuMu SDK'
+        sample_key='background_sdk_sample_ms';corner_key='background_sdk_corner_ms'
+        sample_default,corner_default=18.75,12.5
         existing=getattr(self,'_maa_timing_window',None)
         if existing is not None and existing.winfo_exists():
             if getattr(existing,'_pad0_input_backend',backend)==backend:
@@ -2645,8 +2650,6 @@ class AppUIMixin:
         ttk.Label(body,textvariable=estimate).pack(anchor='w',pady=5)
         row=ttk.Frame(body);row.pack(fill='x',pady=5)
         def values():
-            current='mumu_sdk' if self.user_settings.get('background_input_backend') in ('mumu_sdk','maa_mumu') else 'maa_touch'
-            if current!=backend:raise ValueError('입력 방식이 변경됐습니다. 이 창을 닫고 매칭 속도 조절을 다시 열어주세요.')
             step=float(sample.get());extra=float(corner.get())
             if not math.isfinite(step) or not 10<=step<=40 or not math.isfinite(extra) or not 0<=extra<=80:
                 raise ValueError('이동 간격은 10~40ms, 코너 추가 대기는 0~80ms여야 합니다.')
@@ -2690,10 +2693,22 @@ class AppUIMixin:
     def background_settings(self):
         services = self._ui_backend_services()
         def connection_busy():
-            return bool(getattr(self,'_background_running',False) or getattr(self,'playback_active',False) or getattr(self,'_manual_play_active',False))
-        if connection_busy():self.set_status('F10으로 파밍·경로 실행을 중지한 뒤 입력 방식을 바꿀 수 있습니다.');return
+            # _manual_play_active means passive manual mode after F10/failure,
+            # not an in-flight drag. Keep the actual worker/playback guards.
+            return bool(getattr(self,'_background_running',False) or getattr(self,'playback_active',False))
+        if connection_busy():self.set_status('F10으로 파밍·경로 실행을 중지한 뒤 연결 설정을 열 수 있습니다.');return
+        existing=getattr(self,'_background_settings_window',None)
+        try:
+            if existing is not None and existing.winfo_exists():
+                self._party_bring_forward(existing);return
+        except tk.TclError:pass
+        self._background_settings_window=None
         from tkinter import filedialog
         window=tk.Toplevel(self.root);self._background_settings_window=window
+        def close():
+            if getattr(self,'_background_settings_window',None) is window:self._background_settings_window=None
+            window.destroy()
+        window.protocol('WM_DELETE_WINDOW',close)
         window.title('백그라운드 파밍 연결 설정');window.geometry(f'800x{min(880,window.winfo_screenheight()-70)}')
         self._party_bring_forward(window)
         footer=ttk.Frame(window,padding=(16,8));footer.pack(side='bottom',fill='x')
@@ -2709,51 +2724,28 @@ class AppUIMixin:
         path=tk.StringVar(value=self.user_settings.get('background_adb_path',''))
         serial=tk.StringVar(value=self.user_settings.get('background_adb_serial',''))
         skills=tk.BooleanVar(value=self.user_settings.get('background_auto_skills',True))
-        skill_click_modes={'기존 컨트롤러':'controller','Android 표준 탭':'android_tap'}
-        skill_mode_value=self.user_settings.get('background_skill_input_backend','controller')
-        skill_click_choice=tk.StringVar(value=next((label for label,value in skill_click_modes.items() if value==skill_mode_value),'기존 컨트롤러'))
-        skill_row=ttk.Frame(body);skill_row.pack(fill='x',pady=(8,4))
-        ttk.Label(skill_row,text='스킬 클릭').pack(side='left')
-        ttk.Combobox(skill_row,textvariable=skill_click_choice,values=list(skill_click_modes),state='readonly',width=22).pack(side='left',padx=8)
-        ttk.Label(body,text='Android 표준 탭은 스킬 클릭만 분리합니다. 퍼즐 이동은 선택한 MaaTouch/SDK를 유지하며 실패 시 자동 전환·재클릭하지 않습니다.',wraplength=690).pack(anchor='w')
+        ttk.Label(body,text='조작: MuMu SDK · 스킬 클릭: 기존 컨트롤러',font=('Malgun Gothic',10,'bold')).pack(anchor='w',pady=8)
         mumu_root=tk.StringVar(value=self.user_settings.get('background_mumu_root',''))
         mumu_index=tk.StringVar(value=self.user_settings.get('background_mumu_index',''))
-        backend_labels={'MaaTouch':'maa_touch','MuMu SDK':'mumu_sdk'}
-        selected='mumu_sdk' if self.user_settings.get('background_input_backend') in ('mumu_sdk','maa_mumu') else 'maa_touch'
-        backend_choice=tk.StringVar(value=next(label for label,value in backend_labels.items() if value==selected))
-        backend_row=ttk.Frame(body);backend_row.pack(fill='x',pady=(12,4))
-        ttk.Label(backend_row,text='입력 방식').pack(side='left')
-        backend_selector=ttk.Combobox(backend_row,textvariable=backend_choice,values=list(backend_labels),state='readonly',width=18)
-        backend_selector.pack(side='left',padx=8)
-        ttk.Label(body,text='화면은 두 방식 모두 MuMu 강화 캡처를 사용합니다. 입력 실패 시 다른 방식으로 자동 전환하지 않습니다.',wraplength=690).pack(anchor='w')
-        def backend_changed(_event):
-            if connection_busy():
-                current='mumu_sdk' if self.user_settings.get('background_input_backend') in ('mumu_sdk','maa_mumu') else 'maa_touch'
-                backend_choice.set(next(label for label,value in backend_labels.items() if value==current))
-                self.set_status('F10으로 파밍·경로 실행을 중지한 뒤 입력 방식을 바꿔주세요.')
-        backend_selector.bind('<<ComboboxSelected>>',backend_changed)
-        maa_sample=tk.StringVar(value=str(self.user_settings.get('background_maa_sample_ms',18.75)))
-        maa_corner=tk.StringVar(value=str(self.user_settings.get('background_maa_corner_ms',0)))
         sdk_sample=tk.StringVar(value=str(self.user_settings.get('background_sdk_sample_ms',18.75)))
         sdk_corner=tk.StringVar(value=str(self.user_settings.get('background_sdk_corner_ms',12.5)))
-        for label,sample_var,corner_var in (('MaaTouch',maa_sample,maa_corner),('MuMu SDK',sdk_sample,sdk_corner)):
+        for label,sample_var,corner_var in (('MuMu SDK',sdk_sample,sdk_corner),):
             timing_row=ttk.Frame(body);timing_row.pack(fill='x',pady=5)
             ttk.Label(timing_row,text=label+' 이동 간격(ms)').pack(side='left')
             ttk.Spinbox(timing_row,textvariable=sample_var,from_=10,to=40,increment=.5,width=7).pack(side='left',padx=6)
             ttk.Label(timing_row,text='코너 추가 대기(ms)').pack(side='left')
             ttk.Spinbox(timing_row,textvariable=corner_var,from_=0,to=80,increment=.5,width=7).pack(side='left',padx=6)
-        ttk.Label(body,text='이동 간격 10~40ms · 코너 추가 대기 0~80ms · 방식별 속도는 따로 저장됩니다.',foreground='#526776').pack(anchor='w')
-        timing_keys=('background_maa_sample_ms','background_maa_corner_ms','background_sdk_sample_ms','background_sdk_corner_ms')
+        ttk.Label(body,text='이동 간격 10~40ms · 코너 추가 대기 0~80ms · 매칭 속도는 다음 자동플레이부터 적용됩니다.',foreground='#526776').pack(anchor='w')
+        timing_keys=('background_sdk_sample_ms','background_sdk_corner_ms')
         def capture_values(probe_input=False):
             if connection_busy():raise ValueError('F10으로 파밍·경로 실행을 중지한 뒤 연결 설정을 저장하거나 확인해 주세요.')
-            if backend_choice.get() not in backend_labels:raise ValueError('MaaTouch 또는 MuMu SDK 입력 방식을 선택하세요.')
-            values=dict(self.user_settings,background_skill_input_backend=skill_click_modes[skill_click_choice.get()],background_maa_sample_ms=float(maa_sample.get()),background_maa_corner_ms=float(maa_corner.get()),
+            values=dict(self.user_settings,background_skill_input_backend='controller',
                         background_sdk_sample_ms=float(sdk_sample.get()),background_sdk_corner_ms=float(sdk_corner.get()),
                         background_adb_path=services.portable_adb_path(path.get()) if path.get().strip() else '',background_adb_serial=serial.get().strip(),
                         background_connection_profile='fast',background_mumu_enhanced=True,background_mumu_root=mumu_root.get().strip(),background_mumu_index=mumu_index.get().strip(),
                         background_capture_preference='auto',background_input_preference='auto',background_touch_mode='scrcpy',
-                        background_capture_mode='mumu_enhanced',background_adb_raw_capture=True,background_input_backend=backend_labels[backend_choice.get()])
-            for label,sample_key,corner_key in (('MaaTouch',timing_keys[0],timing_keys[1]),('MuMu SDK',timing_keys[2],timing_keys[3])):
+                        background_capture_mode='mumu_enhanced',background_adb_raw_capture=True,background_input_backend='mumu_sdk')
+            for label,sample_key,corner_key in (('MuMu SDK',timing_keys[0],timing_keys[1]),):
                 sample=values[sample_key];extra=values[corner_key]
                 if not math.isfinite(sample) or not 10<=sample<=40 or not math.isfinite(extra) or not 0<=extra<=80:
                     raise ValueError(label+' 이동 간격은 10~40ms, 코너 추가 대기는 0~80ms여야 합니다.')
@@ -2813,14 +2805,18 @@ class AppUIMixin:
             self.user_settings.update(values,background_auto_skills=skills.get())
             self.save_user_settings()
             self._background_timing_request={key:values[key] for key in timing_keys}
-            window.destroy()
+            close()
         ttk.Button(footer,text='저장',command=save).pack(anchor='e')
 
     def show_farming_confirmation(self,settings_only=False,target_key=None):
-        if getattr(self,'_material_catalog_busy',False):
+        local_after_stop=settings_only and getattr(self,'_all_actions_stopped',False) is True
+        if getattr(self,'_material_catalog_busy',False) and not local_after_stop:
             self.set_status('크리스탈 이름 등록 완료 후 파밍 설정을 열어주세요. F10으로 중지할 수 있습니다.');return
         existing=getattr(self,'_farming_confirm_window',None)
-        if existing is not None and existing.winfo_exists():existing.deiconify();existing.lift();return
+        try:
+            if existing is not None and existing.winfo_exists():
+                self._party_bring_forward(existing);return
+        except tk.TclError:self._farming_confirm_window=None
         try:
             ledger=self._load_crystal_ledger();key=target_key or background_target_key(ledger)
             group=ledger.get('farming_groups',{}).get(key)
@@ -2940,12 +2936,12 @@ class AppUIMixin:
         self._party_bring_forward(win)
 
     def show_ai_share_settings(self):
-        win=tk.Toplevel(self.root);win.title('업데이트 시 학습 자료 공유');win.geometry('650x380')
+        win=tk.Toplevel(self.root);win.title('학습된 모델 업로드 설정');win.geometry('650x380')
         body=ttk.Frame(win,padding=14);body.pack(fill='both',expand=True)
         enabled=tk.BooleanVar(value=self.user_settings.get('ai_github_enabled',True))
-        repo=tk.StringVar(value=self.user_settings.get('ai_github_repo',AI_GITHUB_DEFAULT_REPO));threshold=tk.StringVar(value=str(self.user_settings.get('ai_github_threshold',50)));token=tk.StringVar()
-        ttk.Checkbutton(body,text='프로그램 업데이트 때 새 정답이 기준 수 이상이면 자동 업로드',variable=enabled).pack(anchor='w')
-        row=ttk.Frame(body);row.pack(fill='x',pady=8);ttk.Label(row,text='기준 수').pack(side='left');ttk.Spinbox(row,from_=1,to=10000,textvariable=threshold,width=8).pack(side='left',padx=8);ttk.Label(row,text='건 · 평소 실행/정답 저장 때는 업로드하지 않음').pack(side='left')
+        repo=tk.StringVar(value=self.user_settings.get('ai_github_repo',AI_GITHUB_DEFAULT_REPO));token=tk.StringVar()
+        ttk.Checkbutton(body,text='학습·데이터 정리 성공 후 학습된 모델 자동 업로드',variable=enabled).pack(anchor='w')
+        ttk.Label(body,text='학습 → 데이터 정리 → 모델만 업로드. 프로그램 업데이트·정답 건수를 기다리지 않으며 원본 이미지 ZIP은 전송하지 않습니다.',wraplength=610).pack(anchor='w',pady=8)
         ttk.Label(body,text='비공개 GitHub 저장소 (소유자/저장소)').pack(anchor='w');ttk.Entry(body,textvariable=repo).pack(fill='x',pady=(3,8))
         ttk.Label(body,text='최초 한 번: 비공개 저장소를 README와 함께 만들고, 해당 저장소의 Contents 읽기·쓰기 권한을 가진 fine-grained 토큰을 연결하세요. 이미 gh로 로그인했거나 GH_TOKEN을 설정했다면 토큰 입력은 생략할 수 있습니다.',wraplength=610).pack(anchor='w')
         links=ttk.Frame(body);links.pack(fill='x',pady=6)
@@ -2953,20 +2949,18 @@ class AppUIMixin:
         ttk.Button(links,text='저장소 만들기',command=lambda:webbrowser.open('https://github.com/new?name=pad0-learning-data&visibility=private')).pack(side='left')
         ttk.Button(links,text='GitHub 토큰 설정',command=lambda:webbrowser.open('https://github.com/settings/personal-access-tokens')).pack(side='left',padx=6)
         ttk.Label(body,text='연결 토큰 (선택 · Windows 인증 정보 관리자에 저장)').pack(anchor='w');ttk.Entry(body,textvariable=token,show='*').pack(fill='x',pady=(3,8))
-        status=self._ai_share_status_var=tk.StringVar(value=getattr(self,'_ai_share_last_message','새 정답 50건 이상이면 다음 프로그램 업데이트 때 공유합니다.'))
+        status=self._ai_share_status_var=tk.StringVar(value=getattr(self,'_ai_share_last_message','학습 → 데이터 정리 → 학습된 모델만 업로드'))
         ttk.Label(body,textvariable=status,wraplength=610).pack(anchor='w',pady=3)
         def save():
             try:
                 if any(getattr(self,name,False) for name in ('_ai_training_busy','_ai_retention_busy','_ai_share_busy')):
                     status.set('학습·정리·공유가 끝난 뒤 연결 설정을 저장해 주세요.');return
-                destination=ai_github_repo(repo.get());count=int(threshold.get())
-                if not 1<=count<=10000:raise ValueError('기준 수는 1~10000건으로 입력하세요.')
-                if destination!=self.user_settings.get('ai_github_repo',AI_GITHUB_DEFAULT_REPO):
-                    ai_record_share_changes(self.data_paths['root']/'ai_review',force_current=True)
+                destination=ai_github_repo(repo.get())
                 if token.get().strip():ai_github_credential(destination,token.get())
-                token.set('');self.user_settings.update(ai_github_repo=destination,ai_github_threshold=count,ai_github_enabled=enabled.get());self.save_user_settings()
-                status.set('저장 완료 · 이번 업데이트의 미완료 전송이 있으면 이어서 처리합니다.');self.root.after(200,self._ai_update_sync_start)
+                token.set('');self.user_settings.update(ai_github_repo=destination,ai_github_enabled=enabled.get());self.save_user_settings()
+                status.set('저장 완료 · 다음 학습·정리 성공 후 모델 업로드. 보류된 모델은 다시 시도를 눌러주세요.')
             except (ValueError,OSError,RuntimeError) as exc:status.set(str(exc))
+        ttk.Button(body,text='보류된 모델 업로드 다시 시도',command=self.retry_trained_model_upload).pack(anchor='w',pady=4)
         ttk.Button(body,text='연결 설정 저장',command=save).pack(anchor='e',pady=6)
 
     def show_ai_storage_guide(self):
@@ -3372,12 +3366,13 @@ class AppUIMixin:
                 notice.set('정답 저장 완료 · 수량 이미지 학습을 누르면 실제 판독에 적용됩니다.')
             except (ValueError,OSError) as exc:notice.set(str(exc))
         def train():
-            try:
-                count=quantity_train(root)
-                summary=quantity_model_status(root)
-                refresh()
-                notice.set(f'수량 정답 {count}개 반영 · 숫자 {summary["digits"]}/10종 · 다음 재료 확인·보상 판독부터 적용합니다.')
-            except (ValueError,OSError) as exc:notice.set('학습 보류: '+str(exc))
+            record=state.get('record') or {}
+            def update_notice(text):
+                if win.winfo_exists():notice.set(text)
+            def completed():
+                if win.winfo_exists():refresh()
+            self.train_quantity_model(on_update=update_notice,on_complete=completed,
+                protected_ids=[record['id']] if record.get('id') else ())
         confirm_button=ttk.Button(actions,text='판단 맞음',width=14,command=lambda:save(True))
         confirm_button.pack(side='left',padx=(0,8))
         ttk.Button(actions,text='수정 저장',width=14,command=save).pack(side='left')
