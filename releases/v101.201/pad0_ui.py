@@ -2618,32 +2618,41 @@ class AppUIMixin:
         return wizard
 
     def show_maa_timing_settings(self):
+        backend='mumu_sdk' if self.user_settings.get('background_input_backend') in ('mumu_sdk','maa_mumu') else 'maa_touch'
+        is_sdk=backend=='mumu_sdk';label='MuMu SDK' if is_sdk else 'MaaTouch'
+        sample_key='background_sdk_sample_ms' if is_sdk else 'background_maa_sample_ms'
+        corner_key='background_sdk_corner_ms' if is_sdk else 'background_maa_corner_ms'
+        sample_default,corner_default=(18.75,12.5) if is_sdk else (18.75,0)
         existing=getattr(self,'_maa_timing_window',None)
         if existing is not None and existing.winfo_exists():
-            existing.deiconify();self._party_bring_forward(existing);return
-        win=tk.Toplevel(self.root);self._maa_timing_window=win
+            if getattr(existing,'_pad0_input_backend',backend)==backend:
+                existing.deiconify();self._party_bring_forward(existing);return
+            existing.destroy()
+        win=tk.Toplevel(self.root);self._maa_timing_window=win;win._pad0_input_backend=backend
         win.title('자동플레이 매칭 속도 조절');win.geometry('560x460');win.resizable(False,False)
         self._party_bring_forward(win)
         footer=ttk.Frame(win,padding=(14,8));footer.pack(side='bottom',fill='x')
         body=ttk.Frame(win,padding=16);body.pack(fill='both',expand=True)
-        sample=tk.StringVar(value=str(self.user_settings.get('background_maa_sample_ms',27.5)))
-        corner=tk.StringVar(value=str(self.user_settings.get('background_maa_corner_ms',0)))
+        sample=tk.StringVar(value=str(self.user_settings.get(sample_key,sample_default)))
+        corner=tk.StringVar(value=str(self.user_settings.get(corner_key,corner_default)))
         notice=tk.StringVar(value='값이 작을수록 빠릅니다. 0.5ms씩 조절할 수 있습니다.')
         estimate=tk.StringVar()
-        ttk.Label(body,text='MaaTouch 매칭 속도',font=('Malgun Gothic',12,'bold')).pack(anchor='w')
+        ttk.Label(body,text=label+' 매칭 속도',font=('Malgun Gothic',12,'bold')).pack(anchor='w')
         ttk.Label(body,text='실행 중 저장하면 다음 턴부터 적용합니다. 이동 중인 경로의 속도는 유지합니다.',wraplength=515).pack(anchor='w',pady=(6,10))
         row=ttk.Frame(body);row.pack(fill='x')
-        ttk.Label(row,text='이동 간격 (25~40ms)').pack(side='left')
-        ttk.Spinbox(row,textvariable=sample,from_=25,to=40,increment=.5,width=8).pack(side='left',padx=8)
+        ttk.Label(row,text='이동 간격 (10~40ms)').pack(side='left')
+        ttk.Spinbox(row,textvariable=sample,from_=10,to=40,increment=.5,width=8).pack(side='left',padx=8)
         ttk.Label(body,textvariable=estimate).pack(anchor='w',pady=5)
         row=ttk.Frame(body);row.pack(fill='x',pady=5)
         def values():
+            current='mumu_sdk' if self.user_settings.get('background_input_backend') in ('mumu_sdk','maa_mumu') else 'maa_touch'
+            if current!=backend:raise ValueError('입력 방식이 변경됐습니다. 이 창을 닫고 매칭 속도 조절을 다시 열어주세요.')
             step=float(sample.get());extra=float(corner.get())
-            if not math.isfinite(step) or not 25<=step<=40 or not math.isfinite(extra) or not 0<=extra<=80:
-                raise ValueError('이동 간격은 25~40ms, 코너 추가 대기는 0~80ms여야 합니다.')
-            return dict(background_maa_sample_ms=step,background_maa_corner_ms=extra)
+            if not math.isfinite(step) or not 10<=step<=40 or not math.isfinite(extra) or not 0<=extra<=80:
+                raise ValueError('이동 간격은 10~40ms, 코너 추가 대기는 0~80ms여야 합니다.')
+            return {sample_key:step,corner_key:extra}
         def apply():
-            previous={k:(k in self.user_settings,self.user_settings.get(k)) for k in ('background_maa_sample_ms','background_maa_corner_ms')}
+            previous={k:(k in self.user_settings,self.user_settings.get(k)) for k in (sample_key,corner_key)}
             try:
                 pending=values()
                 self.user_settings.update(pending);self.save_user_settings()
@@ -2654,33 +2663,35 @@ class AppUIMixin:
                     if existed:self.user_settings[k]=value
                     else:self.user_settings.pop(k,None)
                 messagebox.showerror('매칭 속도',str(error),parent=win);return
-            # One immutable reference is consumed by the battle worker at the
-            # next turn boundary, so its search budget and gesture agree.
+            # A backend-specific immutable request is consumed at a new turn.
+            # This never switches the controller or edits a running gesture.
             self._background_timing_request=pending
-            notice.set('저장했습니다. '+('다음 턴부터 적용됩니다.' if getattr(self,'_background_running',False) else '다음 자동플레이부터 적용됩니다.'))
+            notice.set(label+' 속도를 저장했습니다. '+('다음 턴부터 적용됩니다.' if getattr(self,'_background_running',False) else '다음 자동플레이부터 적용됩니다.'))
         def adjust(delta):
-            try:current=values()['background_maa_sample_ms']
+            try:current=values()[sample_key]
             except (ValueError,TypeError) as error:
                 messagebox.showerror('매칭 속도',str(error),parent=win);return
-            sample.set(f'{min(40,max(25,round(current+delta,3))):g}');apply()
+            sample.set(f'{min(40,max(10,round(current+delta,3))):g}');apply()
         ttk.Button(row,text='더 빠르게 (-0.5ms)',command=lambda:adjust(-.5)).pack(side='left',padx=(0,8))
         ttk.Button(row,text='더 느리게 (+0.5ms)',command=lambda:adjust(.5)).pack(side='left')
         row=ttk.Frame(body);row.pack(fill='x',pady=8)
-        ttk.Label(row,text='코너 추가 대기 (기본 0ms)').pack(side='left')
+        ttk.Label(row,text=f'코너 추가 대기 (기본 {corner_default:g}ms)').pack(side='left')
         ttk.Spinbox(row,textvariable=corner,from_=0,to=80,increment=.5,width=8).pack(side='left',padx=8)
-        def reset():sample.set('27.5');corner.set('0');apply()
+        def reset():sample.set(f'{sample_default:g}');corner.set(f'{corner_default:g}');apply()
         ttk.Label(body,textvariable=notice,wraplength=515).pack(anchor='w',pady=5)
         def update_estimate(*_):
             try:estimate.set(f'한 칸 기본 이동 약 {4*float(sample.get()):g}ms · 실제 처리 시간은 별도')
             except (ValueError,TypeError):estimate.set('이동 간격을 숫자로 입력하세요.')
         sample.trace_add('write',update_estimate);update_estimate()
-        ttk.Button(footer,text='기본값 복원',command=reset).pack(side='left')
+        ttk.Button(footer,text=label+' 기본값 복원',command=reset).pack(side='left')
         ttk.Button(footer,text='저장 · 적용',command=apply).pack(side='right')
         ttk.Button(footer,text='닫기',command=win.destroy).pack(side='right',padx=8)
 
     def background_settings(self):
         services = self._ui_backend_services()
-        if getattr(self,'_background_running',False) or getattr(self,'_speed_test_running',False):self.set_status('F10으로 파밍·속도 테스트를 중지한 뒤 연결 설정을 바꿀 수 있습니다.');return
+        def connection_busy():
+            return bool(getattr(self,'_background_running',False) or getattr(self,'playback_active',False) or getattr(self,'_manual_play_active',False))
+        if connection_busy():self.set_status('F10으로 파밍·경로 실행을 중지한 뒤 입력 방식을 바꿀 수 있습니다.');return
         from tkinter import filedialog
         window=tk.Toplevel(self.root);self._background_settings_window=window
         window.title('백그라운드 파밍 연결 설정');window.geometry(f'800x{min(880,window.winfo_screenheight()-70)}')
@@ -2698,24 +2709,54 @@ class AppUIMixin:
         path=tk.StringVar(value=self.user_settings.get('background_adb_path',''))
         serial=tk.StringVar(value=self.user_settings.get('background_adb_serial',''))
         skills=tk.BooleanVar(value=self.user_settings.get('background_auto_skills',True))
+        skill_click_modes={'기존 컨트롤러':'controller','Android 표준 탭':'android_tap'}
+        skill_mode_value=self.user_settings.get('background_skill_input_backend','controller')
+        skill_click_choice=tk.StringVar(value=next((label for label,value in skill_click_modes.items() if value==skill_mode_value),'기존 컨트롤러'))
+        skill_row=ttk.Frame(body);skill_row.pack(fill='x',pady=(8,4))
+        ttk.Label(skill_row,text='스킬 클릭').pack(side='left')
+        ttk.Combobox(skill_row,textvariable=skill_click_choice,values=list(skill_click_modes),state='readonly',width=22).pack(side='left',padx=8)
+        ttk.Label(body,text='Android 표준 탭은 스킬 클릭만 분리합니다. 퍼즐 이동은 선택한 MaaTouch/SDK를 유지하며 실패 시 자동 전환·재클릭하지 않습니다.',wraplength=690).pack(anchor='w')
         mumu_root=tk.StringVar(value=self.user_settings.get('background_mumu_root',''))
         mumu_index=tk.StringVar(value=self.user_settings.get('background_mumu_index',''))
-        maa_sample=tk.StringVar(value=str(self.user_settings.get('background_maa_sample_ms',27.5)))
+        backend_labels={'MaaTouch':'maa_touch','MuMu SDK':'mumu_sdk'}
+        selected='mumu_sdk' if self.user_settings.get('background_input_backend') in ('mumu_sdk','maa_mumu') else 'maa_touch'
+        backend_choice=tk.StringVar(value=next(label for label,value in backend_labels.items() if value==selected))
+        backend_row=ttk.Frame(body);backend_row.pack(fill='x',pady=(12,4))
+        ttk.Label(backend_row,text='입력 방식').pack(side='left')
+        backend_selector=ttk.Combobox(backend_row,textvariable=backend_choice,values=list(backend_labels),state='readonly',width=18)
+        backend_selector.pack(side='left',padx=8)
+        ttk.Label(body,text='화면은 두 방식 모두 MuMu 강화 캡처를 사용합니다. 입력 실패 시 다른 방식으로 자동 전환하지 않습니다.',wraplength=690).pack(anchor='w')
+        def backend_changed(_event):
+            if connection_busy():
+                current='mumu_sdk' if self.user_settings.get('background_input_backend') in ('mumu_sdk','maa_mumu') else 'maa_touch'
+                backend_choice.set(next(label for label,value in backend_labels.items() if value==current))
+                self.set_status('F10으로 파밍·경로 실행을 중지한 뒤 입력 방식을 바꿔주세요.')
+        backend_selector.bind('<<ComboboxSelected>>',backend_changed)
+        maa_sample=tk.StringVar(value=str(self.user_settings.get('background_maa_sample_ms',18.75)))
         maa_corner=tk.StringVar(value=str(self.user_settings.get('background_maa_corner_ms',0)))
-        timing_row=ttk.Frame(body);timing_row.pack(fill='x',pady=8)
-        ttk.Label(timing_row,text='이동 간격(ms, 25~40)').pack(side='left')
-        ttk.Spinbox(timing_row,textvariable=maa_sample,from_=25,to=40,increment=.5,width=7).pack(side='left',padx=6)
-        ttk.Label(timing_row,text='코너 추가 대기(ms, 기본 0)').pack(side='left')
-        ttk.Spinbox(timing_row,textvariable=maa_corner,from_=0,to=80,increment=.5,width=7).pack(side='left',padx=6)
+        sdk_sample=tk.StringVar(value=str(self.user_settings.get('background_sdk_sample_ms',18.75)))
+        sdk_corner=tk.StringVar(value=str(self.user_settings.get('background_sdk_corner_ms',12.5)))
+        for label,sample_var,corner_var in (('MaaTouch',maa_sample,maa_corner),('MuMu SDK',sdk_sample,sdk_corner)):
+            timing_row=ttk.Frame(body);timing_row.pack(fill='x',pady=5)
+            ttk.Label(timing_row,text=label+' 이동 간격(ms)').pack(side='left')
+            ttk.Spinbox(timing_row,textvariable=sample_var,from_=10,to=40,increment=.5,width=7).pack(side='left',padx=6)
+            ttk.Label(timing_row,text='코너 추가 대기(ms)').pack(side='left')
+            ttk.Spinbox(timing_row,textvariable=corner_var,from_=0,to=80,increment=.5,width=7).pack(side='left',padx=6)
+        ttk.Label(body,text='이동 간격 10~40ms · 코너 추가 대기 0~80ms · 방식별 속도는 따로 저장됩니다.',foreground='#526776').pack(anchor='w')
+        timing_keys=('background_maa_sample_ms','background_maa_corner_ms','background_sdk_sample_ms','background_sdk_corner_ms')
         def capture_values(probe_input=False):
-            values=dict(self.user_settings,background_maa_sample_ms=float(maa_sample.get()),background_maa_corner_ms=float(maa_corner.get()),background_adb_path=services.portable_adb_path(path.get()) if path.get().strip() else '',background_adb_serial=serial.get().strip(),
+            if connection_busy():raise ValueError('F10으로 파밍·경로 실행을 중지한 뒤 연결 설정을 저장하거나 확인해 주세요.')
+            if backend_choice.get() not in backend_labels:raise ValueError('MaaTouch 또는 MuMu SDK 입력 방식을 선택하세요.')
+            values=dict(self.user_settings,background_skill_input_backend=skill_click_modes[skill_click_choice.get()],background_maa_sample_ms=float(maa_sample.get()),background_maa_corner_ms=float(maa_corner.get()),
+                        background_sdk_sample_ms=float(sdk_sample.get()),background_sdk_corner_ms=float(sdk_corner.get()),
+                        background_adb_path=services.portable_adb_path(path.get()) if path.get().strip() else '',background_adb_serial=serial.get().strip(),
                         background_connection_profile='fast',background_mumu_enhanced=True,background_mumu_root=mumu_root.get().strip(),background_mumu_index=mumu_index.get().strip(),
-                        background_capture_preference='auto',background_input_preference='auto',
-                        background_capture_mode='mumu_enhanced',background_adb_raw_capture=True,background_input_backend='maa_touch')
-            import math
-            sample=values['background_maa_sample_ms'];extra=values['background_maa_corner_ms']
-            if not math.isfinite(sample) or not 25<=sample<=40 or not math.isfinite(extra) or not 0<=extra<=80:
-                raise ValueError('이동 간격은 25~40ms, 코너 추가 대기는 0~80ms여야 합니다.')
+                        background_capture_preference='auto',background_input_preference='auto',background_touch_mode='scrcpy',
+                        background_capture_mode='mumu_enhanced',background_adb_raw_capture=True,background_input_backend=backend_labels[backend_choice.get()])
+            for label,sample_key,corner_key in (('MaaTouch',timing_keys[0],timing_keys[1]),('MuMu SDK',timing_keys[2],timing_keys[3])):
+                sample=values[sample_key];extra=values[corner_key]
+                if not math.isfinite(sample) or not 10<=sample<=40 or not math.isfinite(extra) or not 0<=extra<=80:
+                    raise ValueError(label+' 이동 간격은 10~40ms, 코너 추가 대기는 0~80ms여야 합니다.')
             values.pop('background_probe_input',None)
             if probe_input:values['background_probe_input']=True
             return values
@@ -2759,7 +2800,7 @@ class AppUIMixin:
         def preview_connection():
             try:values=capture_values(False)
             except (ValueError,TypeError) as error:
-                messagebox.showerror('MaaTouch 이동 설정',str(error),parent=window);return
+                messagebox.showerror('입력 방식·이동 설정',str(error),parent=window);return
             self.show_background_capture_test(values,capture_box)
         ttk.Button(capture_box,text='연결 화면 확인 (입력 없음)',command=preview_connection).pack(anchor='w',pady=(4,0))
         ttk.Checkbutton(body,text='상세에서 확인한 스킬 자동 사용',variable=skills).pack(anchor='w',pady=8)
@@ -2767,11 +2808,11 @@ class AppUIMixin:
         def save():
             try:values=capture_values()
             except (ValueError,TypeError) as error:
-                messagebox.showerror('MaaTouch 이동 설정',str(error),parent=window);return
+                messagebox.showerror('입력 방식·이동 설정',str(error),parent=window);return
             self.user_settings.pop('background_probe_input',None)
             self.user_settings.update(values,background_auto_skills=skills.get())
             self.save_user_settings()
-            self._background_timing_request={key:values[key] for key in ('background_maa_sample_ms','background_maa_corner_ms')}
+            self._background_timing_request={key:values[key] for key in timing_keys}
             window.destroy()
         ttk.Button(footer,text='저장',command=save).pack(anchor='e')
 
