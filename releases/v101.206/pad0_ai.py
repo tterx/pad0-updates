@@ -502,6 +502,21 @@ def visual_train_confirmed(root,current,cancel=None):
     metadata=dict(schema=1,features=520,id='local-'+time.strftime('%Y%m%d-%H%M%S')+'-'+uuid.uuid4().hex[:6],source='human_confirmed_local',training_boards=len(groups)-len(heldout),validation_boards=len(heldout),reports=reports,updated_heads=approved)
     return dict(metadata=metadata,heads=heads)
 
+def _cell_has_lock_badge(tile):
+    """Require a yellow badge surrounding a dark keyhole, not a Light star."""
+    import cv2
+    rgb=np.asarray(tile.convert('RGB').resize((116,114),Image.Resampling.BILINEAR))
+    badge=rgb[5:62,5:65]
+    yellow=((badge[...,0]>140)&(badge[...,1]>140)&(badge[...,2]<125)).astype('uint8')
+    _,_,stats,_=cv2.connectedComponentsWithStats(yellow)
+    for x,y,w,h,area in stats[1:]:
+        if not (14<=w<=40 and 23<=h<=50 and .4<=w/h<=1.05 and area>=90 and x+w/2<49 and y+h/2<48):continue
+        hole=badge[y+round(h*.35):y+round(h*.85),x+round(w*.28):x+round(w*.72)]
+        fraction=float((hole.max(axis=2)<110).mean()) if hole.size else 0
+        if .12<=fraction<=.70:return True
+    return False
+
+
 def classify_board(image: Image.Image) -> tuple[list[str], list[list[float]]]:
     arr = np.asarray(image.convert("RGB"))
     h, w, _ = arr.shape
@@ -525,6 +540,15 @@ def classify_board(image: Image.Image) -> tuple[list[str], list[list[float]]]:
                 bottom_code,bottom_hue=classify_cell(crop[int(crop.shape[0]*.23):,:])
                 if right_code==bottom_code and right_code in ('R','B','G','P','H'):
                     code,hue=right_code,bottom_hue
+                if code=='Y':
+                    # 069: the 23% bottom crop still contains the keyhole's
+                    # yellow body. Require a real lock plus two further, badge-
+                    # free halves agreeing. Never substitute the planned colour.
+                    right_code,right_hue=classify_cell(crop[:,crop.shape[1]//2:])
+                    bottom_code,bottom_hue=classify_cell(crop[crop.shape[0]//2:,:])
+                    if right_code==bottom_code and right_code in ('R','B','G','P','H'):
+                        tile=image.crop((round(c*cw),round(r*ch),round((c+1)*cw),round((r+1)*ch)))
+                        if _cell_has_lock_badge(tile):code,hue=right_code,right_hue
             # v72: re-evaluate suspicious blue/spike-like cores using a broader
             # cell crop. Dust-shaped jammer graphics are dark in the centre and
             # can resemble a blue orb with crossed blades at certain frames.
@@ -846,13 +870,13 @@ def ai_storage_guide_text(data_root):
         '200건은 목록 표시 상한입니다.\n'
         '필터에 맞는 최근 200건을 표시하므로 미확인 기록을 포함한 전체 기록 수는 100개보다 많을 수 있습니다. '
         '100개는 유효한 확정 학습 자료에 적용하는 보관 기준입니다.\n\n'
-        'GitHub에는 최근 학습 자료 전체 묶음을 압축해 공유합니다.\n'
-        '업데이트 때 설정된 새 정답 수에 도달하면 최근 유효 정답 최대 100개와 원본 퍼즐판, '
-        '기록·합쳐진 정답, 현재·이전 모델을 ZIP으로 만듭니다. 용량이 크면 여러 ZIP으로 나눕니다. '
-        '새 전체 묶음의 업로드를 모두 확인한 뒤 오래된 앱 학습 업로드와 완료된 전송 ZIP을 정리합니다. '
-        '업로드 실패·중단 시 기존 완료 자료와 재전송 ZIP은 남깁니다.\n\n'
-        '새 정답 수는 작은 전송 기록에 별도로 남기므로, 원본을 100개로 정리해도 '
-        '200개 같은 업로드 기준에 도달할 수 있습니다. 같은 정답을 다시 확인한 것만으로 새 자료 수가 늘지는 않습니다.\n\n'
+        '학습 → 데이터 정리 → 학습된 모델만 업로드합니다.\n'
+        '퍼즐판 모델은 저장·검증 후 최근 유효 정답 100개를 정리한 다음 비공개 GitHub에 전송합니다. '
+        '수량 모델도 학습 후 동일 정답의 중복 원본을 정리하고 모델을 전송하며, 서로 다른 숫자 원본은 보존합니다. '
+        '프로그램 업데이트나 정답 건수 기준을 기다리지 않습니다. 원본 이미지·정답 기록 ZIP은 업로드하지 않습니다.\n\n'
+        '현재 학습 모델과 체크섬 설명만 ZIP에 넣고, 원격 파일의 SHA256까지 확인해야 완료로 표시합니다. '
+        '실패·중지 때 모델과 전송 묶음은 로컬에 유지합니다. 공유 설정에서 보류된 모델 업로드를 다시 시도할 수 있습니다. '
+        '공유 꺼짐 또는 연결 미설정 상태에서는 업로드 완료로 표시하지 않습니다.\n\n'
         '공유 대상과 보관할 파일\n'
         '전체 게임 화면·개인 설정·적 아이콘 예시·토큰은 학습 ZIP에 넣지 않습니다. '
         '적 아이콘 확인 예시는 settings.json에 남습니다. '
@@ -1347,3 +1371,90 @@ def ai_github_sync_on_update(root,repo,threshold=50,enabled=True,version=APP_VER
         except Exception as exc:
             # Never include request headers, credentials, or response bodies.
             state['last_error']=str(exc);save();return dict(status='error',message='학습 자료 공유 보류 · '+str(exc))
+
+
+def ai_upload_trained_model(data_root,kind,expected_sha,repo,*,enabled=True,cancel=None,retry=False,
+                            token_provider=None,client_factory=GitHubLearningClient):
+    """Training completion uploads weights only, independent of updates/counts.
+
+    A failed/cancelled upload retains its frozen ZIP and receipt for an explicit
+    retry; it cannot roll back or remove the saved model/training originals.
+    """
+    import io,zipfile
+    if kind not in ('visual','quantity'):raise ValueError('지원하지 않는 모델 종류입니다.')
+    cancel=cancel or threading.Event();data_root=Path(data_root);repo=ai_github_repo(repo)
+    folder=data_root/'ai_review'/'model_upload';folder.mkdir(parents=True,exist_ok=True)
+    if folder.is_symlink() or not folder.resolve().is_relative_to(data_root.resolve()):raise ValueError('모델 전송 경로를 확인하세요.')
+    state_path=folder/'state.json';zip_path=folder/(kind+'.zip')
+    if state_path.is_symlink() or zip_path.is_symlink():raise ValueError('모델 전송 파일 경로를 확인하세요.')
+    with AI_GITHUB_SYNC_LOCK:
+        state=_load_json_dict(state_path);jobs=state.setdefault('jobs',{})
+        if retry:
+            job=dict(jobs.get(kind) or {})
+            if not job or not zip_path.is_file():raise ValueError('다시 전송할 학습 모델이 없습니다.')
+            data=zip_path.read_bytes()
+            if hashlib.sha256(data).hexdigest()!=job.get('zip_sha256'):raise ValueError('전송 대기 모델이 변경됐습니다.')
+            current=data_root/('ai_review/models/visual_model.npz' if kind=='visual' else 'ai_quantities/model.json')
+            if current.is_symlink() or hashlib.sha256(current.read_bytes()).hexdigest()!=job.get('model_sha256'):
+                raise ValueError('현재 모델이 변경됐습니다. 새 학습·정리 후 업로드하세요.')
+        else:
+            if cancel.is_set():return dict(status='cancelled',message='모델 업로드 중지 · 로컬 모델 유지')
+            model_path=data_root/('ai_review/models/visual_model.npz' if kind=='visual' else 'ai_quantities/model.json')
+            with AI_REVIEW_DATA_LOCK:
+                if model_path.is_symlink() or not model_path.resolve().is_relative_to(data_root.resolve()):raise ValueError('학습 모델 경로를 확인하세요.')
+                weights=model_path.read_bytes()
+                digest=hashlib.sha256(weights).hexdigest()
+                if digest!=expected_sha:raise ValueError('정리 후 모델이 바뀌어 업로드를 보류했습니다.')
+                if kind=='visual':visual_model_load(weights)
+                else:
+                    model=json.loads(weights)
+                    if model.get('schema') not in (1,2) or not isinstance(model.get('samples'),list):raise ValueError('수량 학습 모델 형식을 확인하세요.')
+            name='model.npz' if kind=='visual' else 'model.json'
+            metadata=dict(schema=1,kind=kind,model_sha256=digest,models_only=True)
+            stream=io.BytesIO()
+            with zipfile.ZipFile(stream,'w',zipfile.ZIP_DEFLATED) as archive:
+                for filename,content in [('manifest.json',json.dumps(metadata,sort_keys=True).encode()),(name,weights)]:
+                    entry=zipfile.ZipInfo(filename,(1980,1,1,0,0,0));entry.compress_type=zipfile.ZIP_DEFLATED
+                    archive.writestr(entry,content)
+            data=stream.getvalue()
+            if len(data)>24*1024*1024:raise ValueError('모델 전송 크기 한도를 초과했습니다.')
+            temporary=zip_path.with_suffix('.pending')
+            try:temporary.write_bytes(data);os.replace(temporary,zip_path)
+            finally:temporary.unlink(missing_ok=True)
+            job=dict(kind=kind,model_sha256=digest,zip_sha256=hashlib.sha256(data).hexdigest(),
+                tag='model-'+kind+'-'+digest[:20],asset='model_'+kind+'_'+digest[:20]+'.zip',status='pending')
+        # Reject edited receipts before any credential lookup/network mutation.
+        with zipfile.ZipFile(io.BytesIO(data)) as archive:
+            manifest=json.loads(archive.read('manifest.json'))
+            model_name='model.npz' if kind=='visual' else 'model.json'
+            if (set(archive.namelist())!={'manifest.json',model_name}
+                    or manifest.get('models_only') is not True or manifest.get('kind')!=kind
+                    or hashlib.sha256(archive.read(model_name)).hexdigest()!=job.get('model_sha256')):
+                raise ValueError('모델 전송 묶음 형식을 확인하세요.')
+        digest=job['model_sha256']
+        if job.get('tag')!='model-'+kind+'-'+digest[:20] or job.get('asset')!='model_'+kind+'_'+digest[:20]+'.zip':raise ValueError('모델 전송 이름을 확인하세요.')
+        job.update(repo=repo,status='pending');jobs[kind]=job
+        def save():_atomic_json_write(state_path,state)
+        save()
+        if not enabled:return dict(status='disabled',message='학습·정리 완료 · 모델 업로드 꺼짐 · 로컬 모델 유지')
+        try:
+            if cancel.is_set():raise RuntimeError('모델 업로드를 중지했습니다.')
+            token=(token_provider or ai_github_token)(repo)
+            if not token:raise RuntimeError('공유 설정에서 비공개 GitHub 저장소를 연결하세요.')
+            client=client_factory(repo,token);client.verify_private()
+            release_id=client.release(job['tag'])
+            if cancel.is_set():raise RuntimeError('모델 업로드를 중지했습니다.')
+            client.upload(release_id,job['asset'],data)
+            if cancel.is_set():raise RuntimeError('모델 업로드를 중지했습니다.')
+            assets=client._snapshot_assets(release_id)
+            asset=next((row for row in assets if row.get('name')==job['asset'] and row.get('state')=='uploaded'),None)
+            if not asset or asset.get('size')!=len(data):raise RuntimeError('모델 업로드 완료 파일을 확인하지 못했습니다.')
+            if asset.get('digest')!='sha256:'+job['zip_sha256']:
+                received=client.request('GET','/repos/'+repo+'/releases/assets/'+str(int(asset['id'])),binary=True)
+                if not isinstance(received,bytes) or hashlib.sha256(received).hexdigest()!=job['zip_sha256']:raise RuntimeError('업로드된 모델 체크섬을 확인하지 못했습니다.')
+            if cancel.is_set():raise RuntimeError('모델 업로드를 중지했습니다.')
+            job.update(status='uploaded');job.pop('last_error',None);save()
+            return dict(status='uploaded',message='학습 → 데이터 정리 → 학습된 모델 업로드 완료',kind=kind,model_sha256=digest)
+        except Exception as error:
+            job.update(status='pending',last_error=str(error));save()
+            return dict(status='cancelled' if cancel.is_set() else 'error',message='학습 모델은 로컬에 유지 · 업로드 보류: '+str(error))
