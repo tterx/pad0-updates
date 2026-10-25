@@ -33,5 +33,10 @@
     "pad0_solver": "4e1ba983b4b5933020b9c13b5d463db69518d4d44e74cf88b25530e97e0da400",
     "pad0_ai": "5535309b7486725b06ad9bdfb28d216b452ffe123b16e19ceffb8e3b348e3478",
     "pad0_ui": "c0b7b994137168cc70bee1a2438075055bcfb8c38b3dd8fc783c17c28574ae27"
-  }
+  },
+  "publication_workflow_run": 40233524394,
+  "public_release_zip_download_verified": true,
+  "release_asset_digest": "sha256:2ba06c46e4804fddfb22f33229018a1a40dce186ab7088b7b462e0f490339a79",
+  "updater_migration_from210_smoke_passed": true,
+  "input_solver_ui_identical_to210": true
 }
