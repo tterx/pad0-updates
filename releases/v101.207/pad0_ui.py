@@ -2584,8 +2584,14 @@ class AppUIMixin:
 
     def _party_bring_forward(self,window):
         window.deiconify();window.attributes('-topmost',True);window.lift()
-        window.after_idle(lambda:window.winfo_exists() and window.focus_force())
-        window.after(800,lambda:window.winfo_exists() and window.attributes('-topmost',False))
+        jobs=(window.after_idle(lambda:window.winfo_exists() and window.focus_force()),
+              window.after(800,lambda:window.winfo_exists() and window.attributes('-topmost',False)))
+        def cleanup(event):
+            if event.widget is not window:return
+            for job in jobs:
+                try:window.after_cancel(job)
+                except tk.TclError:pass
+        window.bind('<Destroy>',cleanup,add='+')
 
     def show_background_path_help(self,path='',serial=''):
         services = self._ui_backend_services()
@@ -2690,10 +2696,22 @@ class AppUIMixin:
     def background_settings(self):
         services = self._ui_backend_services()
         def connection_busy():
-            return bool(getattr(self,'_background_running',False) or getattr(self,'playback_active',False) or getattr(self,'_manual_play_active',False))
+            # _manual_play_active means passive manual mode after F10/failure,
+            # not an in-flight drag. Keep the actual worker/playback guards.
+            return bool(getattr(self,'_background_running',False) or getattr(self,'playback_active',False))
         if connection_busy():self.set_status('F10으로 파밍·경로 실행을 중지한 뒤 입력 방식을 바꿀 수 있습니다.');return
+        existing=getattr(self,'_background_settings_window',None)
+        try:
+            if existing is not None and existing.winfo_exists():
+                self._party_bring_forward(existing);return
+        except tk.TclError:pass
+        self._background_settings_window=None
         from tkinter import filedialog
         window=tk.Toplevel(self.root);self._background_settings_window=window
+        def close():
+            if getattr(self,'_background_settings_window',None) is window:self._background_settings_window=None
+            window.destroy()
+        window.protocol('WM_DELETE_WINDOW',close)
         window.title('백그라운드 파밍 연결 설정');window.geometry(f'800x{min(880,window.winfo_screenheight()-70)}')
         self._party_bring_forward(window)
         footer=ttk.Frame(window,padding=(16,8));footer.pack(side='bottom',fill='x')
@@ -2813,14 +2831,18 @@ class AppUIMixin:
             self.user_settings.update(values,background_auto_skills=skills.get())
             self.save_user_settings()
             self._background_timing_request={key:values[key] for key in timing_keys}
-            window.destroy()
+            close()
         ttk.Button(footer,text='저장',command=save).pack(anchor='e')
 
     def show_farming_confirmation(self,settings_only=False,target_key=None):
-        if getattr(self,'_material_catalog_busy',False):
+        local_after_stop=settings_only and getattr(self,'_all_actions_stopped',False) is True
+        if getattr(self,'_material_catalog_busy',False) and not local_after_stop:
             self.set_status('크리스탈 이름 등록 완료 후 파밍 설정을 열어주세요. F10으로 중지할 수 있습니다.');return
         existing=getattr(self,'_farming_confirm_window',None)
-        if existing is not None and existing.winfo_exists():existing.deiconify();existing.lift();return
+        try:
+            if existing is not None and existing.winfo_exists():
+                self._party_bring_forward(existing);return
+        except tk.TclError:self._farming_confirm_window=None
         try:
             ledger=self._load_crystal_ledger();key=target_key or background_target_key(ledger)
             group=ledger.get('farming_groups',{}).get(key)
@@ -2940,12 +2962,12 @@ class AppUIMixin:
         self._party_bring_forward(win)
 
     def show_ai_share_settings(self):
-        win=tk.Toplevel(self.root);win.title('업데이트 시 학습 자료 공유');win.geometry('650x380')
+        win=tk.Toplevel(self.root);win.title('학습된 모델 업로드 설정');win.geometry('650x380')
         body=ttk.Frame(win,padding=14);body.pack(fill='both',expand=True)
         enabled=tk.BooleanVar(value=self.user_settings.get('ai_github_enabled',True))
-        repo=tk.StringVar(value=self.user_settings.get('ai_github_repo',AI_GITHUB_DEFAULT_REPO));threshold=tk.StringVar(value=str(self.user_settings.get('ai_github_threshold',50)));token=tk.StringVar()
-        ttk.Checkbutton(body,text='프로그램 업데이트 때 새 정답이 기준 수 이상이면 자동 업로드',variable=enabled).pack(anchor='w')
-        row=ttk.Frame(body);row.pack(fill='x',pady=8);ttk.Label(row,text='기준 수').pack(side='left');ttk.Spinbox(row,from_=1,to=10000,textvariable=threshold,width=8).pack(side='left',padx=8);ttk.Label(row,text='건 · 평소 실행/정답 저장 때는 업로드하지 않음').pack(side='left')
+        repo=tk.StringVar(value=self.user_settings.get('ai_github_repo',AI_GITHUB_DEFAULT_REPO));token=tk.StringVar()
+        ttk.Checkbutton(body,text='학습·데이터 정리 성공 후 학습된 모델 자동 업로드',variable=enabled).pack(anchor='w')
+        ttk.Label(body,text='학습 → 데이터 정리 → 모델만 업로드. 프로그램 업데이트·정답 건수를 기다리지 않으며 원본 이미지 ZIP은 전송하지 않습니다.',wraplength=610).pack(anchor='w',pady=8)
         ttk.Label(body,text='비공개 GitHub 저장소 (소유자/저장소)').pack(anchor='w');ttk.Entry(body,textvariable=repo).pack(fill='x',pady=(3,8))
         ttk.Label(body,text='최초 한 번: 비공개 저장소를 README와 함께 만들고, 해당 저장소의 Contents 읽기·쓰기 권한을 가진 fine-grained 토큰을 연결하세요. 이미 gh로 로그인했거나 GH_TOKEN을 설정했다면 토큰 입력은 생략할 수 있습니다.',wraplength=610).pack(anchor='w')
         links=ttk.Frame(body);links.pack(fill='x',pady=6)
@@ -2953,20 +2975,18 @@ class AppUIMixin:
         ttk.Button(links,text='저장소 만들기',command=lambda:webbrowser.open('https://github.com/new?name=pad0-learning-data&visibility=private')).pack(side='left')
         ttk.Button(links,text='GitHub 토큰 설정',command=lambda:webbrowser.open('https://github.com/settings/personal-access-tokens')).pack(side='left',padx=6)
         ttk.Label(body,text='연결 토큰 (선택 · Windows 인증 정보 관리자에 저장)').pack(anchor='w');ttk.Entry(body,textvariable=token,show='*').pack(fill='x',pady=(3,8))
-        status=self._ai_share_status_var=tk.StringVar(value=getattr(self,'_ai_share_last_message','새 정답 50건 이상이면 다음 프로그램 업데이트 때 공유합니다.'))
+        status=self._ai_share_status_var=tk.StringVar(value=getattr(self,'_ai_share_last_message','학습 → 데이터 정리 → 학습된 모델만 업로드'))
         ttk.Label(body,textvariable=status,wraplength=610).pack(anchor='w',pady=3)
         def save():
             try:
                 if any(getattr(self,name,False) for name in ('_ai_training_busy','_ai_retention_busy','_ai_share_busy')):
                     status.set('학습·정리·공유가 끝난 뒤 연결 설정을 저장해 주세요.');return
-                destination=ai_github_repo(repo.get());count=int(threshold.get())
-                if not 1<=count<=10000:raise ValueError('기준 수는 1~10000건으로 입력하세요.')
-                if destination!=self.user_settings.get('ai_github_repo',AI_GITHUB_DEFAULT_REPO):
-                    ai_record_share_changes(self.data_paths['root']/'ai_review',force_current=True)
+                destination=ai_github_repo(repo.get())
                 if token.get().strip():ai_github_credential(destination,token.get())
-                token.set('');self.user_settings.update(ai_github_repo=destination,ai_github_threshold=count,ai_github_enabled=enabled.get());self.save_user_settings()
-                status.set('저장 완료 · 이번 업데이트의 미완료 전송이 있으면 이어서 처리합니다.');self.root.after(200,self._ai_update_sync_start)
+                token.set('');self.user_settings.update(ai_github_repo=destination,ai_github_enabled=enabled.get());self.save_user_settings()
+                status.set('저장 완료 · 다음 학습·정리 성공 후 모델 업로드. 보류된 모델은 다시 시도를 눌러주세요.')
             except (ValueError,OSError,RuntimeError) as exc:status.set(str(exc))
+        ttk.Button(body,text='보류된 모델 업로드 다시 시도',command=self.retry_trained_model_upload).pack(anchor='w',pady=4)
         ttk.Button(body,text='연결 설정 저장',command=save).pack(anchor='e',pady=6)
 
     def show_ai_storage_guide(self):
@@ -3372,12 +3392,13 @@ class AppUIMixin:
                 notice.set('정답 저장 완료 · 수량 이미지 학습을 누르면 실제 판독에 적용됩니다.')
             except (ValueError,OSError) as exc:notice.set(str(exc))
         def train():
-            try:
-                count=quantity_train(root)
-                summary=quantity_model_status(root)
-                refresh()
-                notice.set(f'수량 정답 {count}개 반영 · 숫자 {summary["digits"]}/10종 · 다음 재료 확인·보상 판독부터 적용합니다.')
-            except (ValueError,OSError) as exc:notice.set('학습 보류: '+str(exc))
+            record=state.get('record') or {}
+            def update_notice(text):
+                if win.winfo_exists():notice.set(text)
+            def completed():
+                if win.winfo_exists():refresh()
+            self.train_quantity_model(on_update=update_notice,on_complete=completed,
+                protected_ids=[record['id']] if record.get('id') else ())
         confirm_button=ttk.Button(actions,text='판단 맞음',width=14,command=lambda:save(True))
         confirm_button.pack(side='left',padx=(0,8))
         ttk.Button(actions,text='수정 저장',width=14,command=save).pack(side='left')
