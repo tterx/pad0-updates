@@ -504,6 +504,27 @@ def joined_stage_tokens(tokens):
     return result
 
 
+def stage_list_medals(frame):
+    """Visible gold buttons in the dungeon list, in reading order.
+
+    These are anchors for reading the label below a portrait, not evidence of
+    any particular stage number. Never infer a number from a medal or the DB.
+    """
+    import numpy as np
+    import cv2
+    rgb=np.asarray(frame.convert('RGB'));top=220;bottom=min(650,frame.height)
+    if bottom<=top:return []
+    patch=rgb[top:bottom,70:min(1530,frame.width)]
+    if not patch.size:return []
+    mask=((patch[...,0]>205)&(patch[...,1]>125)&(patch[...,1]<225)&(patch[...,2]<100)).astype(np.uint8)
+    _,_,stats,centers=cv2.connectedComponentsWithStats(mask,8)
+    medals=[]
+    for index,(x,y,w,h,area) in enumerate(stats[1:],1):
+        if 45<=w<=140 and 15<=h<=55 and 1.7<w/h<6 and area>350:
+            cx,cy=centers[index];medals.append((70+float(cx),top+float(cy)))
+    return sorted(medals,key=lambda point:(round(point[1]/60),point[0]))
+
+
 def stage_list_entries(frame,tokens,database=None):
     import numpy as np
     import cv2

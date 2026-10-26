@@ -1,0 +1,9 @@
+# 1.0.11 / updater219 —095 acquisition-list provenance
+
+095 read6-13 twice at confidence0.96695/0.96523 with zero unread labels. It then stopped at stage selection because no registered drop ID matched a current deficit. The ZIP does not include the DB or actual acquisition-list pixels, so it cannot distinguish an unresolved image, outdated mapping or an incorrectly registered image. No battle/drag had started; the only touch was the material click. Its failure image incorrectly retained the initial cost dialog.
+
+After the application freshly matches a selected insufficient material's artwork, clicks that specific card and confirms the acquisition-list page, that current list is additional evidence that its visible stages offer this material. Pass that material ID explicitly to stage selection. Add it only to an in-memory selection copy of verified, non-stale previews. Continue ranking by overlap with other known needed materials. Do not write that ID into any unidentified preview image, change review decisions, alter stocks or credit rewards. The actual lobby number must still equal the selected stage.
+
+An acquisition list opened outside this fresh matched-card path receives no such permission. Missing provenance, non-selected/non-short material IDs, unverified or refresh-required previews retain the normal checks. No default first-stage click, extra input retry, capture/input change, speed change or model change is added. Save the actual stage-selection frame, visible stage numbers, registered drop IDs and provenance in the failure snapshot.
+
+Four regressions cover the095 selection failure with an unresolved drop, rejection without applicable provenance, unchanged DB, overlap ranking, wrong lobby identity, fresh-card provenance propagation and no reuse on an independently opened list. Run critical+related tests, Windows checks and bundle validation. No physical MuMu is connected; full real-game success is not claimed.

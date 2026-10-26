@@ -56,7 +56,6 @@ def _input_resource_root():
 
 MANUAL_MASTER_MOVE_SECONDS=.075
 SDK_FEEDBACK_MOVE_SECONDS=.08125
-SDK_CORNER_ACK_SECONDS=.120  # Read-only game proof, included in the route budget.
 MAA_AUTOPLAY_SAMPLE_SECONDS=1.0/48.0
 MAA_AUTOPLAY_MOVE_SECONDS=.100
 ANDROID_CONTROL_CORNER_DWELL_SECONDS=.0625
@@ -122,7 +121,7 @@ def maa_playback_timing(device):
 
 
 def maa_playback_move_budget(device):
-    return input_timing_move_budget(maa_playback_timing(device))+.020+SDK_CORNER_ACK_SECONDS
+    return input_timing_move_budget(maa_playback_timing(device))+.020
 
 
 def selected_input_speed_result(report,index):
@@ -965,12 +964,12 @@ def _execute_worker_gesture(self,points,hold,limit,probe=False):
         sdk_corner_count=result.get('corner_count'),sdk_corner_dwell_seconds=result.get('corner_dwell_seconds'),sdk_feedback_capture_seconds=result.get('feedback_capture_seconds'),
         sdk_moving_gap_max_seconds=result.get('moving_gap_max_seconds'),sdk_route_pacing=result.get('route_pacing'),
         sdk_dispatch_gap_min_seconds=result.get('dispatch_gap_min_seconds'),sdk_dispatch_gap_max_seconds=result.get('dispatch_gap_max_seconds'))
-    self.device.input_diagnostics.update(corner_verification=result.get('corner_verification'),corner_verification_reserve_seconds=result.get('corner_verification_reserve_seconds'))
+    self.device.input_diagnostics.update(sdk_feedback_frame_scope=result.get('held_frame_scope'),mid_drag_capture_policy=result.get('mid_drag_capture_policy'))
     self.device.input_diagnostics['input_timing']=result.get('input_timing')
     self.device.input_diagnostics.update(input_pipeline=result.get('input_pipeline'),move_schedule=result.get('move_schedule'),maa_mapping_log=result.get('maa_mapping_log'))
     if len(points)>1:
         self.device.input_diagnostics['last_drag_timing']=dict(move_schedule=result.get('move_schedule'),input_pipeline=result.get('input_pipeline'),timing=result.get('input_timing'),
-            input_backend=result.get('input_backend'),maa_api_timing=result.get('maa_api_timing'),corner_verification=result.get('corner_verification'),
+            input_backend=result.get('input_backend'),maa_api_timing=result.get('maa_api_timing'),feedback_frame_scope=result.get('held_frame_scope'),mid_drag_capture_policy=result.get('mid_drag_capture_policy'),
             dispatch_gap_min_seconds=result.get('dispatch_gap_min_seconds'),dispatch_gap_max_seconds=result.get('dispatch_gap_max_seconds'))
     self.device.input_diagnostics.update(input_backend=result.get('input_backend'),maa_api_timing=result.get('maa_api_timing'),maa_api_completion_scope=result.get('maa_api_completion_scope'),before_up_verification=result.get('before_up_verification'))
     held=result.get('held_image');self.device.last_before_up_frame=self.device._normalize_capture(held) if held is not None else None
@@ -1142,7 +1141,7 @@ class NativeSDKInputMixin:
         if not points or len(points)>66 or any(len(pt)!=2 or any(type(v) is not int for v in pt) or not (0<=pt[0]<self.size[0] and 0<=pt[1]<self.size[1]) for pt in points):raise ValueError('MuMu 입력 좌표가 잘못됐습니다.')
         if not .01<=hold<=1 or not .1<=limit<=15:raise ValueError('MuMu 입력 시간 범위가 잘못됐습니다.')
         if probe and len(points)!=1:raise ValueError('구름 확인은 한 위치의 누름만 허용합니다.')
-        trace=[];started=time.perf_counter();error=None;released=False;held=False
+        trace=[];started=time.perf_counter();error=None;released=False;held=False;held_scope=None
         preflight=None;cleanup=None;last_point=list(points[0])
         feedback_active=start_context is not None and len(points)>1 and not probe
         start_feedback=None;start_checks=0;feedback_started=None;start_history=[];dispatch_times=[];schedule_rows=[];corner_rows=[];edge_rows=[]
@@ -1157,13 +1156,9 @@ class NativeSDKInputMixin:
         corners=[i for i in range(1,len(points)-1) if
             (points[i][0]-points[i-1][0])*(points[i+1][1]-points[i][1])!=(points[i][1]-points[i-1][1])*(points[i+1][0]-points[i][0]) or
             (points[i][0]-points[i-1][0])*(points[i+1][0]-points[i][0])+(points[i][1]-points[i-1][1])*(points[i+1][1]-points[i][1])<=0]
-        corner_ack=getattr(self,'confirm_route_corner',None) if feedback_active else None
-        corner_guard=callable(corner_ack)
-        ack_reserve=len(corners)*SDK_CORNER_ACK_SECONDS if corner_guard else 0
-        corner_proofs=[]
         motion_estimate=(len(points)-1)*4*sample+(len(corners)*max(0,corner_dwell-sample) if feedback_active else 0)
-        motion_seconds=None;motion_started=None;capture_seconds=dict(baseline=0.0,start_checks=0.0,before_up=0.0,corners=0.0)
-        move_reserve=(len(points)-1)*edge_budget+.22+.08+ack_reserve
+        motion_seconds=None;motion_started=None;capture_seconds=dict(baseline=0.0,start_checks=0.0,before_up=0.0)
+        move_reserve=(len(points)-1)*edge_budget+.22+.08
         pacer=AndroidTouchPacer(cancel)
         def down(x,y,action):
             if cancel.is_set():raise RuntimeError('MuMu 입력 중지')
@@ -1206,7 +1201,7 @@ class NativeSDKInputMixin:
                     try:feedback=self.check_input_start(start_context,baseline)
                     except Exception as exc:raise RuntimeError('MuMu 시작 드롭 확인 실패: '+str(exc)) from exc
                     finally:capture_seconds['start_checks']+=time.perf_counter()-capture_started
-                    held=True;start_checks+=1
+                    held=True;held_scope='start_confirmation';start_checks+=1
                     if not isinstance(feedback,dict):raise RuntimeError('MuMu 시작 드롭 확인 응답이 잘못됐습니다.')
                     start_feedback=dict(feedback,checks=start_checks,seconds=round(time.perf_counter()-feedback_started,6))
                     start_history.append(dict(start_feedback))
@@ -1224,7 +1219,7 @@ class NativeSDKInputMixin:
                         wanted=start_feedback['expected_start_cell'];observed=start_feedback['observed_start_cell']
                         raise RuntimeError(f'MuMu 시작 위치 불일치 · {wanted//6+1}행 {wanted%6+1}열 대신 {observed//6+1}행 {observed%6+1}열이 들렸습니다. 경로 이동을 보내지 않았습니다.')
                     raise RuntimeError(f'{backend_name} 시작 드롭이 잡힌 것을 확인하지 못했습니다. 경로 이동을 보내지 않았습니다.')
-            if probe:self.capture();held=True
+            if probe:self.capture();held=True;held_scope='probe'
             deadline=time.perf_counter();last_sent=deadline;last_dispatch=deadline;motion_started=deadline
             for edge,(one,two) in enumerate(zip(points,points[1:])):
                 edge_started=time.perf_counter();corner_started=edge_started
@@ -1256,27 +1251,6 @@ class NativeSDKInputMixin:
                     last_sent=time.perf_counter()
                     if part==1 and schedule_rows:corner_rows[-1]['request_gap_seconds']=dispatch_times[-1]-dispatch_times[-2]
                     schedule_rows.append(dict(edge=edge,part=part,target_seconds=target-started,request_seconds=last_dispatch-started if smooth else dispatch_times[-1]-started,late_seconds=max(0,(last_dispatch if smooth else dispatch_times[-1])-target),native=list(last_point)))
-                if corner_guard and edge+1 in corners:
-                    # A completed SDK MOVE job only acknowledges the host/API.
-                    # Before leaving a turn, prove its observable swap in the
-                    # game. Keep the original contact and never replay a MOVE.
-                    finish=getattr(self,'_finish_pending_move',None)
-                    if callable(finish):finish()
-                    wait(0)
-                    remaining_motion=(len(points)-2-edge)*edge_budget+.30
-                    remaining_ack=sum(i>edge+1 for i in corners)*SDK_CORNER_ACK_SECONDS
-                    available=limit-(time.perf_counter()-started)-remaining_motion-remaining_ack
-                    if available<=0:raise RuntimeError('제한시간부족 · 코너 교환 확인 시간을 확보하지 못했습니다.')
-                    checked_at=time.perf_counter()
-                    try:proof=corner_ack(start_context,edge+1,min(SDK_CORNER_ACK_SECONDS,available))
-                    except Exception as error:
-                        corner_proofs.append(dict(path_index=edge+1,confirmed=False,error=str(error),seconds=time.perf_counter()-checked_at))
-                        raise
-                    finally:capture_seconds['corners']+=time.perf_counter()-checked_at
-                    corner_proofs.append(dict(proof,path_index=edge+1,seconds=time.perf_counter()-checked_at))
-                    wait(0)
-                    if proof.get('applicable') is True and proof.get('confirmed') is not True:
-                        raise RuntimeError('코너 드롭 교환 미확인 · 다음 칸 이동 없이 손을 떼고 중지')
                 edge_rows.append(dict(edge=edge,seconds=time.perf_counter()-edge_started))
             motion_seconds=time.perf_counter()-motion_started
             if len(points)>1:
@@ -1284,7 +1258,7 @@ class NativeSDKInputMixin:
                 # Keep DOWN stationary until it settles; do not weaken board equality.
                 wait(.22);capture_started=time.perf_counter()
                 try:
-                    self.capture();held=True
+                    self.capture();held=True;held_scope='before_up'
                     settle=getattr(self,'confirm_before_up',None)
                     if feedback_active and callable(settle):
                         checked=settle(start_context,limit-(time.perf_counter()-started)-.08)
@@ -1313,7 +1287,7 @@ class NativeSDKInputMixin:
             request_gap_min_seconds=min(ordered) if ordered else None,request_gap_median_seconds=middle,
             request_gap_max_seconds=max(ordered) if ordered else None,cumulative_lateness_seconds=sum(row['late_seconds'] for row in schedule_rows),
             events=schedule_rows,corners=corner_rows,edges=edge_rows,down_up_events=[row for row in trace if row['action'] in (0,1)])
-        return dict(corner_verification=corner_proofs,corner_verification_reserve_seconds=ack_reserve,move_schedule=schedule,ready=True,events=trace,released=released,held_frame=held,error=error,execute_seconds=time.perf_counter()-started,
+        return dict(move_schedule=schedule,ready=True,events=trace,released=released,held_frame=held,held_frame_scope=held_scope,mid_drag_capture_policy='none_between_first_and_last_move',error=error,execute_seconds=time.perf_counter()-started,
             preflight_release=preflight,cleanup=cleanup,pacer_mode=pacer.mode,
             start_feedback=start_feedback,start_feedback_history=start_history,display_id=int(self.display_id),input_stream=stream,
             route_pacing='steady_dispatch' if smooth else 'measured_samples' if timing is not None else 'legacy',
