@@ -1,0 +1,9 @@
+# 1.0.15 / updater223 —099 lifted-cursor stability false stop
+
+099 completed100 MOVE requests for25 edges. Before-UP observations all had `mismatch_cells=[]`: every one of the29 non-cursor cells matched the expected layout. The last held cell11 classified P,H,P across three captures. `_MaaNativeCapture.confirm_before_up` excluded that cell from mismatches, but then compared an unmodified30-cell signature for consecutive stability. Consequently it stopped despite all stationary cells matching in every capture. The failure cleanup set dispatch=false; that flag is not independent proof of lost game input.
+
+Compare the same29 stationary cells in both checks. Require two consecutive reads with no non-cursor mismatch; any real mismatch resets the previous valid signature. Preserve raw observed values and add `stability_ignored_cell` and `stability_scope` in diagnostics. This is only permission to finish the original contact: retain the separate held-orb/full-layout proof, delivery/trace checks, post-UP game reaction, F10, deadline, three-read bound and failure release. No new touch/retry, speed, input backend, solver, cloud mask or model change.
+
+Five regressions replay the actual099 P/H/P observation arrays and require success on the second read; real non-cursor changes remain rejected even in good/bad/good order. Cancellation/budget expiry capture nothing, and cloud delegation is unchanged. The actual held screenshot also exercises the existing downstream verifier: the original failed dispatch flags remain rejected, while scripted successful-delivery flags allow the visible P sprite proof. A false floating sprite or remote wrong cell is rejected. Scripted flags are explicitly not an Android acknowledgement from099.
+
+Critical/related Linux and Windows/package checks precede publication. No physical MuMu is connected, so full game continuation remains a user-device check.
