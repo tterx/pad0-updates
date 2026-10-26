@@ -635,7 +635,24 @@ def cloud_cell_mask(image: Image.Image) -> list[bool]:
         core=pale[hh//4:hh-hh//4,ww//4:ww-ww//4]
         opaque=float(pale.mean())>=.64 and sum(score>=.48 for score in quadrants)>=3
         covered_core=float(core.mean())>=.80 and float(pale.mean())>=.38 and sum(score>=.28 for score in quadrants)>=3
-        result.append(opaque or covered_core)
+        duration_covered=False
+        if not (opaque or covered_core) and float(pale.mean())>=.30:
+            # A single cloud's grey duration badge can hide most of its white
+            # core. Require a central rectangular badge, red ink inside it,
+            # and a broad pale halo outside; the digit is never a drop colour.
+            import cv2
+            grey=((sat<.12)&(value>.40)&(value<.76)).astype(np.uint8)
+            _,_,stats,_=cv2.connectedComponentsWithStats(grey,8)
+            for x,y,bw,bh,area in stats[1:]:
+                if not (.50*ww<=bw<=.90*ww and .50*hh<=bh<=.90*hh
+                        and .75<=bw/bh<=1.35 and area/(bw*bh)>=.75
+                        and abs(x+bw/2-ww/2)<ww*.12 and abs(y+bh/2-hh/2)<hh*.12):continue
+                badge=tile[y:y+bh,x:x+bw].astype(np.float32)
+                red=(badge[...,0]>160)&(badge[...,0]>badge[...,1]*1.35)&(badge[...,0]>badge[...,2]*1.25)
+                halo=np.ones_like(pale);halo[y:y+bh,x:x+bw]=False
+                if .005<=float(red.mean())<=.15 and float(pale[halo].mean())>=.65 and sum(q>=.28 for q in quadrants)>=3:
+                    duration_covered=True;break
+        result.append(opaque or covered_core or duration_covered)
     return result
 
 def dark_cell_mask(image: Image.Image) -> list[bool]:
