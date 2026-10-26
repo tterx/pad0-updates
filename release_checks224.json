@@ -135,5 +135,10 @@
   },
   "thorn_policy_tests": 6,
   "unlock_route_tests": 5,
-  "offline_training_reproducible": true
+  "offline_training_reproducible": true,
+  "publication_workflow_run": 40333188848,
+  "public_release_zip_download_verified": true,
+  "release_asset_digest": "sha256:b3a271ffc5fddd7bb74644a80d10ae0e0088085785e65cadd408c9048beab40a",
+  "updater_migration_from223_smoke_passed": true,
+  "input_solver_ui_identical_to223": true
 }
