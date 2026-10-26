@@ -964,11 +964,12 @@ def _execute_worker_gesture(self,points,hold,limit,probe=False):
         sdk_corner_count=result.get('corner_count'),sdk_corner_dwell_seconds=result.get('corner_dwell_seconds'),sdk_feedback_capture_seconds=result.get('feedback_capture_seconds'),
         sdk_moving_gap_max_seconds=result.get('moving_gap_max_seconds'),sdk_route_pacing=result.get('route_pacing'),
         sdk_dispatch_gap_min_seconds=result.get('dispatch_gap_min_seconds'),sdk_dispatch_gap_max_seconds=result.get('dispatch_gap_max_seconds'))
+    self.device.input_diagnostics.update(sdk_feedback_frame_scope=result.get('held_frame_scope'),mid_drag_capture_policy=result.get('mid_drag_capture_policy'))
     self.device.input_diagnostics['input_timing']=result.get('input_timing')
     self.device.input_diagnostics.update(input_pipeline=result.get('input_pipeline'),move_schedule=result.get('move_schedule'),maa_mapping_log=result.get('maa_mapping_log'))
     if len(points)>1:
         self.device.input_diagnostics['last_drag_timing']=dict(move_schedule=result.get('move_schedule'),input_pipeline=result.get('input_pipeline'),timing=result.get('input_timing'),
-            input_backend=result.get('input_backend'),maa_api_timing=result.get('maa_api_timing'),
+            input_backend=result.get('input_backend'),maa_api_timing=result.get('maa_api_timing'),feedback_frame_scope=result.get('held_frame_scope'),mid_drag_capture_policy=result.get('mid_drag_capture_policy'),
             dispatch_gap_min_seconds=result.get('dispatch_gap_min_seconds'),dispatch_gap_max_seconds=result.get('dispatch_gap_max_seconds'))
     self.device.input_diagnostics.update(input_backend=result.get('input_backend'),maa_api_timing=result.get('maa_api_timing'),maa_api_completion_scope=result.get('maa_api_completion_scope'),before_up_verification=result.get('before_up_verification'))
     held=result.get('held_image');self.device.last_before_up_frame=self.device._normalize_capture(held) if held is not None else None
@@ -1140,7 +1141,7 @@ class NativeSDKInputMixin:
         if not points or len(points)>66 or any(len(pt)!=2 or any(type(v) is not int for v in pt) or not (0<=pt[0]<self.size[0] and 0<=pt[1]<self.size[1]) for pt in points):raise ValueError('MuMu 입력 좌표가 잘못됐습니다.')
         if not .01<=hold<=1 or not .1<=limit<=15:raise ValueError('MuMu 입력 시간 범위가 잘못됐습니다.')
         if probe and len(points)!=1:raise ValueError('구름 확인은 한 위치의 누름만 허용합니다.')
-        trace=[];started=time.perf_counter();error=None;released=False;held=False
+        trace=[];started=time.perf_counter();error=None;released=False;held=False;held_scope=None
         preflight=None;cleanup=None;last_point=list(points[0])
         feedback_active=start_context is not None and len(points)>1 and not probe
         start_feedback=None;start_checks=0;feedback_started=None;start_history=[];dispatch_times=[];schedule_rows=[];corner_rows=[];edge_rows=[]
@@ -1200,7 +1201,7 @@ class NativeSDKInputMixin:
                     try:feedback=self.check_input_start(start_context,baseline)
                     except Exception as exc:raise RuntimeError('MuMu 시작 드롭 확인 실패: '+str(exc)) from exc
                     finally:capture_seconds['start_checks']+=time.perf_counter()-capture_started
-                    held=True;start_checks+=1
+                    held=True;held_scope='start_confirmation';start_checks+=1
                     if not isinstance(feedback,dict):raise RuntimeError('MuMu 시작 드롭 확인 응답이 잘못됐습니다.')
                     start_feedback=dict(feedback,checks=start_checks,seconds=round(time.perf_counter()-feedback_started,6))
                     start_history.append(dict(start_feedback))
@@ -1218,7 +1219,7 @@ class NativeSDKInputMixin:
                         wanted=start_feedback['expected_start_cell'];observed=start_feedback['observed_start_cell']
                         raise RuntimeError(f'MuMu 시작 위치 불일치 · {wanted//6+1}행 {wanted%6+1}열 대신 {observed//6+1}행 {observed%6+1}열이 들렸습니다. 경로 이동을 보내지 않았습니다.')
                     raise RuntimeError(f'{backend_name} 시작 드롭이 잡힌 것을 확인하지 못했습니다. 경로 이동을 보내지 않았습니다.')
-            if probe:self.capture();held=True
+            if probe:self.capture();held=True;held_scope='probe'
             deadline=time.perf_counter();last_sent=deadline;last_dispatch=deadline;motion_started=deadline
             for edge,(one,two) in enumerate(zip(points,points[1:])):
                 edge_started=time.perf_counter();corner_started=edge_started
@@ -1257,7 +1258,7 @@ class NativeSDKInputMixin:
                 # Keep DOWN stationary until it settles; do not weaken board equality.
                 wait(.22);capture_started=time.perf_counter()
                 try:
-                    self.capture();held=True
+                    self.capture();held=True;held_scope='before_up'
                     settle=getattr(self,'confirm_before_up',None)
                     if feedback_active and callable(settle):
                         checked=settle(start_context,limit-(time.perf_counter()-started)-.08)
@@ -1286,7 +1287,7 @@ class NativeSDKInputMixin:
             request_gap_min_seconds=min(ordered) if ordered else None,request_gap_median_seconds=middle,
             request_gap_max_seconds=max(ordered) if ordered else None,cumulative_lateness_seconds=sum(row['late_seconds'] for row in schedule_rows),
             events=schedule_rows,corners=corner_rows,edges=edge_rows,down_up_events=[row for row in trace if row['action'] in (0,1)])
-        return dict(move_schedule=schedule,ready=True,events=trace,released=released,held_frame=held,error=error,execute_seconds=time.perf_counter()-started,
+        return dict(move_schedule=schedule,ready=True,events=trace,released=released,held_frame=held,held_frame_scope=held_scope,mid_drag_capture_policy='none_between_first_and_last_move',error=error,execute_seconds=time.perf_counter()-started,
             preflight_release=preflight,cleanup=cleanup,pacer_mode=pacer.mode,
             start_feedback=start_feedback,start_feedback_history=start_history,display_id=int(self.display_id),input_stream=stream,
             route_pacing='steady_dispatch' if smooth else 'measured_samples' if timing is not None else 'legacy',
