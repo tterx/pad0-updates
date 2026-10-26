@@ -7,8 +7,8 @@ from pathlib import Path
 import uuid
 
 
-APP_VERSION = "v1.0.2"
-APP_RELEASE = 210  # Monotonic updater sequence, independent of display version.
+APP_VERSION = "v1.0.7"
+APP_RELEASE = 215  # Monotonic updater sequence, independent of display version.
 
 COLOR_INFO = {
     "R": ("불", "#ee5547", 5),
