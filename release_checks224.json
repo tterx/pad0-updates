@@ -1,0 +1,139 @@
+{
+  "release": 224,
+  "version": "v1.0.16",
+  "source_commit": "5e6499913036877bc0f20d9ffa1f95289b9d1bc3",
+  "source_sha256": "5db280862757391bad21a5bf5a142c19001c99761f61b1ecad8f10bc0c4a8de9",
+  "zip_sha256": "b3a271ffc5fddd7bb74644a80d10ae0e0088085785e65cadd408c9048beab40a",
+  "windows_run": 40332839381,
+  "windows_tests_passed": 175,
+  "windows_package_source_sha256": "5db280862757391bad21a5bf5a142c19001c99761f61b1ecad8f10bc0c4a8de9",
+  "linux_tests_selected": 402,
+  "linux_tests_passed": 402,
+  "linux_tests_skipped": 0,
+  "linux_failures": 0,
+  "linux_errors": 0,
+  "cloud_partial_board_tests": 5,
+  "cloud_duration_badge_tests": 4,
+  "cooldown_badge_tests": 5,
+  "held_cursor_stability_tests": 5,
+  "jammer_water_weights_unchanged": true,
+  "known_names_reused": true,
+  "known_verified_previews_reused": true,
+  "stage_labels_require_two_matching_cropped_reads_when_full_ocr_misses": true,
+  "stage_loading_capture_retry_without_additional_click": true,
+  "material_failure_zip_records_current_stage_frame": true,
+  "direct_emulator_operations": 0,
+  "modified_program_full_mumu_gameplay_verified": false,
+  "product_input_backend": "mumu_sdk",
+  "product_skill_click_backend": "controller",
+  "capture_methods": 64,
+  "saved_timing_unchanged": true,
+  "included_specialist": {
+    "release": 211,
+    "optimizer_steps": 960,
+    "validation_total": 36,
+    "held_out_test_total": 13,
+    "weights_sha256": "1fa7ac85a41ddea6cf01efcf0a761d4221579688ccefdc561cffbf8a6b4f159d"
+  },
+  "feature_sha256": {
+    "pad0_install": "1917d1fc368ff3848dc6b19d3c01bc32b6eb6a8cededa3aaf917a182c4345ba6",
+    "pad0_common": "13c4febe3caae75aa6eee611d84b5eb21e74c5d6886f484a2c3a29b1dfc203f5",
+    "pad0_quantity": "670150dbc5eec9b7015a7d9f83414e4a9ea1ca1edcf8523477fb4835d861481e",
+    "pad0_crystal": "0a9a93c6a80055316f996618aecc777e9756d6fdb9c4d70ebc4f9318ca073ab8",
+    "pad0_crystal_review": "6725b6997d273b1c83e43a921d7e816951a98adc52f1c4c64e633b6edb5015ae",
+    "pad0_input": "efc9fdd7d9b5068b97ab2c9e9ea3b9caf67d30f40f979af480a9e5949ed8aedc",
+    "pad0_solver": "4e1ba983b4b5933020b9c13b5d463db69518d4d44e74cf88b25530e97e0da400",
+    "pad0_ai": "1271cb94b2e8370fecb857927571ba0e1d46b8d0a0c1a6934479453b67024ca7",
+    "pad0_ui": "c0b7b994137168cc70bee1a2438075055bcfb8c38b3dd8fc783c17c28574ae27"
+  },
+  "thorn_specialist": {
+    "schema": 1,
+    "features": 520,
+    "id": "spike-overlay-224",
+    "kind": "thorn_overlay_specialist",
+    "seed": 224,
+    "epochs": 360,
+    "fit_runs": 3,
+    "optimizer_steps": 1080,
+    "real_positive_crops": 5,
+    "training_real_positive_crops": 3,
+    "validation_real_positive_crops": 2,
+    "training_inputs": 1200,
+    "validation_total": 60,
+    "negative_test_total": 90,
+    "positive_sources": 2,
+    "reports": [
+      {
+        "seed": 224,
+        "epochs": 360,
+        "correct": 60,
+        "total": 60,
+        "accepted": 59,
+        "accepted_errors": 0,
+        "positive_predictions": [
+          1,
+          1
+        ],
+        "positive_confidence": [
+          0.9809178113937378,
+          0.9962719678878784
+        ],
+        "positive_accepted": [
+          false,
+          true
+        ]
+      },
+      {
+        "seed": 225,
+        "epochs": 360,
+        "correct": 60,
+        "total": 60,
+        "accepted": 59,
+        "accepted_errors": 0,
+        "positive_predictions": [
+          1,
+          1
+        ],
+        "positive_confidence": [
+          0.9877101182937622,
+          0.9987848401069641
+        ],
+        "positive_accepted": [
+          false,
+          true
+        ]
+      },
+      {
+        "seed": 226,
+        "epochs": 360,
+        "correct": 60,
+        "total": 60,
+        "accepted": 59,
+        "accepted_errors": 0,
+        "positive_predictions": [
+          1,
+          1
+        ],
+        "positive_confidence": [
+          0.9574886560440063,
+          0.9986763596534729
+        ],
+        "positive_accepted": [
+          false,
+          true
+        ]
+      }
+    ],
+    "test": {
+      "correct": 90,
+      "total": 90,
+      "accepted": 90,
+      "accepted_errors": 0
+    },
+    "feature_encoder": "neutral_metal_dark_edges_v1",
+    "sha256": "9ec30de10ba0a6416262bc6668cc45db83153b7a96ec7dcbf570579ab64340a4"
+  },
+  "thorn_policy_tests": 6,
+  "unlock_route_tests": 5,
+  "offline_training_reproducible": true
+}

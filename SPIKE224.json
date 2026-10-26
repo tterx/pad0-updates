@@ -1,0 +1,87 @@
+{
+  "schema": 1,
+  "features": 520,
+  "id": "spike-overlay-224",
+  "kind": "thorn_overlay_specialist",
+  "seed": 224,
+  "epochs": 360,
+  "fit_runs": 3,
+  "optimizer_steps": 1080,
+  "real_positive_crops": 5,
+  "training_real_positive_crops": 3,
+  "validation_real_positive_crops": 2,
+  "training_inputs": 1200,
+  "validation_total": 60,
+  "negative_test_total": 90,
+  "positive_sources": 2,
+  "reports": [
+    {
+      "seed": 224,
+      "epochs": 360,
+      "correct": 60,
+      "total": 60,
+      "accepted": 59,
+      "accepted_errors": 0,
+      "positive_predictions": [
+        1,
+        1
+      ],
+      "positive_confidence": [
+        0.9809178113937378,
+        0.9962719678878784
+      ],
+      "positive_accepted": [
+        false,
+        true
+      ]
+    },
+    {
+      "seed": 225,
+      "epochs": 360,
+      "correct": 60,
+      "total": 60,
+      "accepted": 59,
+      "accepted_errors": 0,
+      "positive_predictions": [
+        1,
+        1
+      ],
+      "positive_confidence": [
+        0.9877101182937622,
+        0.9987848401069641
+      ],
+      "positive_accepted": [
+        false,
+        true
+      ]
+    },
+    {
+      "seed": 226,
+      "epochs": 360,
+      "correct": 60,
+      "total": 60,
+      "accepted": 59,
+      "accepted_errors": 0,
+      "positive_predictions": [
+        1,
+        1
+      ],
+      "positive_confidence": [
+        0.9574886560440063,
+        0.9986763596534729
+      ],
+      "positive_accepted": [
+        false,
+        true
+      ]
+    }
+  ],
+  "test": {
+    "correct": 90,
+    "total": 90,
+    "accepted": 90,
+    "accepted_errors": 0
+  },
+  "feature_encoder": "neutral_metal_dark_edges_v1",
+  "sha256": "9ec30de10ba0a6416262bc6668cc45db83153b7a96ec7dcbf570579ab64340a4"
+}
