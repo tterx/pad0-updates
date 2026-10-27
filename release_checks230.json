@@ -1,0 +1,85 @@
+{
+  "version": "v1.0.22",
+  "release": 230,
+  "source_commit": "1a8777639705d1d5d59ed9645ec107e6335c3070",
+  "source_sha256": "04c1171d4c42914dbe2cc3ec30a705684c775134d7fe350b70cfd62913c3de9c",
+  "zip_sha256": "35967b95cbf316cd7240323d67d31beaa8999e75c6fc5b17a55e7fb66ca28b4e",
+  "checks": {
+    "package": "passed",
+    "bundle_import": "passed",
+    "offline_upgrade229_to230": "passed",
+    "bundled_startup_ai_cleanup": "passed",
+    "startup_preserves_skill_tactics": "passed",
+    "source_sha256": "04c1171d4c42914dbe2cc3ec30a705684c775134d7fe350b70cfd62913c3de9c",
+    "zip_sha256": "35967b95cbf316cd7240323d67d31beaa8999e75c6fc5b17a55e7fb66ca28b4e",
+    "source_bytes": 1896195,
+    "runtime_bundle_matches_source_commit": true,
+    "linux_tests": {
+      "run": 320,
+      "passed": 319,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 1,
+      "skip_reason": "Official Windows Maa DLL binding check"
+    },
+    "windows_ci": {
+      "conclusion": "success",
+      "run_id": 40465117904,
+      "url": "https://github.com/tterx/pad0-all-in-one/actions/runs/40465117904",
+      "head_sha": "1a8777639705d1d5d59ed9645ec107e6335c3070",
+      "tests": 283,
+      "skipped": 0
+    },
+    "rendered_title_real_ocr": {
+      "scope": "Real RapidOCR inference on rendered No.243 and Korean title; not the original user screenshot",
+      "number": "243",
+      "name": "미마룡 다이긴죠",
+      "owner": {
+        "box": [
+          287,
+          14,
+          438,
+          41
+        ],
+        "screen_box": [
+          430,
+          124,
+          1155,
+          174
+        ],
+        "readings": [
+          [
+            "미마룡 다이긴죠",
+            0.9372
+          ],
+          [
+            "미마룡 다이긴죠",
+            0.9342
+          ]
+        ],
+        "name_confirmed": true,
+        "number": "243"
+      }
+    },
+    "regression_suites": {
+      "awakening230": 12,
+      "route_modes230": 15,
+      "skill_tactics230": 12
+    }
+  },
+  "scope": [
+    "Bind awakening registration to freshly captured creature No. before/after modal; disagreeing owner OCR does not overwrite names or block stable awakening descriptions",
+    "Add linked-clear saved mode10 with four-plus connected, six-plus combos and two-second reserve; no speculative combo-drop bonus",
+    "TPA exact-four goals use only attributes of actual TPA-bearing party members and retain attribute metadata through replay",
+    "Remove two main registration/view buttons and add separate current-party state-priority skill tactics editor, persisted and applied in real counter selection"
+  ],
+  "limitations": [
+    "No original user-screenshot OCR trial or physical MuMu gameplay/UI execution; OCR evidence is rendered input and GUI/controller tests are scripted",
+    "Linked-clear mode requires an observed timer to certify its two-second reserve",
+    "Tactics apply on the next automatic farming run; changed-party plans use default selection until edited and saved",
+    "Existing urgent cleanse/unlock order and skill readiness/policies remain; TPA does not credit other attributes"
+  ],
+  "publication": {
+    "updater_activation": "pending verified release download"
+  }
+}

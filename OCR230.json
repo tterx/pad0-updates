@@ -1,0 +1,31 @@
+{
+  "scope": "Real RapidOCR inference on rendered No.243 and Korean title; not the original user screenshot",
+  "number": "243",
+  "name": "미마룡 다이긴죠",
+  "owner": {
+    "box": [
+      287,
+      14,
+      438,
+      41
+    ],
+    "screen_box": [
+      430,
+      124,
+      1155,
+      174
+    ],
+    "readings": [
+      [
+        "미마룡 다이긴죠",
+        0.9372
+      ],
+      [
+        "미마룡 다이긴죠",
+        0.9342
+      ]
+    ],
+    "name_confirmed": true,
+    "number": "243"
+  }
+}
