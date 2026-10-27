@@ -1,0 +1,34 @@
+{
+  "version": "v1.0.17",
+  "release": 225,
+  "source_commit": "305dbaabab83a85cf8f60d75c8bd3d85f00e2653",
+  "base_version": "v1.0.16",
+  "scope": "Version metadata only; feature modules and application logic unchanged",
+  "source_sha256": "dd152480d808e630111cd2d062d192103509c2de0ae9516f81d30ec8394dce02",
+  "zip_sha256": "61e49ce7c75dd99aba2ced3b92687adf55bfd4f42cd54403b657b9f01a1b2bd6",
+  "checks": {
+    "zip_integrity": "passed",
+    "bundled_import_and_version": "passed",
+    "feature_code_unchanged": "passed",
+    "offline_updater_224_to_225_backup_idempotency_and_checksum_rejection": "passed",
+    "linux_tests": {
+      "run": 215,
+      "passed": 211,
+      "failures": 1,
+      "errors": 2,
+      "skipped": 1,
+      "details": [
+        "Missing fixture tests/fixtures/manual_20261017/board_135126.png",
+        "Missing fixture tests/fixtures/reported_move178.json",
+        "Legacy test_skill_priority178 expects refresh slot2; v224 selects bonus slot1",
+        "Official Windows DLL check skipped on Linux"
+      ]
+    },
+    "windows_ci": "not verified for this version",
+    "physical_mumu": "not tested"
+  },
+  "publication": {
+    "github_release": "pending: API network access denied",
+    "updater_activation": "pending: update.json unchanged"
+  }
+}
