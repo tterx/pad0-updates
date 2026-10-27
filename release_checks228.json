@@ -60,6 +60,44 @@
       "start_thorn_selected_physical": true,
       "start_lift_x_offset": -0.075,
       "start_stable_cells": 21
+    },
+    "live_production_updater227_to228": {
+      "result": "passed",
+      "source_sha256_verified": true,
+      "previous_source_backup_verified": true,
+      "repeat_check_reports_no_newer_release": true,
+      "published_bundle_reported104_proof": {
+        "confirmed": true,
+        "reason": "start_thorned_purple_lifted",
+        "start_baseline_code": "P",
+        "start_floating_code": "P",
+        "start_match_mae": 0.1659,
+        "start_match_correlation": 0.37138,
+        "start_original_mae": 0.25102,
+        "start_changed_fraction": 0.9137,
+        "start_upper_changed_fraction": 0.99689,
+        "start_lift_offset": 0.3,
+        "start_lift_scale": 1.16,
+        "start_spatial_coarse_patches": 504,
+        "start_spatial_best_correlation": 0.73496,
+        "start_spatial_best_mae": 0.10953,
+        "start_spatial_qualified_candidates": 2,
+        "start_spatial_masked_candidates": 0,
+        "start_spatial_reason": "start_spatial_unconfirmed",
+        "start_thorn_alpha_candidates": 8,
+        "start_artwork_kind": "thorned_purple_alpha_texture",
+        "start_floating_core_code": "S",
+        "start_thorn_alpha": 0.72952,
+        "start_thorn_residual_mae": 0.0792,
+        "start_thorn_texture_correlation": 0.89045,
+        "start_thorn_grey_correlation": 0.8823,
+        "start_thorn_purple_fraction": 0.44236,
+        "start_thorn_pink_fraction": 0.05587,
+        "start_thorn_source_physical": true,
+        "start_thorn_selected_physical": true,
+        "start_lift_x_offset": -0.075,
+        "start_stable_cells": 21
+      }
     }
   },
   "scope": [
@@ -73,7 +111,7 @@
     "Input backend and movement pacing unchanged; development-only models and local AI cleanup policy retained"
   ],
   "publication": {
-    "updater_activation": "production update.json set to228; live check pending",
+    "updater_activation": "active: production update.json serves release228; live227-to228 download, backup, repeat check and published-bundle104 proof passed",
     "github_release": "https://github.com/tterx/pad0-updates/releases/tag/v1.0.20",
     "workflow": "https://github.com/tterx/pad0-updates/actions/runs/40459747138",
     "uploaded_asset_digest_verified": true,
