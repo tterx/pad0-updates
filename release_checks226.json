@@ -25,7 +25,15 @@
     "bundled_import_and_version": "passed",
     "offline_updater225_to226_backup_repeat_and_corruption_rejection": "passed",
     "model_training_reproduced_sha256": "580e5e269eb9128a1315efed89962faa82c0244718f348ff0192ff8f699a61c5",
-    "bundled_startup_ai_cleanup": "passed"
+    "bundled_startup_ai_cleanup": "passed",
+    "live_production_updater225_to226": {
+      "result": "passed",
+      "source_sha256_verified": true,
+      "previous_source_backup_verified": true,
+      "repeat_check_reports_no_newer_release": true,
+      "downloaded_bundle_ai_cleanup_verified": true,
+      "database_and_general_settings_preserved": true
+    }
   },
   "scope": [
     "Ally clear then necessary unlock/rainbow generation before cloud probe; combined Kali avoids redundant generation; real shortage retries next skill",
@@ -88,6 +96,6 @@
     "workflow": "https://github.com/tterx/pad0-updates/actions/runs/40448466516",
     "uploaded_asset_digest_verified": true,
     "published_zip_download_sha256_verified": true,
-    "updater_activation": "manifest226 prepared; live validation follows push"
+    "updater_activation": "active: production update.json serves release226"
   }
 }
