@@ -139,6 +139,24 @@
         "J",
         "R"
       ]
+    },
+    "live_production_updater228_to229": {
+      "result": "passed",
+      "source_sha256_verified": true,
+      "previous_source_backup_verified": true,
+      "repeat_check_reports_no_newer_release": true,
+      "published_bundle_transcribed_board_replay": {
+        "cleared_orbs": 30,
+        "combos": 5,
+        "required_combos": 0
+      },
+      "published_bundle_actual_clear_search": {
+        "cleared_orbs": 30,
+        "combos": 5,
+        "moves": 34.0,
+        "orthogonal": true
+      },
+      "scope": "Live updater and offline board replay/search, not a physical MuMu run"
     }
   },
   "scope": [
@@ -153,7 +171,7 @@
     "Input pacing and backend unchanged; development-only models and local AI cleanup retained"
   ],
   "publication": {
-    "updater_activation": "production update.json set to229; live check pending",
+    "updater_activation": "active: production update.json serves229; live228-to229 download, backup, repeat check and published-bundle board-clear replay/search passed",
     "github_release": "https://github.com/tterx/pad0-updates/releases/tag/v1.0.21",
     "workflow": "https://github.com/tterx/pad0-updates/actions/runs/40461346822",
     "uploaded_asset_digest_verified": true,
