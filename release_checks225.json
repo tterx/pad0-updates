@@ -29,13 +29,19 @@
       "head_sha": "305dbaabab83a85cf8f60d75c8bd3d85f00e2653",
       "url": "https://github.com/tterx/pad0-all-in-one/actions/runs/40429299750"
     },
-    "physical_mumu": "not tested"
+    "physical_mumu": "not tested",
+    "live_production_updater_224_to_225": {
+      "result": "passed",
+      "source_sha256_verified": true,
+      "previous_source_backup_verified": true,
+      "repeat_check_reports_no_newer_release": true
+    }
   },
   "publication": {
     "github_release": "https://github.com/tterx/pad0-updates/releases/tag/v1.0.17",
     "workflow": "https://github.com/tterx/pad0-updates/actions/runs/40430172778",
     "uploaded_asset_digest_verified": true,
     "published_zip_download_sha256_verified": true,
-    "updater_activation": "manifest225 ready; remote validation follows push"
+    "updater_activation": "active: production update.json serves release225"
   }
 }
