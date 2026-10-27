@@ -1,0 +1,26 @@
+{
+  "result": "passed",
+  "seconds": 8,
+  "cap": 37,
+  "readings": [
+    [
+      8,
+      0.9908,
+      "8"
+    ],
+    [
+      8,
+      0.9196,
+      "8"
+    ]
+  ],
+  "boxes": [
+    [
+      690,
+      23,
+      716,
+      57
+    ]
+  ],
+  "engine": "RapidOCR Korean PP-OCRv5 mobile; real inference, two agreeing views"
+}

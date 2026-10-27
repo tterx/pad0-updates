@@ -1,0 +1,78 @@
+{
+  "version": "v1.0.19",
+  "release": 227,
+  "source_commit": "2b047fad377c87387623af8bb6f5bddb7e247e22",
+  "source_sha256": "383ea95c6a9ec3f563145a4623db26efdba8bff5743bf8c8807029a88ee741b6",
+  "zip_sha256": "f185810a816e64b92eaee450b71c1fc0fc1c5d7d4eb40dc4385f037b31195d4a",
+  "checks": {
+    "package": "passed",
+    "bundle_import": "passed",
+    "offline_upgrade226_to227": "passed",
+    "bundled_startup_ai_cleanup": "passed",
+    "source_sha256": "383ea95c6a9ec3f563145a4623db26efdba8bff5743bf8c8807029a88ee741b6",
+    "zip_sha256": "f185810a816e64b92eaee450b71c1fc0fc1c5d7d4eb40dc4385f037b31195d4a",
+    "source_bytes": 1872668,
+    "linux_tests": {
+      "run": 249,
+      "passed": 248,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 1,
+      "skip_reason": "Official Windows Maa DLL binding check"
+    },
+    "windows_ci": {
+      "conclusion": "success",
+      "run_id": 40454759774,
+      "url": "https://github.com/tterx/pad0-all-in-one/actions/runs/40454759774",
+      "prior_attempt": {
+        "run_id": 40454497328,
+        "result": "failed to load newly added UTF-8 test fixture under Windows cp1252; fixed explicit encoding in regression tests/tool; application bundle unchanged"
+      },
+      "head_sha": "2b047fad377c87387623af8bb6f5bddb7e247e22",
+      "tests": 212,
+      "skipped": 0
+    },
+    "real_timer_ocr": {
+      "result": "passed",
+      "seconds": 8,
+      "cap": 37,
+      "readings": [
+        [
+          8,
+          0.9908,
+          "8"
+        ],
+        [
+          8,
+          0.9196,
+          "8"
+        ]
+      ],
+      "boxes": [
+        [
+          690,
+          23,
+          716,
+          57
+        ]
+      ],
+      "engine": "RapidOCR Korean PP-OCRv5 mobile; real inference, two agreeing views"
+    },
+    "runtime_bundle_matches_source_commit": true
+  },
+  "scope": [
+    "Locate right endpoint timer numeral despite merged white border; exclude left clock; retain two-view agreement and conflict/obstruction checks",
+    "After unread/short time or unsuccessful reserve-constrained route with no usable counter, remove four-second reserve and try rainbow/six then six only",
+    "Manual/headless/cache and background use actual executable fallback targets and retain raw unknown timer separately from bounded input budget",
+    "AI model button removed; development-only weights and no local AI recording/training policy retained"
+  ],
+  "limitations": [
+    "Unknown timer uses bounded five-second input budget, not a claimed recognized time",
+    "F10, actual input/layout/release checks remain; fewer-than-six result is not verified",
+    "No physical MuMu gameplay check"
+  ],
+  "publication": {
+    "github_release": "pending",
+    "updater_activation": "pending"
+  }
+}
