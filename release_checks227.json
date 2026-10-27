@@ -58,7 +58,26 @@
       ],
       "engine": "RapidOCR Korean PP-OCRv5 mobile; real inference, two agreeing views"
     },
-    "runtime_bundle_matches_source_commit": true
+    "runtime_bundle_matches_source_commit": true,
+    "live_production_updater226_to227": {
+      "result": "passed",
+      "source_sha256_verified": true,
+      "previous_source_backup_verified": true,
+      "repeat_check_reports_no_newer_release": true,
+      "published_bundle_real_ocr_seconds": 8,
+      "published_bundle_ocr_readings": [
+        [
+          8,
+          0.9908,
+          "8"
+        ],
+        [
+          8,
+          0.9196,
+          "8"
+        ]
+      ]
+    }
   },
   "scope": [
     "Locate right endpoint timer numeral despite merged white border; exclude left clock; retain two-view agreement and conflict/obstruction checks",
@@ -76,6 +95,6 @@
     "workflow": "https://github.com/tterx/pad0-updates/actions/runs/40455046796",
     "uploaded_asset_digest_verified": true,
     "published_zip_download_sha256_verified": true,
-    "updater_activation": "manifest227 prepared; production validation follows push"
+    "updater_activation": "active: production update.json serves release227"
   }
 }
