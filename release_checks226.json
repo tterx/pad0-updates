@@ -17,7 +17,9 @@
       "conclusion": "success",
       "run_id": 40448254239,
       "url": "https://github.com/tterx/pad0-all-in-one/actions/runs/40448254239",
-      "head_sha": "1ce3bd1d0eb28739a8d8a256a074d3e681bc70b1"
+      "head_sha": "1ce3bd1d0eb28739a8d8a256a074d3e681bc70b1",
+      "tests": 196,
+      "skipped": 0
     },
     "zip_integrity": "passed",
     "bundled_import_and_version": "passed",
@@ -82,7 +84,10 @@
     "Deletion of disconnected Windows user data occurs at next startup; failures are reported and retried"
   ],
   "publication": {
-    "github_release": "pending",
-    "updater_activation": "pending"
+    "github_release": "https://github.com/tterx/pad0-updates/releases/tag/v1.0.18",
+    "workflow": "https://github.com/tterx/pad0-updates/actions/runs/40448466516",
+    "uploaded_asset_digest_verified": true,
+    "published_zip_download_sha256_verified": true,
+    "updater_activation": "manifest226 prepared; live validation follows push"
   }
 }
