@@ -65,6 +65,34 @@
       "awakening230": 12,
       "route_modes230": 15,
       "skill_tactics230": 12
+    },
+    "live_production_updater229_to230": {
+      "result": "passed",
+      "source_sha256_verified": true,
+      "previous_source_backup_verified": true,
+      "repeat_check_reports_no_newer_release": true,
+      "published_bundle_checks": {
+        "awakening_number_save_preserves_name": true,
+        "linked_four_six_two_seconds": true,
+        "tpa_eligible_attributes_only": true,
+        "current_party_tactic_order_and_cooldown_fallback": true,
+        "separate_tactics_ui_import": true
+      },
+      "rendered_input_real_ocr": {
+        "number": "243",
+        "name": "미마룡 다이긴죠",
+        "readings": [
+          [
+            "미마룡 다이긴죠",
+            0.9372
+          ],
+          [
+            "미마룡 다이긴죠",
+            0.9342
+          ]
+        ]
+      },
+      "scope": "Live updater, rendered-input OCR and offline domain verification; no physical MuMu trial or original user-screenshot OCR"
     }
   },
   "scope": [
@@ -80,7 +108,7 @@
     "Existing urgent cleanse/unlock order and skill readiness/policies remain; TPA does not credit other attributes"
   ],
   "publication": {
-    "updater_activation": "production update.json set to230; live check pending",
+    "updater_activation": "active: production update.json serves230; live229-to230 download, backup, repeat check, published feature verification and rendered-input OCR passed",
     "github_release": "https://github.com/tterx/pad0-updates/releases/tag/v1.0.22",
     "workflow": "https://github.com/tterx/pad0-updates/actions/runs/40465466345",
     "uploaded_asset_digest_verified": true,
