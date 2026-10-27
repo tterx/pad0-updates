@@ -1,0 +1,78 @@
+{
+  "version": "v1.0.20",
+  "release": 228,
+  "source_commit": "7163d2918353f15575db4ec68ef277f27606a8f0",
+  "source_sha256": "85795a456e2b5d3178e6c08e560ac64ca6b9cba996419a74d73ed338fc8ca528",
+  "zip_sha256": "c0391265ca416d876cee39e5512c496fc0a9157c762efe987b13598a49ba7d75",
+  "checks": {
+    "package": "passed",
+    "bundle_import": "passed",
+    "offline_upgrade227_to228": "passed",
+    "bundled_startup_ai_cleanup": "passed",
+    "source_sha256": "85795a456e2b5d3178e6c08e560ac64ca6b9cba996419a74d73ed338fc8ca528",
+    "zip_sha256": "c0391265ca416d876cee39e5512c496fc0a9157c762efe987b13598a49ba7d75",
+    "source_bytes": 1879818,
+    "runtime_bundle_matches_source_commit": true,
+    "linux_tests": {
+      "run": 266,
+      "passed": 265,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 1,
+      "skip_reason": "Official Windows Maa DLL binding check"
+    },
+    "windows_ci": {
+      "conclusion": "success",
+      "run_id": 40459401974,
+      "url": "https://github.com/tterx/pad0-all-in-one/actions/runs/40459401974",
+      "head_sha": "7163d2918353f15575db4ec68ef277f27606a8f0",
+      "tests": 229,
+      "skipped": 0
+    },
+    "reported104_captured_frame_proof": {
+      "confirmed": true,
+      "reason": "start_thorned_purple_lifted",
+      "start_baseline_code": "P",
+      "start_floating_code": "P",
+      "start_match_mae": 0.1659,
+      "start_match_correlation": 0.37138,
+      "start_original_mae": 0.25102,
+      "start_changed_fraction": 0.9137,
+      "start_upper_changed_fraction": 0.99689,
+      "start_lift_offset": 0.3,
+      "start_lift_scale": 1.16,
+      "start_spatial_coarse_patches": 504,
+      "start_spatial_best_correlation": 0.73496,
+      "start_spatial_best_mae": 0.10953,
+      "start_spatial_qualified_candidates": 2,
+      "start_spatial_masked_candidates": 0,
+      "start_spatial_reason": "start_spatial_unconfirmed",
+      "start_thorn_alpha_candidates": 8,
+      "start_artwork_kind": "thorned_purple_alpha_texture",
+      "start_floating_core_code": "S",
+      "start_thorn_alpha": 0.72952,
+      "start_thorn_residual_mae": 0.0792,
+      "start_thorn_texture_correlation": 0.89045,
+      "start_thorn_grey_correlation": 0.8823,
+      "start_thorn_purple_fraction": 0.44236,
+      "start_thorn_pink_fraction": 0.05587,
+      "start_thorn_source_physical": true,
+      "start_thorn_selected_physical": true,
+      "start_lift_x_offset": -0.075,
+      "start_stable_cells": 21
+    }
+  },
+  "scope": [
+    "Verify translucent thorned purple start using background-subtracted source artwork and physical thorn evidence; retain original S core observation",
+    "Validate manual paths against the relevant risk mask actually searched, retaining fresh physical flags; reject newly relevant hazards",
+    "Use explicit verified timer-fallback goals and expanded search cap for preview and headless precompute"
+  ],
+  "limitations": [
+    "Captured-frame and scripted controller verification, no physical MuMu gameplay check",
+    "Actual orb, geometry, timer, fresh HP and newly relevant thorn checks remain",
+    "Input backend and movement pacing unchanged; development-only models and local AI cleanup policy retained"
+  ],
+  "publication": {
+    "updater_activation": "pending verified release download"
+  }
+}
