@@ -1,13 +1,12 @@
-# 퍼드0 올인원 1.0.17 / updater225 배포 준비
+# 퍼드0 올인원 1.0.17 / updater225
 
-1.0.16의 현재 기능 코드를 유지하고 표시 버전과 자동 업데이트 순번만 올립니다. 새 기능이나 게임 동작 변경은 없습니다.
+1.0.16의 현재 기능 코드를 유지하고 표시 버전과 자동 업데이트 순번만 올린 배포입니다.
 
-- 소스 저장소 커밋: tterx/pad0-all-in-one@305dbaa
-- 배포 파일: pad0_overlay_windows_v1_0_17.zip
-- 자동 업데이트용 번들: releases/v1.0.17/pad0_overlay.py
-- 전환용 manifest: update225.json (현재 update.json에는 적용하지 않음)
-- 검증 근거: release_checks225.json
+- 소스: tterx/pad0-all-in-one@305dbaabab83a85cf8f60d75c8bd3d85f00e2653
+- 공식 릴리스: https://github.com/tterx/pad0-updates/releases/tag/v1.0.17
+- ZIP 업로드 해시 및 발행 후 다운로드 해시 일치 확인
+- Windows CI 및 ZIP 무결성·번들 로딩·오프라인 업데이트 전환 검사 통과
+- Linux 215개 중 211개 통과, 기존 실패 1개·자료 누락 오류 2개·Windows 전용 건너뜀 1개
+- 실제 MuMu 게임 조작 미검증. 개인 설정·DB·학습 모델은 배포 파일에 포함하지 않음
 
-이 브랜치는 배포 준비 상태입니다. GitHub 릴리스 v1.0.17의 발행 및 다운로드 검증 후 update225.json을 update.json에 적용하고 README 다운로드 링크를 갱신해야 합니다. GitHub API/업로드 도메인 접근이 허용되어 공식 릴리스 발행을 진행합니다.
-
-소스 커밋 305dbaa의 Windows CI는 통과했습니다. 실제 Windows/MuMu 게임 조작은 검증하지 않았습니다. 기존 사용자 설정·DB·모델은 패키지에 포함하지 않습니다.
+자동 업데이트 manifest는 update.json(release225)입니다. 상세 검증 상태와 SHA256은 release_checks225.json에 기록합니다.
