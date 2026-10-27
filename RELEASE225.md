@@ -8,6 +8,6 @@
 - 전환용 manifest: update225.json (현재 update.json에는 적용하지 않음)
 - 검증 근거: release_checks225.json
 
-이 브랜치는 배포 준비 상태입니다. GitHub 릴리스 v1.0.17의 발행 및 다운로드 검증 후 update225.json을 update.json에 적용하고 README 다운로드 링크를 갱신해야 합니다. 현재 환경의 GitHub API/업로드 도메인 접근 제한 때문에 릴리스 발행은 수행하지 않았습니다.
+이 브랜치는 배포 준비 상태입니다. GitHub 릴리스 v1.0.17의 발행 및 다운로드 검증 후 update225.json을 update.json에 적용하고 README 다운로드 링크를 갱신해야 합니다. GitHub API/업로드 도메인 접근이 허용되어 공식 릴리스 발행을 진행합니다.
 
-실제 Windows/MuMu 게임 조작과 새 Windows CI 결과는 이번 Linux 검사로 검증하지 않았습니다. 기존 사용자 설정·DB·모델은 패키지에 포함하지 않습니다.
+소스 커밋 305dbaa의 Windows CI는 통과했습니다. 실제 Windows/MuMu 게임 조작은 검증하지 않았습니다. 기존 사용자 설정·DB·모델은 패키지에 포함하지 않습니다.

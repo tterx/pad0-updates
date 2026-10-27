@@ -24,11 +24,15 @@
         "Official Windows DLL check skipped on Linux"
       ]
     },
-    "windows_ci": "not verified for this version",
+    "windows_ci": {
+      "conclusion": "success",
+      "head_sha": "305dbaabab83a85cf8f60d75c8bd3d85f00e2653",
+      "url": "https://github.com/tterx/pad0-all-in-one/actions/runs/40429299750"
+    },
     "physical_mumu": "not tested"
   },
   "publication": {
-    "github_release": "pending: API network access denied",
+    "github_release": "pending: preparing verified release upload",
     "updater_activation": "pending: update.json unchanged"
   }
 }
