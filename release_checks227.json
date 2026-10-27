@@ -72,7 +72,10 @@
     "No physical MuMu gameplay check"
   ],
   "publication": {
-    "github_release": "pending",
-    "updater_activation": "pending"
+    "github_release": "https://github.com/tterx/pad0-updates/releases/tag/v1.0.19",
+    "workflow": "https://github.com/tterx/pad0-updates/actions/runs/40455046796",
+    "uploaded_asset_digest_verified": true,
+    "published_zip_download_sha256_verified": true,
+    "updater_activation": "manifest227 prepared; production validation follows push"
   }
 }
