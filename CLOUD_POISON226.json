@@ -1,0 +1,45 @@
+{
+  "schema": 1,
+  "features": 520,
+  "id": "cloud-poison-226",
+  "kind": "lifted_poison_specialist",
+  "seed": 226,
+  "epochs": 360,
+  "fit_runs": 3,
+  "optimizer_steps": 1080,
+  "train_real_cells": 30,
+  "train_positive_cells": 4,
+  "training_inputs": 960,
+  "reports": [
+    {
+      "seed": 226,
+      "correct": 30,
+      "accepted": 30,
+      "accepted_errors": 0
+    },
+    {
+      "seed": 227,
+      "correct": 30,
+      "accepted": 29,
+      "accepted_errors": 0
+    },
+    {
+      "seed": 228,
+      "correct": 30,
+      "accepted": 30,
+      "accepted_errors": 0
+    }
+  ],
+  "validation_total": 30,
+  "test_total": 19,
+  "test_correct": 19,
+  "test_accepted": 19,
+  "test_accepted_errors": 0,
+  "reported_lift": {
+    "label": 1,
+    "confidence": 0.9933764338493347,
+    "accepted": true
+  },
+  "limitations": "Three source screens; test held and resting crops share source102. Small sample, no general gameplay accuracy claim.",
+  "sha256": "580e5e269eb9128a1315efed89962faa82c0244718f348ff0192ff8f699a61c5"
+}

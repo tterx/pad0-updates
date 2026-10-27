@@ -1,3 +1,7 @@
+## v1.0.18 실제 체크아웃 검사
+
+`OPENBLAS_NUM_THREADS=2 DISPLAY=:99 .venv/bin/python -m unittest discover -s tests -v`로 현재 포함된 검사를 실행합니다. 가상 화면 또는 실제 Tk 화면 환경이 필요합니다. 구름·독·5속성 우선 검사는 `test_cloud_policy226.py`, 로컬 AI 제거 검사는 `test_development_models226.py`입니다. 학습은 검사나 앱 실행 중 하지 않습니다. 명시적 개발 재현 명령은 `tools/train_cloud_poison226.py`에 있습니다. 아래 tools/run_tests.py를 사용하는 예전 프로필 실행기는 현재 체크아웃에 없습니다.
+
 ## v101.198 확인 범위
 
 이번 요청에 따라 정적 코드 검토·구문·배포 정합성만 확인했습니다. 아래 v197의12건 결과는 과거 기록이며 v198의 검사 통과 주장으로 사용하지 않습니다. 실기 반복 시험/시뮬레이션/자동 속도 시험 없음.
