@@ -1,0 +1,75 @@
+{
+  "version": "v1.0.26",
+  "release": 234,
+  "source_commit": "1c42afc3cf3b1a96073a9407d77e017420eb8440",
+  "source_sha256": "b2443c882f4a303baf0ad6dd14633346ea89cdb2b1dc3bbf12cc42159fc9c889",
+  "zip_sha256": "94070b7f34c2dfda3e3e7a0e18806845859614cc9f99ff133eb18e9b4b9e7d90",
+  "checks": {
+    "package": "passed",
+    "bundle_import": "passed",
+    "offline_upgrade233_to234": "passed",
+    "bundled_startup_ai_cleanup": "passed",
+    "startup_preserves_skill_tactics": "passed",
+    "source_sha256": "b2443c882f4a303baf0ad6dd14633346ea89cdb2b1dc3bbf12cc42159fc9c889",
+    "zip_sha256": "94070b7f34c2dfda3e3e7a0e18806845859614cc9f99ff133eb18e9b4b9e7d90",
+    "source_bytes": 1893045,
+    "runtime_bundle_matches_source_commit": true,
+    "linux_tests": {
+      "run": 366,
+      "passed": 365,
+      "skipped": 1,
+      "failures": 0,
+      "errors": 0
+    },
+    "windows_ci": {
+      "conclusion": "success",
+      "run_id": 40627319024,
+      "head_sha": "1c42afc3cf3b1a96073a9407d77e017420eb8440",
+      "url": "https://github.com/tterx/pad0-all-in-one/actions/runs/40627319024",
+      "tests": 329,
+      "skipped": 0
+    },
+    "tpa_seed234_regressions": 8,
+    "reported_board": {
+      "scope": "Manually transcribed user screenshot; not original screenshot pixel OCR",
+      "rows": [
+        "HHBBRR",
+        "HRGHPR",
+        "BBRPHH",
+        "GBRPRG",
+        "RPGGHH"
+      ],
+      "timer_seconds": 9,
+      "combo_cells": [
+        10,
+        23
+      ],
+      "proof_path": [
+        25,
+        26,
+        27,
+        21,
+        15,
+        9,
+        10,
+        16,
+        15
+      ]
+    }
+  },
+  "scope": [
+    "Construct a real straight-four seed using target-colour bits and held cursor before full combo beam search",
+    "Replay and retain the seed, including moving combo badges/spikes; improve optional combos without losing TPA",
+    "Respect actual seed path length, allowed starts, time and cancellation",
+    "Count actual cleared four-orb groups rather than a triple with a non-clearing adjacent fourth"
+  ],
+  "limitations": [
+    "Reported screenshot was transcribed into colour rows, not tested by original screenshot OCR",
+    "No physical MuMu execution verified",
+    "Search is bounded, not shortest-path or global-optimal proof",
+    "Combo badge model and input pacing unchanged"
+  ],
+  "publication": {
+    "updater_activation": "pending verified release download"
+  }
+}
