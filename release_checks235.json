@@ -29,7 +29,23 @@
       "tests": 341,
       "skipped": 0
     },
-    "tpa_prefind235_regressions": 12
+    "tpa_prefind235_regressions": 12,
+    "live_updater": {
+      "result": "passed",
+      "live_upgrade234_to235": true,
+      "source_sha256_verified": true,
+      "previous_source_backup_verified": true,
+      "repeat_check_no_update": true,
+      "published_bundle": {
+        "pre_ready_click_no_execution": true,
+        "preview_displays_1TPA": true,
+        "explicit_ready_click_uses_cache": true,
+        "solver_not_called_during_cached_execution": true,
+        "manual_cell_seconds": 0.075,
+        "manual_nine_second_cap": 65
+      },
+      "scope": "Live updater and offline UI/cache validation with fake controls; no physical MuMu input"
+    }
   },
   "scope": [
     "Stable-board TPA presearch starts without a shortened timer or Calculate click",
@@ -43,10 +59,11 @@
     "Combo badge model unchanged; original positive game screenshot accuracy unverified"
   ],
   "publication": {
-    "updater_activation": "production update.json set to235; live check pending",
+    "updater_activation": "production updater235 live upgrade verified",
     "github_release": "https://github.com/tterx/pad0-updates/releases/tag/v1.0.27",
     "workflow": "https://github.com/tterx/pad0-updates/actions/runs/40646724645",
     "uploaded_asset_digest_verified": true,
-    "published_zip_download_sha256_verified": true
+    "published_zip_download_sha256_verified": true,
+    "activation_commit": "81649db1cc0cec426ad09000b0e7882e242fb782"
   }
 }
