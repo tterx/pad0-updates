@@ -37,7 +37,22 @@
       "false_positives": 0,
       "threshold": 2.8887035985619995
     },
-    "tpa232_regressions": 17
+    "tpa232_regressions": 17,
+    "live_updater": {
+      "result": "passed",
+      "live_upgrade231_to232": true,
+      "source_sha256_verified": true,
+      "previous_source_backup_verified": true,
+      "repeat_check_no_update": true,
+      "published_bundle": {
+        "tpa_groups": 3,
+        "tpa_retained_without_six": true,
+        "erased_badges_plus_two": true,
+        "generation_tactic": true,
+        "haste_when_generation_cooling": true
+      },
+      "scope": "Actual live updater bytes and offline published-bundle execution, not physical MuMu or original badge-image OCR"
+    }
   },
   "scope": [
     "Prefer all available exact-four matches for party TPA attributes before optional six combos",
@@ -52,7 +67,7 @@
     "Search is bounded and does not prove the global maximum TPA count"
   ],
   "publication": {
-    "updater_activation": "production update.json set to232; live check pending",
+    "updater_activation": "production update.json serves232; live upgrade231-to232, backup, repeat and published-bundle TPA/generation/haste/plus-two accounting passed",
     "github_release": "https://github.com/tterx/pad0-updates/releases/tag/v1.0.24",
     "workflow": "https://github.com/tterx/pad0-updates/actions/runs/40621527865",
     "uploaded_asset_digest_verified": true,
