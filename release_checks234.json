@@ -70,6 +70,10 @@
     "Combo badge model and input pacing unchanged"
   ],
   "publication": {
-    "updater_activation": "pending verified release download"
+    "updater_activation": "production update.json set to234; live check pending",
+    "github_release": "https://github.com/tterx/pad0-updates/releases/tag/v1.0.26",
+    "workflow": "https://github.com/tterx/pad0-updates/actions/runs/40627693429",
+    "uploaded_asset_digest_verified": true,
+    "published_zip_download_sha256_verified": true
   }
 }
