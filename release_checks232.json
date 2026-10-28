@@ -1,0 +1,57 @@
+{
+  "version": "v1.0.24",
+  "release": 232,
+  "source_commit": "f258fcb0cc1cf6825baeb122f11b75eaddb58279",
+  "source_sha256": "d8ac73922778d798aa5b0e9ce0c099512455cc4bf59e9cc3e319cb3265401906",
+  "zip_sha256": "32541ecec18f1482fef4643c259b4854c1d010a03c8685bb8208b2fef887c813",
+  "checks": {
+    "package": "passed",
+    "bundle_import": "passed",
+    "offline_upgrade231_to232": "passed",
+    "bundled_startup_ai_cleanup": "passed",
+    "startup_preserves_skill_tactics": "passed",
+    "source_sha256": "d8ac73922778d798aa5b0e9ce0c099512455cc4bf59e9cc3e319cb3265401906",
+    "zip_sha256": "32541ecec18f1482fef4643c259b4854c1d010a03c8685bb8208b2fef887c813",
+    "source_bytes": 1889237,
+    "runtime_bundle_matches_source_commit": true,
+    "linux_tests": {
+      "run": 352,
+      "passed": 351,
+      "skipped": 1,
+      "failures": 0,
+      "errors": 0
+    },
+    "windows_ci": {
+      "conclusion": "success",
+      "run_id": 40621163679,
+      "head_sha": "f258fcb0cc1cf6825baeb122f11b75eaddb58279",
+      "url": "https://github.com/tterx/pad0-all-in-one/actions/runs/40621163679",
+      "tests": 315,
+      "skipped": 0
+    },
+    "combo_model": {
+      "scope": "Rendered badge prototypes and lock/thorn/plus negatives; no original game-badge pixels or live-device accuracy claim",
+      "train": 2400,
+      "holdout": 800,
+      "positive_recall": 0.88,
+      "false_positives": 0,
+      "threshold": 2.8887035985619995
+    },
+    "tpa232_regressions": 17
+  },
+  "scope": [
+    "Prefer all available exact-four matches for party TPA attributes before optional six combos",
+    "Separate generation tactics, classify No368/247 creation, observe cooldowns before No119/120 haste",
+    "Count only erased combo-marked orbs, carry badges through swaps and include locations in search/cache keys",
+    "Freeze a prototype-trained badge model without personal learning or storage"
+  ],
+  "limitations": [
+    "Combo badge training uses rendered prototypes, not the original inline screenshot pixels",
+    "Synthetic holdout positive recall88%; false positives0/400 is not game accuracy",
+    "No physical MuMu interaction; original real-game combo-badge positive validation still required",
+    "Search is bounded and does not prove the global maximum TPA count"
+  ],
+  "publication": {
+    "updater_activation": "pending verified release download"
+  }
+}

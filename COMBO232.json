@@ -1,0 +1,8 @@
+{
+  "scope": "Rendered badge prototypes and lock/thorn/plus negatives; no original game-badge pixels or live-device accuracy claim",
+  "train": 2400,
+  "holdout": 800,
+  "positive_recall": 0.88,
+  "false_positives": 0,
+  "threshold": 2.8887035985619995
+}
