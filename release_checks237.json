@@ -1,0 +1,47 @@
+{
+  "version": "v1.0.29",
+  "release": 237,
+  "source_commit": "75eb914212bd24167aed06c3eb30b6f644de2379",
+  "source_sha256": "780bde30ac3e6b7938b07ba1559fc7768d79008ecbe1656bbe093b446af36161",
+  "zip_sha256": "e70d9824ab48bba3a20278262908fe5577f87da7d39472214e8133bb7ad72db9",
+  "checks": {
+    "package": "passed",
+    "bundle_import": "passed",
+    "offline_upgrade236_to237": "passed",
+    "bundled_startup_ai_cleanup": "passed",
+    "startup_preserves_skill_tactics": "passed",
+    "source_sha256": "780bde30ac3e6b7938b07ba1559fc7768d79008ecbe1656bbe093b446af36161",
+    "zip_sha256": "e70d9824ab48bba3a20278262908fe5577f87da7d39472214e8133bb7ad72db9",
+    "source_bytes": 1899525,
+    "runtime_bundle_matches_source_commit": true,
+    "linux_tests": {
+      "run": 385,
+      "passed": 384,
+      "skipped": 1,
+      "failures": 0,
+      "errors": 0
+    },
+    "windows_ci": {
+      "conclusion": "success",
+      "run_id": 40650240428,
+      "head_sha": "75eb914212bd24167aed06c3eb30b6f644de2379",
+      "url": "https://github.com/tterx/pad0-all-in-one/actions/runs/40650240428",
+      "tests": 348,
+      "skipped": 0
+    },
+    "route237_regressions": 4
+  },
+  "scope": [
+    "Retry bounded TPA search misses on unchanged boards",
+    "Use uncertified provisional cloud J consistently during manual presearch and refresh",
+    "Require observed enemy combo floors in TPA metrics, ranking and final execution"
+  ],
+  "limitations": [
+    "Original108 board grid checked; inline cloud screenshot has no local PNG",
+    "Fake input only; no physical MuMu validation",
+    "Combo badge classifier unchanged"
+  ],
+  "publication": {
+    "updater_activation": "pending verified release download"
+  }
+}
