@@ -55,6 +55,37 @@
         16,
         15
       ]
+    },
+    "live_updater": {
+      "result": "passed",
+      "live_upgrade233_to234": true,
+      "source_sha256_verified": true,
+      "previous_source_backup_verified": true,
+      "repeat_check_no_update": true,
+      "published_bundle": {
+        "reported_board_path": [
+          25,
+          19,
+          13,
+          7,
+          8,
+          9,
+          10,
+          4,
+          3,
+          2,
+          8,
+          14,
+          20,
+          26,
+          27
+        ],
+        "tpa_groups": 1,
+        "move_units": 14,
+        "manual_execution_gate": true,
+        "eight_move_proof": true
+      },
+      "scope": "Live updater and offline replay of manually transcribed board, not original screenshot recognition or physical MuMu"
     }
   },
   "scope": [
@@ -70,7 +101,7 @@
     "Combo badge model and input pacing unchanged"
   ],
   "publication": {
-    "updater_activation": "production update.json set to234; live check pending",
+    "updater_activation": "production update.json serves234; live upgrade233-to234, backup, repeat and reported-board TPA seed/replay/manual-gate checks passed",
     "github_release": "https://github.com/tterx/pad0-updates/releases/tag/v1.0.26",
     "workflow": "https://github.com/tterx/pad0-updates/actions/runs/40627693429",
     "uploaded_asset_digest_verified": true,
