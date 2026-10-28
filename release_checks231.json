@@ -1,0 +1,93 @@
+{
+  "version": "v1.0.23",
+  "release": 231,
+  "source_commit": "08c64a8f15804ec4ad9583475ed6f3c3ff5b6dec",
+  "source_sha256": "589eb01324b22100f5f6ca846cba61056cd3e91e3df5192bfe253d5490ae76f4",
+  "zip_sha256": "9ad3782d05246b99e5b66e2a14da7504e60d9371a1e4645e33e6750790dc2576",
+  "checks": {
+    "package": "passed",
+    "bundle_import": "passed",
+    "offline_upgrade230_to231": "passed",
+    "bundled_startup_ai_cleanup": "passed",
+    "startup_preserves_skill_tactics": "passed",
+    "source_sha256": "589eb01324b22100f5f6ca846cba61056cd3e91e3df5192bfe253d5490ae76f4",
+    "zip_sha256": "9ad3782d05246b99e5b66e2a14da7504e60d9371a1e4645e33e6750790dc2576",
+    "source_bytes": 1876202,
+    "runtime_bundle_matches_source_commit": true,
+    "linux_tests": {
+      "run": 335,
+      "passed": 334,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 1,
+      "skip_reason": "Official Windows Maa DLL binding check"
+    },
+    "windows_ci": {
+      "conclusion": "success",
+      "run_id": 40616857228,
+      "url": "https://github.com/tterx/pad0-all-in-one/actions/runs/40616857228",
+      "head_sha": "08c64a8f15804ec4ad9583475ed6f3c3ff5b6dec",
+      "tests": 298,
+      "skipped": 0
+    },
+    "real_ocr": {
+      "scope": "Real RapidOCR inference on rendered quantities; not original user screenshot or live MuMu",
+      "full": true,
+      "cases": 3998,
+      "font_size_variants": 486,
+      "windows_font_fixture_cases": 80,
+      "panels": [
+        {
+          "needs": [
+            3,
+            2,
+            2,
+            1,
+            10
+          ],
+          "stocks": [
+            3,
+            9,
+            0,
+            1,
+            85
+          ],
+          "registered": true
+        },
+        {
+          "needs": [
+            1,
+            9,
+            10,
+            100,
+            999
+          ],
+          "stocks": [
+            0,
+            8,
+            99,
+            111,
+            999
+          ],
+          "registered": true
+        }
+      ],
+      "failed": []
+    },
+    "quantity231_regression_tests": 15
+  },
+  "scope": [
+    "Read white/red required1..999 and owned0..999 with full-width crop, multiplier removal, digit-count proof and repeated recognition",
+    "Handle small multiplication signs, touching111 bases and weak small-zero reads with alternate-scale agreement",
+    "Register all five stocks including zero through F7, use same stock reader in material previews, preserve prior ledger on uncertainty",
+    "Remove retired local stock-template reading and writing; delete only obsolete template on startup and preserve inventory/settings"
+  ],
+  "limitations": [
+    "OCR evidence uses rendered numerals and reported-value panels, not original user screenshot pixels",
+    "No physical MuMu interaction tested",
+    "Incomplete, contradictory or low-confidence quantities remain unregistered rather than guessed"
+  ],
+  "publication": {
+    "updater_activation": "pending verified release download"
+  }
+}

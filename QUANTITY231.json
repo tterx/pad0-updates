@@ -1,0 +1,44 @@
+{
+  "scope": "Real RapidOCR inference on rendered quantities; not original user screenshot or live MuMu",
+  "full": true,
+  "cases": 3998,
+  "font_size_variants": 486,
+  "windows_font_fixture_cases": 80,
+  "panels": [
+    {
+      "needs": [
+        3,
+        2,
+        2,
+        1,
+        10
+      ],
+      "stocks": [
+        3,
+        9,
+        0,
+        1,
+        85
+      ],
+      "registered": true
+    },
+    {
+      "needs": [
+        1,
+        9,
+        10,
+        100,
+        999
+      ],
+      "stocks": [
+        0,
+        8,
+        99,
+        111,
+        999
+      ],
+      "registered": true
+    }
+  ],
+  "failed": []
+}
