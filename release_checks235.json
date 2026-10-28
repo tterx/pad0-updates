@@ -1,0 +1,48 @@
+{
+  "version": "v1.0.27",
+  "release": 235,
+  "source_commit": "53d77c9df71c6ebb7f8d24a162aa0adae2e3b727",
+  "source_sha256": "d95995815dac1bc499f6912e7cdf6218c3c3e6dc8cac6f9cb0474836c14d95bc",
+  "zip_sha256": "fbdaf7fdef5f0160eee755990c7ce7f0cc1c8e06d2af8245d23a20da13770135",
+  "checks": {
+    "package": "passed",
+    "bundle_import": "passed",
+    "offline_upgrade234_to235": "passed",
+    "bundled_startup_ai_cleanup": "passed",
+    "startup_preserves_skill_tactics": "passed",
+    "source_sha256": "d95995815dac1bc499f6912e7cdf6218c3c3e6dc8cac6f9cb0474836c14d95bc",
+    "zip_sha256": "fbdaf7fdef5f0160eee755990c7ce7f0cc1c8e06d2af8245d23a20da13770135",
+    "source_bytes": 1897500,
+    "runtime_bundle_matches_source_commit": true,
+    "linux_tests": {
+      "run": 378,
+      "passed": 377,
+      "skipped": 1,
+      "failures": 0,
+      "errors": 0
+    },
+    "windows_ci": {
+      "conclusion": "success",
+      "run_id": 40646352915,
+      "head_sha": "53d77c9df71c6ebb7f8d24a162aa0adae2e3b727",
+      "url": "https://github.com/tterx/pad0-all-in-one/actions/runs/40646352915",
+      "tests": 341,
+      "skipped": 0
+    },
+    "tpa_prefind235_regressions": 12
+  },
+  "scope": [
+    "Stable-board TPA presearch starts without a shortened timer or Calculate click",
+    "Prepared TPA route waits for explicit Execute click and is revalidated without rerunning a solver",
+    "Party mode displays erase and combo; badges and relevant risk changes invalidate cached routes",
+    "Manual continuous movement targets 75ms per cell, with 90ms route-length budget; automatic input timing unchanged"
+  ],
+  "limitations": [
+    "Fake input and clock validate timing and ownership; no physical MuMu execution verified",
+    "TPA search remains bounded",
+    "Combo badge model unchanged; original positive game screenshot accuracy unverified"
+  ],
+  "publication": {
+    "updater_activation": "pending verified release download"
+  }
+}
