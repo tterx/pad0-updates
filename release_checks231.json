@@ -74,7 +74,37 @@
       ],
       "failed": []
     },
-    "quantity231_regression_tests": 15
+    "quantity231_regression_tests": 15,
+    "live_updater": {
+      "result": "passed",
+      "source_sha256_verified": true,
+      "previous_source_backup_verified": true,
+      "repeat_check_reports_no_newer_release": true,
+      "published_bundle_real_ocr_panel": {
+        "required": [
+          3,
+          2,
+          2,
+          1,
+          10
+        ],
+        "owned": [
+          3,
+          9,
+          0,
+          1,
+          85
+        ],
+        "registered_ledger": true
+      },
+      "white_red_boundary_quantities": [
+        0,
+        1,
+        111,
+        999
+      ],
+      "scope": "Live updater and actual published bundle OCR/registration on rendered test pixels, not original screenshot or physical MuMu"
+    }
   },
   "scope": [
     "Read white/red required1..999 and owned0..999 with full-width crop, multiplier removal, digit-count proof and repeated recognition",
@@ -88,7 +118,7 @@
     "Incomplete, contradictory or low-confidence quantities remain unregistered rather than guessed"
   ],
   "publication": {
-    "updater_activation": "production update.json set to231; live check pending",
+    "updater_activation": "production update.json serves231; live upgrade230-to231, backup, repeat and published bundle OCR/registration passed",
     "github_release": "https://github.com/tterx/pad0-updates/releases/tag/v1.0.23",
     "workflow": "https://github.com/tterx/pad0-updates/actions/runs/40617301908",
     "uploaded_asset_digest_verified": true,
