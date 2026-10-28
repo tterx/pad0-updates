@@ -91,6 +91,15 @@
           }
         ]
       }
+    },
+    "live_updater": {
+      "result": "passed",
+      "live_upgrade235_to236": true,
+      "source_sha256_verified": true,
+      "previous_source_backup_verified": true,
+      "repeat_check_no_update": true,
+      "published_bundle_stage_and_scroll_tests": 3,
+      "scope": "Actual published bundle with fake scroll input; original107 OCR checked separately, no physical MuMu"
     }
   },
   "scope": [
@@ -103,7 +112,7 @@
     "Preview scrolling tested with fake input; no physical MuMu validation"
   ],
   "publication": {
-    "updater_activation": "production update.json set to236; live check pending",
+    "updater_activation": "production236 live upgrade verified",
     "github_release": "https://github.com/tterx/pad0-updates/releases/tag/v1.0.28",
     "workflow": "https://github.com/tterx/pad0-updates/actions/runs/40648883328",
     "uploaded_asset_digest_verified": true,
