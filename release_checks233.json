@@ -29,7 +29,25 @@
       "tests": 321,
       "skipped": 0
     },
-    "manual_tpa233_regressions": 6
+    "manual_tpa233_regressions": 6,
+    "live_updater": {
+      "result": "passed",
+      "live_upgrade232_to233": true,
+      "source_sha256_verified": true,
+      "previous_source_backup_verified": true,
+      "repeat_check_no_update": true,
+      "published_bundle": {
+        "tpa_statuses": [
+          "1TPA",
+          "2TPA",
+          "3TPA",
+          "4TPA"
+        ],
+        "zero_status": "속성부족",
+        "manual_execution_without_six": true
+      },
+      "scope": "Live updater bytes and offline published-bundle execution; not physical MuMu"
+    }
   },
   "scope": [
     "Revalidate manual goals against current party TPA attributes before search",
@@ -43,7 +61,7 @@
     "Combo badge model unchanged; previous original-game positive validation limitation remains"
   ],
   "publication": {
-    "updater_activation": "production update.json set to233; live check pending",
+    "updater_activation": "production update.json serves233; live upgrade232-to233, backup, repeat and published1TPA..4TPA/shortage/manual optional-six checks passed",
     "github_release": "https://github.com/tterx/pad0-updates/releases/tag/v1.0.25",
     "workflow": "https://github.com/tterx/pad0-updates/actions/runs/40625765019",
     "uploaded_asset_digest_verified": true,
