@@ -1,0 +1,60 @@
+{
+  "version": "v1.0.30",
+  "release": 238,
+  "source_commit": "b791a9550bfea9da91de464a98548248c7acf82a",
+  "source_sha256": "c82783961938af5577e2f72dfde5a7640c8954367ce9430740840060ddc336f0",
+  "zip_sha256": "aaf0aa73e3639db3831070d2eaac9bee35dd8836501f0f39f0cebda60e4b402f",
+  "checks": {
+    "package": "passed",
+    "bundle_import": "passed",
+    "offline_upgrade237_to238": "passed",
+    "bundled_startup_ai_cleanup": "passed",
+    "startup_preserves_skill_tactics": "passed",
+    "source_sha256": "c82783961938af5577e2f72dfde5a7640c8954367ce9430740840060ddc336f0",
+    "zip_sha256": "aaf0aa73e3639db3831070d2eaac9bee35dd8836501f0f39f0cebda60e4b402f",
+    "source_bytes": 1901669,
+    "runtime_bundle_matches_source_commit": true,
+    "linux_tests": {
+      "run": 393,
+      "passed": 392,
+      "skipped": 1,
+      "failures": 0,
+      "errors": 0
+    },
+    "windows_ci": {
+      "conclusion": "success",
+      "run_id": 40751090556,
+      "head_sha": "b791a9550bfea9da91de464a98548248c7acf82a",
+      "url": "https://github.com/tterx/pad0-all-in-one/actions/runs/40751090556",
+      "tests": 356,
+      "skipped": 0
+    },
+    "fast_tpa238_regressions": 8,
+    "combo_badge_calibration": {
+      "training": 2400,
+      "original108_positive_cell": 18,
+      "original108_negative_cells": 29,
+      "source": "Original108 badge and rendered prototype; original103/104 negatives",
+      "threshold": 1.8690781635408371,
+      "scope": "Development augmentation of one real positive; new inline screenshot recognition unverified",
+      "original108_detected": [
+        18
+      ]
+    }
+  },
+  "scope": [
+    "Require at least1TPA and6 final combos before any execution; enemy floors can raise this",
+    "Publish verified TPA preview before optional beam search finishes",
+    "Construct separated2/3/4 TPA layouts when inventory allows",
+    "Keep ready previews through optional worker cancellation and never reduce proven TPA count"
+  ],
+  "limitations": [
+    "Solver benchmarks exclude OCR capture spawn and UI latency",
+    "Search is bounded, not a guarantee that every8 or12 orb board achieves2 or3 TPA",
+    "No physical MuMu timing verified",
+    "Combo badge calibration uses original108 as one real positive; latest inline screenshot pixels unavailable"
+  ],
+  "publication": {
+    "updater_activation": "pending verified release download"
+  }
+}

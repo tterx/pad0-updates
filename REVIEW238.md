@@ -1,0 +1,11 @@
+# v1.0.30 / updater238
+
+The current user priority is at least1TPA plus at least6 final combos. Enemy combo floors can raise the minimum further (6-or-less nullification requires7). Metrics, presearch verification and final execution enforce this joint goal. Skill bonus and only actually matched combo-orb badges add to final combos.2TPA/3TPA are secondary improvements and cannot replace a route satisfying the joint goal with an under-six route.
+
+Presearch publishes its first verified preview before optional beam optimization ends. Existing fours or a constructive seed are replayed first. If combos are still missing, keep the partial seed in the beam and return immediately upon the first valid joint result; optional improvement continues separately. Ready previews survive worker exit and cancellation on Execute. No input occurs before explicit execution and final recapture.
+
+Dedicated compact-bit search can target2/3/4 separated straight-four layouts. The nearest24 compatible layouts bound heuristic work. Tests with8 and12 same-colour orbs produce2 and3 real groups. Counts alone do not guarantee achievable groups within the bounded input time.
+
+A genuine original108 badge at cell18 was missed while a heart at7 was falsely counted by the rendered-only model. A fixed development model is calibrated with the original108 badge, the rendered prototype and original103/104 negatives (2400 augmented examples). Original108 now identifies exactly18, the badge-free103 fixture and rendered test remain checked. This is one real positive, not evidence of accuracy on every game badge. The latest inline screenshot has no local original file; its board and badge cells16/24 were transcribed and replayed with skill+2 and enemy7 in tests. No app-side learning or local data store is introduced.
+
+Tests verify preview publication while optional solve is blocked, preservation of existing3TPA, below-floor rejection, parent ready/cleanup behavior,8/12-orb layouts, original108 badge identity and the latest transcribed board's required combos. Physical MuMu timing and the latest screenshot's original-pixel OCR remain unverified. Pure solver benchmarks exclude capture/OCR/spawn/UI latency and were measured before the new mandatory-six preference; do not present them as total readiness time.
