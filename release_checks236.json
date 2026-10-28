@@ -1,0 +1,108 @@
+{
+  "version": "v1.0.28",
+  "release": 236,
+  "source_commit": "f1d80908c12978dae1e2548f4b12a3e93316ce31",
+  "source_sha256": "da722ac28e41a6cb5b705d2c298d5688b8955d2b60ddea48903a2d98507822a1",
+  "zip_sha256": "f991fb84c948aeee658661f9d1b23f1003c92271051ac510a15a698b2a4cecfa",
+  "checks": {
+    "package": "passed",
+    "bundle_import": "passed",
+    "offline_upgrade235_to236": "passed",
+    "bundled_startup_ai_cleanup": "passed",
+    "startup_preserves_skill_tactics": "passed",
+    "source_sha256": "da722ac28e41a6cb5b705d2c298d5688b8955d2b60ddea48903a2d98507822a1",
+    "zip_sha256": "f991fb84c948aeee658661f9d1b23f1003c92271051ac510a15a698b2a4cecfa",
+    "source_bytes": 1898428,
+    "runtime_bundle_matches_source_commit": true,
+    "linux_tests": {
+      "run": 381,
+      "passed": 380,
+      "skipped": 1,
+      "failures": 0,
+      "errors": 0
+    },
+    "windows_ci": {
+      "conclusion": "success",
+      "run_id": 40648557853,
+      "head_sha": "f1d80908c12978dae1e2548f4b12a3e93316ce31",
+      "url": "https://github.com/tterx/pad0-all-in-one/actions/runs/40648557853",
+      "tests": 344,
+      "skipped": 0
+    },
+    "stage236_regressions": 3,
+    "original107_ocr": {
+      "numbers": [
+        "10-10",
+        "EX1"
+      ],
+      "diagnostics": {
+        "stage_list_ocr_reads": 1,
+        "stage_list_ocr_seconds": 0.235,
+        "stage_list_medals": 2,
+        "stage_list_unread_labels": 0,
+        "stage_list_label_reads": [
+          {
+            "box": [
+              142,
+              490,
+              232,
+              516
+            ],
+            "scale": 2,
+            "text": "10-10",
+            "score": 0.99956,
+            "number": "10-10"
+          },
+          {
+            "box": [
+              142,
+              490,
+              232,
+              516
+            ],
+            "scale": 3,
+            "text": "10-10",
+            "score": 0.99956,
+            "number": "10-10"
+          },
+          {
+            "box": [
+              342,
+              490,
+              432,
+              516
+            ],
+            "scale": 2,
+            "text": "EX1",
+            "score": 0.93632,
+            "number": "EX1"
+          },
+          {
+            "box": [
+              342,
+              490,
+              432,
+              516
+            ],
+            "scale": 3,
+            "text": "EX1",
+            "score": 0.93475,
+            "number": "EX1"
+          }
+        ]
+      }
+    }
+  },
+  "scope": [
+    "Support EX stage labels and spatially adjacent split tokens",
+    "Avoid portrait pixels in label OCR",
+    "Verify preview scrollbar reaches bottom; retry stalled input before refusing incomplete registration"
+  ],
+  "limitations": [
+    "Original107 stage list recognized with real Korean RapidOCR",
+    "Preview scrolling tested with fake input; no physical MuMu validation"
+  ],
+  "publication": {
+    "updater_activation": "pending verified release download"
+  }
+}
