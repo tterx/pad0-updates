@@ -1,0 +1,48 @@
+{
+  "version": "v1.0.25",
+  "release": 233,
+  "source_commit": "567fb22e5ff29320aa82ad99fb6cd0bafe108ffb",
+  "source_sha256": "2f0baca8ebfa0ee3e5767f4bdc3e8357b03d0ad69e8107c0f3a6b71df86dfb34",
+  "zip_sha256": "8938000dae319655027bf6d09d5e0918172a55b2b93ea55ac0cc74472744af2b",
+  "checks": {
+    "package": "passed",
+    "bundle_import": "passed",
+    "offline_upgrade232_to233": "passed",
+    "bundled_startup_ai_cleanup": "passed",
+    "startup_preserves_skill_tactics": "passed",
+    "source_sha256": "2f0baca8ebfa0ee3e5767f4bdc3e8357b03d0ad69e8107c0f3a6b71df86dfb34",
+    "zip_sha256": "8938000dae319655027bf6d09d5e0918172a55b2b93ea55ac0cc74472744af2b",
+    "source_bytes": 1891506,
+    "runtime_bundle_matches_source_commit": true,
+    "linux_tests": {
+      "run": 358,
+      "passed": 357,
+      "skipped": 1,
+      "failures": 0,
+      "errors": 0
+    },
+    "windows_ci": {
+      "conclusion": "success",
+      "run_id": 40625370311,
+      "head_sha": "567fb22e5ff29320aa82ad99fb6cd0bafe108ffb",
+      "url": "https://github.com/tterx/pad0-all-in-one/actions/runs/40625370311",
+      "tests": 321,
+      "skipped": 0
+    },
+    "manual_tpa233_regressions": 6
+  },
+  "scope": [
+    "Revalidate manual goals against current party TPA attributes before search",
+    "Display replayed1TPA..4TPA or shortage instead of inventory or five-colour labels",
+    "Keep optional six-combo policy in manual result and execution checks and preserve result on unchanged board",
+    "Show TPA status in real Tk floating HUD regardless of selected numeric mode"
+  ],
+  "limitations": [
+    "No physical MuMu execution verified",
+    "Bounded search does not prove a global maximum TPA count",
+    "Combo badge model unchanged; previous original-game positive validation limitation remains"
+  ],
+  "publication": {
+    "updater_activation": "pending verified release download"
+  }
+}
