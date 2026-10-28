@@ -40,6 +40,31 @@
       "original108_detected": [
         18
       ]
+    },
+    "live_updater": {
+      "result": "passed",
+      "published_fast_preview": true,
+      "mandatory_six_rejects_under_six": true,
+      "latest_transcribed_seven_combo_path": [
+        9,
+        3,
+        4,
+        10,
+        16,
+        15,
+        14,
+        13,
+        12,
+        18,
+        19
+      ],
+      "published_two_and_three_tpa": true,
+      "live_upgrade237_to238": true,
+      "source_sha256_verified": true,
+      "previous_source_backup_verified": true,
+      "repeat_check_no_update": true,
+      "published_bundle_enemy_combo_floor_rejects_under_seven": true,
+      "scope": "Actual published bundle with offline replay; no physical MuMu"
     }
   },
   "scope": [
@@ -55,7 +80,7 @@
     "Combo badge calibration uses original108 as one real positive; latest inline screenshot pixels unavailable"
   ],
   "publication": {
-    "updater_activation": "production update.json set to238; live check pending",
+    "updater_activation": "production238 live upgrade verified",
     "github_release": "https://github.com/tterx/pad0-updates/releases/tag/v1.0.30",
     "workflow": "https://github.com/tterx/pad0-updates/actions/runs/40751692086",
     "uploaded_asset_digest_verified": true,
