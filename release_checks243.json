@@ -1,0 +1,60 @@
+{
+  "version": "v1.0.35",
+  "release": 243,
+  "source_commit": "0803c062d96b30f67d1b3ce07d5bce5fcfa26939",
+  "source_sha256": "36c251525f80c3f7ebcfb9fd83f3fb84f43c47ae75bf69389fc333a6d46bafbd",
+  "zip_sha256": "3b50eff323f7ff62920fb4324cf065aceae0cda1080bf7ed6e1fa72d19b9f614",
+  "checks": {
+    "package": "passed",
+    "bundle_import": "passed",
+    "offline_upgrade242_to243": "passed",
+    "bundled_startup_ai_cleanup": "passed",
+    "startup_preserves_skill_tactics": "passed",
+    "source_sha256": "36c251525f80c3f7ebcfb9fd83f3fb84f43c47ae75bf69389fc333a6d46bafbd",
+    "zip_sha256": "3b50eff323f7ff62920fb4324cf065aceae0cda1080bf7ed6e1fa72d19b9f614",
+    "source_bytes": 1908319,
+    "runtime_bundle_matches_source_commit": true,
+    "linux_tests": {
+      "run": 424,
+      "passed": 423,
+      "skipped": 1,
+      "failures": 0,
+      "errors": 0
+    },
+    "windows_ci": {
+      "conclusion": "success",
+      "run_id": 40960701200,
+      "head_sha": "0803c062d96b30f67d1b3ce07d5bce5fcfa26939",
+      "url": "https://github.com/tterx/pad0-all-in-one/actions/runs/40960701200",
+      "tests": 387,
+      "skipped": 0
+    },
+    "entry243_regressions": 8,
+    "original_entry_validation": {
+      "result": "passed",
+      "stages": [
+        "10-9",
+        "EX2",
+        "SP18"
+      ],
+      "minimum_stage_ocr_confidence": 0.99408,
+      "wrong_material_close_then_shortage_selected": true,
+      "parent_shortage_selected": true,
+      "original_images_included_in_release": false,
+      "scope": "Exact privately retained game images: real Korean OCR and icon matching; mocked device navigation, no physical MuMu play"
+    }
+  },
+  "scope": [
+    "Close manually opened acquisition list once and freshly select the shortage from its parent",
+    "Do not let unrelated ambiguous cards block a later confirmed shortage",
+    "Read complete shifted SP labels excluding coloured modifiers",
+    "No automatic manual-review judgment dependency, comparison case writes, or removed UI prompts"
+  ],
+  "limitations": [
+    "Private original screenshots and reports excluded from Git and release assets",
+    "Original navigation replay simulates device transitions; physical MuMu gameplay unverified"
+  ],
+  "publication": {
+    "updater_activation": "pending verified release download"
+  }
+}
