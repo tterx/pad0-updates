@@ -1,0 +1,54 @@
+{
+  "version": "v1.0.32",
+  "release": 240,
+  "source_commit": "2efe473405e6b7b8de842763c669ce1f5790dce4",
+  "source_sha256": "2a68acce88193db54230401919e344cdbae99aa33604ed1da37f11ff887e775a",
+  "zip_sha256": "64a40a33e9bb848ed86d3c0b775b440642febd72c1a16cea0ddece4ed94d8b3f",
+  "checks": {
+    "package": "passed",
+    "bundle_import": "passed",
+    "offline_upgrade239_to240": "passed",
+    "bundled_startup_ai_cleanup": "passed",
+    "startup_preserves_skill_tactics": "passed",
+    "source_sha256": "2a68acce88193db54230401919e344cdbae99aa33604ed1da37f11ff887e775a",
+    "zip_sha256": "64a40a33e9bb848ed86d3c0b775b440642febd72c1a16cea0ddece4ed94d8b3f",
+    "source_bytes": 1907419,
+    "runtime_bundle_matches_source_commit": true,
+    "linux_tests": {
+      "run": 407,
+      "passed": 406,
+      "skipped": 1,
+      "failures": 0,
+      "errors": 0
+    },
+    "windows_ci": {
+      "conclusion": "success",
+      "run_id": 40950964720,
+      "head_sha": "2efe473405e6b7b8de842763c669ce1f5790dce4",
+      "url": "https://github.com/tterx/pad0-all-in-one/actions/runs/40950964720",
+      "tests": 370,
+      "skipped": 0
+    },
+    "quantity240_regressions": 5,
+    "real_quantity_ocr": {
+      "cases": 4000,
+      "failed": [],
+      "seconds": 176.82,
+      "scope": "Rendered digits and two small red3 repros; not original screenshot recognition or physical game"
+    }
+  },
+  "scope": [
+    "Retry complete small digits at32/24px after failed64px OCR",
+    "Require two agreeing high confidence readings and reject cross-scale contradictions",
+    "Recover individual digits inside1..999 while retaining clipping and multiplication guards",
+    "Register the five-material panel including the second red required3 and owned1"
+  ],
+  "limitations": [
+    "Latest inline screenshot pixels unavailable; reproduced with rendered small red3 and actual Korean OCR",
+    "Extremely thin white strokes that fail geometry remain unconfirmed",
+    "No physical MuMu validation"
+  ],
+  "publication": {
+    "updater_activation": "pending verified release download"
+  }
+}
