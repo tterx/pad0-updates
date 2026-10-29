@@ -99,6 +99,42 @@
       "combo_bonus": 2,
       "timer_seconds": 9,
       "source": "Original user110 report.json; game.png and board.png visually inspected"
+    },
+    "live_updater": {
+      "result": "passed",
+      "published_explicit_goal_preserved": true,
+      "live_upgrade238_to239": true,
+      "source_sha256_verified": true,
+      "previous_source_backup_verified": true,
+      "repeat_check_no_update": true,
+      "original110": {
+        "path": [
+          4,
+          10,
+          11,
+          17,
+          23,
+          29,
+          28,
+          27,
+          26,
+          20,
+          19,
+          13,
+          12,
+          18,
+          19,
+          13,
+          7,
+          8,
+          2,
+          1
+        ],
+        "zero_poison": true,
+        "current_bonus_cache_verified": true
+      },
+      "inline_transcriptions_joint_six": true,
+      "scope": "Published bundle offline replay and cache validation; original110 board values, no physical MuMu"
     }
   },
   "scope": [
@@ -113,7 +149,7 @@
     "Badge classifier unchanged"
   ],
   "publication": {
-    "updater_activation": "production update.json set to239; live check pending",
+    "updater_activation": "production239 live upgrade verified",
     "github_release": "https://github.com/tterx/pad0-updates/releases/tag/v1.0.31",
     "workflow": "https://github.com/tterx/pad0-updates/actions/runs/40756210278",
     "uploaded_asset_digest_verified": true,
