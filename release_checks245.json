@@ -53,6 +53,41 @@
       "minimum_ocr_confidence": 0.99263,
       "original_image_included_in_release": false,
       "scope": "Exact private115 stage list through real Korean OCR at two scales; no physical MuMu"
+    },
+    "production_updater": {
+      "result": "passed",
+      "live_upgrade244_to245": true,
+      "source_sha256_verified": true,
+      "previous_source_backup_verified": true,
+      "repeat_check_no_update": true,
+      "published_original_bonus_validation": {
+        "result": "passed",
+        "stage_numbers": [
+          "8-4",
+          "8-9",
+          "9-1",
+          "9-8",
+          "10-1",
+          "11-4",
+          "12-6",
+          "12-9",
+          "13-9",
+          "16-3",
+          "16-8",
+          "17-6",
+          "17-7",
+          "BONUS1"
+        ],
+        "stages": 14,
+        "bonus_identifier": "BONUS1",
+        "minimum_ocr_confidence": 0.99263,
+        "original_image_included_in_release": false,
+        "scope": "Exact private115 stage list through real Korean OCR at two scales; no physical MuMu"
+      },
+      "published_legacy_ex1_refresh_verified": true,
+      "published_failed_refresh_remains_pending": true,
+      "published_new_cache_reused": true,
+      "scope": "Actual production update and original BONUS replay; real OCR/geometry and simulated device navigation, no physical MuMu"
     }
   },
   "scope": [
@@ -66,7 +101,7 @@
     "Original replay simulates navigation; physical MuMu scrolling/gameplay unverified"
   ],
   "publication": {
-    "updater_activation": "production update.json set to245; live check pending",
+    "updater_activation": "production245 live upgrade, original BONUS OCR and legacy EX1 refresh verified",
     "github_release": "https://github.com/tterx/pad0-updates/releases/tag/v1.0.37",
     "workflow": "https://github.com/tterx/pad0-updates/actions/runs/40970625444",
     "uploaded_asset_digest_verified": true,
