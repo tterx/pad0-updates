@@ -55,6 +55,10 @@
     "Original navigation replay simulates device transitions; physical MuMu gameplay unverified"
   ],
   "publication": {
-    "updater_activation": "pending verified release download"
+    "updater_activation": "production update.json set to243; live check pending",
+    "github_release": "https://github.com/tterx/pad0-updates/releases/tag/v1.0.35",
+    "workflow": "https://github.com/tterx/pad0-updates/actions/runs/40961238111",
+    "uploaded_asset_digest_verified": true,
+    "published_zip_download_sha256_verified": true
   }
 }
