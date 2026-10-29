@@ -56,6 +56,22 @@
       "minimum_ocr_confidence": 0.91172,
       "persistent_registration": true,
       "original_image_included_in_release": false
+    },
+    "production_updater": {
+      "result": "passed",
+      "live_upgrade241_to242": true,
+      "source_sha256_verified": true,
+      "previous_source_backup_verified": true,
+      "repeat_check_no_update": true,
+      "published_original_stock_segmentation": [
+        4,
+        1,
+        5,
+        7,
+        82
+      ],
+      "original_image_included_in_release": false,
+      "scope": "Privately retained exact original through published segmentation with controlled OCR; actual OCR/ledger separately verified, no physical MuMu"
     }
   },
   "scope": [
@@ -69,7 +85,7 @@
     "No physical MuMu validation"
   ],
   "publication": {
-    "updater_activation": "production update.json set to242; live check pending",
+    "updater_activation": "production242 live upgrade verified",
     "github_release": "https://github.com/tterx/pad0-updates/releases/tag/v1.0.34",
     "workflow": "https://github.com/tterx/pad0-updates/actions/runs/40958446916",
     "uploaded_asset_digest_verified": true,
