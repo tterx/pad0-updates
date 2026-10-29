@@ -1,0 +1,74 @@
+{
+  "version": "v1.0.34",
+  "release": 242,
+  "source_commit": "40603cb9708dba22242cedd20f58257a00fc291e",
+  "source_sha256": "55c4c0ef6b627ac34fc74a1fb902dae39bd9265eba0e59fb0a490e84fd46a204",
+  "zip_sha256": "f9e2066f6e6a3f9ce9689baf79ddc4e02f6c601cc859169999ea2ab13ac437fd",
+  "checks": {
+    "package": "passed",
+    "bundle_import": "passed",
+    "offline_upgrade241_to242": "passed",
+    "bundled_startup_ai_cleanup": "passed",
+    "startup_preserves_skill_tactics": "passed",
+    "source_sha256": "55c4c0ef6b627ac34fc74a1fb902dae39bd9265eba0e59fb0a490e84fd46a204",
+    "zip_sha256": "f9e2066f6e6a3f9ce9689baf79ddc4e02f6c601cc859169999ea2ab13ac437fd",
+    "source_bytes": 1907955,
+    "runtime_bundle_matches_source_commit": true,
+    "linux_tests": {
+      "run": 416,
+      "passed": 415,
+      "skipped": 1,
+      "failures": 0,
+      "errors": 0
+    },
+    "windows_ci": {
+      "conclusion": "success",
+      "run_id": 40957843461,
+      "head_sha": "40603cb9708dba22242cedd20f58257a00fc291e",
+      "url": "https://github.com/tterx/pad0-all-in-one/actions/runs/40957843461",
+      "tests": 379,
+      "skipped": 0
+    },
+    "quantity242_regressions": 4,
+    "original_material_validation": {
+      "result": "passed",
+      "required": [
+        3,
+        3,
+        1,
+        1,
+        10
+      ],
+      "owned": [
+        4,
+        1,
+        5,
+        7,
+        82
+      ],
+      "deficits": [
+        0,
+        2,
+        0,
+        0,
+        0
+      ],
+      "minimum_ocr_confidence": 0.91172,
+      "persistent_registration": true,
+      "original_image_included_in_release": false
+    }
+  },
+  "scope": [
+    "Distinguish top-clipped portrait fragments from baseline-aligned digits",
+    "Anchor complete owned quantities on the visible multiplication sign and exclude preceding facets",
+    "Preserve horizontal clipping and ambiguity rejection",
+    "Validate the exact privately retained uploaded source with real OCR and ledger registration"
+  ],
+  "limitations": [
+    "Original image is kept only in the development workspace and excluded from Git history/release assets",
+    "No physical MuMu validation"
+  ],
+  "publication": {
+    "updater_activation": "pending verified release download"
+  }
+}
