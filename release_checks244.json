@@ -1,0 +1,64 @@
+{
+  "version": "v1.0.36",
+  "release": 244,
+  "source_commit": "5387c5d385905c8b6ea668da24843f187540e120",
+  "source_sha256": "dce1199d8ce0fd56ac0ea2b3cb3c7f11ee4177f14b49a77e0c7a4d7362cb562e",
+  "zip_sha256": "20c158c4a7f2b24b9473b17e9ec5015310b946ba724a7873df59e023e35b604d",
+  "checks": {
+    "package": "passed",
+    "bundle_import": "passed",
+    "offline_upgrade243_to244": "passed",
+    "bundled_startup_ai_cleanup": "passed",
+    "startup_preserves_skill_tactics": "passed",
+    "source_sha256": "dce1199d8ce0fd56ac0ea2b3cb3c7f11ee4177f14b49a77e0c7a4d7362cb562e",
+    "zip_sha256": "20c158c4a7f2b24b9473b17e9ec5015310b946ba724a7873df59e023e35b604d",
+    "source_bytes": 1915221,
+    "runtime_bundle_matches_source_commit": true,
+    "linux_tests": {
+      "run": 434,
+      "passed": 433,
+      "skipped": 1,
+      "failures": 0,
+      "errors": 0
+    },
+    "windows_ci": {
+      "conclusion": "success",
+      "run_id": 40963697229,
+      "head_sha": "5387c5d385905c8b6ea668da24843f187540e120",
+      "url": "https://github.com/tterx/pad0-all-in-one/actions/runs/40963697229",
+      "tests": 397,
+      "skipped": 0
+    },
+    "stage244_regressions": 10,
+    "original_hidden_preview_validation": {
+      "result": "passed",
+      "hidden_cards": 6,
+      "stage_numbers": [
+        "10-9",
+        "EX2",
+        "SP18"
+      ],
+      "confirmed_hidden_stage_material_ids": [
+        "clicked_material"
+      ],
+      "hidden_stage_drop_images_identified": 0,
+      "stock_ocr_calls": 0,
+      "real_stage_ocr_minimum_confidence": 0.99408,
+      "original_images_included_in_release": false,
+      "scope": "Exact private114 question preview and112 acquisition list; real OCR/geometry, simulated navigation; no physical MuMu"
+    }
+  },
+  "scope": [
+    "Register only individually clicked acquisition links for hidden stages; no question-card identities",
+    "Scan both preview and acquisition lists to their verified bottom",
+    "Wait for thumb movement and settled captures; deduplicate stage numbers",
+    "Relocate the chosen stage after scrolling or preview return resets"
+  ],
+  "limitations": [
+    "Original screenshots and reports excluded from Git/release assets",
+    "Original replay simulates navigation; physical MuMu scrolling/gameplay unverified"
+  ],
+  "publication": {
+    "updater_activation": "pending verified release download"
+  }
+}
