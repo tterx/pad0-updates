@@ -46,6 +46,31 @@
       "real_stage_ocr_minimum_confidence": 0.99408,
       "original_images_included_in_release": false,
       "scope": "Exact private114 question preview and112 acquisition list; real OCR/geometry, simulated navigation; no physical MuMu"
+    },
+    "production_updater": {
+      "result": "passed",
+      "live_upgrade243_to244": true,
+      "source_sha256_verified": true,
+      "previous_source_backup_verified": true,
+      "repeat_check_no_update": true,
+      "published_original_hidden_preview_validation": {
+        "result": "passed",
+        "hidden_cards": 6,
+        "stage_numbers": [
+          "10-9",
+          "EX2",
+          "SP18"
+        ],
+        "confirmed_hidden_stage_material_ids": [
+          "clicked_material"
+        ],
+        "hidden_stage_drop_images_identified": 0,
+        "stock_ocr_calls": 0,
+        "real_stage_ocr_minimum_confidence": 0.99408,
+        "original_images_included_in_release": false,
+        "scope": "Exact private114 question preview and112 acquisition list; real OCR/geometry, simulated navigation; no physical MuMu"
+      },
+      "scope": "Actual production update and original hidden-preview replay; real OCR/geometry and simulated device navigation, no physical MuMu"
     }
   },
   "scope": [
@@ -59,7 +84,7 @@
     "Original replay simulates navigation; physical MuMu scrolling/gameplay unverified"
   ],
   "publication": {
-    "updater_activation": "production update.json set to244; live check pending",
+    "updater_activation": "production244 live upgrade and original hidden preview replay verified",
     "github_release": "https://github.com/tterx/pad0-updates/releases/tag/v1.0.36",
     "workflow": "https://github.com/tterx/pad0-updates/actions/runs/40964166193",
     "uploaded_asset_digest_verified": true,
