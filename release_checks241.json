@@ -1,0 +1,54 @@
+{
+  "version": "v1.0.33",
+  "release": 241,
+  "source_commit": "3ce86846f7a3d9126b10c8d3fe8a473ee60bb12b",
+  "source_sha256": "ffe9ff613b7cdfe6091e68851d1a1adb5ed266de9d7e437eb31b3782d2a0bef7",
+  "zip_sha256": "e2303e54c7117c3a4ea9c36b4f6fc3e5482b983a895f485ba03a7483f1231368",
+  "checks": {
+    "package": "passed",
+    "bundle_import": "passed",
+    "offline_upgrade240_to241": "passed",
+    "bundled_startup_ai_cleanup": "passed",
+    "startup_preserves_skill_tactics": "passed",
+    "source_sha256": "ffe9ff613b7cdfe6091e68851d1a1adb5ed266de9d7e437eb31b3782d2a0bef7",
+    "zip_sha256": "e2303e54c7117c3a4ea9c36b4f6fc3e5482b983a895f485ba03a7483f1231368",
+    "source_bytes": 1907712,
+    "runtime_bundle_matches_source_commit": true,
+    "linux_tests": {
+      "run": 412,
+      "passed": 411,
+      "skipped": 1,
+      "failures": 0,
+      "errors": 0
+    },
+    "windows_ci": {
+      "conclusion": "success",
+      "run_id": 40954313557,
+      "head_sha": "3ce86846f7a3d9126b10c8d3fe8a473ee60bb12b",
+      "url": "https://github.com/tterx/pad0-all-in-one/actions/runs/40954313557",
+      "tests": 375,
+      "skipped": 0
+    },
+    "quantity241_regressions": 5,
+    "real_quantity_ocr": {
+      "cases": 1006,
+      "failed": [],
+      "seconds": 37.47,
+      "scope": "Rendered stock0..999 over orange facets and white/red1 variants; not original screenshot recognition or physical MuMu"
+    }
+  },
+  "scope": [
+    "Exclude orange crystal facets from red quantity strokes",
+    "Read complete owned multiplication lines without confusing card borders for clipped digits",
+    "Preserve specific owned-count errors at the registration caller",
+    "Verify red owned1 on the second orange material through persistent registration"
+  ],
+  "limitations": [
+    "Inline crop bytes unavailable locally; orange facet failure reproduced with rendered cards",
+    "No physical MuMu validation",
+    "Original screenshot owned1 recognition not claimed"
+  ],
+  "publication": {
+    "updater_activation": "pending verified release download"
+  }
+}
