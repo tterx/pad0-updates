@@ -35,7 +35,18 @@
       "failed": [],
       "seconds": 176.82,
       "scope": "Rendered digits and two small red3 repros; not original screenshot recognition or physical game"
-    }
+    },
+    "live_updater": {
+      "result": "passed",
+      "live_upgrade239_to240": true,
+      "source_sha256_verified": true,
+      "previous_source_backup_verified": true,
+      "repeat_check_no_update": true,
+      "published_small_red3_recovery": true,
+      "published_conflicting_scales_rejected": true,
+      "scope": "Published bundle with rendered red3 and controlled OCR replies; real OCR sweep separately, not original pixels or physical MuMu"
+    },
+    "final_utf8_fixture_targeted_tests": 5
   },
   "scope": [
     "Retry complete small digits at32/24px after failed64px OCR",
@@ -49,7 +60,7 @@
     "No physical MuMu validation"
   ],
   "publication": {
-    "updater_activation": "production update.json set to240; live check pending",
+    "updater_activation": "production240 live upgrade verified",
     "github_release": "https://github.com/tterx/pad0-updates/releases/tag/v1.0.32",
     "workflow": "https://github.com/tterx/pad0-updates/actions/runs/40951599872",
     "uploaded_asset_digest_verified": true,
