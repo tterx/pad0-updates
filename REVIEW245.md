@@ -1,0 +1,11 @@
+# v1.0.37 / updater245
+
+The privately retained115 report stops at material5 after real scrolling: a fourteen-stage acquisition page contains BONUS1, read identically by OCR at99.359% and99.287%. The parser only accepts numeric, SP and EX identifiers. The recorded preview thumbs reach the bottom and the stage thumb advances twice; this failure is unsupported stage syntax, not an unexecuted swipe.
+
+BONUS identifiers now use the same strict parsing, NFKC/spacing normalization and split-prefix handling as SP/EX. Both listing and entry metadata use that parser; unrelated or conflicting text is still rejected. The exact115 screenshot passes all fourteen stage labels using two real Korean OCR scales (minimum99.263%), including BONUS1.
+
+Legacy stage DBs without preview_scan_policy1 retain their saved images, drop IDs, acquired-material links and battle counts, but existing verified previews become pending refresh. The loader returns this migration without writing; the next normal stage save persists the policy and all remaining pending flags. F7 then reopens those previews, including EX1, instead of trusting the old partial first-page cache. Completed refreshes clear only that stage's pending flag. Failure preserves previous evidence and keeps the stage pending. Ledger stock and material names are not deleted or migrated.
+
+Preview scans now rewind to the top when a dialog preserves an earlier scroll position. New completion records include policy, complete, started_at_top, end reason and page count. A legacy EX1 first-page record is exercised against three generated preview pages, and all three replace it only after the bottom is confirmed. Another test starts midway, rewinds and reads all three pages; a stalled refresh stays pending. A successfully refreshed cache is reused on the next check.
+
+Eight generated regressions cover BONUS syntax, split entry identity, two-read agreement, persisted legacy EX1 refresh, failed refresh, midpoint resume, new-cache reuse and one-time migration. Original images/reports remain private and are excluded from Git and releases. Real OCR and simulated navigation are verified; physical MuMu gameplay is not verified. After updating, open the creation/breakthrough confirmation and press F7/material check once to rebuild old stage previews.

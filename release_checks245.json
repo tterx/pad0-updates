@@ -1,0 +1,71 @@
+{
+  "version": "v1.0.37",
+  "release": 245,
+  "source_commit": "9f48164cd8eb92d3f9241aceb251b00022336585",
+  "source_sha256": "812984c92359c381300c9843087c4c2a5b4607ffead9be91c374989a351ef87d",
+  "zip_sha256": "48d28c05c3ab065b1f248b79dddd313bd905b12a62009ae050d42b28899d9e30",
+  "checks": {
+    "package": "passed",
+    "bundle_import": "passed",
+    "offline_upgrade244_to245": "passed",
+    "bundled_startup_ai_cleanup": "passed",
+    "startup_preserves_skill_tactics": "passed",
+    "source_sha256": "812984c92359c381300c9843087c4c2a5b4607ffead9be91c374989a351ef87d",
+    "zip_sha256": "48d28c05c3ab065b1f248b79dddd313bd905b12a62009ae050d42b28899d9e30",
+    "source_bytes": 1915982,
+    "runtime_bundle_matches_source_commit": true,
+    "linux_tests": {
+      "run": 442,
+      "passed": 441,
+      "skipped": 1,
+      "failures": 0,
+      "errors": 0
+    },
+    "windows_ci": {
+      "conclusion": "success",
+      "run_id": 40970195175,
+      "head_sha": "9f48164cd8eb92d3f9241aceb251b00022336585",
+      "url": "https://github.com/tterx/pad0-all-in-one/actions/runs/40970195175",
+      "tests": 405,
+      "skipped": 0
+    },
+    "stage245_regressions": 8,
+    "original_bonus_validation": {
+      "result": "passed",
+      "stage_numbers": [
+        "8-4",
+        "8-9",
+        "9-1",
+        "9-8",
+        "10-1",
+        "11-4",
+        "12-6",
+        "12-9",
+        "13-9",
+        "16-3",
+        "16-8",
+        "17-6",
+        "17-7",
+        "BONUS1"
+      ],
+      "stages": 14,
+      "bonus_identifier": "BONUS1",
+      "minimum_ocr_confidence": 0.99263,
+      "original_image_included_in_release": false,
+      "scope": "Exact private115 stage list through real Korean OCR at two scales; no physical MuMu"
+    }
+  },
+  "scope": [
+    "Support strict BONUS stage IDs in listing and entry metadata",
+    "Mark legacy unproven previews for one-time refresh without deleting stocks or names",
+    "Rewind resumed previews to the top and record complete end-of-list proof",
+    "Failed refresh remains pending; new complete caches are reused"
+  ],
+  "limitations": [
+    "Original screenshots and reports excluded from Git/release assets",
+    "Original replay simulates navigation; physical MuMu scrolling/gameplay unverified"
+  ],
+  "publication": {
+    "updater_activation": "pending verified release download"
+  }
+}
