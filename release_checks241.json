@@ -35,6 +35,16 @@
       "failed": [],
       "seconds": 37.47,
       "scope": "Rendered stock0..999 over orange facets and white/red1 variants; not original screenshot recognition or physical MuMu"
+    },
+    "live_updater": {
+      "result": "passed",
+      "live_upgrade240_to241": true,
+      "source_sha256_verified": true,
+      "previous_source_backup_verified": true,
+      "repeat_check_no_update": true,
+      "published_orange_facet_red_owned1": true,
+      "published_missing_multiplier_rejected": true,
+      "scope": "Published bundle with rendered owned1 and controlled OCR; real1006-case sweep separately; not exact original pixels or physical MuMu"
     }
   },
   "scope": [
@@ -49,7 +59,7 @@
     "Original screenshot owned1 recognition not claimed"
   ],
   "publication": {
-    "updater_activation": "production update.json set to241; live check pending",
+    "updater_activation": "production241 live upgrade verified",
     "github_release": "https://github.com/tterx/pad0-updates/releases/tag/v1.0.33",
     "workflow": "https://github.com/tterx/pad0-updates/actions/runs/40954986503",
     "uploaded_asset_digest_verified": true,
