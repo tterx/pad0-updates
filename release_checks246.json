@@ -56,7 +56,11 @@
   "publication": {
     "user_approved_main_and_release": true,
     "main_branch_updated": true,
-    "updater_activation": "pending verified release download"
+    "updater_activation": "production update.json set to246; live check pending",
+    "github_release": "https://github.com/tterx/pad0-updates/releases/tag/v1.0.38",
+    "workflow": "https://github.com/tterx/pad0-updates/actions/runs/40987209424",
+    "uploaded_asset_digest_verified": true,
+    "published_zip_download_sha256_verified": true
   },
   "scope": [
     "Separate Normal Hidden and actual star stage identities and labels",
