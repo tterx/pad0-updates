@@ -49,7 +49,39 @@
       },
       "scope": "Candidate ZIP code, generated character metadata and private117 negative/portrait/header controls; no physical MuMu"
     },
-    "runtime_bundle_matches_source_commit": true
+    "runtime_bundle_matches_source_commit": true,
+    "production_updater": {
+      "result": "passed",
+      "live_upgrade246_to247": true,
+      "source_sha256_verified": true,
+      "previous_source_backup_verified": true,
+      "repeat_check_no_update": true,
+      "published_bundle_validation": {
+        "result": "passed",
+        "bundle_regressions": 11,
+        "report117_validation": {
+          "result": "passed",
+          "reported_board_exact": true,
+          "jammer_cells": [
+            6,
+            8,
+            27
+          ],
+          "water_cells": [
+            10
+          ],
+          "five_attributes_inventory_possible": false,
+          "header_identity": "★6-4",
+          "known_real_portraits_recalled": 6,
+          "known_party_detail_clicks": 0,
+          "fallback_final_combos": 6,
+          "scope": "Exact private117 board/header/portraits; controlled character labels for recall, six-combo solver proof; no real metadata for unknown characters and no physical MuMu",
+          "original_images_included_in_release": false
+        },
+        "scope": "Production downloaded code, generated character metadata and private117 negative/portrait/header controls; no physical MuMu"
+      },
+      "scope": "Production downloaded bundle, private117 board/star/controlled portrait recall and generated only-new registration verified; physical MuMu unverified"
+    }
   },
   "scope": [
     "Recall known portraits before battle independently of slot and party changes",
@@ -63,10 +95,11 @@
   ],
   "publication": {
     "main_branch_updated": true,
-    "updater_activation": "production update.json set to247; live check pending",
+    "updater_activation": "production247 live upgrade and downloaded bundle portrait/registration/star/fallback checks verified",
     "github_release": "https://github.com/tterx/pad0-updates/releases/tag/v1.0.39",
     "workflow": "https://github.com/tterx/pad0-updates/actions/runs/40992606338",
     "uploaded_asset_digest_verified": true,
-    "published_zip_download_sha256_verified": true
+    "published_zip_download_sha256_verified": true,
+    "production_updater_activated": true
   }
 }
