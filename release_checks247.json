@@ -1,0 +1,68 @@
+{
+  "version": "v1.0.39",
+  "release": 247,
+  "source_commit": "75ac8643979ba7779be0219988435fb24df1058a",
+  "source_sha256": "74a5b2e8d1bd745ea9eb02790fdf6170428e4e231172134723dc577ae038a11c",
+  "zip_sha256": "3bdd6ee8ad236a76d1666a09742124fb1fe6811605e55dacd5575941c05f142e",
+  "checks": {
+    "package": "passed",
+    "bundle_import": "passed",
+    "offline_upgrade246_to247": "passed",
+    "bundled_startup_ai_cleanup": "passed",
+    "startup_preserves_skill_tactics": "passed",
+    "source_sha256": "74a5b2e8d1bd745ea9eb02790fdf6170428e4e231172134723dc577ae038a11c",
+    "zip_sha256": "3bdd6ee8ad236a76d1666a09742124fb1fe6811605e55dacd5575941c05f142e",
+    "source_bytes": 1926471,
+    "linux_tests": {
+      "run": 465,
+      "passed": 464,
+      "skipped": 1
+    },
+    "windows_ci": {
+      "conclusion": "success",
+      "run_id": 40992015194,
+      "url": "https://github.com/tterx/pad0-all-in-one/actions/runs/40992015194",
+      "head_sha": "75ac8643979ba7779be0219988435fb24df1058a",
+      "tests": 428
+    },
+    "candidate_bundle": {
+      "result": "passed",
+      "bundle_regressions": 11,
+      "report117_validation": {
+        "result": "passed",
+        "reported_board_exact": true,
+        "jammer_cells": [
+          6,
+          8,
+          27
+        ],
+        "water_cells": [
+          10
+        ],
+        "five_attributes_inventory_possible": false,
+        "header_identity": "★6-4",
+        "known_real_portraits_recalled": 6,
+        "known_party_detail_clicks": 0,
+        "fallback_final_combos": 6,
+        "scope": "Exact private117 board/header/portraits; controlled character labels for recall, six-combo solver proof; no real metadata for unknown characters and no physical MuMu",
+        "original_images_included_in_release": false
+      },
+      "scope": "Candidate ZIP code, generated character metadata and private117 negative/portrait/header controls; no physical MuMu"
+    },
+    "runtime_bundle_matches_source_commit": true
+  },
+  "scope": [
+    "Recall known portraits before battle independently of slot and party changes",
+    "Register only unseen or ambiguous characters; reuse a newly registered duplicate",
+    "Keep observed rainbow/master team goals; use six-combo fallback for a single missing attribute",
+    "Recover actual bold star in stage labels and recheck legacy unstarred identities"
+  ],
+  "limitations": [
+    "Exact private117 pixels verified; portrait recall uses controlled identity labels, not unknown real-character identification",
+    "Physical MuMu gameplay unverified; original images and reports excluded from Git and releases"
+  ],
+  "publication": {
+    "main_branch_updated": true,
+    "updater_activation": "pending verified release download"
+  }
+}
