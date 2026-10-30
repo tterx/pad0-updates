@@ -1,0 +1,71 @@
+{
+  "version": "v1.0.38",
+  "release": 246,
+  "source_commit": "91f0db5fe7c1bbefcc1f5aa096d8b27658bc8166",
+  "source_sha256": "250338a6424a7ccbef9a53a1c4b95d6b95480ee3efa54aec7072aed803052121",
+  "zip_sha256": "829f9dfa80058f6c53f35da55a019abe2eb57c53b929bd513e9495e0e7384ce7",
+  "checks": {
+    "package": "passed",
+    "bundle_import": "passed",
+    "offline_upgrade245_to246": "passed",
+    "bundled_startup_ai_cleanup": "passed",
+    "startup_preserves_skill_tactics": "passed",
+    "source_sha256": "250338a6424a7ccbef9a53a1c4b95d6b95480ee3efa54aec7072aed803052121",
+    "zip_sha256": "829f9dfa80058f6c53f35da55a019abe2eb57c53b929bd513e9495e0e7384ce7",
+    "source_bytes": 1920203,
+    "linux_tests": {
+      "run": 454,
+      "passed": 453,
+      "skipped": 1
+    },
+    "windows_ci": {
+      "conclusion": "success",
+      "run_id": 40986450202,
+      "url": "https://github.com/tterx/pad0-all-in-one/actions/runs/40986450202",
+      "head_sha": "91f0db5fe7c1bbefcc1f5aa096d8b27658bc8166",
+      "tests": 417
+    },
+    "candidate_bundle": {
+      "result": "passed",
+      "candidate_bundle_regressions": 13,
+      "real_ocr_validation": {
+        "result": "passed",
+        "private_normal_stage_count": 14,
+        "private_modifier_stage_ids": [
+          "10-9",
+          "EX2",
+          "SP18"
+        ],
+        "private_new_stage_is_not_clear": true,
+        "rendered_real_ocr_identities": [
+          "3-2",
+          "hidden:3-2"
+        ],
+        "rendered_clear_states": [
+          false,
+          true
+        ],
+        "original_images_included_in_release": false,
+        "scope": "Private prior112/115 originals as negative controls and generated normal/purple pedestals through real Korean OCR; no physical MuMu or exact pixel replay of latest inline crops"
+      },
+      "manual_entry_direct_challenge_preserved": true,
+      "scope": "Candidate ZIP bundle, generated fixtures and prior private negative controls; no physical MuMu, no production deployment"
+    },
+    "runtime_bundle_matches_source_commit": true
+  },
+  "publication": {
+    "user_approved_main_and_release": true,
+    "main_branch_updated": true,
+    "updater_activation": "pending verified release download"
+  },
+  "scope": [
+    "Separate Normal Hidden and actual star stage identities and labels",
+    "Refresh question previews when that exact variant becomes CLEAR",
+    "Preserve direct Challenge from a manually opened entry without guessing world",
+    "Archive legacy mixed evidence and rebuild verified stage caches without deleting stock or names"
+  ],
+  "limitations": [
+    "Latest inline crops not replayed as exact local pixels; generated fixtures and prior private negatives verified",
+    "Physical MuMu gameplay unverified; uploaded originals excluded from Git and releases"
+  ]
+}
