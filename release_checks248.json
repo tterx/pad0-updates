@@ -1,0 +1,79 @@
+{
+  "version": "v1.0.40",
+  "release": 248,
+  "source_commit": "974755949e57292f4177f5cfbfb2413d4e3ed394",
+  "source_sha256": "c3c991ddf212c7945d0153d5232137c5388ed71a0383f219c0f6dff3959747c2",
+  "zip_sha256": "7ffcd8f1ab14bcacccb8c7e36ca87d25ad6cd83b54dbf080cfaeec30a679efb7",
+  "checks": {
+    "package": "passed",
+    "bundle_import": "passed",
+    "offline_upgrade247_to248": "passed",
+    "bundled_startup_ai_cleanup": "passed",
+    "startup_preserves_skill_tactics": "passed",
+    "source_sha256": "c3c991ddf212c7945d0153d5232137c5388ed71a0383f219c0f6dff3959747c2",
+    "zip_sha256": "7ffcd8f1ab14bcacccb8c7e36ca87d25ad6cd83b54dbf080cfaeec30a679efb7",
+    "source_bytes": 1931393,
+    "linux_tests": {
+      "run": 479,
+      "passed": 478,
+      "skipped": 1
+    },
+    "windows_ci": {
+      "conclusion": "success",
+      "run_id": 41040838907,
+      "url": "https://github.com/tterx/pad0-all-in-one/actions/runs/41040838907",
+      "head_sha": "974755949e57292f4177f5cfbfb2413d4e3ed394",
+      "tests": 442
+    },
+    "candidate_bundle": {
+      "result": "passed",
+      "bundle_regressions": 14,
+      "receipt122_validation": {
+        "result": "passed",
+        "third_card_amount": 2,
+        "all_card_amounts": [
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          4
+        ],
+        "target_credited": 2,
+        "starting_stock": 1,
+        "ending_stock": 3,
+        "repeat_receipt_credited_again": false,
+        "global_x2_applied_again": false,
+        "scope": "Exact private122 receipt pixels and actual OCR; controlled target template/ledger; physical MuMu and actual user database unverified",
+        "original_images_included_in_release": false
+      },
+      "scope": "Candidate ZIP code, generated skill-seal/converted-grid/turn/manual/quantity regressions and exact private122 OCR/controlled ledger; no physical MuMu"
+    },
+    "runtime_bundle_matches_source_commit": true,
+    "recomposed_battle_layout": {
+      "result": "passed",
+      "recomposed_grid_gate": true,
+      "reported_layout_final_combos": 6,
+      "moves": 10,
+      "solver_wall_seconds": 0.0252,
+      "scope": "Latest inline battle layout transcribed, using recomposed prior117 red/jammer artwork; built-in visual model and actual solver; latest exact pixels and physical MuMu unverified",
+      "original_images_included_in_release": false
+    }
+  },
+  "scope": [
+    "Recognize converted fire/jammer boards in automatic and manual paths without weakening texture/ring proof",
+    "Detect S/X skill seal independently of partial bind and skip sealed skills",
+    "Prefer bounded six-combo turn progress then clear/advance, with stable-board no-action guard",
+    "Read complete orange receipt digits with existing confidence and no duplicated global multiplier"
+  ],
+  "limitations": [
+    "Latest inline battle/seal pixels unavailable as exact local fixture; generated positives/negatives and transcribed board verified",
+    "Exact private122 OCR and controlled target ledger verified; actual user database and physical MuMu unverified; original pixels excluded from Git/releases"
+  ],
+  "publication": {
+    "main_branch_updated": true,
+    "updater_activation": "pending verified release download"
+  }
+}
