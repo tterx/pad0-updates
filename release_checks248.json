@@ -60,6 +60,40 @@
       "solver_wall_seconds": 0.0252,
       "scope": "Latest inline battle layout transcribed, using recomposed prior117 red/jammer artwork; built-in visual model and actual solver; latest exact pixels and physical MuMu unverified",
       "original_images_included_in_release": false
+    },
+    "production_updater": {
+      "result": "passed",
+      "live_upgrade247_to248": true,
+      "source_sha256_verified": true,
+      "previous_source_backup_verified": true,
+      "repeat_check_no_update": true,
+      "published_bundle_validation": {
+        "result": "passed",
+        "bundle_regressions": 14,
+        "receipt122_validation": {
+          "result": "passed",
+          "third_card_amount": 2,
+          "all_card_amounts": [
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            4
+          ],
+          "target_credited": 2,
+          "starting_stock": 1,
+          "ending_stock": 3,
+          "repeat_receipt_credited_again": false,
+          "global_x2_applied_again": false,
+          "scope": "Exact private122 receipt pixels and actual OCR; controlled target template/ledger; physical MuMu and actual user database unverified",
+          "original_images_included_in_release": false
+        },
+        "scope": "Production downloaded code, generated skill-seal/converted-grid/turn/manual/quantity regressions and exact private122 OCR/controlled ledger; no physical MuMu"
+      },
+      "scope": "Production downloaded bundle, exact private122 OCR/controlled ledger and generated seal/grid/turn/manual/quantity tests verified; physical MuMu unverified"
     }
   },
   "scope": [
@@ -74,10 +108,11 @@
   ],
   "publication": {
     "main_branch_updated": true,
-    "updater_activation": "production update.json set to248; live check pending",
+    "updater_activation": "production248 live upgrade and downloaded bundle seal/grid/turn/manual/receipt checks verified",
     "github_release": "https://github.com/tterx/pad0-updates/releases/tag/v1.0.40",
     "workflow": "https://github.com/tterx/pad0-updates/actions/runs/41041395122",
     "uploaded_asset_digest_verified": true,
-    "published_zip_download_sha256_verified": true
+    "published_zip_download_sha256_verified": true,
+    "production_updater_activated": true
   }
 }
