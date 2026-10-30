@@ -51,16 +51,51 @@
       "manual_entry_direct_challenge_preserved": true,
       "scope": "Candidate ZIP bundle, generated fixtures and prior private negative controls; no physical MuMu, no production deployment"
     },
-    "runtime_bundle_matches_source_commit": true
+    "runtime_bundle_matches_source_commit": true,
+    "production_updater": {
+      "result": "passed",
+      "live_upgrade245_to246": true,
+      "source_sha256_verified": true,
+      "previous_source_backup_verified": true,
+      "repeat_check_no_update": true,
+      "published_bundle_validation": {
+        "result": "passed",
+        "candidate_bundle_regressions": 13,
+        "real_ocr_validation": {
+          "result": "passed",
+          "private_normal_stage_count": 14,
+          "private_modifier_stage_ids": [
+            "10-9",
+            "EX2",
+            "SP18"
+          ],
+          "private_new_stage_is_not_clear": true,
+          "rendered_real_ocr_identities": [
+            "3-2",
+            "hidden:3-2"
+          ],
+          "rendered_clear_states": [
+            false,
+            true
+          ],
+          "original_images_included_in_release": false,
+          "scope": "Private prior112/115 originals as negative controls and generated normal/purple pedestals through real Korean OCR; no physical MuMu or exact pixel replay of latest inline crops"
+        },
+        "manual_entry_direct_challenge_preserved": true,
+        "scope": "Production downloaded bundle, generated fixtures and prior private negative controls; no physical MuMu"
+      },
+      "scope": "Production upgrade and downloaded bundle identities/CLEAR/manual replay verified; physical MuMu unverified"
+    }
   },
   "publication": {
     "user_approved_main_and_release": true,
     "main_branch_updated": true,
-    "updater_activation": "production update.json set to246; live check pending",
+    "updater_activation": "production246 live upgrade and downloaded bundle identity/CLEAR/manual replay verified",
     "github_release": "https://github.com/tterx/pad0-updates/releases/tag/v1.0.38",
     "workflow": "https://github.com/tterx/pad0-updates/actions/runs/40987209424",
     "uploaded_asset_digest_verified": true,
-    "published_zip_download_sha256_verified": true
+    "published_zip_download_sha256_verified": true,
+    "production_updater_activated": true
   },
   "scope": [
     "Separate Normal Hidden and actual star stage identities and labels",
