@@ -1,0 +1,25 @@
+# 저장소 관리
+
+루트에는 `README.md`와 실제 설치 프로그램이 읽는 `update.json`을 둡니다. 과거 문서·JSON·ZIP을 루트에 다시 쌓지 않습니다.
+
+| 자료 | 위치 |
+| --- | --- |
+| 사용·기술 문서 | `docs/guides/` |
+| 변경 기록 | `docs/reviews/REVIEW<내부순번>.md` |
+| 개별 검증 JSON | `docs/validation/` |
+| 크리처 목록 JSON·CSV | `data/catalog/` |
+| 버전별 프로그램 소스와 ZIP | `releases/<버전>/` |
+| 배포 검증 JSON | `releases/<버전>/release_checks<내부순번>.json` |
+| 버전별 업데이트 기록 | `releases/<버전>/update.json` |
+
+예를 들어 v1.0.40의 ZIP과 검증 기록은 `releases/v1.0.40/`에 있습니다. 프로그램의 현재 업데이트 URL인 루트 `update.json`과 그 안의 `source_url`은 배포 검증 후에만 바꿉니다. 이미 공개한 프로그램·ZIP의 바이트와 해시는 문서 정리 때문에 수정하지 않습니다.
+
+## 다음 버전 배포
+
+1. 새 버전 폴더에 프로그램·ZIP·검증 JSON·업데이트 기록을 준비합니다.
+2. 변경 설명을 `docs/reviews/`에 저장하고 루트 README와 배포 목록의 링크를 갱신합니다.
+3. 현재 `.github/scripts/publish248.py`와 `.github/workflows/publish248.yml`을 기준으로 새 버전의 게시 스크립트와 워크플로를 만듭니다. 스크립트의 검증 JSON·ZIP 경로도 새 버전 폴더로 지정합니다.
+4. 새 릴리스 파일을 게시하고 다운로드한 ZIP의 해시·버전·소스를 확인합니다.
+5. 루트 `update.json`을 활성화하고 실제 자동 업데이트를 검증합니다.
+
+이미 완료된 이전 버전의 게시 워크플로는 수동 실행만 지원합니다. 문서 경로를 정리할 때 과거 버전이 일괄 재게시되는 것을 막기 위한 설정입니다. 현재 버전 워크플로의 push·수동 실행은 유지하며, 다음 버전도 이 구조를 이어갑니다. 초기 버전의 ZIP이 Git 트리에 없는 경우 해당 GitHub Release의 자산을 이용합니다.

@@ -5,8 +5,8 @@ import hashlib,json,os,urllib.request,zipfile
 repo=os.environ['GITHUB_REPOSITORY']
 assert repo=='tterx/pad0-updates'
 token=os.environ['GH_TOKEN']
-meta=json.loads(Path('release_checks205.json').read_text())
-artifact=Path('pad0_overlay_windows_v101_205.zip')
+meta=json.loads(Path('releases/v101.205/release_checks205.json').read_text())
+artifact=Path('releases/v101.205/pad0_overlay_windows_v101_205.zip')
 assert hashlib.sha256(artifact.read_bytes()).hexdigest()==meta['zip_sha256']
 with zipfile.ZipFile(artifact) as z:
     assert z.testzip() is None
