@@ -1,0 +1,96 @@
+{
+  "version": "v1.0.42",
+  "release": 250,
+  "source_commit": "b0c26ecab24e6e38f87cb3009df22e9754069211",
+  "source_sha256": "46e80e5ebc0575ae4a8c2d80ca9d521dece55172a85ec82060da17d750dcad55",
+  "zip_sha256": "82dfc4256346e5e037d704dfae068062743b11f9ae2d0b5bbd1930e4b9f09e25",
+  "checks": {
+    "package": "passed",
+    "bundle_import": "passed",
+    "offline_upgrade249_to250": "passed",
+    "bundled_startup_ai_cleanup": "passed",
+    "startup_preserves_skill_tactics": "passed",
+    "source_sha256": "46e80e5ebc0575ae4a8c2d80ca9d521dece55172a85ec82060da17d750dcad55",
+    "zip_sha256": "82dfc4256346e5e037d704dfae068062743b11f9ae2d0b5bbd1930e4b9f09e25",
+    "source_bytes": 1935817,
+    "linux_tests": {
+      "run": 504,
+      "passed": 503,
+      "skipped": 1
+    },
+    "windows_ci": {
+      "conclusion": "success",
+      "run_id": 41246049971,
+      "url": "https://github.com/tterx/pad0-all-in-one/actions/runs/41246049971",
+      "head_sha": "b0c26ecab24e6e38f87cb3009df22e9754069211",
+      "tests": 467
+    },
+    "candidate_bundle": {
+      "result": "passed",
+      "bundle_regressions": 14,
+      "report124_validation": {
+        "result": "passed",
+        "board_matches_report": true,
+        "legacy_start_confirmed": false,
+        "updated_start_confirmed": true,
+        "start_cell": 21,
+        "start_colour": "Y",
+        "source_and_held_thorns_confirmed": true,
+        "alpha": 0.70237,
+        "texture_correlation": 0.89147,
+        "residual_mae": 0.08344,
+        "stable_remote_cells": 21,
+        "negative_controls": [
+          "unchanged",
+          "brightness",
+          "wrong_colour",
+          "wrong_cell",
+          "remote_change"
+        ],
+        "first_check_confirmed": true,
+        "down_events": 1,
+        "move_events": 208,
+        "up_events": 1,
+        "timing_preserved": {
+          "sample_seconds": 0.017,
+          "corner_seconds": 0.0295
+        },
+        "path_attributes": 5,
+        "path_final_combos": 6,
+        "scope": "Exact private124 board/before/held pixels, current start verifier and recorded full route in real SDK dispatch code with fake native calls/clock; physical MuMu unverified",
+        "original_images_included_in_release": false
+      },
+      "manual_policy_comparison": [
+        {
+          "policy": "previous",
+          "seconds": 3.00828,
+          "tpa": 4,
+          "final_combos": 7
+        },
+        {
+          "policy": "first_valid",
+          "seconds": 0.06567,
+          "tpa": 4,
+          "final_combos": 6
+        }
+      ],
+      "scope": "Candidate bundled code, exact private124 replay in SDK flow with fake native calls, generated thorn/manual regressions and one offline TPA policy comparison; no physical MuMu"
+    },
+    "runtime_bundle_matches_source_commit": true
+  },
+  "scope": [
+    "Confirm a lifted translucent yellow thorn sprite with physical thorns, alpha texture and remote stability",
+    "Return a verified first manual TPA/combo route before optional improvements",
+    "Avoid delaying manual rainbow routes for optional healing while keeping explicit heal and automatic policy",
+    "Keep SDK timing, enemy floors, move caps, cancellation and clean repository layout"
+  ],
+  "limitations": [
+    "Exact private124 images and full recorded SDK route replayed with fake native calls/clock; physical MuMu unverified",
+    "One offline TPA policy comparison is not a universal latency guarantee; generated yellow fixture derived from existing public art; private originals excluded from Git/releases"
+  ],
+  "publication": {
+    "main_branch_updated": false,
+    "source_branch": "codex/yellow-start-manual-250",
+    "updater_activation": "not activated; explicit main/release approval pending"
+  }
+}
