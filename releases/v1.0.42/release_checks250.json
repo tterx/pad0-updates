@@ -91,9 +91,13 @@
   "publication": {
     "main_branch_updated": true,
     "source_branch": "codex/yellow-start-manual-250",
-    "updater_activation": "source main promoted; release publication and updater activation pending",
+    "updater_activation": "production update.json set to250; live check pending",
     "source_main_commit": "b0c26ecab24e6e38f87cb3009df22e9754069211",
     "source_main_verified": true,
-    "authorization": "User explicitly approved main promotion and v1.0.42 deployment, and requested future tested changes be applied immediately."
+    "authorization": "User explicitly approved main promotion and v1.0.42 deployment, and requested future tested changes be applied immediately.",
+    "github_release": "https://github.com/tterx/pad0-updates/releases/tag/v1.0.42",
+    "workflow": "https://github.com/tterx/pad0-updates/actions/runs/41247017120",
+    "uploaded_asset_digest_verified": true,
+    "published_zip_download_sha256_verified": true
   }
 }
