@@ -1,0 +1,68 @@
+{
+  "version": "v1.0.43",
+  "release": 251,
+  "source_commit": "842edb0bdc4c7daef1f8100482787eb27daec52f",
+  "source_sha256": "59aacee187e0833c33e4875ad8813775403b1aff9598a07be8ad6462817533b4",
+  "zip_sha256": "4b426f030748de5385decb2210f072d1c02631dd58437a9b14f40093af391ffe",
+  "checks": {
+    "package": "passed",
+    "bundle_import": "passed",
+    "offline_upgrade250_to251": "passed",
+    "bundled_startup_ai_cleanup": "passed",
+    "startup_preserves_skill_tactics": "passed",
+    "source_sha256": "59aacee187e0833c33e4875ad8813775403b1aff9598a07be8ad6462817533b4",
+    "zip_sha256": "4b426f030748de5385decb2210f072d1c02631dd58437a9b14f40093af391ffe",
+    "source_bytes": 1936297,
+    "linux_tests": {
+      "run": 512,
+      "passed": 511,
+      "skipped": 1
+    },
+    "windows_ci": {
+      "conclusion": "success",
+      "run_id": 41248241456,
+      "url": "https://github.com/tterx/pad0-all-in-one/actions/runs/41248241456",
+      "head_sha": "842edb0bdc4c7daef1f8100482787eb27daec52f",
+      "tests": 475
+    },
+    "candidate_bundle": {
+      "result": "passed",
+      "bundle_regressions": 8,
+      "scope": "Bundled runtime, generated four-card quantity panel, persistent inventory, canonical naming, legacy overrides and database table; no physical emulator or exact inline image"
+    },
+    "real_korean_ocr": {
+      "result": "passed",
+      "required": [
+        6,
+        6,
+        6,
+        15
+      ],
+      "owned": [
+        0,
+        0,
+        0,
+        46
+      ],
+      "scope": "Generated four-card panel with real Korean RapidOCR, fresh registration replaces old2,2/2,2/2,0; user inline screenshot and physical emulator not replayed"
+    },
+    "previous_code_reproduces_failures": 4,
+    "runtime_bundle_matches_source_commit": true
+  },
+  "scope": [
+    "Prefer fresh scanned quantities over historical per-icon manual fields in target activation and DB display",
+    "Transfer newly observed stock including zero when linking a draft to an existing canonical material",
+    "Update existing target requirement, stock, shortage and completion atomically with F7 snapshot",
+    "Preserve canonical names, stages and accumulated reward history"
+  ],
+  "limitations": [
+    "Generated four-card panel with real Korean OCR and bundled registration tests; exact inline screenshot pixels and physical MuMu not replayed",
+    "Refresh uses the explicit material-check/F7 capture; no continuous quantity OCR is introduced"
+  ],
+  "publication": {
+    "main_branch_updated": true,
+    "source_main_commit": "842edb0bdc4c7daef1f8100482787eb27daec52f",
+    "authorization": "User approved future tested changes be promoted and published immediately after required tests pass.",
+    "updater_activation": "source main verified; pending published ZIP download verification"
+  }
+}
