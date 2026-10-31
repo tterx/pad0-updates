@@ -47,7 +47,20 @@
       "scope": "Generated four-card panel with real Korean RapidOCR, fresh registration replaces old2,2/2,2/2,0; user inline screenshot and physical emulator not replayed"
     },
     "previous_code_reproduces_failures": 4,
-    "runtime_bundle_matches_source_commit": true
+    "runtime_bundle_matches_source_commit": true,
+    "production_updater": {
+      "result": "passed",
+      "live_upgrade250_to251": true,
+      "source_sha256_verified": true,
+      "previous_source_backup_verified": true,
+      "repeat_check_no_update": true,
+      "published_bundle_validation": {
+        "result": "passed",
+        "bundle_regressions": 8,
+        "scope": "Bundled runtime, generated four-card quantity panel, persistent inventory, canonical naming, legacy overrides and database table; no physical emulator or exact inline image"
+      },
+      "scope": "Production downloaded bundle, generated four-card inventory, canonical naming, target and database-display checks; physical MuMu unverified"
+    }
   },
   "scope": [
     "Prefer fresh scanned quantities over historical per-icon manual fields in target activation and DB display",
@@ -63,10 +76,11 @@
     "main_branch_updated": true,
     "source_main_commit": "842edb0bdc4c7daef1f8100482787eb27daec52f",
     "authorization": "User approved future tested changes be promoted and published immediately after required tests pass.",
-    "updater_activation": "production update.json set to251; live check pending",
+    "updater_activation": "production updater251 verified by live250→251 download, source hash, previous backup and repeat check",
     "github_release": "https://github.com/tterx/pad0-updates/releases/tag/v1.0.43",
     "workflow": "https://github.com/tterx/pad0-updates/actions/runs/41248582131",
     "uploaded_asset_digest_verified": true,
-    "published_zip_download_sha256_verified": true
+    "published_zip_download_sha256_verified": true,
+    "production_updater_verified": true
   }
 }
