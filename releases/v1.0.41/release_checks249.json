@@ -46,7 +46,36 @@
       },
       "scope": "Candidate bundled code, generated awakening-cross/partial-cleanse checks and exact private123 OCR/board/skill/solver replay with fake device; no physical MuMu"
     },
-    "runtime_bundle_matches_source_commit": true
+    "runtime_bundle_matches_source_commit": true,
+    "production_updater": {
+      "result": "passed",
+      "live_upgrade248_to249": true,
+      "source_sha256_verified": true,
+      "previous_source_backup_verified": true,
+      "repeat_check_no_update": true,
+      "published_bundle_validation": {
+        "result": "passed",
+        "bundle_regressions": 11,
+        "report123_validation": {
+          "result": "passed",
+          "before_awoken_void": false,
+          "after_awoken_void": false,
+          "changed_cells": 27,
+          "popup_reading": "actual Korean OCR on original",
+          "skill_clicks": 2,
+          "skill_confirmation_evidence": "board_effect",
+          "settle_continued": true,
+          "route_attributes": 5,
+          "route_final_combos": 6,
+          "route_moves": 13,
+          "drag_dispatches": 1,
+          "scope": "Exact private123 images, actual popup OCR, built-in classifier and solver; controlled eight-second timing and fake device dispatch; no physical MuMu",
+          "original_images_included_in_release": false
+        },
+        "scope": "Production downloaded code, generated awakening-cross/partial-cleanse checks and exact private123 OCR/board/skill/solver replay with fake device; no physical MuMu"
+      },
+      "scope": "Production downloaded bundle, exact private123 OCR/skill/board/solver replay and generated cross/partial-cleanse checks with fake device; physical MuMu unverified"
+    }
   },
   "scope": [
     "Require actual large awakening-tile crosses instead of red scenery/flash pixel totals",
@@ -60,10 +89,11 @@
   ],
   "publication": {
     "main_branch_updated": true,
-    "updater_activation": "production update.json set to249; live check pending",
+    "updater_activation": "production249 live upgrade and downloaded bundle private123 skill/board/solver and partial-cleanse checks verified",
     "github_release": "https://github.com/tterx/pad0-updates/releases/tag/v1.0.41",
     "workflow": "https://github.com/tterx/pad0-updates/actions/runs/41243293635",
     "uploaded_asset_digest_verified": true,
-    "published_zip_download_sha256_verified": true
+    "published_zip_download_sha256_verified": true,
+    "production_updater_activated": true
   }
 }
