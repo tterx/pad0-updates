@@ -1,0 +1,71 @@
+{
+  "version": "v1.0.44",
+  "release": 252,
+  "source_commit": "6cd8641a3f710f77c9a3e3b71acd17ae9c428456",
+  "source_sha256": "c2fc56939cdb55fa8ffe3342d1b5c99809b955ee1bc4b0cccaa1c195dfc0bf6a",
+  "zip_sha256": "eb7081308d5d753f21d21679ca7ed9b243af4ae110708f13593c502d8670a755",
+  "checks": {
+    "package": "passed",
+    "bundle_import": "passed",
+    "offline_upgrade251_to252": "passed",
+    "bundled_startup_ai_cleanup": "passed",
+    "startup_preserves_skill_tactics": "passed",
+    "source_sha256": "c2fc56939cdb55fa8ffe3342d1b5c99809b955ee1bc4b0cccaa1c195dfc0bf6a",
+    "zip_sha256": "eb7081308d5d753f21d21679ca7ed9b243af4ae110708f13593c502d8670a755",
+    "source_bytes": 1936560,
+    "linux_tests": {
+      "run": 520,
+      "passed": 519,
+      "skipped": 1
+    },
+    "windows_ci": {
+      "conclusion": "success",
+      "run_id": 41249448642,
+      "url": "https://github.com/tterx/pad0-all-in-one/actions/runs/41249448642",
+      "head_sha": "6cd8641a3f710f77c9a3e3b71acd17ae9c428456",
+      "tests": 483
+    },
+    "candidate_bundle": {
+      "result": "passed",
+      "bundle_regressions": 16,
+      "scope": "Bundled runtime, generated uneven-height multiplication lines, full F7 worker, persistent inventory, canonical naming and UI quantities; exact inline pixels and physical MuMu not replayed"
+    },
+    "real_korean_ocr": {
+      "result": "passed",
+      "previous_worker_error": "재료 등록 보류 · 재료 판독 보류: 4번째 보유 수량 판독 실패: 수량 영역에 여러 숫자 줄이 있어 확정하지 못했습니다.",
+      "previous_stock_preserved": true,
+      "required": [
+        6,
+        6,
+        6,
+        15
+      ],
+      "owned": [
+        0,
+        0,
+        0,
+        46
+      ],
+      "real_korean_ocr": true,
+      "full_f7_worker": true,
+      "scope": "Generated uneven-height fourth ×46 reproduces exact reported status in previous worker; real Korean OCR and full updated worker persist all four quantities; owner token verified in fixture, exact inline pixels and physical emulator not replayed"
+    },
+    "runtime_bundle_matches_source_commit": true
+  },
+  "scope": [
+    "Reproduce reported fourth-card multiple-number-lines error in the full previous F7 worker",
+    "Discard partial quantity candidates only when a validated complete candidate shares the same multiplication component and colour mask",
+    "Verify real Korean OCR and full F7 transaction for 6/0,6/0,6/0,15/46",
+    "Keep independent lines, clipping and conflicting OCR rejected; preserve existing inventory update rules"
+  ],
+  "limitations": [
+    "Generated uneven-height fourth ×46 reproduces the exact reported status; user inline pixels and physical MuMu not replayed",
+    "The real OCR full-worker check supplies a verified owner token; quantity segmentation, OCR, identity staging and inventory persistence run normally"
+  ],
+  "publication": {
+    "main_branch_updated": true,
+    "source_main_commit": "6cd8641a3f710f77c9a3e3b71acd17ae9c428456",
+    "authorization": "User approved future tested changes be promoted and published immediately after required tests pass.",
+    "updater_activation": "source main verified; pending published ZIP download verification"
+  }
+}

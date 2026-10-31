@@ -1,0 +1,7 @@
+# v1.0.44 / updater252
+
+The follow-up status identifies the actual stop: material four's owned quantity is rejected as multiple number lines, so the complete F7 transaction retains the previous registered quantities. The preceding inventory changes only addressed observations that had already passed recognition.
+
+An uneven-height ×46 reproduces this exact error. The shorter multiplication sign can anchor a line containing only the shorter 4, while the taller 6 anchors the complete 46. Both candidates previously survived deduplication as different quantities. Owned/reward-line segmentation now removes only strict subsets of component IDs sharing the same multiplication component and colour mask when a fully validated superset exists. This requires no fixed count or value. Separate multiplication signs, different rows, incomparable candidates, clipping and conflicting OCR remain subject to the existing rejection rules.
+
+Eight regressions cover uneven 46/82/146/999 in white and red, single digits and zero, contrary OCR, separate marks/rows, clipped hundreds, and the complete F7 worker through icon staging, inventory persistence and UI callbacks. The full worker updates 6/0,6/0,6/0,15/46 from older values; a last-card failure still preserves all old inventory and reports the exact card. Generated pixels and real Korean OCR are used for development validation. The user's exact inline image and physical MuMu interaction are not replayed. No new model or local training store is introduced.
