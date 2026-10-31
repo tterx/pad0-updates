@@ -1,0 +1,65 @@
+{
+  "version": "v1.0.41",
+  "release": 249,
+  "source_commit": "fac64c6fba52bac2a358776a1d4e5fc0162e0e04",
+  "source_sha256": "e6648f71b1044663c6ee44c317292729c6e97005ff9898b4e3ac1e5069dbd754",
+  "zip_sha256": "ac23c787ff9752fd9e93772b695ad538466b0dd830e006bc4e3d931e0f9d73ea",
+  "checks": {
+    "package": "passed",
+    "bundle_import": "passed",
+    "offline_upgrade248_to249": "passed",
+    "bundled_startup_ai_cleanup": "passed",
+    "startup_preserves_skill_tactics": "passed",
+    "source_sha256": "e6648f71b1044663c6ee44c317292729c6e97005ff9898b4e3ac1e5069dbd754",
+    "zip_sha256": "ac23c787ff9752fd9e93772b695ad538466b0dd830e006bc4e3d931e0f9d73ea",
+    "source_bytes": 1934231,
+    "linux_tests": {
+      "run": 490,
+      "passed": 489,
+      "skipped": 1
+    },
+    "windows_ci": {
+      "conclusion": "success",
+      "run_id": 41242896477,
+      "url": "https://github.com/tterx/pad0-all-in-one/actions/runs/41242896477",
+      "head_sha": "fac64c6fba52bac2a358776a1d4e5fc0162e0e04",
+      "tests": 453
+    },
+    "candidate_bundle": {
+      "result": "passed",
+      "bundle_regressions": 11,
+      "report123_validation": {
+        "result": "passed",
+        "before_awoken_void": false,
+        "after_awoken_void": false,
+        "changed_cells": 27,
+        "popup_reading": "actual Korean OCR on original",
+        "skill_clicks": 2,
+        "skill_confirmation_evidence": "board_effect",
+        "settle_continued": true,
+        "route_attributes": 5,
+        "route_final_combos": 6,
+        "route_moves": 13,
+        "drag_dispatches": 1,
+        "scope": "Exact private123 images, actual popup OCR, built-in classifier and solver; controlled eight-second timing and fake device dispatch; no physical MuMu",
+        "original_images_included_in_release": false
+      },
+      "scope": "Candidate bundled code, generated awakening-cross/partial-cleanse checks and exact private123 OCR/board/skill/solver replay with fake device; no physical MuMu"
+    },
+    "runtime_bundle_matches_source_commit": true
+  },
+  "scope": [
+    "Require actual large awakening-tile crosses instead of red scenery/flash pixel totals",
+    "Continue a proven limited-turn cleanse with its real remaining disable state",
+    "Keep stale/wrong-device/effect evidence, no board change and cancelled input blocked",
+    "Preserve the organized repository layout and existing update URLs"
+  ],
+  "limitations": [
+    "Actual private123 images and popup OCR replayed with controlled eight-second timing and fake device dispatch; physical MuMu unverified",
+    "Positive awakening-disable crosses are generated fixtures; original pixels excluded from Git/releases"
+  ],
+  "publication": {
+    "main_branch_updated": true,
+    "updater_activation": "pending verified release download"
+  }
+}
