@@ -76,7 +76,66 @@
       ],
       "scope": "Candidate bundled code, exact private124 replay in SDK flow with fake native calls, generated thorn/manual regressions and one offline TPA policy comparison; no physical MuMu"
     },
-    "runtime_bundle_matches_source_commit": true
+    "runtime_bundle_matches_source_commit": true,
+    "production_updater": {
+      "result": "passed",
+      "live_upgrade249_to250": true,
+      "source_sha256_verified": true,
+      "previous_source_backup_verified": true,
+      "repeat_check_no_update": true,
+      "published_bundle_validation": {
+        "result": "passed",
+        "bundle_regressions": 14,
+        "report124_validation": {
+          "result": "passed",
+          "board_matches_report": true,
+          "legacy_start_confirmed": false,
+          "updated_start_confirmed": true,
+          "start_cell": 21,
+          "start_colour": "Y",
+          "source_and_held_thorns_confirmed": true,
+          "alpha": 0.70237,
+          "texture_correlation": 0.89147,
+          "residual_mae": 0.08344,
+          "stable_remote_cells": 21,
+          "negative_controls": [
+            "unchanged",
+            "brightness",
+            "wrong_colour",
+            "wrong_cell",
+            "remote_change"
+          ],
+          "first_check_confirmed": true,
+          "down_events": 1,
+          "move_events": 208,
+          "up_events": 1,
+          "timing_preserved": {
+            "sample_seconds": 0.017,
+            "corner_seconds": 0.0295
+          },
+          "path_attributes": 5,
+          "path_final_combos": 6,
+          "scope": "Exact private124 board/before/held pixels, current start verifier and recorded full route in real SDK dispatch code with fake native calls/clock; physical MuMu unverified",
+          "original_images_included_in_release": false
+        },
+        "manual_policy_comparison": [
+          {
+            "policy": "previous",
+            "seconds": 3.00658,
+            "tpa": 4,
+            "final_combos": 7
+          },
+          {
+            "policy": "first_valid",
+            "seconds": 0.06607,
+            "tpa": 4,
+            "final_combos": 6
+          }
+        ],
+        "scope": "Production downloaded code, exact private124 replay in SDK flow with fake native calls, generated thorn/manual regressions and one offline TPA policy comparison; no physical MuMu"
+      },
+      "scope": "Production downloaded bundle, exact private124 SDK replay with fake native calls/clock and generated yellow-thorn/manual-speed checks; physical MuMu unverified"
+    }
   },
   "scope": [
     "Confirm a lifted translucent yellow thorn sprite with physical thorns, alpha texture and remote stability",
@@ -91,13 +150,14 @@
   "publication": {
     "main_branch_updated": true,
     "source_branch": "codex/yellow-start-manual-250",
-    "updater_activation": "production update.json set to250; live check pending",
+    "updater_activation": "production updater250 verified by live249→250 download, source hash, previous backup and repeat check",
     "source_main_commit": "b0c26ecab24e6e38f87cb3009df22e9754069211",
     "source_main_verified": true,
     "authorization": "User explicitly approved main promotion and v1.0.42 deployment, and requested future tested changes be applied immediately.",
     "github_release": "https://github.com/tterx/pad0-updates/releases/tag/v1.0.42",
     "workflow": "https://github.com/tterx/pad0-updates/actions/runs/41247017120",
     "uploaded_asset_digest_verified": true,
-    "published_zip_download_sha256_verified": true
+    "published_zip_download_sha256_verified": true,
+    "production_updater_verified": true
   }
 }
