@@ -89,8 +89,11 @@
     "One offline TPA policy comparison is not a universal latency guarantee; generated yellow fixture derived from existing public art; private originals excluded from Git/releases"
   ],
   "publication": {
-    "main_branch_updated": false,
+    "main_branch_updated": true,
     "source_branch": "codex/yellow-start-manual-250",
-    "updater_activation": "not activated; explicit main/release approval pending"
+    "updater_activation": "source main promoted; release publication and updater activation pending",
+    "source_main_commit": "b0c26ecab24e6e38f87cb3009df22e9754069211",
+    "source_main_verified": true,
+    "authorization": "User explicitly approved main promotion and v1.0.42 deployment, and requested future tested changes be applied immediately."
   }
 }
