@@ -122,7 +122,66 @@
       "scope": "Exact private125 board/before/held pixels and full recorded SDK route with fake native calls/clock; physical MuMu unverified",
       "original_images_included_in_release": false
     },
-    "runtime_bundle_matches_source_commit": true
+    "runtime_bundle_matches_source_commit": true,
+    "production_updater": {
+      "result": "passed",
+      "live_upgrade252_to253": true,
+      "source_sha256_verified": true,
+      "previous_source_backup_verified": true,
+      "repeat_check_no_update": true,
+      "published_bundle_validation": {
+        "result": "passed",
+        "bundle_regressions": 8,
+        "report125_validation": {
+          "result": "passed",
+          "board_matches_report": true,
+          "legacy_start_confirmed": false,
+          "updated_start_confirmed": true,
+          "start_cell": 29,
+          "start_colour": "J",
+          "alpha": 0.73767,
+          "texture_correlation": 0.97101,
+          "residual_mae": 0.06195,
+          "eye_matches": [
+            {
+              "center_delta": 0.16328,
+              "area_ratio": 0.98333,
+              "shape_iou": 0.93333,
+              "new_eye_fraction": 1.0
+            },
+            {
+              "center_delta": 0.09936,
+              "area_ratio": 1.01724,
+              "shape_iou": 0.84286,
+              "new_eye_fraction": 0.98305
+            }
+          ],
+          "stable_remote_cells": 26,
+          "negative_controls": [
+            "unchanged",
+            "brightness",
+            "wrong_colour",
+            "wrong_cell",
+            "remote_change",
+            "missing_eye"
+          ],
+          "first_check_confirmed": true,
+          "down_events": 1,
+          "move_events": 52,
+          "up_events": 1,
+          "timing_preserved": {
+            "sample_seconds": 0.017,
+            "corner_seconds": 0.0295
+          },
+          "path_attributes": 5,
+          "path_final_combos": 7,
+          "scope": "Exact private125 board/before/held pixels and full recorded SDK route with fake native calls/clock; physical MuMu unverified",
+          "original_images_included_in_release": false
+        },
+        "scope": "Bundled runtime, public-artwork alpha regressions and exact private125 full SDK replay with fake native calls/clock; physical MuMu unverified"
+      },
+      "scope": "Production downloaded bundle, public-artwork alpha regressions and exact private125 full SDK replay with fake native calls/clock; physical MuMu unverified"
+    }
   },
   "scope": [
     "Prove translucent held jammer using measured background alpha, source texture and both fresh complete eyes",
@@ -138,10 +197,11 @@
     "main_branch_updated": true,
     "source_main_commit": "e17f23887c055fdff4005cb389b92d2114fc3393",
     "authorization": "User approved future tested changes be promoted and published immediately after required tests pass.",
-    "updater_activation": "production update.json set to253; live check pending",
+    "updater_activation": "production updater253 verified by live252→253 download, source hash, previous backup and repeat check",
     "github_release": "https://github.com/tterx/pad0-updates/releases/tag/v1.0.45",
     "workflow": "https://github.com/tterx/pad0-updates/actions/runs/41250773808",
     "uploaded_asset_digest_verified": true,
-    "published_zip_download_sha256_verified": true
+    "published_zip_download_sha256_verified": true,
+    "production_updater_verified": true
   }
 }
