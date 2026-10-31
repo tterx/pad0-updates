@@ -50,7 +50,20 @@
       "full_f7_worker": true,
       "scope": "Generated uneven-height fourth ×46 reproduces exact reported status in previous worker; real Korean OCR and full updated worker persist all four quantities; owner token verified in fixture, exact inline pixels and physical emulator not replayed"
     },
-    "runtime_bundle_matches_source_commit": true
+    "runtime_bundle_matches_source_commit": true,
+    "production_updater": {
+      "result": "passed",
+      "live_upgrade251_to252": true,
+      "source_sha256_verified": true,
+      "previous_source_backup_verified": true,
+      "repeat_check_no_update": true,
+      "published_bundle_validation": {
+        "result": "passed",
+        "bundle_regressions": 16,
+        "scope": "Bundled runtime, generated uneven-height multiplication lines, full F7 worker, persistent inventory, canonical naming and UI quantities; exact inline pixels and physical MuMu not replayed"
+      },
+      "scope": "Production downloaded bundle, generated uneven-height quantity lines, full F7 worker and inventory checks; physical MuMu unverified"
+    }
   },
   "scope": [
     "Reproduce reported fourth-card multiple-number-lines error in the full previous F7 worker",
@@ -66,10 +79,11 @@
     "main_branch_updated": true,
     "source_main_commit": "6cd8641a3f710f77c9a3e3b71acd17ae9c428456",
     "authorization": "User approved future tested changes be promoted and published immediately after required tests pass.",
-    "updater_activation": "production update.json set to252; live check pending",
+    "updater_activation": "production updater252 verified by live251→252 download, source hash, previous backup and repeat check",
     "github_release": "https://github.com/tterx/pad0-updates/releases/tag/v1.0.44",
     "workflow": "https://github.com/tterx/pad0-updates/actions/runs/41249737613",
     "uploaded_asset_digest_verified": true,
-    "published_zip_download_sha256_verified": true
+    "published_zip_download_sha256_verified": true,
+    "production_updater_verified": true
   }
 }
