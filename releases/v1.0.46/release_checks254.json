@@ -1,0 +1,213 @@
+{
+  "version": "v1.0.46",
+  "release": 254,
+  "source_commit": "93172e825fec2e842a0b4436f5cda936482f6976",
+  "source_sha256": "8ea6c17166c3e774a58437bcb4676e1657d8aa4f5ff9f0397d3008db2c0ea200",
+  "zip_sha256": "afbe90a1a3adbc290267903fda4cec8356584b7a285d2e29d9882fd096545a4e",
+  "checks": {
+    "package": "passed",
+    "bundle_import": "passed",
+    "offline_upgrade253_to254": "passed",
+    "bundled_startup_ai_cleanup": "passed",
+    "startup_preserves_skill_tactics": "passed",
+    "source_sha256": "8ea6c17166c3e774a58437bcb4676e1657d8aa4f5ff9f0397d3008db2c0ea200",
+    "zip_sha256": "afbe90a1a3adbc290267903fda4cec8356584b7a285d2e29d9882fd096545a4e",
+    "source_bytes": 1944417,
+    "linux_tests": {
+      "run": 536,
+      "passed": 535,
+      "skipped": 1
+    },
+    "windows_ci": {
+      "conclusion": "success",
+      "run_id": 41253083969,
+      "url": "https://github.com/tterx/pad0-all-in-one/actions/runs/41253083969",
+      "head_sha": "93172e825fec2e842a0b4436f5cda936482f6976",
+      "tests": 499
+    },
+    "candidate_bundle": {
+      "result": "passed",
+      "bundle_regressions": 8,
+      "report126_validation": {
+        "result": "passed",
+        "report126_movement_already_confirmed": true,
+        "legacy_error_reproduced_with_missing_page_token": "이동 버튼을 확정하지 못했습니다: 다음",
+        "exact_failure_frame_used": true,
+        "next_button_real_korean_ocr": {
+          "source": "visible_button_text",
+          "candidates": [
+            {
+              "box": [
+                615,
+                749,
+                985,
+                836
+              ],
+              "readings": [
+                [
+                  "다음",
+                  0.98258
+                ],
+                [
+                  "다음",
+                  0.98322
+                ]
+              ],
+              "cached": false,
+              "confirmed": true
+            }
+          ],
+          "point": [
+            800.0,
+            792.5
+          ]
+        },
+        "quit_public_fixture_glyph": {
+          "complete": true,
+          "source": "paired_button_glyph_artwork",
+          "candidates": [],
+          "boxes": {
+            "quit": [
+              416,
+              665,
+              784,
+              777
+            ],
+            "ok": [
+              815,
+              665,
+              1185,
+              777
+            ]
+          },
+          "readings": [],
+          "artwork": {
+            "confirmed": true,
+            "source": "replay_label_artwork",
+            "label": "그만두기",
+            "glyph_iou": 1.0,
+            "aspect_delta": 0.0,
+            "glyph_box": [
+              43,
+              18,
+              140,
+              45
+            ]
+          },
+          "confirmed": true,
+          "point": [
+            600.0,
+            721.0
+          ],
+          "action": "그만두기"
+        },
+        "next_actions": 1,
+        "quit_actions": 1,
+        "duplicate_inputs": 0,
+        "committed_receipt_bytes_preserved": true,
+        "returned_to": "home",
+        "scope": "Exact private126 result pixels with real direct-button Korean OCR, public Quit glyph fixture and fake SDK capture/tap transitions; one-shot missing OCR token simulated, exact live OCR timing and physical MuMu not replayed",
+        "original_images_included_in_release": false
+      },
+      "scope": "Bundled runtime, complete two-material farming worker and exact private126 result button with real OCR plus public Quit glyph and fake capture/tap transitions; physical MuMu unverified"
+    },
+    "original_report126": {
+      "result": "passed",
+      "report126_movement_already_confirmed": true,
+      "legacy_error_reproduced_with_missing_page_token": "이동 버튼을 확정하지 못했습니다: 다음",
+      "exact_failure_frame_used": true,
+      "next_button_real_korean_ocr": {
+        "source": "visible_button_text",
+        "candidates": [
+          {
+            "box": [
+              615,
+              749,
+              985,
+              836
+            ],
+            "readings": [
+              [
+                "다음",
+                0.98258
+              ],
+              [
+                "다음",
+                0.98322
+              ]
+            ],
+            "cached": false,
+            "confirmed": true
+          }
+        ],
+        "point": [
+          800.0,
+          792.5
+        ]
+      },
+      "quit_public_fixture_glyph": {
+        "complete": true,
+        "source": "paired_button_glyph_artwork",
+        "candidates": [],
+        "boxes": {
+          "quit": [
+            416,
+            665,
+            784,
+            777
+          ],
+          "ok": [
+            815,
+            665,
+            1185,
+            777
+          ]
+        },
+        "readings": [],
+        "artwork": {
+          "confirmed": true,
+          "source": "replay_label_artwork",
+          "label": "그만두기",
+          "glyph_iou": 1.0,
+          "aspect_delta": 0.0,
+          "glyph_box": [
+            43,
+            18,
+            140,
+            45
+          ]
+        },
+        "confirmed": true,
+        "point": [
+          600.0,
+          721.0
+        ],
+        "action": "그만두기"
+      },
+      "next_actions": 1,
+      "quit_actions": 1,
+      "duplicate_inputs": 0,
+      "committed_receipt_bytes_preserved": true,
+      "returned_to": "home",
+      "scope": "Exact private126 result pixels with real direct-button Korean OCR, public Quit glyph fixture and fake SDK capture/tap transitions; one-shot missing OCR token simulated, exact live OCR timing and physical MuMu not replayed",
+      "original_images_included_in_release": false
+    },
+    "runtime_bundle_matches_source_commit": true
+  },
+  "scope": [
+    "After committing a stage receipt, use verified Next and paired Quit before selecting another deficient material",
+    "Require the credited session ID and retain stock/history without a second credit",
+    "Wait for confirmed page transitions without duplicate input; preserve F10 and ambiguous-button rejection",
+    "Verify complete worker across two stages/materials and exact private126 Next pixels with real Korean OCR"
+  ],
+  "limitations": [
+    "Exact126 result image passes offline full-scene OCR too; missing full-scene token is simulated to reproduce the old one-shot stop, exact live OCR timing is not claimed replayed",
+    "Original Next pixels with real OCR, public Quit glyph and fake capture/tap transitions; physical MuMu navigation unverified; private originals excluded from Git/releases"
+  ],
+  "publication": {
+    "main_branch_updated": true,
+    "source_main_commit": "93172e825fec2e842a0b4436f5cda936482f6976",
+    "authorization": "User approved future tested changes be promoted and published immediately after required tests pass.",
+    "updater_activation": "source main verified; pending published ZIP download verification"
+  }
+}

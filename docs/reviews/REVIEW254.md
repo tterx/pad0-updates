@@ -1,0 +1,9 @@
+# v1.0.46 / updater254
+
+Report126 has a successful drag, exact pre-release layout and confirmed release. Farming stops later on the crystal receipt with `이동 버튼을 확정하지 못했습니다: 다음`. After crediting a stage's last needed material, the worker calls generic target navigation directly from the result screen. That path performs one full-screen Next-token read and later looks for Cancel/Close instead of the actual paired Quit button.
+
+The worker now leaves this already committed result before selecting the next material. A helper verifies the credited session ID, uses the existing direct two-view Next detector, waits for a confirmed page transition without resending the input, selects the existing paired Quit button, and waits for a confirmed return screen. Quit ends this stage, while the farming job continues. Missing buttons are retried from fresh captures within bounded waits. F10, ambiguous buttons and missing receipt credit prevent input. Retarget failures receive a result/lobby phase and current diagnostic image instead of a stale drag phase.
+
+Eight regressions include the full worker across two materials/stages, with one credit per result and one final farming-complete event. Additional checks cover transient/missing/duplicate Next, absent Quit, stalled transitions, uncredited or wrong receipts, F10, single inputs and preservation of saved stock/history.
+
+The exact private126 result frame passes real Korean OCR in the direct button reader. Offline full-scene OCR also reads Next on the saved frame, so the exact live recognition/timing failure is not claimed as replayed. A missing full-scene token reproduces the old one-shot error; the new route uses the original result pixels, real Next OCR, an already public Quit glyph fixture and fake capture/tap transitions to issue one Next and one Quit while preserving the committed receipt bytes. Physical MuMu navigation remains unverified. Private images/reports are excluded from Git and releases.
