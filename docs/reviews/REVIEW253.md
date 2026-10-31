@@ -1,0 +1,9 @@
+# v1.0.45 / updater253
+
+Report125 stops after DOWN on the lower-right jammer and before any route MOVE. The final gesture contains one DOWN and one UP. Its visibly lifted translucent jammer is classified blue in the small core. Opaque texture errors exceed the existing jammer proof thresholds even though the source texture is strongly correlated. The recorded path already meets five attributes and seven final combos; transport, pacing and route calculation are not changed.
+
+A separate start-only proof fits the resting jammer over the actual observed background with bounded alpha. It requires the resting identity in multiple artwork views, source and upper-region changes, alpha0.35..1.02, residual<=0.10, colour texture correlation>=0.85 and grey texture correlation>=0.80. It then retains the existing independent raw-image proof of both complete yellow eyes, matching geometry and newly appearing eye pixels, plus the navy face. Remote-board stability remains mandatory. Ordinary opaque matching thresholds and board colour models are unchanged.
+
+Exact private125 replay changes rejected to confirmed with alpha0.73767, residual0.06195, texture correlation0.97101 and26 stable remote cells. Unchanged/brightness, wrong colour/source, changed remote cells and a missing eye remain rejected. The complete recorded route runs through the SDK control code with fake native calls and clock: one DOWN,52 MOVEs,one UP, one start feedback capture, and the original17ms sampling/29.5ms corner timing. The path retains five attributes and seven final combos.
+
+Eight regressions use already public jammer artwork and in-memory transparency variants. They cover independent eyes, source/upper change gates, wrong colours and cells, real water/pointer negatives, remote-board veto and SDK dispatch. No new private image, training data or learned model is added to Git or releases. Physical MuMu gameplay remains unverified.

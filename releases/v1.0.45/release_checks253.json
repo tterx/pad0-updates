@@ -1,0 +1,143 @@
+{
+  "version": "v1.0.45",
+  "release": 253,
+  "source_commit": "e17f23887c055fdff4005cb389b92d2114fc3393",
+  "source_sha256": "d20711db3d3c78207056e31b53222cc70bfec6db855c3d4cc7c3e387e7a2e267",
+  "zip_sha256": "26ae52761a73c2d2f650c5d0d23e6ba7c7fc7def5dab6a4505a340df68496ed9",
+  "checks": {
+    "package": "passed",
+    "bundle_import": "passed",
+    "offline_upgrade252_to253": "passed",
+    "bundled_startup_ai_cleanup": "passed",
+    "startup_preserves_skill_tactics": "passed",
+    "source_sha256": "d20711db3d3c78207056e31b53222cc70bfec6db855c3d4cc7c3e387e7a2e267",
+    "zip_sha256": "26ae52761a73c2d2f650c5d0d23e6ba7c7fc7def5dab6a4505a340df68496ed9",
+    "source_bytes": 1940744,
+    "linux_tests": {
+      "run": 528,
+      "passed": 527,
+      "skipped": 1
+    },
+    "windows_ci": {
+      "conclusion": "success",
+      "run_id": 41250481921,
+      "url": "https://github.com/tterx/pad0-all-in-one/actions/runs/41250481921",
+      "head_sha": "e17f23887c055fdff4005cb389b92d2114fc3393",
+      "tests": 491
+    },
+    "candidate_bundle": {
+      "result": "passed",
+      "bundle_regressions": 8,
+      "report125_validation": {
+        "result": "passed",
+        "board_matches_report": true,
+        "legacy_start_confirmed": false,
+        "updated_start_confirmed": true,
+        "start_cell": 29,
+        "start_colour": "J",
+        "alpha": 0.73767,
+        "texture_correlation": 0.97101,
+        "residual_mae": 0.06195,
+        "eye_matches": [
+          {
+            "center_delta": 0.16328,
+            "area_ratio": 0.98333,
+            "shape_iou": 0.93333,
+            "new_eye_fraction": 1.0
+          },
+          {
+            "center_delta": 0.09936,
+            "area_ratio": 1.01724,
+            "shape_iou": 0.84286,
+            "new_eye_fraction": 0.98305
+          }
+        ],
+        "stable_remote_cells": 26,
+        "negative_controls": [
+          "unchanged",
+          "brightness",
+          "wrong_colour",
+          "wrong_cell",
+          "remote_change",
+          "missing_eye"
+        ],
+        "first_check_confirmed": true,
+        "down_events": 1,
+        "move_events": 52,
+        "up_events": 1,
+        "timing_preserved": {
+          "sample_seconds": 0.017,
+          "corner_seconds": 0.0295
+        },
+        "path_attributes": 5,
+        "path_final_combos": 7,
+        "scope": "Exact private125 board/before/held pixels and full recorded SDK route with fake native calls/clock; physical MuMu unverified",
+        "original_images_included_in_release": false
+      },
+      "scope": "Bundled runtime, public-artwork alpha regressions and exact private125 full SDK replay with fake native calls/clock; physical MuMu unverified"
+    },
+    "original_report125": {
+      "result": "passed",
+      "board_matches_report": true,
+      "legacy_start_confirmed": false,
+      "updated_start_confirmed": true,
+      "start_cell": 29,
+      "start_colour": "J",
+      "alpha": 0.73767,
+      "texture_correlation": 0.97101,
+      "residual_mae": 0.06195,
+      "eye_matches": [
+        {
+          "center_delta": 0.16328,
+          "area_ratio": 0.98333,
+          "shape_iou": 0.93333,
+          "new_eye_fraction": 1.0
+        },
+        {
+          "center_delta": 0.09936,
+          "area_ratio": 1.01724,
+          "shape_iou": 0.84286,
+          "new_eye_fraction": 0.98305
+        }
+      ],
+      "stable_remote_cells": 26,
+      "negative_controls": [
+        "unchanged",
+        "brightness",
+        "wrong_colour",
+        "wrong_cell",
+        "remote_change",
+        "missing_eye"
+      ],
+      "first_check_confirmed": true,
+      "down_events": 1,
+      "move_events": 52,
+      "up_events": 1,
+      "timing_preserved": {
+        "sample_seconds": 0.017,
+        "corner_seconds": 0.0295
+      },
+      "path_attributes": 5,
+      "path_final_combos": 7,
+      "scope": "Exact private125 board/before/held pixels and full recorded SDK route with fake native calls/clock; physical MuMu unverified",
+      "original_images_included_in_release": false
+    },
+    "runtime_bundle_matches_source_commit": true
+  },
+  "scope": [
+    "Prove translucent held jammer using measured background alpha, source texture and both fresh complete eyes",
+    "Retain remote-board stability, no-DOWN and wrong-source/colour rejection",
+    "Verify exact private125 full SDK route with unchanged pacing and original five-attribute seven-combo path",
+    "Keep ordinary opaque start thresholds and board colour models unchanged"
+  ],
+  "limitations": [
+    "Exact original125 before/held/board and recorded route replayed through SDK control code with fake native calls and clock; physical MuMu unverified",
+    "Public artwork plus in-memory transparency variants used in CI; private original images and reports excluded from Git and releases"
+  ],
+  "publication": {
+    "main_branch_updated": true,
+    "source_main_commit": "e17f23887c055fdff4005cb389b92d2114fc3393",
+    "authorization": "User approved future tested changes be promoted and published immediately after required tests pass.",
+    "updater_activation": "source main verified; pending published ZIP download verification"
+  }
+}
