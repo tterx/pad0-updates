@@ -1,12 +1,12 @@
 # 퍼드0 올인원
 
-[**프로그램 ZIP 다운로드 · v1.0.40**](https://github.com/tterx/pad0-updates/releases/download/v1.0.40/pad0_overlay_windows_v1_0_40.zip) · [전체 릴리스](https://github.com/tterx/pad0-updates/releases)
+[**프로그램 ZIP 다운로드 · v1.0.41**](https://github.com/tterx/pad0-updates/releases/download/v1.0.41/pad0_overlay_windows_v1_0_41.zip) · [전체 릴리스](https://github.com/tterx/pad0-updates/releases)
 
-현재 표시 버전은 **1.0.40**, 자동 업데이트 내부 순번은 **248**입니다.
+현재 표시 버전은 **1.0.41**, 자동 업데이트 내부 순번은 **249**입니다.
 
 새로 설치할 때는 ZIP을 풀고 `시작.vbs`를 실행하세요. 기존 설치는 PAD0를 완전히 종료한 뒤 `시작.vbs`를 다시 실행하면 업데이트됩니다.
 
-최근 버전에는 S/X 스킬 봉인 구분, 불·방해 판의 6콤보 우선 턴 진행, 주황색 획득 수량 판독 보완을 반영했습니다. [변경 내용](docs/reviews/REVIEW248.md) · [검증 기록](releases/v1.0.40/release_checks248.json)
+최근 버전에는 빨간 배경·스킬 연출을 각성무효로 오인해 스킬 후 멈추던 문제와 제한된 턴 해제 후의 진행을 보완했습니다. [변경 내용](docs/reviews/REVIEW249.md) · [검증 기록](releases/v1.0.41/release_checks249.json)
 
 ## 저장소 안내
 
