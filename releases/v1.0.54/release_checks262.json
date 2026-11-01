@@ -1,0 +1,113 @@
+{
+  "version": "v1.0.54",
+  "release": 262,
+  "source_commit": "b7df317730aa01ecd7ac384c4784312bbcfd168e",
+  "source_sha256": "2820cd513c3b261429058a826c2b841beb04efd770b800bd1a0bbda6580056a2",
+  "zip_sha256": "ba1a925a2c4fe3193fb518dc9b7ad5841de6ccd0330dfdbd2300545d4d4ac05b",
+  "checks": {
+    "package": "passed",
+    "bundle_import": "passed",
+    "offline_upgrade261_to262": "passed",
+    "bundled_startup_ai_cleanup": "passed",
+    "startup_preserves_skill_tactics": "passed",
+    "source_sha256": "2820cd513c3b261429058a826c2b841beb04efd770b800bd1a0bbda6580056a2",
+    "zip_sha256": "ba1a925a2c4fe3193fb518dc9b7ad5841de6ccd0330dfdbd2300545d4d4ac05b",
+    "source_bytes": 1980897,
+    "linux_tests": {
+      "run": 625,
+      "passed": 624,
+      "skipped": 1
+    },
+    "windows_ci": {
+      "conclusion": "success",
+      "run_id": 41353027925,
+      "url": "https://github.com/tterx/pad0-all-in-one/actions/runs/41353027925",
+      "head_sha": "b7df317730aa01ecd7ac384c4784312bbcfd168e",
+      "tests": 588
+    },
+    "candidate_bundle": {
+      "result": "passed",
+      "bundle_regressions": 73,
+      "condition_validation": {
+        "result": "passed",
+        "exact_private135_classifier": true,
+        "real_korean_ocr_timer_seconds": 8,
+        "combo_condition_confirmed": true,
+        "reported_work_seconds": 9.687,
+        "modeled_ocr_elapsed_seconds": 6.546,
+        "legacy_worker_rejected_at_age_seconds": 3.141,
+        "no_independent_recognition_witness_injected": true,
+        "real_ocr_passes": 1,
+        "previous_second_ocr_skipped": true,
+        "post_ocr_board_capture": true,
+        "parent_queue_starts_route_preparation": true,
+        "prepared_attributes": 5,
+        "prepared_minimum_final_combos": 6,
+        "fresh_execution_rejects_unknown_conditions": true,
+        "automatic_execution_calls": 0,
+        "scope": "Exact private135 classifier/Korean OCR with worker-to-parent flow; previous report9.687-second scheduling modeled; confirmed master uses one6.546-second read plus a current board capture with controlled time and mocked capture/process/input boundaries, real mathematical route. Physical MuMu input unverified; originals excluded."
+      },
+      "scope": "Bundled runtime, real Tk current failure save, full ZIP binding and prepare-only lifecycle; private135 real classifier/OCR, worker-to-parent delivery without injected recognition witness. No native input or physical MuMu replay."
+    },
+    "condition_delivery_replay": {
+      "result": "passed",
+      "exact_private135_classifier": true,
+      "real_korean_ocr_timer_seconds": 8,
+      "combo_condition_confirmed": true,
+      "reported_work_seconds": 9.687,
+      "modeled_ocr_elapsed_seconds": 6.546,
+      "legacy_worker_rejected_at_age_seconds": 3.141,
+      "no_independent_recognition_witness_injected": true,
+      "real_ocr_passes": 1,
+      "previous_second_ocr_skipped": true,
+      "post_ocr_board_capture": true,
+      "parent_queue_starts_route_preparation": true,
+      "prepared_attributes": 5,
+      "prepared_minimum_final_combos": 6,
+      "fresh_execution_rejects_unknown_conditions": true,
+      "automatic_execution_calls": 0,
+      "scope": "Exact private135 classifier/Korean OCR with worker-to-parent flow; previous report9.687-second scheduling modeled; confirmed master uses one6.546-second read plus a current board capture with controlled time and mocked capture/process/input boundaries, real mathematical route. Physical MuMu input unverified; originals excluded."
+    },
+    "performance": {
+      "result": "passed",
+      "recorded_frame_comparison": {
+        "v53": {
+          "preview": 0.8092,
+          "board_sample": 0.4474,
+          "clicked_conditions": 0.3248,
+          "timer_ocr_calls": 7
+        },
+        "v54": {
+          "preview": 0.6016,
+          "board_sample": 0.2316,
+          "clicked_conditions": 0.2408,
+          "timer_ocr_calls": 3
+        }
+      },
+      "samples_per_version": 7,
+      "two_stable_frames_retained": true,
+      "initial_sample_spacing_before": 0.65,
+      "initial_sample_spacing_after": 0.15,
+      "scope": "Same private135 pixels and warmed real Korean OCR engine; alternating v53/v54 same-process trials with mocked screen capture. Preview and click-condition phases exclude real capture/spawn/input. These are local stage medians, not user end-to-end timings; originals excluded."
+    },
+    "runtime_bundle_matches_source_commit": true
+  },
+  "scope": [
+    "Adaptive150ms/100ms initial board cadence, retaining two matching observations and650ms/250ms stable idle cadence",
+    "Reuse classification only within the same capture for cloud memory and diagnostic/condition preparation",
+    "Known confirmed master previews skip duplicate OCR and retain post-OCR current board verification",
+    "Timer candidates must overlap the bar row; independent views and conflicting aligned readings retained",
+    "Busy preview result polling100ms; explicit execution and all fresh pre-drag checks retained"
+  ],
+  "limitations": [
+    "Performance uses seven alternating local stage trials on private135 pixels with real warmed Korean OCR and mocked capture",
+    "Measured medians exclude real Windows capture/spawn and emulator input; user end-to-end duration not measured",
+    "Original images and diagnostic ZIPs excluded from publication"
+  ],
+  "publication": {
+    "main_branch_updated": true,
+    "source_main_commit": "b7df317730aa01ecd7ac384c4784312bbcfd168e",
+    "authorization": "User approved future tested changes be promoted and published immediately after required tests pass.",
+    "updater_activation": "source main verified; pending published ZIP download verification"
+  }
+}
