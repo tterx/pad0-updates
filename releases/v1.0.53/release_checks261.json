@@ -1,0 +1,89 @@
+{
+  "version": "v1.0.53",
+  "release": 261,
+  "source_commit": "a68a45cf02858938b2c03e4e89a7493b1c287967",
+  "source_sha256": "223aacd004bf6141840814ca1a60450de2c35da0acd00a749f4410d84683b301",
+  "zip_sha256": "bd8a4ebaaba4213cc45953a07f4f9656b0ee42916c8babb007a60cc38ed79030",
+  "checks": {
+    "package": "passed",
+    "bundle_import": "passed",
+    "offline_upgrade260_to261": "passed",
+    "bundled_startup_ai_cleanup": "passed",
+    "startup_preserves_skill_tactics": "passed",
+    "source_sha256": "223aacd004bf6141840814ca1a60450de2c35da0acd00a749f4410d84683b301",
+    "zip_sha256": "bd8a4ebaaba4213cc45953a07f4f9656b0ee42916c8babb007a60cc38ed79030",
+    "source_bytes": 1979560,
+    "linux_tests": {
+      "run": 616,
+      "passed": 615,
+      "skipped": 1
+    },
+    "windows_ci": {
+      "conclusion": "success",
+      "run_id": 41351010949,
+      "url": "https://github.com/tterx/pad0-all-in-one/actions/runs/41351010949",
+      "head_sha": "a68a45cf02858938b2c03e4e89a7493b1c287967",
+      "tests": 579
+    },
+    "candidate_bundle": {
+      "result": "passed",
+      "bundle_regressions": 64,
+      "condition_validation": {
+        "result": "passed",
+        "exact_private135_classifier": true,
+        "real_korean_ocr_timer_seconds": 8,
+        "combo_condition_confirmed": true,
+        "reported_work_seconds": 9.687,
+        "modeled_ocr_elapsed_seconds": 9.687,
+        "legacy_worker_rejected_at_age_seconds": 3.141,
+        "no_independent_recognition_witness_injected": true,
+        "real_ocr_passes": 2,
+        "post_ocr_board_capture": true,
+        "parent_queue_starts_route_preparation": true,
+        "prepared_attributes": 5,
+        "prepared_minimum_final_combos": 6,
+        "fresh_execution_rejects_unknown_conditions": true,
+        "automatic_execution_calls": 0,
+        "scope": "Exact private135 classifier/Korean OCR with worker-to-parent flow; report9.687-second scheduling modeled with controlled time and mocked capture/process/input boundaries, real mathematical route. Physical MuMu input unverified; originals excluded."
+      },
+      "scope": "Bundled runtime, real Tk current failure save, full ZIP binding and prepare-only lifecycle; private135 real classifier/OCR, worker-to-parent delivery without injected recognition witness. No native input or physical MuMu replay."
+    },
+    "condition_delivery_replay": {
+      "result": "passed",
+      "exact_private135_classifier": true,
+      "real_korean_ocr_timer_seconds": 8,
+      "combo_condition_confirmed": true,
+      "reported_work_seconds": 9.687,
+      "modeled_ocr_elapsed_seconds": 9.687,
+      "legacy_worker_rejected_at_age_seconds": 3.141,
+      "no_independent_recognition_witness_injected": true,
+      "real_ocr_passes": 2,
+      "post_ocr_board_capture": true,
+      "parent_queue_starts_route_preparation": true,
+      "prepared_attributes": 5,
+      "prepared_minimum_final_combos": 6,
+      "fresh_execution_rejects_unknown_conditions": true,
+      "automatic_execution_calls": 0,
+      "scope": "Exact private135 classifier/Korean OCR with worker-to-parent flow; report9.687-second scheduling modeled with controlled time and mocked capture/process/input boundaries, real mathematical route. Physical MuMu input unverified; originals excluded."
+    },
+    "runtime_bundle_matches_source_commit": true
+  },
+  "scope": [
+    "Finish slow confirmed condition reads with a current matching unobscured board capture without additional OCR",
+    "Bind final observation to action/recognition epochs and rectangle; refresh spikes and all-bound state",
+    "Keep actual condition age within12 seconds and final board age within2 seconds",
+    "Allow an in-flight OCR probe12 seconds before recording an unknown wait; explicitly unknown reads remain bounded",
+    "Maintain explicit execution and fresh time/enemy/board/spike validation"
+  ],
+  "limitations": [
+    "Exact private135 classifier/Korean OCR and worker-to-parent replay; report9.687-second scheduling modeled with controlled time",
+    "No independent accepted-board witness injected in delivery replay; capture/process boundaries mocked and real mathematical route verified",
+    "Physical MuMu input not replayed; original user images and diagnostic ZIPs excluded"
+  ],
+  "publication": {
+    "main_branch_updated": true,
+    "source_main_commit": "a68a45cf02858938b2c03e4e89a7493b1c287967",
+    "authorization": "User approved future tested changes be promoted and published immediately after required tests pass.",
+    "updater_activation": "source main verified; pending published ZIP download verification"
+  }
+}
