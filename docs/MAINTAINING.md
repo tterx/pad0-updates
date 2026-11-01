@@ -18,7 +18,7 @@
 
 1. 새 버전 폴더에 프로그램·ZIP·검증 JSON·업데이트 기록을 준비합니다.
 2. 변경 설명을 `docs/reviews/`에 저장하고 루트 README와 배포 목록의 링크를 갱신합니다.
-3. 현재 `.github/scripts/publish257.py`와 `.github/workflows/publish257.yml`을 기준으로 새 버전의 게시 스크립트와 워크플로를 만듭니다. 스크립트의 검증 JSON·ZIP 경로도 새 버전 폴더로 지정합니다.
+3. 현재 `.github/scripts/publish258.py`와 `.github/workflows/publish258.yml`을 기준으로 새 버전의 게시 스크립트와 워크플로를 만듭니다. 스크립트의 검증 JSON·ZIP 경로도 새 버전 폴더로 지정합니다.
 4. 새 릴리스 파일을 게시하고 다운로드한 ZIP의 해시·버전·소스를 확인합니다.
 5. 루트 `update.json`을 활성화하고 실제 자동 업데이트를 검증합니다.
 
