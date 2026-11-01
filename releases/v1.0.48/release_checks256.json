@@ -84,7 +84,47 @@
       "original_images_included_in_release": false,
       "scope": "Exact private127 frame, real Korean whole-frame and two-scale label OCR, list inspection with in-memory registered stage cache and mocked input; physical MuMu and live scrolling not replayed"
     },
-    "runtime_bundle_matches_source_commit": true
+    "runtime_bundle_matches_source_commit": true,
+    "production_updater": {
+      "result": "passed",
+      "live_upgrade255_to256": true,
+      "source_sha256_verified": true,
+      "previous_source_backup_verified": true,
+      "repeat_check_no_update": true,
+      "published_bundle_validation": {
+        "result": "passed",
+        "bundle_regressions": 6,
+        "original_frame_validation": {
+          "result": "passed",
+          "exact_private_frame": true,
+          "real_korean_ocr": true,
+          "legacy_error_reproduced": "획득 스테이지 12곳 중 1곳의 번호를 확정하지 못했습니다.",
+          "legacy_medals": 12,
+          "corrected_medals": 11,
+          "stage_numbers": [
+            "15-3",
+            "15-5",
+            "15-8",
+            "15-9",
+            "16-1",
+            "16-7",
+            "17-1",
+            "17-3",
+            "17-9",
+            "BONUS13",
+            "SP33"
+          ],
+          "unread_labels": 0,
+          "known_preview_registration_completed": true,
+          "existing_previews_reused_without_input": true,
+          "special_new_stage_clear_state_preserved": true,
+          "original_images_included_in_release": false,
+          "scope": "Exact private127 frame, real Korean whole-frame and two-scale label OCR, list inspection with in-memory registered stage cache and mocked input; physical MuMu and live scrolling not replayed"
+        },
+        "scope": "Bundled runtime, gold artwork regressions and exact private127 stage-list real Korean OCR and cached registration; physical MuMu unverified"
+      },
+      "scope": "Production downloaded bundle, gold portrait regression checks and exact private127 frame with real Korean OCR and cached list inspection; physical MuMu unverified"
+    }
   },
   "scope": [
     "Reject sparse gold portrait highlights as acquisition medal buttons in both list coverage and preview click selection",
@@ -99,7 +139,7 @@
     "main_branch_updated": true,
     "source_main_commit": "861afe2185c6c9932a3211536f31a83e8ffa7afe",
     "authorization": "User approved future tested changes be promoted and published immediately after required tests pass.",
-    "updater_activation": "production update.json set to256; live check pending",
+    "updater_activation": "production updater256 and live255-to256 backup/repeat/bundled original-frame OCR validation verified",
     "github_release": "https://github.com/tterx/pad0-updates/releases/tag/v1.0.48",
     "workflow": "https://github.com/tterx/pad0-updates/actions/runs/41286997815",
     "uploaded_asset_digest_verified": true,
