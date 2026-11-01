@@ -1,0 +1,86 @@
+{
+  "version": "v1.0.50",
+  "release": 258,
+  "source_commit": "1c196dfa2209079c874b32e65206929955f9c6f4",
+  "source_sha256": "8fbcee820c4e6bd2eb809a8a639feb0ae3aeacb561dda8ba8a3d95e9c3e5c581",
+  "zip_sha256": "abd497d9edfe5c3a67f7628e87503f5eb93ebadce2424710b349c1f1cf908740",
+  "checks": {
+    "package": "passed",
+    "bundle_import": "passed",
+    "offline_upgrade257_to258": "passed",
+    "bundled_startup_ai_cleanup": "passed",
+    "startup_preserves_skill_tactics": "passed",
+    "source_sha256": "8fbcee820c4e6bd2eb809a8a639feb0ae3aeacb561dda8ba8a3d95e9c3e5c581",
+    "zip_sha256": "abd497d9edfe5c3a67f7628e87503f5eb93ebadce2424710b349c1f1cf908740",
+    "source_bytes": 1965057,
+    "linux_tests": {
+      "run": 583,
+      "passed": 582,
+      "skipped": 1
+    },
+    "windows_ci": {
+      "conclusion": "success",
+      "run_id": 41294987993,
+      "url": "https://github.com/tterx/pad0-all-in-one/actions/runs/41294987993",
+      "head_sha": "1c196dfa2209079c874b32e65206929955f9c6f4",
+      "tests": 546
+    },
+    "candidate_bundle": {
+      "result": "passed",
+      "bundle_regressions": 31,
+      "condition_validation": {
+        "result": "passed",
+        "report130_initial_unknown_seconds": [
+          4.031,
+          4.469
+        ],
+        "report130_following_timer_seconds": 8,
+        "real_classifier_on_exact_private_success_frame": true,
+        "simulated_current_condition_failure_saved": true,
+        "previous_play_excluded": true,
+        "saved_path_empty": true,
+        "saved_pixels_equal_cached_frame": true,
+        "legacy_ready_callback_executed_without_second_click": true,
+        "new_ready_callback_does_not_execute": true,
+        "no_native_input": true,
+        "scope": "Exact private130 successful pre-move source frame with real classifier, simulated same-board condition failure and full ZIP save; actual first-failure frame unavailable. Legacy ready callback replay proves prior automatic continuation; current callback prepares only. Physical MuMu not replayed; originals excluded."
+      },
+      "scope": "Bundled runtime, real Tk current failure save, full ZIP binding and prepare-only lifecycle; exact private130 success-source frame with simulated condition failure. No native input or physical MuMu replay."
+    },
+    "condition_source_and_legacy_replay": {
+      "result": "passed",
+      "report130_initial_unknown_seconds": [
+        4.031,
+        4.469
+      ],
+      "report130_following_timer_seconds": 8,
+      "real_classifier_on_exact_private_success_frame": true,
+      "simulated_current_condition_failure_saved": true,
+      "previous_play_excluded": true,
+      "saved_path_empty": true,
+      "saved_pixels_equal_cached_frame": true,
+      "legacy_ready_callback_executed_without_second_click": true,
+      "new_ready_callback_does_not_execute": true,
+      "no_native_input": true,
+      "scope": "Exact private130 successful pre-move source frame with real classifier, simulated same-board condition failure and full ZIP save; actual first-failure frame unavailable. Legacy ready callback replay proves prior automatic continuation; current callback prepares only. Physical MuMu not replayed; originals excluded."
+    },
+    "runtime_bundle_matches_source_commit": true
+  },
+  "scope": [
+    "Cache the current condition probe pixels before OCR and preserve real errors/read history independently of a previous play",
+    "Save a matching failure before the first move using a dedicated floating condition-error button and distinct condition ZIP category",
+    "Refuse stale or missing condition evidence without falling back to an old play",
+    "Preparation and re-confirmation only announce readiness; game movement requires a new execution action"
+  ],
+  "limitations": [
+    "Exact private130 successful pre-move source frame is classified locally with simulated same-board condition failure; original first-failure frame unavailable",
+    "Previous auto-continuation callback replayed locally; actual native input and physical MuMu not replayed",
+    "Original images and diagnostic ZIPs excluded from publication"
+  ],
+  "publication": {
+    "main_branch_updated": true,
+    "source_main_commit": "1c196dfa2209079c874b32e65206929955f9c6f4",
+    "authorization": "User approved future tested changes be promoted and published immediately after required tests pass.",
+    "updater_activation": "source main verified; pending published ZIP download verification"
+  }
+}
