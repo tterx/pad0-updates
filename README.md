@@ -1,12 +1,12 @@
 # 퍼드0 올인원
 
-[**프로그램 ZIP 다운로드 · v1.0.48**](https://github.com/tterx/pad0-updates/releases/download/v1.0.48/pad0_overlay_windows_v1_0_48.zip) · [전체 릴리스](https://github.com/tterx/pad0-updates/releases)
+[**프로그램 ZIP 다운로드 · v1.0.49**](https://github.com/tterx/pad0-updates/releases/download/v1.0.49/pad0_overlay_windows_v1_0_49.zip) · [전체 릴리스](https://github.com/tterx/pad0-updates/releases)
 
-현재 표시 버전은 **1.0.48**, 자동 업데이트 내부 순번은 **256**입니다.
+현재 표시 버전은 **1.0.49**, 자동 업데이트 내부 순번은 **257**입니다.
 
 새로 설치할 때는 ZIP을 풀고 `시작.vbs`를 실행하세요. 기존 설치는 PAD0를 완전히 종료한 뒤 `시작.vbs`를 다시 실행하면 업데이트됩니다.
 
-최근 버전에는 스테이지 목록의 노란 캐릭터 그림을 훈장 버튼으로 오인해 재료확인이 멈추는 문제를 수정했습니다. [변경 내용](docs/reviews/REVIEW256.md) · [검증 기록](releases/v1.0.48/release_checks256.json)
+최근 버전에는 수동 5속성 경로를 우선 준비하고 회복 포함 재계산을 분리했습니다. 짧은 시간 검증의 확정 낙하 콤보 누락을 수정하고 조건 자동 재확인·완료음 개선을 반영했습니다. [변경 내용](docs/reviews/REVIEW257.md) · [검증 기록](releases/v1.0.49/release_checks257.json)
 
 ## 저장소 안내
 
