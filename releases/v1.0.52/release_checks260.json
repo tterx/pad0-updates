@@ -70,7 +70,40 @@
       "automatic_execution_calls": 0,
       "scope": "Exact private134 pixels with real classifier/Korean OCR; saved unknown windows and a late queue result reconstructed with controlled timing and mocked process/input boundaries. Previous latch rejection reproduced and new preparation path accepted. Actual9.25-second live interleaving and physical MuMu not replayed; originals excluded."
     },
-    "runtime_bundle_matches_source_commit": true
+    "runtime_bundle_matches_source_commit": true,
+    "production_updater": {
+      "result": "passed",
+      "live_upgrade259_to260": true,
+      "source_sha256_verified": true,
+      "previous_source_backup_verified": true,
+      "repeat_check_no_update": true,
+      "published_bundle_validation": {
+        "result": "passed",
+        "bundle_regressions": 53,
+        "condition_validation": {
+          "result": "passed",
+          "exact_private134_classifier": true,
+          "real_korean_ocr_timer_seconds": 8,
+          "combo_condition_confirmed": true,
+          "reported_work_seconds": 9.25,
+          "legacy_terminal_unknown_ignores_confirmed_result": true,
+          "reconstructed_wait_windows": [
+            4.297,
+            4.031
+          ],
+          "modeled_result_age_seconds": 4.5,
+          "fresh_independent_board_witness": true,
+          "parent_queue_starts_route_preparation": true,
+          "prepared_attributes": 5,
+          "prepared_minimum_final_combos": 6,
+          "fresh_execution_rejects_unknown_conditions": true,
+          "automatic_execution_calls": 0,
+          "scope": "Exact private134 pixels with real classifier/Korean OCR; saved unknown windows and a late queue result reconstructed with controlled timing and mocked process/input boundaries. Previous latch rejection reproduced and new preparation path accepted. Actual9.25-second live interleaving and physical MuMu not replayed; originals excluded."
+        },
+        "scope": "Bundled runtime, real Tk current failure save, full ZIP binding and prepare-only lifecycle; private134 real classifier/OCR, terminal unknown recovery and controlled late delivery. No native input or physical MuMu replay."
+      },
+      "scope": "Production downloaded bundle, terminal unknown recovery, bounded late preview evidence, private134 real Korean OCR and explicit execution gates; physical MuMu unverified"
+    }
   },
   "scope": [
     "Reopen only a matching terminal condition-unknown state when a confirmed known-time result arrives",
@@ -87,7 +120,7 @@
     "main_branch_updated": true,
     "source_main_commit": "4d5ee0eceaa4b1761aca82b1b35aeaca96fd25ad",
     "authorization": "User approved future tested changes be promoted and published immediately after required tests pass.",
-    "updater_activation": "production update.json set to260; live check pending",
+    "updater_activation": "production updater260 and live259-to260 backup/repeat,53 bundled regressions, private134 OCR/saved-state recovery and fresh execution holds verified",
     "github_release": "https://github.com/tterx/pad0-updates/releases/tag/v1.0.52",
     "workflow": "https://github.com/tterx/pad0-updates/actions/runs/41350154013",
     "uploaded_asset_digest_verified": true,
