@@ -85,7 +85,56 @@
       "root_cause_of_report136": "not established: original ZIP lacks full-game capture, readings and stage; capture setup and orphan ownership are tested candidate mechanisms",
       "scope": "Exact136 board pixels and modeled saved wait windows, synthetic backend stall with actual wait budget; native capture/thread dispatch boundaries mocked. No full136 OCR or physical MuMu input; originals excluded."
     },
-    "runtime_bundle_matches_source_commit": true
+    "runtime_bundle_matches_source_commit": true,
+    "production_updater": {
+      "result": "passed",
+      "live_upgrade262_to263": true,
+      "source_sha256_verified": true,
+      "previous_source_backup_verified": true,
+      "repeat_check_no_update": true,
+      "published_bundle_validation": {
+        "result": "passed",
+        "bundle_regressions": 86,
+        "condition_validation": {
+          "result": "passed",
+          "exact_private135_classifier": true,
+          "real_korean_ocr_timer_seconds": 8,
+          "combo_condition_confirmed": true,
+          "reported_work_seconds": 9.687,
+          "modeled_ocr_elapsed_seconds": 6.546,
+          "legacy_worker_rejected_at_age_seconds": 3.141,
+          "no_independent_recognition_witness_injected": true,
+          "real_ocr_passes": 1,
+          "previous_second_ocr_skipped": true,
+          "post_ocr_board_capture": true,
+          "parent_queue_starts_route_preparation": true,
+          "prepared_attributes": 5,
+          "prepared_minimum_final_combos": 6,
+          "fresh_execution_rejects_unknown_conditions": true,
+          "automatic_execution_calls": 0,
+          "scope": "Exact private135 classifier/Korean OCR with worker-to-parent flow; previous report9.687-second scheduling modeled; confirmed master uses one6.546-second read plus a current board capture with controlled time and mocked capture/process/input boundaries, real mathematical route. Physical MuMu input unverified; originals excluded."
+        },
+        "scope": "Bundled runtime, real Tk current failure save, full ZIP binding and prepare-only lifecycle; private135 real classifier/OCR, worker-to-parent delivery without injected recognition witness. No native input or physical MuMu replay.",
+        "wait_validation": {
+          "result": "passed",
+          "private136_exact_board_classifier": true,
+          "recorded_wait_windows": [
+            12.484,
+            12.125
+          ],
+          "modeled_legacy_wait_seconds": 24.609,
+          "legacy_orphan_unknown_latch_reproduced": true,
+          "new_current_board_probe_scheduled": true,
+          "recognized_only_job_stage_saved": true,
+          "simulated_backend_stall_desktop_fallback_seconds": 0.1505,
+          "optional_backend_wait_budget_seconds": 0.15,
+          "automatic_execution_calls": 0,
+          "root_cause_of_report136": "not established: original ZIP lacks full-game capture, readings and stage; capture setup and orphan ownership are tested candidate mechanisms",
+          "scope": "Exact136 board pixels and modeled saved wait windows, synthetic backend stall with actual wait budget; native capture/thread dispatch boundaries mocked. No full136 OCR or physical MuMu input; originals excluded."
+        }
+      },
+      "scope": "Production downloaded bundle, post-OCR current board validation and worker-to-parent delivery, private135 real Korean OCR and explicit execution gates; physical MuMu unverified"
+    }
   },
   "scope": [
     "Bound optional connected manual capture to150ms; use visibility-checked current desktop at timeout or while backend is busy",
@@ -105,7 +154,7 @@
     "main_branch_updated": true,
     "source_main_commit": "b522e658d7b17ed4870bd77488dd13bbdc6bdc9e",
     "authorization": "User approved future tested changes be promoted and published immediately after required tests pass.",
-    "updater_activation": "production update.json set to263; live check pending",
+    "updater_activation": "production updater263 verified: live262-to263 backup/repeat,86 bundled regressions, private135 real Korean OCR and private136 board/wait-pattern replay, bounded synthetic backend wait and explicit execution gates; exact136 blocking call unestablished",
     "github_release": "https://github.com/tterx/pad0-updates/releases/tag/v1.0.55",
     "workflow": "https://github.com/tterx/pad0-updates/actions/runs/41362370230",
     "uploaded_asset_digest_verified": true,
