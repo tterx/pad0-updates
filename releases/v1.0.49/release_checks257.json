@@ -1,0 +1,164 @@
+{
+  "version": "v1.0.49",
+  "release": 257,
+  "source_commit": "d60c31a728e8b31712d99fea1a88d5c9c1d19b1a",
+  "source_sha256": "f3a3c4d0cf4eee7a32f448734178f6a72f1b87e952dee2b15ad3136391d297f2",
+  "zip_sha256": "0df0eb51411feba1fc49b517444ab528a0464f83bb19fbf97fe99475289a8bb8",
+  "checks": {
+    "package": "passed",
+    "bundle_import": "passed",
+    "offline_upgrade256_to257": "passed",
+    "bundled_startup_ai_cleanup": "passed",
+    "startup_preserves_skill_tactics": "passed",
+    "source_sha256": "f3a3c4d0cf4eee7a32f448734178f6a72f1b87e952dee2b15ad3136391d297f2",
+    "zip_sha256": "0df0eb51411feba1fc49b517444ab528a0464f83bb19fbf97fe99475289a8bb8",
+    "source_bytes": 1959517,
+    "linux_tests": {
+      "run": 567,
+      "passed": 566,
+      "skipped": 1
+    },
+    "windows_ci": {
+      "conclusion": "success",
+      "run_id": 41292242391,
+      "url": "https://github.com/tterx/pad0-all-in-one/actions/runs/41292242391",
+      "head_sha": "d60c31a728e8b31712d99fea1a88d5c9c1d19b1a",
+      "tests": 530
+    },
+    "candidate_bundle": {
+      "private_report_validation": {
+        "result": "passed",
+        "reports": [
+          {
+            "report": 128,
+            "real_korean_ocr": true,
+            "timer_seconds": 11,
+            "enemy_floor": 0,
+            "combo_bonus": 0,
+            "attributes": 5,
+            "minimum_final_combos": 6,
+            "stored_path_replayed": true,
+            "original_input_confirmed": true,
+            "initial_failure_evidence_present": false
+          },
+          {
+            "report": 129,
+            "real_korean_ocr": true,
+            "timer_seconds": 8,
+            "enemy_floor": 8,
+            "combo_bonus": 2,
+            "attributes": 5,
+            "minimum_final_combos": 8,
+            "stored_path_replayed": true,
+            "original_input_confirmed": true,
+            "initial_failure_evidence_present": false
+          }
+        ],
+        "scope": "Exact private128/129 frames with real Korean condition/timer OCR and stored-path replay; both ZIPs contain successful moves after recheck, so the first failure cause is unavailable. No native input or physical MuMu replay; original images excluded."
+      },
+      "manual_hud_validation": {
+        "recovery_button_compute_action": true,
+        "result": "passed",
+        "real_tk": true,
+        "states_checked": 8,
+        "missing_and_complete": true,
+        "normal_and_master_modes": true,
+        "cached_result_notice": true,
+        "one_five_attribute_row": true,
+        "combo_and_error_status_preserved": true,
+        "scope": "Real floating manual HUD in virtual Tk display, generated boards and mocked emulator window discovery; physical Windows display not replayed"
+      },
+      "result": "passed",
+      "bundle_regressions": 17,
+      "waveform_validation": {
+        "result": "passed",
+        "previous_duration_seconds": 0.45,
+        "duration_seconds": 2.2,
+        "previous_peak": 2418.0,
+        "peak": 8233.0,
+        "peak_ratio": 3.405,
+        "late_tail_rms": 1225.711,
+        "clipped_samples": 0,
+        "end_10ms_peak": 15.0,
+        "wav_sha256": "b12d8e81d0bf7edc612501345c32a7f9bec41ff65c8adeff1e57725856cfece9",
+        "scope": "Generated in-memory WAV, previous version waveform comparison and late-tail/edge analysis; speaker playback and perceived loudness not measured"
+      },
+      "scope": "Bundled runtime, completion PCM waveform and one-shot daemon playback with fake Windows sound driver and real Tk manual HUD; physical speaker playback unverified"
+    },
+    "completion_chime_waveform": {
+      "result": "passed",
+      "previous_duration_seconds": 0.45,
+      "duration_seconds": 2.2,
+      "previous_peak": 2418.0,
+      "peak": 8233.0,
+      "peak_ratio": 3.405,
+      "late_tail_rms": 1225.711,
+      "clipped_samples": 0,
+      "end_10ms_peak": 15.0,
+      "wav_sha256": "b12d8e81d0bf7edc612501345c32a7f9bec41ff65c8adeff1e57725856cfece9",
+      "scope": "Generated in-memory WAV, previous version waveform comparison and late-tail/edge analysis; speaker playback and perceived loudness not measured"
+    },
+    "real_tk_manual_hud": {
+      "recovery_button_compute_action": true,
+      "result": "passed",
+      "real_tk": true,
+      "states_checked": 8,
+      "missing_and_complete": true,
+      "normal_and_master_modes": true,
+      "cached_result_notice": true,
+      "one_five_attribute_row": true,
+      "combo_and_error_status_preserved": true,
+      "scope": "Real floating manual HUD in virtual Tk display, generated boards and mocked emulator window discovery; physical Windows display not replayed"
+    },
+    "private_128_129_replay": {
+      "result": "passed",
+      "reports": [
+        {
+          "report": 128,
+          "real_korean_ocr": true,
+          "timer_seconds": 11,
+          "enemy_floor": 0,
+          "combo_bonus": 0,
+          "attributes": 5,
+          "minimum_final_combos": 6,
+          "stored_path_replayed": true,
+          "original_input_confirmed": true,
+          "initial_failure_evidence_present": false
+        },
+        {
+          "report": 129,
+          "real_korean_ocr": true,
+          "timer_seconds": 8,
+          "enemy_floor": 8,
+          "combo_bonus": 2,
+          "attributes": 5,
+          "minimum_final_combos": 8,
+          "stored_path_replayed": true,
+          "original_input_confirmed": true,
+          "initial_failure_evidence_present": false
+        }
+      ],
+      "scope": "Exact private128/129 frames with real Korean condition/timer OCR and stored-path replay; both ZIPs contain successful moves after recheck, so the first failure cause is unavailable. No native input or physical MuMu replay; original images excluded."
+    },
+    "runtime_bundle_matches_source_commit": true
+  },
+  "scope": [
+    "Increase the completion bell to 2.2 seconds with stronger amplitude and a lingering decay, keeping one-shot daemon playback and preferences",
+    "Rename the sound preference to 완료 알림음",
+    "Keep five-colour attack previews before optional healing; explicit recovery retry preserves ready paths and uses new seeds",
+    "Retain certified known gravity combos in short-timer attack verification without restoring the four-second reserve",
+    "Bound initial condition rechecks and resume a clicked execution after preparation; preserve failed read evidence",
+    "Show one 5속성 : missing-attribute inventory row in the manual HUD, preserving combo progress, timing failures, retry messages and TPA mode"
+  ],
+  "limitations": [
+    "Reports128/129 contain successful post-recheck moves only; the exact first failure cause is not recoverable from those ZIPs",
+    "Waveform peak and late tail measured; actual Windows speaker loudness not measured",
+    "Real Tk manual HUD checked in a virtual display with generated boards and mocked emulator discovery; physical MuMu not replayed"
+  ],
+  "publication": {
+    "main_branch_updated": true,
+    "source_main_commit": "d60c31a728e8b31712d99fea1a88d5c9c1d19b1a",
+    "authorization": "User approved future tested changes be promoted and published immediately after required tests pass.",
+    "updater_activation": "source main verified; pending published ZIP download verification"
+  }
+}
