@@ -1,0 +1,92 @@
+{
+  "version": "v1.0.52",
+  "release": 260,
+  "source_commit": "4d5ee0eceaa4b1761aca82b1b35aeaca96fd25ad",
+  "source_sha256": "99c4f2316159d0b51bd58b22d592c64d9a034330acf90ce7171483ac34b6317e",
+  "zip_sha256": "5efa6072c50b79598931126604f53963b39f07875aa7dc3fc26ec69e5d324230",
+  "checks": {
+    "package": "passed",
+    "bundle_import": "passed",
+    "offline_upgrade259_to260": "passed",
+    "bundled_startup_ai_cleanup": "passed",
+    "startup_preserves_skill_tactics": "passed",
+    "source_sha256": "99c4f2316159d0b51bd58b22d592c64d9a034330acf90ce7171483ac34b6317e",
+    "zip_sha256": "5efa6072c50b79598931126604f53963b39f07875aa7dc3fc26ec69e5d324230",
+    "source_bytes": 1976593,
+    "linux_tests": {
+      "run": 605,
+      "passed": 604,
+      "skipped": 1
+    },
+    "windows_ci": {
+      "conclusion": "success",
+      "run_id": 41349455610,
+      "url": "https://github.com/tterx/pad0-all-in-one/actions/runs/41349455610",
+      "head_sha": "4d5ee0eceaa4b1761aca82b1b35aeaca96fd25ad",
+      "tests": 568
+    },
+    "candidate_bundle": {
+      "result": "passed",
+      "bundle_regressions": 53,
+      "condition_validation": {
+        "result": "passed",
+        "exact_private134_classifier": true,
+        "real_korean_ocr_timer_seconds": 8,
+        "combo_condition_confirmed": true,
+        "reported_work_seconds": 9.25,
+        "legacy_terminal_unknown_ignores_confirmed_result": true,
+        "reconstructed_wait_windows": [
+          4.297,
+          4.031
+        ],
+        "modeled_result_age_seconds": 4.5,
+        "fresh_independent_board_witness": true,
+        "parent_queue_starts_route_preparation": true,
+        "prepared_attributes": 5,
+        "prepared_minimum_final_combos": 6,
+        "fresh_execution_rejects_unknown_conditions": true,
+        "automatic_execution_calls": 0,
+        "scope": "Exact private134 pixels with real classifier/Korean OCR; saved unknown windows and a late queue result reconstructed with controlled timing and mocked process/input boundaries. Previous latch rejection reproduced and new preparation path accepted. Actual9.25-second live interleaving and physical MuMu not replayed; originals excluded."
+      },
+      "scope": "Bundled runtime, real Tk current failure save, full ZIP binding and prepare-only lifecycle; private134 real classifier/OCR, terminal unknown recovery and controlled late delivery. No native input or physical MuMu replay."
+    },
+    "condition_recovery_replay": {
+      "result": "passed",
+      "exact_private134_classifier": true,
+      "real_korean_ocr_timer_seconds": 8,
+      "combo_condition_confirmed": true,
+      "reported_work_seconds": 9.25,
+      "legacy_terminal_unknown_ignores_confirmed_result": true,
+      "reconstructed_wait_windows": [
+        4.297,
+        4.031
+      ],
+      "modeled_result_age_seconds": 4.5,
+      "fresh_independent_board_witness": true,
+      "parent_queue_starts_route_preparation": true,
+      "prepared_attributes": 5,
+      "prepared_minimum_final_combos": 6,
+      "fresh_execution_rejects_unknown_conditions": true,
+      "automatic_execution_calls": 0,
+      "scope": "Exact private134 pixels with real classifier/Korean OCR; saved unknown windows and a late queue result reconstructed with controlled timing and mocked process/input boundaries. Previous latch rejection reproduced and new preparation path accepted. Actual9.25-second live interleaving and physical MuMu not replayed; originals excluded."
+    },
+    "runtime_bundle_matches_source_commit": true
+  },
+  "scope": [
+    "Reopen only a matching terminal condition-unknown state when a confirmed known-time result arrives",
+    "Preserve ready previews and genuine bounded math failures",
+    "Accept slow master preview seeds only with a fresh independent same-board/area/epoch recognition witness and a twelve-second bound",
+    "Retain explicit execution and fresh time/enemy/spike validation; no automatic input from recovered results"
+  ],
+  "limitations": [
+    "Exact private134 pixels used for real Korean OCR and saved-state replay; original9.25-second wall-time scheduling modeled with controlled queue age",
+    "Math process/input boundaries mocked for state-transition replay; no native input or physical MuMu replay",
+    "Original images and diagnostic ZIPs excluded from publication"
+  ],
+  "publication": {
+    "main_branch_updated": true,
+    "source_main_commit": "4d5ee0eceaa4b1761aca82b1b35aeaca96fd25ad",
+    "authorization": "User approved future tested changes be promoted and published immediately after required tests pass.",
+    "updater_activation": "source main verified; pending published ZIP download verification"
+  }
+}
