@@ -1,12 +1,12 @@
 # 퍼드0 올인원
 
-[**프로그램 ZIP 다운로드 · v1.0.50**](https://github.com/tterx/pad0-updates/releases/download/v1.0.50/pad0_overlay_windows_v1_0_50.zip) · [전체 릴리스](https://github.com/tterx/pad0-updates/releases)
+[**프로그램 ZIP 다운로드 · v1.0.51**](https://github.com/tterx/pad0-updates/releases/download/v1.0.51/pad0_overlay_windows_v1_0_51.zip) · [전체 릴리스](https://github.com/tterx/pad0-updates/releases)
 
-현재 표시 버전은 **1.0.50**, 자동 업데이트 내부 순번은 **258**입니다.
+현재 표시 버전은 **1.0.51**, 자동 업데이트 내부 순번은 **259**입니다.
 
 새로 설치할 때는 ZIP을 풀고 `시작.vbs`를 실행하세요. 기존 설치는 PAD0를 완전히 종료한 뒤 `시작.vbs`를 다시 실행하면 업데이트됩니다.
 
-최근 버전에는 현재 조건 확인 실패의 화면을 이전 플레이와 분리해 저장합니다. 게임 위 조건 오류 저장 버튼을 추가하고, 재확인·재계산 후에는 실행 버튼을 다시 눌러야 이동하도록 바꿨습니다. [변경 내용](docs/reviews/REVIEW258.md) · [검증 기록](releases/v1.0.50/release_checks258.json)
+최근 버전에는 자동 판 인식 원본을 인식 시점부터 보관합니다. 조건 작업 전·캡처 실패·F10 뒤에도 인식판을 저장하고, 구체적인 조건 실패 단계와 예외를 보존합니다. [변경 내용](docs/reviews/REVIEW259.md) · [검증 기록](releases/v1.0.51/release_checks259.json)
 
 ## 저장소 안내
 

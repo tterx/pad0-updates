@@ -8,7 +8,7 @@
 - [이전 안내문](history/README-before-cleanup.md): 정리 전 메인 안내문과 과거 변경 내역
 - [저장소 관리 안내](MAINTAINING.md): 파일 배치와 배포 절차
 
-현재 버전은 [v1.0.50 변경 내용](reviews/REVIEW258.md)과 [배포 검증 기록](../releases/v1.0.50/release_checks258.json)을 참고하세요. 기술 문서에는 이전 설계에 대한 설명도 포함되어 있습니다.
+현재 버전은 [v1.0.51 변경 내용](reviews/REVIEW259.md)과 [배포 검증 기록](../releases/v1.0.51/release_checks259.json)을 참고하세요. 기술 문서에는 이전 설계에 대한 설명도 포함되어 있습니다.
 
 ## 주요 문서
 
