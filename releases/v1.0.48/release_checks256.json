@@ -1,0 +1,104 @@
+{
+  "version": "v1.0.48",
+  "release": 256,
+  "source_commit": "861afe2185c6c9932a3211536f31a83e8ffa7afe",
+  "source_sha256": "c3fdddf0c6c1b0df646f75566b166ccb21cef333ed07d7973be303868dd2fbeb",
+  "zip_sha256": "85bb6856ada670c91b360d056306e5ac55db74f00a9d07e738299e94d3bfb0fa",
+  "checks": {
+    "package": "passed",
+    "bundle_import": "passed",
+    "offline_upgrade255_to256": "passed",
+    "bundled_startup_ai_cleanup": "passed",
+    "startup_preserves_skill_tactics": "passed",
+    "source_sha256": "c3fdddf0c6c1b0df646f75566b166ccb21cef333ed07d7973be303868dd2fbeb",
+    "zip_sha256": "85bb6856ada670c91b360d056306e5ac55db74f00a9d07e738299e94d3bfb0fa",
+    "source_bytes": 1949254,
+    "linux_tests": {
+      "run": 552,
+      "passed": 551,
+      "skipped": 1
+    },
+    "windows_ci": {
+      "conclusion": "success",
+      "run_id": 41286657568,
+      "url": "https://github.com/tterx/pad0-all-in-one/actions/runs/41286657568",
+      "head_sha": "861afe2185c6c9932a3211536f31a83e8ffa7afe",
+      "tests": 515
+    },
+    "candidate_bundle": {
+      "result": "passed",
+      "bundle_regressions": 6,
+      "original_frame_validation": {
+        "result": "passed",
+        "exact_private_frame": true,
+        "real_korean_ocr": true,
+        "legacy_error_reproduced": "획득 스테이지 12곳 중 1곳의 번호를 확정하지 못했습니다.",
+        "legacy_medals": 12,
+        "corrected_medals": 11,
+        "stage_numbers": [
+          "15-3",
+          "15-5",
+          "15-8",
+          "15-9",
+          "16-1",
+          "16-7",
+          "17-1",
+          "17-3",
+          "17-9",
+          "BONUS13",
+          "SP33"
+        ],
+        "unread_labels": 0,
+        "known_preview_registration_completed": true,
+        "existing_previews_reused_without_input": true,
+        "special_new_stage_clear_state_preserved": true,
+        "original_images_included_in_release": false,
+        "scope": "Exact private127 frame, real Korean whole-frame and two-scale label OCR, list inspection with in-memory registered stage cache and mocked input; physical MuMu and live scrolling not replayed"
+      },
+      "scope": "Bundled runtime, gold artwork regressions and exact private127 stage-list real Korean OCR and cached registration; physical MuMu unverified"
+    },
+    "exact_stage_list_real_ocr": {
+      "result": "passed",
+      "exact_private_frame": true,
+      "real_korean_ocr": true,
+      "legacy_error_reproduced": "획득 스테이지 12곳 중 1곳의 번호를 확정하지 못했습니다.",
+      "legacy_medals": 12,
+      "corrected_medals": 11,
+      "stage_numbers": [
+        "15-3",
+        "15-5",
+        "15-8",
+        "15-9",
+        "16-1",
+        "16-7",
+        "17-1",
+        "17-3",
+        "17-9",
+        "BONUS13",
+        "SP33"
+      ],
+      "unread_labels": 0,
+      "known_preview_registration_completed": true,
+      "existing_previews_reused_without_input": true,
+      "special_new_stage_clear_state_preserved": true,
+      "original_images_included_in_release": false,
+      "scope": "Exact private127 frame, real Korean whole-frame and two-scale label OCR, list inspection with in-memory registered stage cache and mocked input; physical MuMu and live scrolling not replayed"
+    },
+    "runtime_bundle_matches_source_commit": true
+  },
+  "scope": [
+    "Reject sparse gold portrait highlights as acquisition medal buttons in both list coverage and preview click selection",
+    "Preserve strict stage-number OCR, genuine unread-label rejection, special identities and exact-pixel caching",
+    "Complete all eleven stage entries on the exact supplied frame including BONUS13 and NEW SP33, preserving cached preview reuse"
+  ],
+  "limitations": [
+    "Exact private127 pixels replayed locally with real Korean OCR and list inspection using in-memory registered cache and mocked input",
+    "Physical MuMu and live scrolling not replayed; original images and diagnostic ZIP excluded from publication"
+  ],
+  "publication": {
+    "main_branch_updated": true,
+    "source_main_commit": "861afe2185c6c9932a3211536f31a83e8ffa7afe",
+    "authorization": "User approved future tested changes be promoted and published immediately after required tests pass.",
+    "updater_activation": "source main verified; pending published ZIP download verification"
+  }
+}
