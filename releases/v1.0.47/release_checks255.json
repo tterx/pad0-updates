@@ -1,0 +1,101 @@
+{
+  "version": "v1.0.47",
+  "release": 255,
+  "source_commit": "735466794864102dacd25daf3cc2cf360ebfdf60",
+  "source_sha256": "3840134181bae3e02ef0e5894404f1148de4ed68ab6088837573cf9c0670d987",
+  "zip_sha256": "a18632c226dd07961733a5015b417e74faf6101e0b85c8e14cbbe113e579cdea",
+  "checks": {
+    "package": "passed",
+    "bundle_import": "passed",
+    "offline_upgrade254_to255": "passed",
+    "bundled_startup_ai_cleanup": "passed",
+    "startup_preserves_skill_tactics": "passed",
+    "source_sha256": "3840134181bae3e02ef0e5894404f1148de4ed68ab6088837573cf9c0670d987",
+    "zip_sha256": "a18632c226dd07961733a5015b417e74faf6101e0b85c8e14cbbe113e579cdea",
+    "source_bytes": 1949141,
+    "linux_tests": {
+      "run": 546,
+      "passed": 545,
+      "skipped": 1
+    },
+    "windows_ci": {
+      "conclusion": "success",
+      "run_id": 41285237834,
+      "url": "https://github.com/tterx/pad0-all-in-one/actions/runs/41285237834",
+      "head_sha": "735466794864102dacd25daf3cc2cf360ebfdf60",
+      "tests": 509,
+      "rerun_after_unrelated_two_second_tpa_timeout": true
+    },
+    "candidate_bundle": {
+      "result": "passed",
+      "bundle_regressions": 10,
+      "creation_owner_validation": {
+        "result": "passed",
+        "legacy_owner_failure_reproduced": "재료는 읽었지만 돌파 대상 이름을 확인하지 못했습니다. 제목 전체가 보이는 생성·돌파 확인 화면에서 재료확인/F7을 다시 눌러 주세요.",
+        "number": "343",
+        "official_name": "협주의 신부 트럼펫 용악사 페논",
+        "required": [
+          3,
+          2,
+          2,
+          1,
+          5
+        ],
+        "owned": [
+          10,
+          2,
+          0,
+          4,
+          21
+        ],
+        "real_korean_ocr": true,
+        "full_f7_worker": true,
+        "settings_number_name_saved": true,
+        "scope": "Generated five-material panel matching reported counts, generated Korean creation header and No.343 badge, real Korean OCR and full F7 worker with simulated unread long title; exact user inline pixels and physical MuMu not replayed"
+      },
+      "scope": "Bundled runtime, single-capture and owner number regressions, generated Korean creation header/No343 and reported material counts with real OCR and complete F7 worker; exact inline pixels and physical MuMu not replayed"
+    },
+    "creation_owner_real_ocr": {
+      "result": "passed",
+      "legacy_owner_failure_reproduced": "재료는 읽었지만 돌파 대상 이름을 확인하지 못했습니다. 제목 전체가 보이는 생성·돌파 확인 화면에서 재료확인/F7을 다시 눌러 주세요.",
+      "number": "343",
+      "official_name": "협주의 신부 트럼펫 용악사 페논",
+      "required": [
+        3,
+        2,
+        2,
+        1,
+        5
+      ],
+      "owned": [
+        10,
+        2,
+        0,
+        4,
+        21
+      ],
+      "real_korean_ocr": true,
+      "full_f7_worker": true,
+      "settings_number_name_saved": true,
+      "scope": "Generated five-material panel matching reported counts, generated Korean creation header and No.343 badge, real Korean OCR and full F7 worker with simulated unread long title; exact user inline pixels and physical MuMu not replayed"
+    },
+    "runtime_bundle_matches_source_commit": true
+  },
+  "scope": [
+    "Bind material row, title and current result No. to one automatic game-window capture",
+    "Use two confident agreeing creation No. reads and verified game names when the long owner title fails",
+    "Add the screenshot-attested official No343 name while rejecting provisional catalog fallbacks and known other-owner conflicts",
+    "Keep failed-identity inventory intact and show title/number evidence instead of repeated full-title retry instructions"
+  ],
+  "limitations": [
+    "Generated Korean creation header/No343 and five-material panel with real Korean OCR and full worker; exact inline pixels and physical MuMu not replayed",
+    "No343 official game spelling transcribed from the supplied screenshot; other number fallbacks require already confirmed game names",
+    "Linux virtual display was restarted after display-only errors; Windows job rerun after an unrelated existing two-second TPA timeout"
+  ],
+  "publication": {
+    "main_branch_updated": true,
+    "source_main_commit": "735466794864102dacd25daf3cc2cf360ebfdf60",
+    "authorization": "User approved future tested changes be promoted and published immediately after required tests pass.",
+    "updater_activation": "source main verified; pending published ZIP download verification"
+  }
+}
