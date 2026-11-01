@@ -1,12 +1,12 @@
 # 퍼드0 올인원
 
-[**프로그램 ZIP 다운로드 · v1.0.53**](https://github.com/tterx/pad0-updates/releases/download/v1.0.53/pad0_overlay_windows_v1_0_53.zip) · [전체 릴리스](https://github.com/tterx/pad0-updates/releases)
+[**프로그램 ZIP 다운로드 · v1.0.54**](https://github.com/tterx/pad0-updates/releases/download/v1.0.54/pad0_overlay_windows_v1_0_54.zip) · [전체 릴리스](https://github.com/tterx/pad0-updates/releases)
 
-현재 표시 버전은 **1.0.53**, 자동 업데이트 내부 순번은 **261**입니다.
+현재 표시 버전은 **1.0.54**, 자동 업데이트 내부 순번은 **262**입니다.
 
 새로 설치할 때는 ZIP을 풀고 `시작.vbs`를 실행하세요. 기존 설치는 PAD0를 완전히 종료한 뒤 `시작.vbs`를 다시 실행하면 업데이트됩니다.
 
-최근 버전에는 느린 조건 판독 성공 결과가 만료되어 무시되던 문제를 수정했습니다. 판독 직후 현재 판·가시·바인드를 새 화면에서 확인해 경로 준비로 전달하며, 실제 실행 직전 재검증은 유지합니다. [변경 내용](docs/reviews/REVIEW261.md) · [검증 기록](releases/v1.0.53/release_checks261.json)
+최근 버전에는 판 안정 확인 전 대기, 같은 화면의 중복 판독, 확인된 조건의 반복 OCR을 줄였습니다. 두 번의 판 확인과 실행 직전 현재 조건 재검증은 유지합니다. [변경 내용](docs/reviews/REVIEW262.md) · [검증 기록](releases/v1.0.54/release_checks262.json)
 
 ## 저장소 안내
 
