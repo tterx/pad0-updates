@@ -60,7 +60,35 @@
       "original_live_failure_reproduced": false,
       "scope": "Exact private133 pixels, real classifier and Korean OCR/full condition worker; live failure not reproduced offline. Recognition-only save and injected timer failure exercise ZIP binding/evidence retention. No native input or physical MuMu; originals excluded."
     },
-    "runtime_bundle_matches_source_commit": true
+    "runtime_bundle_matches_source_commit": true,
+    "production_updater": {
+      "result": "passed",
+      "live_upgrade258_to259": true,
+      "source_sha256_verified": true,
+      "previous_source_backup_verified": true,
+      "repeat_check_no_update": true,
+      "published_bundle_validation": {
+        "result": "passed",
+        "bundle_regressions": 43,
+        "condition_validation": {
+          "result": "passed",
+          "exact_private133_board_classified": true,
+          "legacy_recognition_only_state_unsaveable_reproduced": true,
+          "recognition_before_condition_saved": true,
+          "board_pixels_equal_original_crop": true,
+          "previous_play_excluded": true,
+          "real_korean_ocr_timer_seconds": 8,
+          "combo_condition_confirmed": true,
+          "full_probe_seconds": 0.866,
+          "injected_failure_stage_preserved": "timer",
+          "generic_wait_does_not_overwrite_exception": true,
+          "original_live_failure_reproduced": false,
+          "scope": "Exact private133 pixels, real classifier and Korean OCR/full condition worker; live failure not reproduced offline. Recognition-only save and injected timer failure exercise ZIP binding/evidence retention. No native input or physical MuMu; originals excluded."
+        },
+        "scope": "Bundled runtime, real Tk current failure save, full ZIP binding and prepare-only lifecycle; private133 real classifier/OCR, recognition-only save and injected timer failure. No native input or physical MuMu replay."
+      },
+      "scope": "Production downloaded bundle, live recognition cache before condition work, F10 diagnostics, raw failure stages, private133 real Korean OCR and prepare-only callbacks; physical MuMu unverified"
+    }
   },
   "scope": [
     "Retain validated periodic live recognition pixels before any condition task or manual move",
@@ -77,7 +105,7 @@
     "main_branch_updated": true,
     "source_main_commit": "e46bfbcd916a26bbbe8de56264b7f2d4e84c2e1a",
     "authorization": "User approved future tested changes be promoted and published immediately after required tests pass.",
-    "updater_activation": "production update.json set to259; live check pending",
+    "updater_activation": "production updater259 and live258-to259 backup/repeat,43 bundled regressions, recognition-only ZIP, F10 diagnostics and private133 real OCR/source binding verified",
     "github_release": "https://github.com/tterx/pad0-updates/releases/tag/v1.0.51",
     "workflow": "https://github.com/tterx/pad0-updates/actions/runs/41348351653",
     "uploaded_asset_digest_verified": true,
