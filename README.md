@@ -1,12 +1,12 @@
 # 퍼드0 올인원
 
-[**프로그램 ZIP 다운로드 · v1.0.52**](https://github.com/tterx/pad0-updates/releases/download/v1.0.52/pad0_overlay_windows_v1_0_52.zip) · [전체 릴리스](https://github.com/tterx/pad0-updates/releases)
+[**프로그램 ZIP 다운로드 · v1.0.53**](https://github.com/tterx/pad0-updates/releases/download/v1.0.53/pad0_overlay_windows_v1_0_53.zip) · [전체 릴리스](https://github.com/tterx/pad0-updates/releases)
 
-현재 표시 버전은 **1.0.52**, 자동 업데이트 내부 순번은 **260**입니다.
+현재 표시 버전은 **1.0.53**, 자동 업데이트 내부 순번은 **261**입니다.
 
 새로 설치할 때는 ZIP을 풀고 `시작.vbs`를 실행하세요. 기존 설치는 PAD0를 완전히 종료한 뒤 `시작.vbs`를 다시 실행하면 업데이트됩니다.
 
-최근 버전에는 시간·콤보를 정상 판독했는데도 이전 미확인 종료 상태 때문에 결과가 무시되던 문제를 수정했습니다. 정상 결과로 경로 준비를 복구하며 실행 직전 재검증은 유지합니다. [변경 내용](docs/reviews/REVIEW260.md) · [검증 기록](releases/v1.0.52/release_checks260.json)
+최근 버전에는 느린 조건 판독 성공 결과가 만료되어 무시되던 문제를 수정했습니다. 판독 직후 현재 판·가시·바인드를 새 화면에서 확인해 경로 준비로 전달하며, 실제 실행 직전 재검증은 유지합니다. [변경 내용](docs/reviews/REVIEW261.md) · [검증 기록](releases/v1.0.53/release_checks261.json)
 
 ## 저장소 안내
 
