@@ -64,7 +64,37 @@
       "no_native_input": true,
       "scope": "Exact private130 successful pre-move source frame with real classifier, simulated same-board condition failure and full ZIP save; actual first-failure frame unavailable. Legacy ready callback replay proves prior automatic continuation; current callback prepares only. Physical MuMu not replayed; originals excluded."
     },
-    "runtime_bundle_matches_source_commit": true
+    "runtime_bundle_matches_source_commit": true,
+    "production_updater": {
+      "result": "passed",
+      "live_upgrade257_to258": true,
+      "source_sha256_verified": true,
+      "previous_source_backup_verified": true,
+      "repeat_check_no_update": true,
+      "published_bundle_validation": {
+        "result": "passed",
+        "bundle_regressions": 31,
+        "condition_validation": {
+          "result": "passed",
+          "report130_initial_unknown_seconds": [
+            4.031,
+            4.469
+          ],
+          "report130_following_timer_seconds": 8,
+          "real_classifier_on_exact_private_success_frame": true,
+          "simulated_current_condition_failure_saved": true,
+          "previous_play_excluded": true,
+          "saved_path_empty": true,
+          "saved_pixels_equal_cached_frame": true,
+          "legacy_ready_callback_executed_without_second_click": true,
+          "new_ready_callback_does_not_execute": true,
+          "no_native_input": true,
+          "scope": "Exact private130 successful pre-move source frame with real classifier, simulated same-board condition failure and full ZIP save; actual first-failure frame unavailable. Legacy ready callback replay proves prior automatic continuation; current callback prepares only. Physical MuMu not replayed; originals excluded."
+        },
+        "scope": "Bundled runtime, real Tk current failure save, full ZIP binding and prepare-only lifecycle; exact private130 success-source frame with simulated condition failure. No native input or physical MuMu replay."
+      },
+      "scope": "Production downloaded bundle, current condition failure ZIP, real Tk button and prepare-only callbacks with exact private130 success-source binding and simulated condition failure; physical MuMu unverified"
+    }
   },
   "scope": [
     "Cache the current condition probe pixels before OCR and preserve real errors/read history independently of a previous play",
@@ -81,7 +111,7 @@
     "main_branch_updated": true,
     "source_main_commit": "1c196dfa2209079c874b32e65206929955f9c6f4",
     "authorization": "User approved future tested changes be promoted and published immediately after required tests pass.",
-    "updater_activation": "production update.json set to258; live check pending",
+    "updater_activation": "production updater258 and live257-to258 backup/repeat,31 bundled condition save/prepare-only regressions, real Tk ZIP action and exact private130 source binding verified",
     "github_release": "https://github.com/tterx/pad0-updates/releases/tag/v1.0.50",
     "workflow": "https://github.com/tterx/pad0-updates/actions/runs/41295330540",
     "uploaded_asset_digest_verified": true,
