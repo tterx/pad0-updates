@@ -1,12 +1,12 @@
 # 퍼드0 올인원
 
-[**프로그램 ZIP 다운로드 · v1.0.47**](https://github.com/tterx/pad0-updates/releases/download/v1.0.47/pad0_overlay_windows_v1_0_47.zip) · [전체 릴리스](https://github.com/tterx/pad0-updates/releases)
+[**프로그램 ZIP 다운로드 · v1.0.48**](https://github.com/tterx/pad0-updates/releases/download/v1.0.48/pad0_overlay_windows_v1_0_48.zip) · [전체 릴리스](https://github.com/tterx/pad0-updates/releases)
 
-현재 표시 버전은 **1.0.47**, 자동 업데이트 내부 순번은 **255**입니다.
+현재 표시 버전은 **1.0.48**, 자동 업데이트 내부 순번은 **256**입니다.
 
 새로 설치할 때는 ZIP을 풀고 `시작.vbs`를 실행하세요. 기존 설치는 PAD0를 완전히 종료한 뒤 `시작.vbs`를 다시 실행하면 업데이트됩니다.
 
-최근 버전에는 생성 확인의 긴 대상 이름을 확정하지 못할 때 현재 화면의 대상 번호와 검증된 게임 이름을 연결해 재료 등록을 진행하도록 보완했습니다. [변경 내용](docs/reviews/REVIEW255.md) · [검증 기록](releases/v1.0.47/release_checks255.json)
+최근 버전에는 스테이지 목록의 노란 캐릭터 그림을 훈장 버튼으로 오인해 재료확인이 멈추는 문제를 수정했습니다. [변경 내용](docs/reviews/REVIEW256.md) · [검증 기록](releases/v1.0.48/release_checks256.json)
 
 ## 저장소 안내
 
