@@ -1,0 +1,82 @@
+{
+  "version": "v1.0.51",
+  "release": 259,
+  "source_commit": "e46bfbcd916a26bbbe8de56264b7f2d4e84c2e1a",
+  "source_sha256": "3adbba1cc021f932936a90b46f270e9a273f404052277f7b753f8cabc2cfe894",
+  "zip_sha256": "4a776e6ff95f5296fa286613d3f8c2a212d581ae7e876be50bd434130797ab94",
+  "checks": {
+    "package": "passed",
+    "bundle_import": "passed",
+    "offline_upgrade258_to259": "passed",
+    "bundled_startup_ai_cleanup": "passed",
+    "startup_preserves_skill_tactics": "passed",
+    "source_sha256": "3adbba1cc021f932936a90b46f270e9a273f404052277f7b753f8cabc2cfe894",
+    "zip_sha256": "4a776e6ff95f5296fa286613d3f8c2a212d581ae7e876be50bd434130797ab94",
+    "source_bytes": 1973988,
+    "linux_tests": {
+      "run": 595,
+      "passed": 594,
+      "skipped": 1
+    },
+    "windows_ci": {
+      "conclusion": "success",
+      "run_id": 41347715050,
+      "url": "https://github.com/tterx/pad0-all-in-one/actions/runs/41347715050",
+      "head_sha": "e46bfbcd916a26bbbe8de56264b7f2d4e84c2e1a",
+      "tests": 558
+    },
+    "candidate_bundle": {
+      "result": "passed",
+      "bundle_regressions": 43,
+      "condition_validation": {
+        "result": "passed",
+        "exact_private133_board_classified": true,
+        "legacy_recognition_only_state_unsaveable_reproduced": true,
+        "recognition_before_condition_saved": true,
+        "board_pixels_equal_original_crop": true,
+        "previous_play_excluded": true,
+        "real_korean_ocr_timer_seconds": 8,
+        "combo_condition_confirmed": true,
+        "full_probe_seconds": 0.987,
+        "injected_failure_stage_preserved": "timer",
+        "generic_wait_does_not_overwrite_exception": true,
+        "original_live_failure_reproduced": false,
+        "scope": "Exact private133 pixels, real classifier and Korean OCR/full condition worker; live failure not reproduced offline. Recognition-only save and injected timer failure exercise ZIP binding/evidence retention. No native input or physical MuMu; originals excluded."
+      },
+      "scope": "Bundled runtime, real Tk current failure save, full ZIP binding and prepare-only lifecycle; private133 real classifier/OCR, recognition-only save and injected timer failure. No native input or physical MuMu replay."
+    },
+    "recognition_source_and_real_ocr": {
+      "result": "passed",
+      "exact_private133_board_classified": true,
+      "legacy_recognition_only_state_unsaveable_reproduced": true,
+      "recognition_before_condition_saved": true,
+      "board_pixels_equal_original_crop": true,
+      "previous_play_excluded": true,
+      "real_korean_ocr_timer_seconds": 8,
+      "combo_condition_confirmed": true,
+      "full_probe_seconds": 0.987,
+      "injected_failure_stage_preserved": "timer",
+      "generic_wait_does_not_overwrite_exception": true,
+      "original_live_failure_reproduced": false,
+      "scope": "Exact private133 pixels, real classifier and Korean OCR/full condition worker; live failure not reproduced offline. Recognition-only save and injected timer failure exercise ZIP binding/evidence retention. No native input or physical MuMu; originals excluded."
+    },
+    "runtime_bundle_matches_source_commit": true
+  },
+  "scope": [
+    "Retain validated periodic live recognition pixels before any condition task or manual move",
+    "Save recognition crops through condition capture failure, matching focus-loss diagnostics and F10 without using an old play",
+    "Preserve actual exceptions, probe stages, timings and successful or failing timer/combo reads instead of overwriting them with generic waits",
+    "Keep manual recalculation prepare-only and require an explicit execution action for movement"
+  ],
+  "limitations": [
+    "Exact private133 image reads8 seconds and confirmed conditions offline; the original live runtime failure is not reproduced or attributed to a specific stage",
+    "Recognition-only save, raw-stage evidence and injected timer failures checked locally; native input and physical MuMu not replayed",
+    "Original images and diagnostic ZIPs excluded from publication"
+  ],
+  "publication": {
+    "main_branch_updated": true,
+    "source_main_commit": "e46bfbcd916a26bbbe8de56264b7f2d4e84c2e1a",
+    "authorization": "User approved future tested changes be promoted and published immediately after required tests pass.",
+    "updater_activation": "source main verified; pending published ZIP download verification"
+  }
+}
