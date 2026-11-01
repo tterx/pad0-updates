@@ -66,7 +66,38 @@
       "automatic_execution_calls": 0,
       "scope": "Exact private135 classifier/Korean OCR with worker-to-parent flow; report9.687-second scheduling modeled with controlled time and mocked capture/process/input boundaries, real mathematical route. Physical MuMu input unverified; originals excluded."
     },
-    "runtime_bundle_matches_source_commit": true
+    "runtime_bundle_matches_source_commit": true,
+    "production_updater": {
+      "result": "passed",
+      "live_upgrade260_to261": true,
+      "source_sha256_verified": true,
+      "previous_source_backup_verified": true,
+      "repeat_check_no_update": true,
+      "published_bundle_validation": {
+        "result": "passed",
+        "bundle_regressions": 64,
+        "condition_validation": {
+          "result": "passed",
+          "exact_private135_classifier": true,
+          "real_korean_ocr_timer_seconds": 8,
+          "combo_condition_confirmed": true,
+          "reported_work_seconds": 9.687,
+          "modeled_ocr_elapsed_seconds": 9.687,
+          "legacy_worker_rejected_at_age_seconds": 3.141,
+          "no_independent_recognition_witness_injected": true,
+          "real_ocr_passes": 2,
+          "post_ocr_board_capture": true,
+          "parent_queue_starts_route_preparation": true,
+          "prepared_attributes": 5,
+          "prepared_minimum_final_combos": 6,
+          "fresh_execution_rejects_unknown_conditions": true,
+          "automatic_execution_calls": 0,
+          "scope": "Exact private135 classifier/Korean OCR with worker-to-parent flow; report9.687-second scheduling modeled with controlled time and mocked capture/process/input boundaries, real mathematical route. Physical MuMu input unverified; originals excluded."
+        },
+        "scope": "Bundled runtime, real Tk current failure save, full ZIP binding and prepare-only lifecycle; private135 real classifier/OCR, worker-to-parent delivery without injected recognition witness. No native input or physical MuMu replay."
+      },
+      "scope": "Production downloaded bundle, post-OCR current board validation and worker-to-parent delivery, private135 real Korean OCR and explicit execution gates; physical MuMu unverified"
+    }
   },
   "scope": [
     "Finish slow confirmed condition reads with a current matching unobscured board capture without additional OCR",
@@ -84,7 +115,7 @@
     "main_branch_updated": true,
     "source_main_commit": "a68a45cf02858938b2c03e4e89a7493b1c287967",
     "authorization": "User approved future tested changes be promoted and published immediately after required tests pass.",
-    "updater_activation": "production update.json set to261; live check pending",
+    "updater_activation": "production updater261 verified: live260-to261 backup/repeat,64 bundled regressions, private135 real OCR and worker-to-parent delivery without injected recognition witness; fresh execution hold retained",
     "github_release": "https://github.com/tterx/pad0-updates/releases/tag/v1.0.53",
     "workflow": "https://github.com/tterx/pad0-updates/actions/runs/41351418703",
     "uploaded_asset_digest_verified": true,
