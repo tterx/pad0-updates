@@ -87,6 +87,10 @@
     "main_branch_updated": true,
     "source_main_commit": "aebae444b6e10ca3af543e4d3901137a00ec9bd2",
     "authorization": "User approved future tested changes be promoted and published immediately after required tests pass.",
-    "updater_activation": "source main verified; pending published ZIP download verification"
+    "updater_activation": "production update.json set to264; live check pending",
+    "github_release": "https://github.com/tterx/pad0-updates/releases/tag/v1.0.56",
+    "workflow": "https://github.com/tterx/pad0-updates/actions/runs/41379006541",
+    "uploaded_asset_digest_verified": true,
+    "published_zip_download_sha256_verified": true
   }
 }
