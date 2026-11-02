@@ -1,0 +1,138 @@
+{
+  "version": "v1.0.58",
+  "release": 266,
+  "source_commit": "eebae574f05e11220d51ba30eee9b50346afd7e3",
+  "source_sha256": "48ac03e9bf703168597e48f70971267f7eb2e599f6d95e58df7b75cc24b5b9f7",
+  "zip_sha256": "ccaaa66a48803dfbd8d976d45c022ca20c25e021615cf331d459f5fbd2d77ddf",
+  "checks": {
+    "package": "passed",
+    "bundle_import": "passed",
+    "offline_upgrade265_to266": "passed",
+    "bundled_startup_ai_cleanup": "passed",
+    "startup_preserves_skill_tactics": "passed",
+    "source_sha256": "48ac03e9bf703168597e48f70971267f7eb2e599f6d95e58df7b75cc24b5b9f7",
+    "zip_sha256": "ccaaa66a48803dfbd8d976d45c022ca20c25e021615cf331d459f5fbd2d77ddf",
+    "source_bytes": 2000242,
+    "linux_tests": {
+      "run": 689,
+      "passed": 688,
+      "skipped": 1,
+      "runtime_source_commit": "d007a2077ab307eb89e1ca6ec17daa40ab4232a0",
+      "final_commit_runtime_identical": true,
+      "final_tk_fixture_regressions": 17
+    },
+    "windows_ci": {
+      "conclusion": "success",
+      "run_id": 41393511048,
+      "url": "https://github.com/tterx/pad0-all-in-one/actions/runs/41393511048",
+      "head_sha": "eebae574f05e11220d51ba30eee9b50346afd7e3",
+      "tests": 652
+    },
+    "candidate_bundle": {
+      "result": "passed",
+      "bundle_regressions": 137,
+      "condition_validation": {
+        "result": "passed",
+        "exact_private137_classifier": true,
+        "real_korean_ocr_timer_seconds": 8,
+        "combo_condition_confirmed": true,
+        "legacy_recorded_rejection_reproduced": true,
+        "modeled_condition_read_seconds": 3.906,
+        "modeled_old_final_check_seconds": 2.1,
+        "new_preview_capture_count": 1,
+        "original_source_timestamp_preserved": true,
+        "current_owned_result_accepted": true,
+        "real_parent_solver_ready": true,
+        "prepared_attributes": 5,
+        "prepared_minimum_final_combos": 6,
+        "explicit_execution_required": true,
+        "fresh_execution_rejects_unknown_conditions": true,
+        "automatic_execution_calls": 0,
+        "scope": "Exact137 full-frame pixels and actual Korean OCR; old final-check age branch modeled at2.1seconds after a3.906-second read. Recorded combined reason does not identify age versus cancellation. New owned worker/parent plus real mathematical solver reaches ready without recapture/input; native capture/process boundaries mocked, no physical MuMu replay. Originals excluded."
+      },
+      "current_conditions": {
+        "result": "passed",
+        "exact_private138_139_board_classification": true,
+        "declared_mathematical_test_parameters": {
+          "seconds": 8,
+          "cap": 37,
+          "enemy_required": 0,
+          "bonus": 0
+        },
+        "both_test_routes_verified_five_colour_six_combo": true,
+        "old_same_number_unknown_reported_as_changed": true,
+        "new_persistent_unknown_reported_separately": true,
+        "one_transient_recheck_preserves_valid_route": true,
+        "saved_failure_contains_previous_first_current_and_path": true,
+        "focus_retention_simulation_passed": true,
+        "modeled_worker_startup_does_not_consume_search_window": true,
+        "physical_input_calls": 0,
+        "limitations": "Original138/139 ZIPs lack full-game timer/combo and execution/search values, so original failure causes are unestablished. Native capture/movement/thread/process boundaries mocked; no original full-frame OCR, physical MuMu or actual Alt-Tab replay. Test timer/cap are declared examples, not recovered values. Original images/ZIPs excluded."
+      },
+      "scope": "Bundled runtime: finite repeat lifecycle, real Tk adjacent controls, execution unknown/read retry/failure evidence, retained focus and worker deadlines, prior HUD/save/preparation regressions. Private137 OCR and controlled138/139 mathematical and old/new condition checks. All physical input mocked; no native MuMu or actual Alt-Tab replay."
+    },
+    "condition_delivery_replay": {
+      "result": "passed",
+      "exact_private137_classifier": true,
+      "real_korean_ocr_timer_seconds": 8,
+      "combo_condition_confirmed": true,
+      "legacy_recorded_rejection_reproduced": true,
+      "modeled_condition_read_seconds": 3.906,
+      "modeled_old_final_check_seconds": 2.1,
+      "new_preview_capture_count": 1,
+      "original_source_timestamp_preserved": true,
+      "current_owned_result_accepted": true,
+      "real_parent_solver_ready": true,
+      "prepared_attributes": 5,
+      "prepared_minimum_final_combos": 6,
+      "explicit_execution_required": true,
+      "fresh_execution_rejects_unknown_conditions": true,
+      "automatic_execution_calls": 0,
+      "scope": "Exact137 full-frame pixels and actual Korean OCR; old final-check age branch modeled at2.1seconds after a3.906-second read. Recorded combined reason does not identify age versus cancellation. New owned worker/parent plus real mathematical solver reaches ready without recapture/input; native capture/process boundaries mocked, no physical MuMu replay. Originals excluded."
+    },
+    "current_conditions": {
+      "result": "passed",
+      "exact_private138_139_board_classification": true,
+      "declared_mathematical_test_parameters": {
+        "seconds": 8,
+        "cap": 37,
+        "enemy_required": 0,
+        "bonus": 0
+      },
+      "both_test_routes_verified_five_colour_six_combo": true,
+      "old_same_number_unknown_reported_as_changed": true,
+      "new_persistent_unknown_reported_separately": true,
+      "one_transient_recheck_preserves_valid_route": true,
+      "saved_failure_contains_previous_first_current_and_path": true,
+      "focus_retention_simulation_passed": true,
+      "modeled_worker_startup_does_not_consume_search_window": true,
+      "physical_input_calls": 0,
+      "limitations": "Original138/139 ZIPs lack full-game timer/combo and execution/search values, so original failure causes are unestablished. Native capture/movement/thread/process boundaries mocked; no original full-frame OCR, physical MuMu or actual Alt-Tab replay. Test timer/cap are declared examples, not recovered values. Original images/ZIPs excluded."
+    },
+    "auto_repeat": {
+      "generated_regressions": 17,
+      "result": "passed",
+      "scope": "Blank count one, positive count N, no material configuration, verified reward/lobby acknowledgements, N-1 continuations and final Quit, F10/cancel/errors and real Tk adjacent controls; native input mocked"
+    },
+    "runtime_bundle_matches_source_commit": true
+  },
+  "scope": [
+    "Entry Auto Repeat beside Material Farming: blank count one or finite positive integer; no material target required",
+    "Reuse existing battle/party/input checks; count verified result-to-lobby acknowledgements; N-1 continuations and final Quit, no guessed material credit",
+    "Distinguish unknown enemy/bonus OCR from numeric changes; one bounded fresh-board retry and reuse a still-valid path",
+    "Retain actual execution/search failure values and prepared path in current-board condition saves",
+    "Keep context-matching ready preview across focus loss with fresh execution validation; separate bounded worker startup and solver watchdog"
+  ],
+  "limitations": [
+    "Original138/139 files contain board crops but no original timer/combo/failed solver evidence; original causes remain unestablished",
+    "Mathematical138/139 checks use declared8-second/cap37 examples, not recovered original values",
+    "Native capture/input and focus return mocked; no physical MuMu, actual Alt-Tab or client latency/FPS measurement",
+    "Original user images and diagnostic ZIPs excluded from publication"
+  ],
+  "publication": {
+    "main_branch_updated": true,
+    "source_main_commit": "eebae574f05e11220d51ba30eee9b50346afd7e3",
+    "authorization": "User approved future tested changes be promoted and published immediately after required tests pass.",
+    "updater_activation": "source main verified; pending published ZIP download verification"
+  }
+}
