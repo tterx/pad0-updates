@@ -68,7 +68,39 @@
       "automatic_execution_calls": 0,
       "scope": "Exact137 full-frame pixels and actual Korean OCR; old final-check age branch modeled at2.1seconds after a3.906-second read. Recorded combined reason does not identify age versus cancellation. New owned worker/parent plus real mathematical solver reaches ready without recapture/input; native capture/process boundaries mocked, no physical MuMu replay. Originals excluded."
     },
-    "runtime_bundle_matches_source_commit": true
+    "runtime_bundle_matches_source_commit": true,
+    "production_updater": {
+      "result": "passed",
+      "live_upgrade263_to264": true,
+      "source_sha256_verified": true,
+      "previous_source_backup_verified": true,
+      "repeat_check_no_update": true,
+      "published_bundle_validation": {
+        "result": "passed",
+        "bundle_regressions": 94,
+        "condition_validation": {
+          "result": "passed",
+          "exact_private137_classifier": true,
+          "real_korean_ocr_timer_seconds": 8,
+          "combo_condition_confirmed": true,
+          "legacy_recorded_rejection_reproduced": true,
+          "modeled_condition_read_seconds": 3.906,
+          "modeled_old_final_check_seconds": 2.1,
+          "new_preview_capture_count": 1,
+          "original_source_timestamp_preserved": true,
+          "current_owned_result_accepted": true,
+          "real_parent_solver_ready": true,
+          "prepared_attributes": 5,
+          "prepared_minimum_final_combos": 6,
+          "explicit_execution_required": true,
+          "fresh_execution_rejects_unknown_conditions": true,
+          "automatic_execution_calls": 0,
+          "scope": "Exact137 full-frame pixels and actual Korean OCR; old final-check age branch modeled at2.1seconds after a3.906-second read. Recorded combined reason does not identify age versus cancellation. New owned worker/parent plus real mathematical solver reaches ready without recapture/input; native capture/process boundaries mocked, no physical MuMu replay. Originals excluded."
+        },
+        "scope": "Bundled runtime, real Tk current failure save, full ZIP binding and prepare-only lifecycle; private137 real classifier/Korean OCR, old final-check rejection and owned source-to-ready computation. No native input or physical MuMu replay."
+      },
+      "scope": "Production downloaded bundle, owned confirmed frame to read-only preparation and fresh execution validation, private137 real Korean OCR and explicit execution gates; physical MuMu unverified"
+    }
   },
   "scope": [
     "Remove the extra post-OCR board recapture/expiry from read-only master preparation",
@@ -87,7 +119,7 @@
     "main_branch_updated": true,
     "source_main_commit": "aebae444b6e10ca3af543e4d3901137a00ec9bd2",
     "authorization": "User approved future tested changes be promoted and published immediately after required tests pass.",
-    "updater_activation": "production update.json set to264; live check pending",
+    "updater_activation": "production updater264 verified: live263-to264 backup/repeat,94 bundled regressions, exact137 real Korean OCR and modeled legacy rejection, owned worker/parent plus real mathematical route readiness and fresh execution hold",
     "github_release": "https://github.com/tterx/pad0-updates/releases/tag/v1.0.56",
     "workflow": "https://github.com/tterx/pad0-updates/actions/runs/41379006541",
     "uploaded_asset_digest_verified": true,
