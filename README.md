@@ -1,12 +1,12 @@
 # 퍼드0 올인원
 
-[**프로그램 ZIP 다운로드 · v1.0.56**](https://github.com/tterx/pad0-updates/releases/download/v1.0.56/pad0_overlay_windows_v1_0_56.zip) · [전체 릴리스](https://github.com/tterx/pad0-updates/releases)
+[**프로그램 ZIP 다운로드 · v1.0.57**](https://github.com/tterx/pad0-updates/releases/download/v1.0.57/pad0_overlay_windows_v1_0_57.zip) · [전체 릴리스](https://github.com/tterx/pad0-updates/releases)
 
-현재 표시 버전은 **1.0.56**, 자동 업데이트 내부 순번은 **264**입니다.
+현재 표시 버전은 **1.0.57**, 자동 업데이트 내부 순번은 **265**입니다.
 
 새로 설치할 때는 ZIP을 풀고 `시작.vbs`를 실행하세요. 기존 설치는 PAD0를 완전히 종료한 뒤 `시작.vbs`를 다시 실행하면 업데이트됩니다.
 
-최근 버전에는 정상 시간·콤보 판독 뒤 추가 재확인에서 결과가 버려지던 문제를 수정했습니다. 현재 작업의 정상 판독값으로 경로 준비를 진행하며 실제 이동 전 검증과 별도 실행 버튼은 유지합니다. [변경 내용](docs/reviews/REVIEW264.md) · [검증 기록](releases/v1.0.56/release_checks264.json)
+최근 버전에는 경로 창의 상태·조작 영역을 고정하고 문구 변경 때 반복되던 강제 화면 배치와 창 검색을 없앴습니다. 같은 문구의 중복 갱신을 줄이며 게임 창 이동·드래그·기존 버튼 동작은 유지합니다. [변경 내용](docs/reviews/REVIEW265.md) · [검증 기록](releases/v1.0.57/release_checks265.json)
 
 ## 저장소 안내
 
