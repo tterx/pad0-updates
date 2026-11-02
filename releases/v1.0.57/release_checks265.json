@@ -130,7 +130,39 @@
       },
       "scope": "Real Tk HUD state-cycle comparison with mocked emulator identity, using current platform fonts/DPI; no solver, OCR or physical MuMu input. Counts establish eliminated layout calls, not client frame-rate measurements."
     },
-    "runtime_bundle_matches_source_commit": true
+    "runtime_bundle_matches_source_commit": true,
+    "production_updater": {
+      "result": "passed",
+      "live_upgrade264_to265": true,
+      "source_sha256_verified": true,
+      "previous_source_backup_verified": true,
+      "repeat_check_no_update": true,
+      "published_bundle_validation": {
+        "result": "passed",
+        "bundle_regressions": 100,
+        "condition_validation": {
+          "result": "passed",
+          "exact_private137_classifier": true,
+          "real_korean_ocr_timer_seconds": 8,
+          "combo_condition_confirmed": true,
+          "legacy_recorded_rejection_reproduced": true,
+          "modeled_condition_read_seconds": 3.906,
+          "modeled_old_final_check_seconds": 2.1,
+          "new_preview_capture_count": 1,
+          "original_source_timestamp_preserved": true,
+          "current_owned_result_accepted": true,
+          "real_parent_solver_ready": true,
+          "prepared_attributes": 5,
+          "prepared_minimum_final_combos": 6,
+          "explicit_execution_required": true,
+          "fresh_execution_rejects_unknown_conditions": true,
+          "automatic_execution_calls": 0,
+          "scope": "Exact137 full-frame pixels and actual Korean OCR; old final-check age branch modeled at2.1seconds after a3.906-second read. Recorded combined reason does not identify age versus cancellation. New owned worker/parent plus real mathematical solver reaches ready without recapture/input; native capture/process boundaries mocked, no physical MuMu replay. Originals excluded."
+        },
+        "scope": "Bundled runtime, real Tk current failure save, full ZIP binding and prepare-only lifecycle; private137 real classifier/Korean OCR, old final-check rejection and owned source-to-ready computation. No native input or physical MuMu replay."
+      },
+      "scope": "Production downloaded bundle, owned confirmed frame to read-only preparation and fresh execution validation, private137 real Korean OCR and explicit execution gates; physical MuMu unverified"
+    }
   },
   "scope": [
     "Reserve fixed font/DPI-aware HUD rows for action, inventory, five-line status, route controls and optional error save",
@@ -148,7 +180,7 @@
     "main_branch_updated": true,
     "source_main_commit": "650543063df6aad06f5aa762fa6b891504eaeacb",
     "authorization": "User approved future tested changes be promoted and published immediately after required tests pass.",
-    "updater_activation": "production update.json set to265; live check pending",
+    "updater_activation": "production updater265 verified: live264-to265 backup/repeat,100 bundled regressions, real Tk stable HUD layout/cached rendering, preserved callbacks, exact137 condition regression and fresh execution hold",
     "github_release": "https://github.com/tterx/pad0-updates/releases/tag/v1.0.57",
     "workflow": "https://github.com/tterx/pad0-updates/actions/runs/41383152079",
     "uploaded_asset_digest_verified": true,
