@@ -1,0 +1,153 @@
+{
+  "version": "v1.0.57",
+  "release": 265,
+  "source_commit": "650543063df6aad06f5aa762fa6b891504eaeacb",
+  "source_sha256": "520d672cfcc6b524709ef446f0be8047dff823033428726c366c83f1073eb92a",
+  "zip_sha256": "aa588e7ac7d0f1a26f2db9eacdf6337df5a210a02ea792eb2eb5fd11b238feb0",
+  "checks": {
+    "package": "passed",
+    "bundle_import": "passed",
+    "offline_upgrade264_to265": "passed",
+    "bundled_startup_ai_cleanup": "passed",
+    "startup_preserves_skill_tactics": "passed",
+    "source_sha256": "520d672cfcc6b524709ef446f0be8047dff823033428726c366c83f1073eb92a",
+    "zip_sha256": "aa588e7ac7d0f1a26f2db9eacdf6337df5a210a02ea792eb2eb5fd11b238feb0",
+    "source_bytes": 1987497,
+    "linux_tests": {
+      "run": 652,
+      "passed": 651,
+      "skipped": 1
+    },
+    "windows_ci": {
+      "conclusion": "success",
+      "run_id": 41382706977,
+      "url": "https://github.com/tterx/pad0-all-in-one/actions/runs/41382706977",
+      "head_sha": "650543063df6aad06f5aa762fa6b891504eaeacb",
+      "tests": 615
+    },
+    "candidate_bundle": {
+      "result": "passed",
+      "bundle_regressions": 100,
+      "condition_validation": {
+        "result": "passed",
+        "exact_private137_classifier": true,
+        "real_korean_ocr_timer_seconds": 8,
+        "combo_condition_confirmed": true,
+        "legacy_recorded_rejection_reproduced": true,
+        "modeled_condition_read_seconds": 3.906,
+        "modeled_old_final_check_seconds": 2.1,
+        "new_preview_capture_count": 1,
+        "original_source_timestamp_preserved": true,
+        "current_owned_result_accepted": true,
+        "real_parent_solver_ready": true,
+        "prepared_attributes": 5,
+        "prepared_minimum_final_combos": 6,
+        "explicit_execution_required": true,
+        "fresh_execution_rejects_unknown_conditions": true,
+        "automatic_execution_calls": 0,
+        "scope": "Exact137 full-frame pixels and actual Korean OCR; old final-check age branch modeled at2.1seconds after a3.906-second read. Recorded combined reason does not identify age versus cancellation. New owned worker/parent plus real mathematical solver reaches ready without recapture/input; native capture/process boundaries mocked, no physical MuMu replay. Originals excluded."
+      },
+      "scope": "Bundled runtime, real Tk current failure save, full ZIP binding and prepare-only lifecycle; private137 real classifier/Korean OCR, old final-check rejection and owned source-to-ready computation. No native input or physical MuMu replay."
+    },
+    "condition_delivery_replay": {
+      "result": "passed",
+      "exact_private137_classifier": true,
+      "real_korean_ocr_timer_seconds": 8,
+      "combo_condition_confirmed": true,
+      "legacy_recorded_rejection_reproduced": true,
+      "modeled_condition_read_seconds": 3.906,
+      "modeled_old_final_check_seconds": 2.1,
+      "new_preview_capture_count": 1,
+      "original_source_timestamp_preserved": true,
+      "current_owned_result_accepted": true,
+      "real_parent_solver_ready": true,
+      "prepared_attributes": 5,
+      "prepared_minimum_final_combos": 6,
+      "explicit_execution_required": true,
+      "fresh_execution_rejects_unknown_conditions": true,
+      "automatic_execution_calls": 0,
+      "scope": "Exact137 full-frame pixels and actual Korean OCR; old final-check age branch modeled at2.1seconds after a3.906-second read. Recorded combined reason does not identify age versus cancellation. New owned worker/parent plus real mathematical solver reaches ready without recapture/input; native capture/process boundaries mocked, no physical MuMu replay. Originals excluded."
+    },
+    "hud_comparison": {
+      "result": "passed",
+      "real_tk_status_cycle": {
+        "v56": {
+          "window_sizes": [
+            [
+              260,
+              143
+            ],
+            [
+              260,
+              226
+            ],
+            [
+              260,
+              143
+            ],
+            [
+              260,
+              182
+            ],
+            [
+              260,
+              143
+            ]
+          ],
+          "distinct_window_sizes": 3,
+          "geometry_requests": 4,
+          "synchronous_layout_flushes": 5,
+          "native_window_lookups": 5
+        },
+        "v57": {
+          "window_sizes": [
+            [
+              260,
+              237
+            ],
+            [
+              260,
+              237
+            ],
+            [
+              260,
+              237
+            ],
+            [
+              260,
+              237
+            ],
+            [
+              260,
+              237
+            ]
+          ],
+          "distinct_window_sizes": 1,
+          "geometry_requests": 0,
+          "synchronous_layout_flushes": 0,
+          "native_window_lookups": 0
+        }
+      },
+      "scope": "Real Tk HUD state-cycle comparison with mocked emulator identity, using current platform fonts/DPI; no solver, OCR or physical MuMu input. Counts establish eliminated layout calls, not client frame-rate measurements."
+    },
+    "runtime_bundle_matches_source_commit": true
+  },
+  "scope": [
+    "Reserve fixed font/DPI-aware HUD rows for action, inventory, five-line status, route controls and optional error save",
+    "Status changes do not resize the HUD, locate the emulator or flush Tk layout synchronously",
+    "Skip identical action text, status text/color and visibility writes",
+    "Follow real emulator movement from the existing foreground observation and send geometry only when its target changes",
+    "Preserve grip placement, pointer-down stability, original callbacks and route/execution validation"
+  ],
+  "limitations": [
+    "Real Tk same-platform status-cycle comparison with mocked emulator identity; font/DPI-specific pixel sizes are not a universal fixed pixel height",
+    "Layout call counts and size stability are verified, not client FPS or physical MuMu playback",
+    "Original user images and diagnostic ZIPs excluded from publication"
+  ],
+  "publication": {
+    "main_branch_updated": true,
+    "source_main_commit": "650543063df6aad06f5aa762fa6b891504eaeacb",
+    "authorization": "User approved future tested changes be promoted and published immediately after required tests pass.",
+    "updater_activation": "source main verified; pending published ZIP download verification"
+  }
+}
