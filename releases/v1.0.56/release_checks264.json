@@ -1,0 +1,92 @@
+{
+  "version": "v1.0.56",
+  "release": 264,
+  "source_commit": "aebae444b6e10ca3af543e4d3901137a00ec9bd2",
+  "source_sha256": "3f6b802851f2207c01f823edeabef7b4f2a28c09197542c1f19290527fbbcb18",
+  "zip_sha256": "b88bebbc5c99cd2385dc4a057099ef6b03dd3af12007a58300419f0e0cda3a78",
+  "checks": {
+    "package": "passed",
+    "bundle_import": "passed",
+    "offline_upgrade263_to264": "passed",
+    "bundled_startup_ai_cleanup": "passed",
+    "startup_preserves_skill_tactics": "passed",
+    "source_sha256": "3f6b802851f2207c01f823edeabef7b4f2a28c09197542c1f19290527fbbcb18",
+    "zip_sha256": "b88bebbc5c99cd2385dc4a057099ef6b03dd3af12007a58300419f0e0cda3a78",
+    "source_bytes": 1986347,
+    "linux_tests": {
+      "run": 646,
+      "passed": 645,
+      "skipped": 1
+    },
+    "windows_ci": {
+      "conclusion": "success",
+      "run_id": 41378261829,
+      "url": "https://github.com/tterx/pad0-all-in-one/actions/runs/41378261829",
+      "head_sha": "aebae444b6e10ca3af543e4d3901137a00ec9bd2",
+      "tests": 609
+    },
+    "candidate_bundle": {
+      "result": "passed",
+      "bundle_regressions": 94,
+      "condition_validation": {
+        "result": "passed",
+        "exact_private137_classifier": true,
+        "real_korean_ocr_timer_seconds": 8,
+        "combo_condition_confirmed": true,
+        "legacy_recorded_rejection_reproduced": true,
+        "modeled_condition_read_seconds": 3.906,
+        "modeled_old_final_check_seconds": 2.1,
+        "new_preview_capture_count": 1,
+        "original_source_timestamp_preserved": true,
+        "current_owned_result_accepted": true,
+        "real_parent_solver_ready": true,
+        "prepared_attributes": 5,
+        "prepared_minimum_final_combos": 6,
+        "explicit_execution_required": true,
+        "fresh_execution_rejects_unknown_conditions": true,
+        "automatic_execution_calls": 0,
+        "scope": "Exact137 full-frame pixels and actual Korean OCR; old final-check age branch modeled at2.1seconds after a3.906-second read. Recorded combined reason does not identify age versus cancellation. New owned worker/parent plus real mathematical solver reaches ready without recapture/input; native capture/process boundaries mocked, no physical MuMu replay. Originals excluded."
+      },
+      "scope": "Bundled runtime, real Tk current failure save, full ZIP binding and prepare-only lifecycle; private137 real classifier/Korean OCR, old final-check rejection and owned source-to-ready computation. No native input or physical MuMu replay."
+    },
+    "condition_delivery_replay": {
+      "result": "passed",
+      "exact_private137_classifier": true,
+      "real_korean_ocr_timer_seconds": 8,
+      "combo_condition_confirmed": true,
+      "legacy_recorded_rejection_reproduced": true,
+      "modeled_condition_read_seconds": 3.906,
+      "modeled_old_final_check_seconds": 2.1,
+      "new_preview_capture_count": 1,
+      "original_source_timestamp_preserved": true,
+      "current_owned_result_accepted": true,
+      "real_parent_solver_ready": true,
+      "prepared_attributes": 5,
+      "prepared_minimum_final_combos": 6,
+      "explicit_execution_required": true,
+      "fresh_execution_rejects_unknown_conditions": true,
+      "automatic_execution_calls": 0,
+      "scope": "Exact137 full-frame pixels and actual Korean OCR; old final-check age branch modeled at2.1seconds after a3.906-second read. Recorded combined reason does not identify age versus cancellation. New owned worker/parent plus real mathematical solver reaches ready without recapture/input; native capture/process boundaries mocked, no physical MuMu replay. Originals excluded."
+    },
+    "runtime_bundle_matches_source_commit": true
+  },
+  "scope": [
+    "Remove the extra post-OCR board recapture/expiry from read-only master preparation",
+    "Accept an owned confirmed frame up to12 seconds with original timestamp, matching current job/epochs/board/badges/area/party/safety",
+    "Validate owned result before retiring its job during parent handoff",
+    "Unknown late conditions and obsolete/expired jobs remain rejected; untagged callers retain previous witness/age policy",
+    "Retain clicked preparation and final pre-drag current board/time/enemy/spike validation; no automatic input"
+  ],
+  "limitations": [
+    "Exact137 classifier/Korean OCR with modeled3.906-second read and old2.1-second final-check expiry",
+    "Recorded combined expiry/cancellation reason does not distinguish the original sub-branch or exact live scheduling",
+    "Worker/parent/real mathematical solver replay uses mocked native capture/process boundaries; physical MuMu input unverified",
+    "Original images and diagnostic ZIPs excluded from publication"
+  ],
+  "publication": {
+    "main_branch_updated": true,
+    "source_main_commit": "aebae444b6e10ca3af543e4d3901137a00ec9bd2",
+    "authorization": "User approved future tested changes be promoted and published immediately after required tests pass.",
+    "updater_activation": "source main verified; pending published ZIP download verification"
+  }
+}
