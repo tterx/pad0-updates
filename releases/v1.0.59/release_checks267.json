@@ -1,0 +1,161 @@
+{
+  "version": "v1.0.59",
+  "release": 267,
+  "source_commit": "b68edf3107fb79ffed26c29d3171082424fbea91",
+  "source_sha256": "d6187486610d1ec8ed6927b7172131071061293e1da5d49b977cc44e7ed58f6b",
+  "zip_sha256": "1a0d188f4b11632ca4da5651267d16b4f58c3945a5f3b0c879e45182cd3c98bd",
+  "checks": {
+    "package": "passed",
+    "bundle_import": "passed",
+    "offline_upgrade266_to267": "passed",
+    "bundled_startup_ai_cleanup": "passed",
+    "startup_preserves_skill_tactics": "passed",
+    "source_sha256": "d6187486610d1ec8ed6927b7172131071061293e1da5d49b977cc44e7ed58f6b",
+    "zip_sha256": "1a0d188f4b11632ca4da5651267d16b4f58c3945a5f3b0c879e45182cd3c98bd",
+    "source_bytes": 2005977,
+    "linux_tests": {
+      "run": 698,
+      "passed": 697,
+      "skipped": 1
+    },
+    "windows_ci": {
+      "conclusion": "success",
+      "run_id": 41402127993,
+      "url": "https://github.com/tterx/pad0-all-in-one/actions/runs/41402127993",
+      "head_sha": "b68edf3107fb79ffed26c29d3171082424fbea91",
+      "tests": 661
+    },
+    "candidate_bundle": {
+      "result": "passed",
+      "bundle_regressions": 146,
+      "condition_validation": {
+        "result": "passed",
+        "exact_private137_classifier": true,
+        "real_korean_ocr_timer_seconds": 8,
+        "combo_condition_confirmed": true,
+        "legacy_recorded_rejection_reproduced": true,
+        "modeled_condition_read_seconds": 3.906,
+        "modeled_old_final_check_seconds": 2.1,
+        "new_preview_capture_count": 1,
+        "original_source_timestamp_preserved": true,
+        "current_owned_result_accepted": true,
+        "real_parent_solver_ready": true,
+        "prepared_attributes": 5,
+        "prepared_minimum_final_combos": 6,
+        "explicit_execution_required": true,
+        "fresh_execution_rejects_unknown_conditions": true,
+        "automatic_execution_calls": 0,
+        "scope": "Exact137 full-frame pixels and actual Korean OCR; old final-check age branch modeled at2.1seconds after a3.906-second read. Recorded combined reason does not identify age versus cancellation. New owned worker/parent plus real mathematical solver reaches ready without recapture/input; native capture/process boundaries mocked, no physical MuMu replay. Originals excluded."
+      },
+      "current_conditions": {
+        "result": "passed",
+        "exact_private138_139_board_classification": true,
+        "declared_mathematical_test_parameters": {
+          "seconds": 8,
+          "cap": 37,
+          "enemy_required": 0,
+          "bonus": 0
+        },
+        "both_test_routes_verified_five_colour_six_combo": true,
+        "old_same_number_unknown_reported_as_changed": true,
+        "new_persistent_unknown_reported_separately": true,
+        "one_transient_recheck_preserves_valid_route": true,
+        "saved_failure_contains_previous_first_current_and_path": true,
+        "focus_retention_simulation_passed": true,
+        "modeled_worker_startup_does_not_consume_search_window": true,
+        "physical_input_calls": 0,
+        "limitations": "Original138/139 ZIPs lack full-game timer/combo and execution/search values, so original failure causes are unestablished. Native capture/movement/thread/process boundaries mocked; no original full-frame OCR, physical MuMu or actual Alt-Tab replay. Test timer/cap are declared examples, not recovered values. Original images/ZIPs excluded."
+      },
+      "scope": "Bundled runtime: finite repeat lifecycle, real Tk adjacent controls, execution unknown/read retry/failure evidence, retained focus and worker deadlines, prior HUD/save/preparation regressions. Private137 OCR and controlled138/139 mathematical and old/new condition checks. All physical input mocked; no native MuMu or actual Alt-Tab replay."
+    },
+    "condition_delivery_replay": {
+      "result": "passed",
+      "exact_private137_classifier": true,
+      "real_korean_ocr_timer_seconds": 8,
+      "combo_condition_confirmed": true,
+      "legacy_recorded_rejection_reproduced": true,
+      "modeled_condition_read_seconds": 3.906,
+      "modeled_old_final_check_seconds": 2.1,
+      "new_preview_capture_count": 1,
+      "original_source_timestamp_preserved": true,
+      "current_owned_result_accepted": true,
+      "real_parent_solver_ready": true,
+      "prepared_attributes": 5,
+      "prepared_minimum_final_combos": 6,
+      "explicit_execution_required": true,
+      "fresh_execution_rejects_unknown_conditions": true,
+      "automatic_execution_calls": 0,
+      "scope": "Exact137 full-frame pixels and actual Korean OCR; old final-check age branch modeled at2.1seconds after a3.906-second read. Recorded combined reason does not identify age versus cancellation. New owned worker/parent plus real mathematical solver reaches ready without recapture/input; native capture/process boundaries mocked, no physical MuMu replay. Originals excluded."
+    },
+    "current_conditions": {
+      "result": "passed",
+      "exact_private138_139_board_classification": true,
+      "declared_mathematical_test_parameters": {
+        "seconds": 8,
+        "cap": 37,
+        "enemy_required": 0,
+        "bonus": 0
+      },
+      "both_test_routes_verified_five_colour_six_combo": true,
+      "old_same_number_unknown_reported_as_changed": true,
+      "new_persistent_unknown_reported_separately": true,
+      "one_transient_recheck_preserves_valid_route": true,
+      "saved_failure_contains_previous_first_current_and_path": true,
+      "focus_retention_simulation_passed": true,
+      "modeled_worker_startup_does_not_consume_search_window": true,
+      "physical_input_calls": 0,
+      "limitations": "Original138/139 ZIPs lack full-game timer/combo and execution/search values, so original failure causes are unestablished. Native capture/movement/thread/process boundaries mocked; no original full-frame OCR, physical MuMu or actual Alt-Tab replay. Test timer/cap are declared examples, not recovered values. Original images/ZIPs excluded."
+    },
+    "latency": {
+      "linux": {
+        "platform": "linux",
+        "cold_seconds": [
+          0.3987170699983835,
+          0.4080078980186954,
+          0.40262967097805813
+        ],
+        "warm_seconds": [
+          0.18846406397642568,
+          0.17853582999669015,
+          0.18338719801977277
+        ],
+        "cold_median": 0.40262967097805813,
+        "warm_median": 0.18338719801977277,
+        "scope": "Same declared8s/cap37 board, one worker, actual spawn plus validated solver result; warmed samples exclude one-time startup; no physical capture or click-to-input timing"
+      },
+      "windows": {
+        "platform": "win32",
+        "cold_seconds": [
+          0.3665219000000093,
+          0.35523699999998826,
+          0.37129950000002054
+        ],
+        "warm_seconds": [
+          0.18118789999999763,
+          0.1830822000000012,
+          0.19617669999996679
+        ],
+        "cold_median": 0.3665219000000093,
+        "warm_median": 0.1830822000000012,
+        "scope": "Same declared8s/cap37 board, one worker, actual spawn plus validated solver result; warmed samples exclude one-time startup; no physical capture or click-to-input timing"
+      },
+      "shared_execution_capture_regressions": "passed",
+      "new_regressions": 9
+    },
+    "runtime_bundle_matches_source_commit": true
+  },
+  "scope": [
+    "Reusable bounded master-route workers with job generations, cooperative cancellation and stale-output rejection",
+    "One fresh visibility-checked full frame for final board, timer, combo and health; window/crop identity, fresh retries and all final input gates retained"
+  ],
+  "limitations": [
+    "Benchmarks use one declared8s/cap37 board and one worker; warmed samples exclude one-time startup, no general solver-quality or physical click-to-input speed claim",
+    "Physical MuMu capture/playback unverified; original user images and ZIPs excluded"
+  ],
+  "publication": {
+    "main_branch_updated": true,
+    "source_main_commit": "b68edf3107fb79ffed26c29d3171082424fbea91",
+    "authorization": "User approved future tested changes be promoted and published immediately after required tests pass.",
+    "updater_activation": "source main verified; pending published ZIP download verification"
+  }
+}
