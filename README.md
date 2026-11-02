@@ -1,12 +1,12 @@
 # 퍼드0 올인원
 
-[**프로그램 ZIP 다운로드 · v1.0.59**](https://github.com/tterx/pad0-updates/releases/download/v1.0.59/pad0_overlay_windows_v1_0_59.zip) · [전체 릴리스](https://github.com/tterx/pad0-updates/releases)
+[**프로그램 ZIP 다운로드 · v1.0.60**](https://github.com/tterx/pad0-updates/releases/download/v1.0.60/pad0_overlay_windows_v1_0_60.zip) · [전체 릴리스](https://github.com/tterx/pad0-updates/releases)
 
-현재 표시 버전은 **1.0.59**, 자동 업데이트 내부 순번은 **267**입니다.
+현재 표시 버전은 **1.0.60**, 자동 업데이트 내부 순번은 **268**입니다.
 
 새로 설치할 때는 ZIP을 풀고 `시작.vbs`를 실행하세요. 기존 설치는 PAD0를 완전히 종료한 뒤 `시작.vbs`를 다시 실행하면 업데이트됩니다.
 
-최근 버전에는 경로 계산 작업자를 재사용하고 실행 직전 판·조건 확인을 하나의 최신 캡처로 통합해 반복 시작 비용과 중복 캡처를 줄였습니다. [변경 내용](docs/reviews/REVIEW267.md) · [검증 기록](releases/v1.0.59/release_checks267.json)
+최근 버전에는 잠입 버튼을 작은2×2 배치로 줄이고 경로 탐색의 중복 판 정렬·비트 개수 연산을 최적화했습니다. [변경 내용](docs/reviews/REVIEW268.md) · [검증 기록](releases/v1.0.60/release_checks268.json)
 
 ## 저장소 안내
 
