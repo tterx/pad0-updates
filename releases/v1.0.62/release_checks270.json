@@ -204,7 +204,58 @@
       "first_attempt": "An existing three-second TPA search assertion missed its goal on the shared Windows runner; the same test passed in the preceding Windows run. solve_path/find_tpa_seed/solve_tpa_batch AST matched published v1.0.61. Final success is recorded separately.",
       "runtime_change_for_retry": false
     },
-    "runtime_bundle_matches_source_commit": true
+    "runtime_bundle_matches_source_commit": true,
+    "production_updater": {
+      "result": "passed",
+      "live_upgrade269_to270": true,
+      "source_sha256_verified": true,
+      "previous_source_backup_verified": true,
+      "repeat_check_no_update": true,
+      "published_bundle_validation": {
+        "result": "passed",
+        "bundle_regressions": 168,
+        "condition_validation": {
+          "result": "passed",
+          "exact_private137_classifier": true,
+          "real_korean_ocr_timer_seconds": 8,
+          "combo_condition_confirmed": true,
+          "legacy_recorded_rejection_reproduced": true,
+          "modeled_condition_read_seconds": 3.906,
+          "modeled_old_final_check_seconds": 2.1,
+          "new_preview_capture_count": 1,
+          "original_source_timestamp_preserved": true,
+          "current_owned_result_accepted": true,
+          "real_parent_solver_ready": true,
+          "prepared_attributes": 5,
+          "prepared_minimum_final_combos": 6,
+          "explicit_execution_required": true,
+          "fresh_execution_rejects_unknown_conditions": true,
+          "automatic_execution_calls": 0,
+          "scope": "Exact137 full-frame pixels and actual Korean OCR; old final-check age branch modeled at2.1seconds after a3.906-second read. Recorded combined reason does not identify age versus cancellation. New owned worker/parent plus real mathematical solver reaches ready without recapture/input; native capture/process boundaries mocked, no physical MuMu replay. Originals excluded."
+        },
+        "current_conditions": {
+          "result": "passed",
+          "exact_private138_139_board_classification": true,
+          "declared_mathematical_test_parameters": {
+            "seconds": 8,
+            "cap": 37,
+            "enemy_required": 0,
+            "bonus": 0
+          },
+          "both_test_routes_verified_five_colour_six_combo": true,
+          "old_same_number_unknown_reported_as_changed": true,
+          "new_persistent_unknown_reported_separately": true,
+          "one_transient_recheck_preserves_valid_route": true,
+          "saved_failure_contains_previous_first_current_and_path": true,
+          "focus_retention_simulation_passed": true,
+          "modeled_worker_startup_does_not_consume_search_window": true,
+          "physical_input_calls": 0,
+          "limitations": "Original138/139 ZIPs lack full-game timer/combo and execution/search values, so original failure causes are unestablished. Native capture/movement/thread/process boundaries mocked; no original full-frame OCR, physical MuMu or actual Alt-Tab replay. Test timer/cap are declared examples, not recovered values. Original images/ZIPs excluded."
+        },
+        "scope": "Bundled runtime: finite repeat lifecycle, real Tk adjacent controls, execution unknown/read retry/failure evidence, retained focus and worker deadlines, prior HUD/save/preparation regressions. Private137 OCR and controlled138/139 mathematical and old/new condition checks. All physical input mocked; no native MuMu or actual Alt-Tab replay."
+      },
+      "scope": "Production downloaded bundle, owned confirmed frame to read-only preparation and fresh execution validation, private137 real Korean OCR and explicit execution gates; physical MuMu unverified"
+    }
   },
   "scope": [
     "Bounded skull-aware batch attempt with exact replay and retained thorn handling",
@@ -219,7 +270,7 @@
     "main_branch_updated": true,
     "source_main_commit": "0842108b47edc4de7c491ed1597ce722e167d5a7",
     "authorization": "User approved future tested changes be promoted and published immediately after required tests pass.",
-    "updater_activation": "production update.json set to270; live check pending",
+    "updater_activation": "production updater270 verified: live269-to270 backup/repeat,168 bundled regressions including skull batch validation, condition overlap and cancellation, confirmed parent gates, prior UI/worker/execution regressions; physical MuMu unverified",
     "github_release": "https://github.com/tterx/pad0-updates/releases/tag/v1.0.62",
     "workflow": "https://github.com/tterx/pad0-updates/actions/runs/41644419978",
     "uploaded_asset_digest_verified": true,
