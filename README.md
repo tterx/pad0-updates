@@ -1,12 +1,12 @@
 # 퍼드0 올인원
 
-[**프로그램 ZIP 다운로드 · v1.0.62**](https://github.com/tterx/pad0-updates/releases/download/v1.0.62/pad0_overlay_windows_v1_0_62.zip) · [전체 릴리스](https://github.com/tterx/pad0-updates/releases)
+[**프로그램 ZIP 다운로드 · v1.0.63**](https://github.com/tterx/pad0-updates/releases/download/v1.0.63/pad0_overlay_windows_v1_0_63.zip) · [전체 릴리스](https://github.com/tterx/pad0-updates/releases)
 
-현재 표시 버전은 **1.0.62**, 자동 업데이트 내부 순번은 **270**입니다.
+현재 표시 버전은 **1.0.63**, 자동 업데이트 내부 순번은 **271**입니다.
 
 새로 설치할 때는 ZIP을 풀고 `시작.vbs`를 실행하세요. 기존 설치는 PAD0를 완전히 종료한 뒤 `시작.vbs`를 다시 실행하면 업데이트됩니다.
 
-최근 버전에는 해골 판의 빠른 탐색을 지원하고 콤보 조건 판독과 후보 탐색을 병행합니다. [변경 내용](docs/reviews/REVIEW270.md) · [검증 기록](releases/v1.0.62/release_checks270.json)
+최근 버전에는 경로 버튼의 위치·전체 그리기를 마친 뒤 표시하도록 복원 처리를 통일했습니다. [변경 내용](docs/reviews/REVIEW271.md) · [검증 기록](releases/v1.0.63/release_checks271.json)
 
 ## 저장소 안내
 
