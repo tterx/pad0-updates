@@ -1,10 +1,5 @@
 name: Publish checked v1.0.60 release
 on:
-  push:
-    branches: [main]
-    paths:
-      - .github/workflows/publish268.yml
-      - .github/scripts/publish268.py
   workflow_dispatch:
 permissions:
   contents: write
