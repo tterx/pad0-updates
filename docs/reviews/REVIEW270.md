@@ -1,0 +1,9 @@
+# v1.0.62 / updater270
+
+A skull on the board previously excluded master batch search even when only two skulls were present. Add a bounded batch attempt for skull boards without thorns, with exact direct/known-cascade skull validation before accepting a result. Failed attempts retain the existing specialized fallback within the original budget. Thorns remain on their specialized path. Existing ordinary-board dispatch and user execution pacing are unchanged.
+
+After a matching captured board, spikes and timer are known, run a read-only six-combo batch candidate for up to350ms while combo-condition reading continues. Only an owned live probe may deliver it. The parent replays the candidate against the confirmed enemy/bonus, actual move cap, board/party/area/safety identity, bound status and spike evidence. Unknown or changed conditions cannot arm it; mismatches use the existing search. A candidate is optional: the condition worker never waits for it, and completion/retirement cancels outstanding work. No Tk or physical input occurs on the candidate thread. Preparation does not execute the route.
+
+Record per-stage condition timings for capture, health, timer, board validation and combo reading. This diagnoses the previously recorded3.797-second preparation without pretending that a local replay reproduces physical capture/OCR timing.
+
+Ten regressions cover the reported hazard layout, retained thorn dispatch, skull validation, ready-candidate handoff, changed conditions/caps/identity, unknown hazards, real bounded background computation, stop/retirement and complete probe-to-parent delivery. Older focused fixtures disable speculation so their timing/process boundary tests remain deterministic; dedicated tests exercise real speculation. A two-seed old/current dispatch benchmark on one fixed board uses cap37/budget3.8 and full route proof. This is not an overall game latency or general-case speed guarantee. Original images/ZIPs remain private.
