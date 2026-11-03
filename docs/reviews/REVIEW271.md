@@ -1,0 +1,5 @@
+# v1.0.63 / updater271
+
+Route HUD restoration previously mapped the window before updating its position, exposing pending layout/child repaint work. Unify focus return, explicit visibility, capture restore, playback restore and raise-to-top through one presentation method. Position and flush pending layout while withdrawn; on Windows, map at zero opacity, flush layout and synchronously redraw the native wrapper and all children before restoring full opacity. Already visible windows are not remapped; F9 and capture guards are preserved. Restore opacity in a finally block if repaint fails.
+
+Four regressions cover Windows paint/reveal order, hidden/live/capture guards, opacity recovery and repeated actual Tk restore with stable controls/geometry/callback. Focus tests now assert the unified presentation entry point. Windows tests invoke native redraw on actual Tk controls. Physical MuMu compositor appearance is not directly observed, so this addresses the evidenced map-before-position and partial-paint window rather than claiming a filmed visual fix. No search, recognition, execution pacing or automatic input changes.
