@@ -1,0 +1,132 @@
+{
+  "version": "v1.0.67",
+  "release": 275,
+  "source_commit": "c06888c07541b0dcd323740d0569309366bb3578",
+  "source_sha256": "d0c3a5e6ddfe567324c6edd54463a19c6fee4076277cfca86693479677ab99d9",
+  "zip_sha256": "b0f6cf28a043432aea99ebf447586e52bcadf92cc833ab19c4be0c5411bfd209",
+  "checks": {
+    "package": "passed",
+    "bundle_import": "passed",
+    "offline_upgrade274_to275": "passed",
+    "bundled_startup_ai_cleanup": "passed",
+    "startup_preserves_skill_tactics": "passed",
+    "source_sha256": "d0c3a5e6ddfe567324c6edd54463a19c6fee4076277cfca86693479677ab99d9",
+    "zip_sha256": "b0f6cf28a043432aea99ebf447586e52bcadf92cc833ab19c4be0c5411bfd209",
+    "source_bytes": 2027379,
+    "linux_tests": {
+      "run": 755,
+      "passed": 754,
+      "skipped": 1
+    },
+    "windows_ci": {
+      "conclusion": "success",
+      "run_id": 41814394141,
+      "url": "https://github.com/tterx/pad0-all-in-one/actions/runs/41814394141",
+      "head_sha": "c06888c07541b0dcd323740d0569309366bb3578",
+      "tests": 718
+    },
+    "candidate_bundle": {
+      "result": "passed",
+      "bundle_regressions": 203,
+      "condition_validation": {
+        "result": "passed",
+        "exact_private137_classifier": true,
+        "real_korean_ocr_timer_seconds": 8,
+        "combo_condition_confirmed": true,
+        "legacy_recorded_rejection_reproduced": true,
+        "modeled_condition_read_seconds": 3.906,
+        "modeled_old_final_check_seconds": 2.1,
+        "new_preview_capture_count": 1,
+        "original_source_timestamp_preserved": true,
+        "current_owned_result_accepted": true,
+        "real_parent_solver_ready": true,
+        "prepared_attributes": 5,
+        "prepared_minimum_final_combos": 6,
+        "explicit_execution_required": true,
+        "fresh_execution_rejects_unknown_conditions": true,
+        "automatic_execution_calls": 0,
+        "scope": "Exact137 full-frame pixels and actual Korean OCR; old final-check age branch modeled at2.1seconds after a3.906-second read. Recorded combined reason does not identify age versus cancellation. New owned worker/parent plus real mathematical solver reaches ready without recapture/input; native capture/process boundaries mocked, no physical MuMu replay. Originals excluded."
+      },
+      "current_conditions": {
+        "result": "passed",
+        "exact_private138_139_board_classification": true,
+        "declared_mathematical_test_parameters": {
+          "seconds": 8,
+          "cap": 37,
+          "enemy_required": 0,
+          "bonus": 0
+        },
+        "both_test_routes_verified_five_colour_six_combo": true,
+        "old_same_number_unknown_reported_as_changed": true,
+        "new_persistent_unknown_reported_separately": true,
+        "one_transient_recheck_preserves_valid_route": true,
+        "saved_failure_contains_previous_first_current_and_path": true,
+        "focus_retention_simulation_passed": true,
+        "modeled_worker_startup_does_not_consume_search_window": true,
+        "physical_input_calls": 0,
+        "limitations": "Original138/139 ZIPs lack full-game timer/combo and execution/search values, so original failure causes are unestablished. Native capture/movement/thread/process boundaries mocked; no original full-frame OCR, physical MuMu or actual Alt-Tab replay. Test timer/cap are declared examples, not recovered values. Original images/ZIPs excluded."
+      },
+      "scope": "Bundled runtime: finite repeat lifecycle, real Tk adjacent controls, execution unknown/read retry/failure evidence, retained focus and worker deadlines, prior HUD/save/preparation regressions. Private137 OCR and controlled138/139 mathematical and old/new condition checks. All physical input mocked; no native MuMu or actual Alt-Tab replay."
+    },
+    "condition_delivery_replay": {
+      "result": "passed",
+      "exact_private137_classifier": true,
+      "real_korean_ocr_timer_seconds": 8,
+      "combo_condition_confirmed": true,
+      "legacy_recorded_rejection_reproduced": true,
+      "modeled_condition_read_seconds": 3.906,
+      "modeled_old_final_check_seconds": 2.1,
+      "new_preview_capture_count": 1,
+      "original_source_timestamp_preserved": true,
+      "current_owned_result_accepted": true,
+      "real_parent_solver_ready": true,
+      "prepared_attributes": 5,
+      "prepared_minimum_final_combos": 6,
+      "explicit_execution_required": true,
+      "fresh_execution_rejects_unknown_conditions": true,
+      "automatic_execution_calls": 0,
+      "scope": "Exact137 full-frame pixels and actual Korean OCR; old final-check age branch modeled at2.1seconds after a3.906-second read. Recorded combined reason does not identify age versus cancellation. New owned worker/parent plus real mathematical solver reaches ready without recapture/input; native capture/process boundaries mocked, no physical MuMu replay. Originals excluded."
+    },
+    "current_conditions": {
+      "result": "passed",
+      "exact_private138_139_board_classification": true,
+      "declared_mathematical_test_parameters": {
+        "seconds": 8,
+        "cap": 37,
+        "enemy_required": 0,
+        "bonus": 0
+      },
+      "both_test_routes_verified_five_colour_six_combo": true,
+      "old_same_number_unknown_reported_as_changed": true,
+      "new_persistent_unknown_reported_separately": true,
+      "one_transient_recheck_preserves_valid_route": true,
+      "saved_failure_contains_previous_first_current_and_path": true,
+      "focus_retention_simulation_passed": true,
+      "modeled_worker_startup_does_not_consume_search_window": true,
+      "physical_input_calls": 0,
+      "limitations": "Original138/139 ZIPs lack full-game timer/combo and execution/search values, so original failure causes are unestablished. Native capture/movement/thread/process boundaries mocked; no original full-frame OCR, physical MuMu or actual Alt-Tab replay. Test timer/cap are declared examples, not recovered values. Original images/ZIPs excluded."
+    },
+    "return_routes": {
+      "regressions": 14,
+      "confirmed_origin_persisted": true,
+      "physical_emulator_verified": false,
+      "scope": "Generated anchor geometry and mocked screen transitions; source/creation identity and ledger gates exercised"
+    },
+    "runtime_bundle_matches_source_commit": true
+  },
+  "scope": [
+    "Persist F7 parent kind and select creation-scroll versus breakthrough-training route",
+    "Verified creation query/result and optional owner-number gates; map recognition after Quit; current failure screenshots",
+    "Creation material completion updates next route only, with normal popup and no creation/breakthrough input"
+  ],
+  "limitations": [
+    "Legacy untyped targets require F7 from the correct confirmation screen if not already there",
+    "Full original scroll/plus pages and physical emulator navigation unverified; originals excluded"
+  ],
+  "publication": {
+    "main_branch_updated": true,
+    "source_main_commit": "c06888c07541b0dcd323740d0569309366bb3578",
+    "authorization": "User approved future tested changes be promoted and published immediately after required tests pass.",
+    "updater_activation": "source main verified; pending published ZIP download verification"
+  }
+}
