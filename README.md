@@ -1,12 +1,12 @@
 # 퍼드0 올인원
 
-[**프로그램 ZIP 다운로드 · v1.0.64**](https://github.com/tterx/pad0-updates/releases/download/v1.0.64/pad0_overlay_windows_v1_0_64.zip) · [전체 릴리스](https://github.com/tterx/pad0-updates/releases)
+[**프로그램 ZIP 다운로드 · v1.0.65**](https://github.com/tterx/pad0-updates/releases/download/v1.0.65/pad0_overlay_windows_v1_0_65.zip) · [전체 릴리스](https://github.com/tterx/pad0-updates/releases)
 
-현재 표시 버전은 **1.0.64**, 자동 업데이트 내부 순번은 **272**입니다.
+현재 표시 버전은 **1.0.65**, 자동 업데이트 내부 순번은 **273**입니다.
 
 새로 설치할 때는 ZIP을 풀고 `시작.vbs`를 실행하세요. 기존 설치는 PAD0를 완전히 종료한 뒤 `시작.vbs`를 다시 실행하면 업데이트됩니다.
 
-최근 버전에는 자동반복에서 스테이지 분석·재료·마나 집계를 건너뛰고 자동플레이와 연전 진행만 처리합니다. [변경 내용](docs/reviews/REVIEW272.md) · [검증 기록](releases/v1.0.64/release_checks272.json)
+최근 버전에는 별 스테이지의 별표 생략·별표 문자 판독 차이로 진입이 중지되는 경우를 수정했습니다. [변경 내용](docs/reviews/REVIEW273.md) · [검증 기록](releases/v1.0.65/release_checks273.json)
 
 ## 저장소 안내
 
