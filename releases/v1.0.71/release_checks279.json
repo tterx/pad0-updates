@@ -142,7 +142,98 @@
       "strict_wrapper_layout_required": true,
       "physical_emulator_verified": false
     },
-    "runtime_bundle_matches_source_commit": true
+    "runtime_bundle_matches_source_commit": true,
+    "production_updater": {
+      "result": "passed",
+      "live_upgrade278_to279": true,
+      "source_sha256_verified": true,
+      "previous_source_backup_verified": true,
+      "repeat_check_no_update": true,
+      "published_bundle_validation": {
+        "result": "passed",
+        "private148_replay": {
+          "result": "passed",
+          "exact_private148_material_and_registered_pixels": true,
+          "previous_rejection_reproduced": true,
+          "registered_image_size": [
+            146,
+            212
+          ],
+          "material_image_size": [
+            106,
+            135
+          ],
+          "legacy_card_box": [
+            26,
+            53,
+            133,
+            192
+          ],
+          "normalized_score": 7.696778774261475,
+          "unchanged_name_threshold": 13,
+          "unchanged_f7_threshold": 10,
+          "both_normalized_borders": [
+            "P",
+            "P"
+          ],
+          "f7_reuses_registered_id_despite_exact_cached_draft": true,
+          "name_save_preserves_id_and_fresh_zero": true,
+          "farming_identification_passed": true,
+          "original_kept_and_f7_refresh_verified": true,
+          "scope": "Exact148 saved icon pair with modeled ledger/binding/required6 and history8; source and bundle method replay, no physical emulator/click or complete original local DB. Original images excluded."
+        },
+        "bundle_regressions": 244,
+        "condition_validation": {
+          "result": "passed",
+          "exact_private137_classifier": true,
+          "real_korean_ocr_timer_seconds": 8,
+          "combo_condition_confirmed": true,
+          "legacy_recorded_rejection_reproduced": true,
+          "modeled_condition_read_seconds": 3.906,
+          "modeled_old_final_check_seconds": 2.1,
+          "new_preview_capture_count": 1,
+          "original_source_timestamp_preserved": true,
+          "current_owned_result_accepted": true,
+          "real_parent_solver_ready": true,
+          "prepared_attributes": 5,
+          "prepared_minimum_final_combos": 6,
+          "explicit_execution_required": true,
+          "fresh_execution_rejects_unknown_conditions": true,
+          "automatic_execution_calls": 0,
+          "scope": "Exact137 full-frame pixels and actual Korean OCR; old final-check age branch modeled at2.1seconds after a3.906-second read. Recorded combined reason does not identify age versus cancellation. New owned worker/parent plus real mathematical solver reaches ready without recapture/input; native capture/process boundaries mocked, no physical MuMu replay. Originals excluded."
+        },
+        "current_conditions": {
+          "result": "passed",
+          "exact_private138_139_board_classification": true,
+          "declared_mathematical_test_parameters": {
+            "seconds": 8,
+            "cap": 37,
+            "enemy_required": 0,
+            "bonus": 0
+          },
+          "both_test_routes_verified_five_colour_six_combo": true,
+          "old_same_number_unknown_reported_as_changed": true,
+          "new_persistent_unknown_reported_separately": true,
+          "one_transient_recheck_preserves_valid_route": true,
+          "saved_failure_contains_previous_first_current_and_path": true,
+          "focus_retention_simulation_passed": true,
+          "modeled_worker_startup_does_not_consume_search_window": true,
+          "physical_input_calls": 0,
+          "limitations": "Original138/139 ZIPs lack full-game timer/combo and execution/search values, so original failure causes are unestablished. Native capture/movement/thread/process boundaries mocked; no original full-frame OCR, physical MuMu or actual Alt-Tab replay. Test timer/cap are declared examples, not recovered values. Original images/ZIPs excluded."
+        },
+        "material_image_match": {
+          "regressions": 9,
+          "existing_id_and_fresh_stock_preserved": true,
+          "missing147_reference_not_reconstructed": true
+        },
+        "material_button": {
+          "regressions": 16,
+          "real_tk_verified": true
+        },
+        "scope": "Bundled runtime: pending OCR material button retention, no-focus mapping, fresh scan delivery; finite repeat lifecycle, real Tk adjacent controls, execution unknown/read retry/failure evidence, retained focus and worker deadlines, prior HUD/save/preparation regressions. Private137 OCR and controlled138/139 mathematical and old/new condition checks. All physical input mocked; no native MuMu or actual Alt-Tab replay."
+      },
+      "scope": "Production downloaded bundle with exact148 legacy image-pair replay and guarded normalization, prior route/condition gates; physical MuMu unverified"
+    }
   },
   "scope": [
     "Guardedly normalize one legacy card with its aligned upper requirement pill and neutral margins",
@@ -157,7 +248,7 @@
     "main_branch_updated": true,
     "source_main_commit": "9028e4b5cb51d39cdaeae1690ec616a8252eeaa7",
     "authorization": "Continue the user-authorized tested fix and release workflow in the existing pad0-updates repository.",
-    "updater_activation": "production update.json set to279; live check pending",
+    "updater_activation": "production updater279 verified: live278-to279 backup/repeat,244 bundled regressions including guarded legacy card normalization, exact148 pair replay, existing ID and zero stock, farming templates, archival refresh and prior button/skill/route gates; physical MuMu unverified",
     "github_release": "https://github.com/tterx/pad0-updates/releases/tag/v1.0.71",
     "workflow": "https://github.com/tterx/pad0-updates/actions/runs/41839066827",
     "uploaded_asset_digest_verified": true,
