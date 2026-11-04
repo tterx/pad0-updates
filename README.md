@@ -1,12 +1,12 @@
 # 퍼드0 올인원
 
-[**프로그램 ZIP 다운로드 · v1.0.71**](https://github.com/tterx/pad0-updates/releases/download/v1.0.71/pad0_overlay_windows_v1_0_71.zip) · [전체 릴리스](https://github.com/tterx/pad0-updates/releases)
+[**프로그램 ZIP 다운로드 · v1.0.72**](https://github.com/tterx/pad0-updates/releases/download/v1.0.72/pad0_overlay_windows_v1_0_72.zip) · [전체 릴리스](https://github.com/tterx/pad0-updates/releases)
 
-현재 표시 버전은 **1.0.71**, 자동 업데이트 내부 순번은 **279**입니다.
+현재 표시 버전은 **1.0.72**, 자동 업데이트 내부 순번은 **280**입니다.
 
 새로 설치할 때는 ZIP을 풀고 `시작.vbs`를 실행하세요. 기존 설치는 PAD0를 완전히 종료한 뒤 `시작.vbs`를 다시 실행하면 업데이트됩니다.
 
-최근 버전에는 예전 재료 이미지의 필요량·회색 여백을 확인해 카드 영역을 맞춘 뒤 비교하며, 임시 이미지보다 확정된 기존 재료를 우선 재사용합니다. [변경 내용](docs/reviews/REVIEW279.md) · [검증 기록](releases/v1.0.71/release_checks279.json)
+최근 버전에는 생성 복귀 시 검색줄을 따로 확인하고 검색어와 결과를 구분하며, 실제 마지막 화면과 단계별 사유를 오류 기록에 저장합니다. [변경 내용](docs/reviews/REVIEW280.md) · [검증 기록](releases/v1.0.72/release_checks280.json)
 
 ## 저장소 안내
 
