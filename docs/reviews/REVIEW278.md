@@ -1,0 +1,9 @@
+# v1.0.70 / updater278
+
+Report147 stops in `material_name`, material4, after two confirmed readings of 칼리의 크리스탈. The explicit error is the same-name existing-image compatibility check, not a button failure or unconfirmed name. Its ZIP contains the current detail screen and title but neither material icon nor the registered reference, so the exact image difference and whether it is a true identity conflict cannot be established from this report.
+
+The name-save path used full LAB signatures including lower stock-label pixels, unlike F7 reuse and reward identity checks. Use the shared `crystal_identity_score` with the unchanged score<13 requirement: it excludes amount rows, checks both upper-card and portrait evidence, and retains bounded alignment handling. Require compatible detected frame colours as F7 reuse already does. Never merge by name alone, overwrite the canonical reference image, duplicate an ID or bypass stale-binding/ambiguous-name checks. Fresh observed inventory, including zero, still wins over old canonical stock.
+
+If image compatibility still fails, preserve the exact candidate and registered icons in the private failure ZIP, with amount-free/full-signature scores, threshold and both frame colours. Infinite rejected-portrait distances serialize as null. Reset cached pairs between materials and calls to avoid attaching another material's evidence.
+
+Nine regressions use generated portrait/stock-band images, including a stress pair rejected by the old full-signature check but accepted by unchanged portrait evidence. They cover canonical ID/zero stock/history preservation, different portraits and frame colours, stale bindings, ambiguous names, missing reference recovery, original pair ZIP evidence, pair reset and cancellation. These do not reconstruct the missing local DB reference from147 or prove its exact image mismatch resolved. Original screenshots and diagnostic archives are excluded from distribution.
