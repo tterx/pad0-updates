@@ -99,6 +99,10 @@
     "main_branch_updated": true,
     "source_main_commit": "8def5b645ef9ccae82078351e508f8f24b5a2afe",
     "authorization": "Continue the user-authorized tested fix and release workflow in the existing pad0-updates repository.",
-    "updater_activation": "source main verified; pending published ZIP download verification"
+    "updater_activation": "production update.json set to277; live check pending",
+    "github_release": "https://github.com/tterx/pad0-updates/releases/tag/v1.0.69",
+    "workflow": "https://github.com/tterx/pad0-updates/actions/runs/41823361712",
+    "uploaded_asset_digest_verified": true,
+    "published_zip_download_sha256_verified": true
   }
 }
