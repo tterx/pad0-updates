@@ -1,12 +1,12 @@
 # 퍼드0 올인원
 
-[**프로그램 ZIP 다운로드 · v1.0.67**](https://github.com/tterx/pad0-updates/releases/download/v1.0.67/pad0_overlay_windows_v1_0_67.zip) · [전체 릴리스](https://github.com/tterx/pad0-updates/releases)
+[**프로그램 ZIP 다운로드 · v1.0.68**](https://github.com/tterx/pad0-updates/releases/download/v1.0.68/pad0_overlay_windows_v1_0_68.zip) · [전체 릴리스](https://github.com/tterx/pad0-updates/releases)
 
-현재 표시 버전은 **1.0.67**, 자동 업데이트 내부 순번은 **275**입니다.
+현재 표시 버전은 **1.0.68**, 자동 업데이트 내부 순번은 **276**입니다.
 
 새로 설치할 때는 ZIP을 풀고 `시작.vbs`를 실행하세요. 기존 설치는 PAD0를 완전히 종료한 뒤 `시작.vbs`를 다시 실행하면 업데이트됩니다.
 
-최근 버전에는 생성 확인 대상은 두루마리 검색으로, 돌파 확인 대상은 육성 검색으로 복귀하도록 경로를 분리했습니다. [변경 내용](docs/reviews/REVIEW275.md) · [검증 기록](releases/v1.0.67/release_checks275.json)
+최근 버전에는 각성 무효·바인드 해제와 사용 슬롯의 새 쿨타임 표시를 함께 검증해 스킬 성공을 확인합니다. [변경 내용](docs/reviews/REVIEW276.md) · [검증 기록](releases/v1.0.68/release_checks276.json)
 
 ## 저장소 안내
 
