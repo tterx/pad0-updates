@@ -151,7 +151,8 @@
       "visible_field_proof_required": true,
       "query_result_rows_distinct": true,
       "current_failure_frame": true,
-      "physical_emulator_verified": false
+      "physical_emulator_verified": false,
+      "user_confirmed_name_skill_search_screen": true
     },
     "runtime_bundle_matches_source_commit": true,
     "production_updater": {
@@ -272,7 +273,7 @@
     "Refresh failure snapshots during all navigation pauses and record creation-return phase/heading/proof/action diagnostics"
   ],
   "limitations": [
-    "149 confirms credited rewards and creation-return failure, but its saved map is stale and post-plus search pixels are unavailable",
+    "149 confirms credited rewards and creation-return failure. User subsequently confirmed the 이름/스킬 search page was visible; its exact final pixels remain unavailable, so the field/result OCR branch is not established by the ZIP.",
     "Real Korean OCR validated on a rendered bar with modeled page-detector omission; exact149 failure cause/resolution and native MuMu replay remain unestablished",
     "Original screenshots and input traces excluded from publication"
   ],
