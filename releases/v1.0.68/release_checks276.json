@@ -123,7 +123,58 @@
       "evidence": "awoken_clear_with_new_cooldown",
       "scope": "Exact saved146 before/after/failure frames; recorded failed numeric OCR represented by empty OCR tokens, controlled deadline clock, mocked capture and all input boundaries. No physical emulator replay. Originals and input trace excluded."
     },
-    "runtime_bundle_matches_source_commit": true
+    "runtime_bundle_matches_source_commit": true,
+    "production_updater": {
+      "result": "passed",
+      "live_upgrade275_to276": true,
+      "source_sha256_verified": true,
+      "previous_source_backup_verified": true,
+      "repeat_check_no_update": true,
+      "published_bundle_validation": {
+        "result": "passed",
+        "bundle_regressions": 209,
+        "condition_validation": {
+          "result": "passed",
+          "exact_private137_classifier": true,
+          "real_korean_ocr_timer_seconds": 8,
+          "combo_condition_confirmed": true,
+          "legacy_recorded_rejection_reproduced": true,
+          "modeled_condition_read_seconds": 3.906,
+          "modeled_old_final_check_seconds": 2.1,
+          "new_preview_capture_count": 1,
+          "original_source_timestamp_preserved": true,
+          "current_owned_result_accepted": true,
+          "real_parent_solver_ready": true,
+          "prepared_attributes": 5,
+          "prepared_minimum_final_combos": 6,
+          "explicit_execution_required": true,
+          "fresh_execution_rejects_unknown_conditions": true,
+          "automatic_execution_calls": 0,
+          "scope": "Exact137 full-frame pixels and actual Korean OCR; old final-check age branch modeled at2.1seconds after a3.906-second read. Recorded combined reason does not identify age versus cancellation. New owned worker/parent plus real mathematical solver reaches ready without recapture/input; native capture/process boundaries mocked, no physical MuMu replay. Originals excluded."
+        },
+        "current_conditions": {
+          "result": "passed",
+          "exact_private138_139_board_classification": true,
+          "declared_mathematical_test_parameters": {
+            "seconds": 8,
+            "cap": 37,
+            "enemy_required": 0,
+            "bonus": 0
+          },
+          "both_test_routes_verified_five_colour_six_combo": true,
+          "old_same_number_unknown_reported_as_changed": true,
+          "new_persistent_unknown_reported_separately": true,
+          "one_transient_recheck_preserves_valid_route": true,
+          "saved_failure_contains_previous_first_current_and_path": true,
+          "focus_retention_simulation_passed": true,
+          "modeled_worker_startup_does_not_consume_search_window": true,
+          "physical_input_calls": 0,
+          "limitations": "Original138/139 ZIPs lack full-game timer/combo and execution/search values, so original failure causes are unestablished. Native capture/movement/thread/process boundaries mocked; no original full-frame OCR, physical MuMu or actual Alt-Tab replay. Test timer/cap are declared examples, not recovered values. Original images/ZIPs excluded."
+        },
+        "scope": "Bundled runtime: finite repeat lifecycle, real Tk adjacent controls, execution unknown/read retry/failure evidence, retained focus and worker deadlines, prior HUD/save/preparation regressions. Private137 OCR and controlled138/139 mathematical and old/new condition checks. All physical input mocked; no native MuMu or actual Alt-Tab replay."
+      },
+      "scope": "Production downloaded bundle, owned confirmed frame to read-only preparation and fresh execution validation, private137 real Korean OCR and explicit execution gates; physical MuMu unverified"
+    }
   },
   "scope": [
     "Confirm declared cleanse effect removal plus fresh cooldown badge on the used slot in two stable board samples",
@@ -136,8 +187,8 @@
   "publication": {
     "main_branch_updated": true,
     "source_main_commit": "5ed9ea85337ae0fffc62af1eb285dc927a877eed",
-    "authorization": "User approved future tested changes be promoted and published immediately after required tests pass.",
-    "updater_activation": "production update.json set to276; live check pending",
+    "authorization": "User explicitly approved publication to tterx/pad0-updates and updater activation after review: 게시해.",
+    "updater_activation": "production updater276 verified: live275-to276 backup/repeat,209 bundled regressions including cleanse confirmation and private146 saved-frame replay; physical MuMu unverified",
     "github_release": "https://github.com/tterx/pad0-updates/releases/tag/v1.0.68",
     "workflow": "https://github.com/tterx/pad0-updates/actions/runs/41818253481",
     "uploaded_asset_digest_verified": true,
