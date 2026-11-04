@@ -1,0 +1,174 @@
+{
+  "version": "v1.0.72",
+  "release": 280,
+  "source_commit": "5d6ccab8fb26b6782dae323e17810287d5440cd6",
+  "source_sha256": "0fd462f0d9df581d21e95dfd5f104b0f537bcd59c2da93cac120c43616cef299",
+  "zip_sha256": "dbabb32f1ca2e823008f3cc6aed0b43f17add1decfcd3b10963a25fa62050d17",
+  "checks": {
+    "package": "passed",
+    "bundle_import": "passed",
+    "offline_upgrade279_to280": "passed",
+    "bundled_startup_ai_cleanup": "passed",
+    "startup_preserves_skill_tactics": "passed",
+    "source_sha256": "0fd462f0d9df581d21e95dfd5f104b0f537bcd59c2da93cac120c43616cef299",
+    "zip_sha256": "dbabb32f1ca2e823008f3cc6aed0b43f17add1decfcd3b10963a25fa62050d17",
+    "source_bytes": 2036196,
+    "linux_tests": {
+      "run": 808,
+      "passed": 807,
+      "skipped": 1
+    },
+    "windows_ci": {
+      "conclusion": "success",
+      "run_id": 41842700568,
+      "url": "https://github.com/tterx/pad0-all-in-one/actions/runs/41842700568",
+      "head_sha": "5d6ccab8fb26b6782dae323e17810287d5440cd6",
+      "tests": 771
+    },
+    "candidate_bundle": {
+      "result": "passed",
+      "creation_return_checks": {
+        "result": "passed",
+        "report149_receipt_credited": true,
+        "report149_failed_during_creation_return": true,
+        "final_search_frame_unavailable": true,
+        "real_korean_ocr_on_rendered_search_placeholder": true,
+        "rendered_placeholder_readings": [
+          [
+            "이름/스킬",
+            0.9999
+          ],
+          [
+            "이름/스킬",
+            0.9996
+          ]
+        ],
+        "search_line_fallback_verified": true,
+        "original149_failure_not_reproduced": true,
+        "scope": "149 metadata locates creation return after credited rewards. Real Korean OCR on a rendered search bar with detector omission modeled as empty page tokens; no original post-plus search frame or physical emulator replay. Originals/input traces excluded."
+      },
+      "private148_replay": {
+        "result": "passed",
+        "exact_private148_material_and_registered_pixels": true,
+        "previous_rejection_reproduced": true,
+        "registered_image_size": [
+          146,
+          212
+        ],
+        "material_image_size": [
+          106,
+          135
+        ],
+        "legacy_card_box": [
+          26,
+          53,
+          133,
+          192
+        ],
+        "normalized_score": 7.696778774261475,
+        "unchanged_name_threshold": 13,
+        "unchanged_f7_threshold": 10,
+        "both_normalized_borders": [
+          "P",
+          "P"
+        ],
+        "f7_reuses_registered_id_despite_exact_cached_draft": true,
+        "name_save_preserves_id_and_fresh_zero": true,
+        "farming_identification_passed": true,
+        "original_kept_and_f7_refresh_verified": true,
+        "scope": "Exact148 saved icon pair with modeled ledger/binding/required6 and history8; source and bundle method replay, no physical emulator/click or complete original local DB. Original images excluded."
+      },
+      "bundle_regressions": 256,
+      "condition_validation": {
+        "result": "passed",
+        "exact_private137_classifier": true,
+        "real_korean_ocr_timer_seconds": 8,
+        "combo_condition_confirmed": true,
+        "legacy_recorded_rejection_reproduced": true,
+        "modeled_condition_read_seconds": 3.906,
+        "modeled_old_final_check_seconds": 2.1,
+        "new_preview_capture_count": 1,
+        "original_source_timestamp_preserved": true,
+        "current_owned_result_accepted": true,
+        "real_parent_solver_ready": true,
+        "prepared_attributes": 5,
+        "prepared_minimum_final_combos": 6,
+        "explicit_execution_required": true,
+        "fresh_execution_rejects_unknown_conditions": true,
+        "automatic_execution_calls": 0,
+        "scope": "Exact137 full-frame pixels and actual Korean OCR; old final-check age branch modeled at2.1seconds after a3.906-second read. Recorded combined reason does not identify age versus cancellation. New owned worker/parent plus real mathematical solver reaches ready without recapture/input; native capture/process boundaries mocked, no physical MuMu replay. Originals excluded."
+      },
+      "current_conditions": {
+        "result": "passed",
+        "exact_private138_139_board_classification": true,
+        "declared_mathematical_test_parameters": {
+          "seconds": 8,
+          "cap": 37,
+          "enemy_required": 0,
+          "bonus": 0
+        },
+        "both_test_routes_verified_five_colour_six_combo": true,
+        "old_same_number_unknown_reported_as_changed": true,
+        "new_persistent_unknown_reported_separately": true,
+        "one_transient_recheck_preserves_valid_route": true,
+        "saved_failure_contains_previous_first_current_and_path": true,
+        "focus_retention_simulation_passed": true,
+        "modeled_worker_startup_does_not_consume_search_window": true,
+        "physical_input_calls": 0,
+        "limitations": "Original138/139 ZIPs lack full-game timer/combo and execution/search values, so original failure causes are unestablished. Native capture/movement/thread/process boundaries mocked; no original full-frame OCR, physical MuMu or actual Alt-Tab replay. Test timer/cap are declared examples, not recovered values. Original images/ZIPs excluded."
+      },
+      "material_image_match": {
+        "regressions": 9,
+        "existing_id_and_fresh_stock_preserved": true,
+        "missing147_reference_not_reconstructed": true
+      },
+      "material_button": {
+        "regressions": 16,
+        "real_tk_verified": true
+      },
+      "scope": "Bundled runtime: pending OCR material button retention, no-focus mapping, fresh scan delivery; finite repeat lifecycle, real Tk adjacent controls, execution unknown/read retry/failure evidence, retained focus and worker deadlines, prior HUD/save/preparation regressions. Private137 OCR and controlled138/139 mathematical and old/new condition checks. All physical input mocked; no native MuMu or actual Alt-Tab replay."
+    },
+    "creation_return": {
+      "result": "passed",
+      "report149_receipt_credited": true,
+      "report149_failed_during_creation_return": true,
+      "final_search_frame_unavailable": true,
+      "real_korean_ocr_on_rendered_search_placeholder": true,
+      "rendered_placeholder_readings": [
+        [
+          "이름/스킬",
+          0.9999
+        ],
+        [
+          "이름/스킬",
+          0.9996
+        ]
+      ],
+      "search_line_fallback_verified": true,
+      "original149_failure_not_reproduced": true,
+      "scope": "149 metadata locates creation return after credited rewards. Real Korean OCR on a rendered search bar with detector omission modeled as empty page tokens; no original post-plus search frame or physical emulator replay. Originals/input traces excluded.",
+      "regressions": 12,
+      "visible_field_proof_required": true,
+      "query_result_rows_distinct": true,
+      "current_failure_frame": true,
+      "physical_emulator_verified": false
+    },
+    "runtime_bundle_matches_source_commit": true
+  },
+  "scope": [
+    "Recognize a visible creation search placeholder from a verified narrow bar using two high-confidence readings when full-page OCR misses it",
+    "Verify queries in the actual search row and only click exact target results below it",
+    "Refresh failure snapshots during all navigation pauses and record creation-return phase/heading/proof/action diagnostics"
+  ],
+  "limitations": [
+    "149 confirms credited rewards and creation-return failure, but its saved map is stale and post-plus search pixels are unavailable",
+    "Real Korean OCR validated on a rendered bar with modeled page-detector omission; exact149 failure cause/resolution and native MuMu replay remain unestablished",
+    "Original screenshots and input traces excluded from publication"
+  ],
+  "publication": {
+    "main_branch_updated": true,
+    "source_main_commit": "5d6ccab8fb26b6782dae323e17810287d5440cd6",
+    "authorization": "Continue the user-authorized tested fix and release workflow in the existing pad0-updates repository.",
+    "updater_activation": "source main verified; pending published ZIP download verification"
+  }
+}

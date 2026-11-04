@@ -1,0 +1,9 @@
+# v1.0.72 / updater280
+
+Report149 has a confirmed drag/release, credited rewards, verified Next/Quit and a transition to Normal dungeon. It then fails in the creation-return routine. The last touch positions are consistent with the routine's scroll and purple-plus actions, but the original report contains no per-phase creation diagnostics and its failure image remains the map from the preceding navigation wait. Thus the actual post-plus search screen and exact failure cause are not established by149. Do not claim an original search-field OCR failure reproduced.
+
+Every navigation pause now refreshes the failure frame, including creation-return loops outside `_nav_wait`. Creation return records each phase, recognized heading, action, search-field proof, query/result status and exact pending step. Receipt credit remains intact and no reward is credited again.
+
+Add a conservative alternative to full-scene search-placeholder OCR: locate a single wide pale search bar in the upper page, crop its text, and require two independent high-confidence 이름/스킬 readings before clicking. Ambiguous/missing/wrong labels produce no point. Query confirmation uses the verified field row, including a short-line fallback, and results must lie below that field, so a shifted query cannot be clicked as its own result. Exact target names, optional owner number, existing navigation limit, cancellation and no Create input remain.
+
+Twelve regressions cover placeholder fallback, wrong/low/unread labels, ambiguous/missing fields, detected-field reuse, shifted query/result rows, tight query proof, no query-as-result input, current failure pixels, bounded phase diagnostics and cancellation. A separate private check uses real Korean OCR on a rendered faint search bar with a modeled empty full-page detector result. It does not recreate149's missing post-plus pixels or physical emulator behavior. Original screenshots and input traces are excluded from publication.
