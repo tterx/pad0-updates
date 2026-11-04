@@ -1,0 +1,7 @@
+# v1.0.68 / updater276
+
+Report146 stopped after Odin's skill popup closed because tiny cooldown digit OCR yielded no tokens. The saved before/after frames show awakening-disable crosses removed and a new cooldown badge on the used slot, while the board is stable. The prior confirmer accepted numeric cooldown, board generation or time change, but did not use cleanse effects.
+
+For a declared awoken-clear/bind-clear skill, remember the observed disabled/bound state and whether the used slot already had a cooldown badge. Add evidence only when the corresponding pre-existing status is removed, the used slot is no longer ready, and a fresh cooldown badge appears there. Require the existing two identical stable-board signatures with no popup before accepting. Strong joint evidence skips the failed numeric OCR path. No additional skill-use input or retry is issued. Numeric/board/time confirmations and the bounded stop remain.
+
+Six regressions cover awoken/bind success, missing/pre-existing/wrong-slot badge, missing status change or wrong effect type, unstable board and cancellation. A private replay of146's before/after/failure pixels with the recorded empty numeric OCR reproduces the old stop and confirms the new path in two samples, with zero retry inputs. It models capture/time/input boundaries and is not physical emulator replay. Original images and input traces are excluded from publication.

@@ -1,0 +1,142 @@
+{
+  "version": "v1.0.68",
+  "release": 276,
+  "source_commit": "5ed9ea85337ae0fffc62af1eb285dc927a877eed",
+  "source_sha256": "d6e817dfa7967236928cd25f9ce0fdb9a2ebbf4b4f7c192d247d0bf1316e9573",
+  "zip_sha256": "4e97fdf02c6081d53f8618441401de445c7677807c3944538c5e6d49a5707d89",
+  "checks": {
+    "package": "passed",
+    "bundle_import": "passed",
+    "offline_upgrade275_to276": "passed",
+    "bundled_startup_ai_cleanup": "passed",
+    "startup_preserves_skill_tactics": "passed",
+    "source_sha256": "d6e817dfa7967236928cd25f9ce0fdb9a2ebbf4b4f7c192d247d0bf1316e9573",
+    "zip_sha256": "4e97fdf02c6081d53f8618441401de445c7677807c3944538c5e6d49a5707d89",
+    "source_bytes": 2028527,
+    "linux_tests": {
+      "run": 761,
+      "passed": 760,
+      "skipped": 1
+    },
+    "windows_ci": {
+      "conclusion": "success",
+      "run_id": 41816853829,
+      "url": "https://github.com/tterx/pad0-all-in-one/actions/runs/41816853829",
+      "head_sha": "5ed9ea85337ae0fffc62af1eb285dc927a877eed",
+      "tests": 724
+    },
+    "candidate_bundle": {
+      "result": "passed",
+      "bundle_regressions": 209,
+      "condition_validation": {
+        "result": "passed",
+        "exact_private137_classifier": true,
+        "real_korean_ocr_timer_seconds": 8,
+        "combo_condition_confirmed": true,
+        "legacy_recorded_rejection_reproduced": true,
+        "modeled_condition_read_seconds": 3.906,
+        "modeled_old_final_check_seconds": 2.1,
+        "new_preview_capture_count": 1,
+        "original_source_timestamp_preserved": true,
+        "current_owned_result_accepted": true,
+        "real_parent_solver_ready": true,
+        "prepared_attributes": 5,
+        "prepared_minimum_final_combos": 6,
+        "explicit_execution_required": true,
+        "fresh_execution_rejects_unknown_conditions": true,
+        "automatic_execution_calls": 0,
+        "scope": "Exact137 full-frame pixels and actual Korean OCR; old final-check age branch modeled at2.1seconds after a3.906-second read. Recorded combined reason does not identify age versus cancellation. New owned worker/parent plus real mathematical solver reaches ready without recapture/input; native capture/process boundaries mocked, no physical MuMu replay. Originals excluded."
+      },
+      "current_conditions": {
+        "result": "passed",
+        "exact_private138_139_board_classification": true,
+        "declared_mathematical_test_parameters": {
+          "seconds": 8,
+          "cap": 37,
+          "enemy_required": 0,
+          "bonus": 0
+        },
+        "both_test_routes_verified_five_colour_six_combo": true,
+        "old_same_number_unknown_reported_as_changed": true,
+        "new_persistent_unknown_reported_separately": true,
+        "one_transient_recheck_preserves_valid_route": true,
+        "saved_failure_contains_previous_first_current_and_path": true,
+        "focus_retention_simulation_passed": true,
+        "modeled_worker_startup_does_not_consume_search_window": true,
+        "physical_input_calls": 0,
+        "limitations": "Original138/139 ZIPs lack full-game timer/combo and execution/search values, so original failure causes are unestablished. Native capture/movement/thread/process boundaries mocked; no original full-frame OCR, physical MuMu or actual Alt-Tab replay. Test timer/cap are declared examples, not recovered values. Original images/ZIPs excluded."
+      },
+      "scope": "Bundled runtime: finite repeat lifecycle, real Tk adjacent controls, execution unknown/read retry/failure evidence, retained focus and worker deadlines, prior HUD/save/preparation regressions. Private137 OCR and controlled138/139 mathematical and old/new condition checks. All physical input mocked; no native MuMu or actual Alt-Tab replay."
+    },
+    "condition_delivery_replay": {
+      "result": "passed",
+      "exact_private137_classifier": true,
+      "real_korean_ocr_timer_seconds": 8,
+      "combo_condition_confirmed": true,
+      "legacy_recorded_rejection_reproduced": true,
+      "modeled_condition_read_seconds": 3.906,
+      "modeled_old_final_check_seconds": 2.1,
+      "new_preview_capture_count": 1,
+      "original_source_timestamp_preserved": true,
+      "current_owned_result_accepted": true,
+      "real_parent_solver_ready": true,
+      "prepared_attributes": 5,
+      "prepared_minimum_final_combos": 6,
+      "explicit_execution_required": true,
+      "fresh_execution_rejects_unknown_conditions": true,
+      "automatic_execution_calls": 0,
+      "scope": "Exact137 full-frame pixels and actual Korean OCR; old final-check age branch modeled at2.1seconds after a3.906-second read. Recorded combined reason does not identify age versus cancellation. New owned worker/parent plus real mathematical solver reaches ready without recapture/input; native capture/process boundaries mocked, no physical MuMu replay. Originals excluded."
+    },
+    "current_conditions": {
+      "result": "passed",
+      "exact_private138_139_board_classification": true,
+      "declared_mathematical_test_parameters": {
+        "seconds": 8,
+        "cap": 37,
+        "enemy_required": 0,
+        "bonus": 0
+      },
+      "both_test_routes_verified_five_colour_six_combo": true,
+      "old_same_number_unknown_reported_as_changed": true,
+      "new_persistent_unknown_reported_separately": true,
+      "one_transient_recheck_preserves_valid_route": true,
+      "saved_failure_contains_previous_first_current_and_path": true,
+      "focus_retention_simulation_passed": true,
+      "modeled_worker_startup_does_not_consume_search_window": true,
+      "physical_input_calls": 0,
+      "limitations": "Original138/139 ZIPs lack full-game timer/combo and execution/search values, so original failure causes are unestablished. Native capture/movement/thread/process boundaries mocked; no original full-frame OCR, physical MuMu or actual Alt-Tab replay. Test timer/cap are declared examples, not recovered values. Original images/ZIPs excluded."
+    },
+    "clear_confirmation": {
+      "regressions": 6,
+      "joint_status_and_new_badge_evidence": true,
+      "physical_emulator_verified": false
+    },
+    "private146_replay": {
+      "result": "passed",
+      "exact_private146_before_after_and_failure_pixels": true,
+      "old_numeric_ocr_miss_reproduces_stop": true,
+      "actual_awoken_crosses_removed": true,
+      "actual_new_used_slot_cooldown_badge": true,
+      "two_stable_board_samples_confirmed": true,
+      "new_numeric_ocr_calls": 0,
+      "skill_retry_inputs": 0,
+      "evidence": "awoken_clear_with_new_cooldown",
+      "scope": "Exact saved146 before/after/failure frames; recorded failed numeric OCR represented by empty OCR tokens, controlled deadline clock, mocked capture and all input boundaries. No physical emulator replay. Originals and input trace excluded."
+    },
+    "runtime_bundle_matches_source_commit": true
+  },
+  "scope": [
+    "Confirm declared cleanse effect removal plus fresh cooldown badge on the used slot in two stable board samples",
+    "Avoid failed numeric OCR when joint clear evidence is verified; never resend skill use"
+  ],
+  "limitations": [
+    "Exact saved146 frames and recorded numeric OCR miss replayed with modeled capture/time/input; no physical emulator replay",
+    "Original screenshots and traces excluded"
+  ],
+  "publication": {
+    "main_branch_updated": true,
+    "source_main_commit": "5ed9ea85337ae0fffc62af1eb285dc927a877eed",
+    "authorization": "User approved future tested changes be promoted and published immediately after required tests pass.",
+    "updater_activation": "source main verified; pending published ZIP download verification"
+  }
+}
