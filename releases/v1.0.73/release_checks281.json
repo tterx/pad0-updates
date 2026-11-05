@@ -192,6 +192,10 @@
     "main_branch_updated": true,
     "source_main_commit": "58aa0c1d596ec26754152e18a1a7b8a2624a3aa6",
     "authorization": "User explicitly requested implementation and publication of menu-based return in the existing pad0-updates repository on 2026-11-05.",
-    "updater_activation": "source main verified; pending published ZIP download verification"
+    "updater_activation": "production update.json set to281; live check pending",
+    "github_release": "https://github.com/tterx/pad0-updates/releases/tag/v1.0.73",
+    "workflow": "https://github.com/tterx/pad0-updates/actions/runs/42027703315",
+    "uploaded_asset_digest_verified": true,
+    "published_zip_download_sha256_verified": true
   }
 }
