@@ -1,12 +1,12 @@
 # 퍼드0 올인원
 
-[**프로그램 ZIP 다운로드 · v1.0.76**](https://github.com/tterx/pad0-updates/releases/download/v1.0.76/pad0_overlay_windows_v1_0_76.zip) · [전체 릴리스](https://github.com/tterx/pad0-updates/releases)
+[**프로그램 ZIP 다운로드 · v1.0.77**](https://github.com/tterx/pad0-updates/releases/download/v1.0.77/pad0_overlay_windows_v1_0_77.zip) · [전체 릴리스](https://github.com/tterx/pad0-updates/releases)
 
-현재 표시 버전은 **1.0.76**, 자동 업데이트 내부 순번은 **284**입니다.
+현재 표시 버전은 **1.0.77**, 자동 업데이트 내부 순번은 **285**입니다.
 
 새로 설치할 때는 ZIP을 풀고 `시작.vbs`를 실행하세요. 기존 설치는 PAD0를 완전히 종료한 뒤 `시작.vbs`를 다시 실행하면 업데이트됩니다.
 
-최근 버전에는 작은 스킬 쿨타임 숫자를 직접 확인하고, 집계가 진행되지 않으면 실제 재료창 보유량을 두 번 재확인합니다. 직전 보상 자료도 다음 전투 오류에 보존합니다. [변경 내용](docs/reviews/REVIEW284.md) · [검증 기록](releases/v1.0.76/release_checks284.json)
+최근 버전에는 최초 재료 등록이 임시 이름에서 멈추지 않도록 이름 확인 시작 경로를 보완했습니다. 제목 캡처가 없으면 MuMu에서 대상을 재확인하고, 시작 실패는 보류 상태와 오류 기록으로 남깁니다. [변경 내용](docs/reviews/REVIEW285.md) · [검증 기록](releases/v1.0.77/release_checks285.json)
 
 ## 저장소 안내
 

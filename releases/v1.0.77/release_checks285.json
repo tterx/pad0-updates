@@ -240,6 +240,10 @@
     "main_branch_updated": true,
     "source_main_commit": "b1446ef32705eeab44b2767c2b35fe034580ddb7",
     "authorization": "Continued authorized fix/publication workflow; user confirmed no detail dialog opens on initial registration and requested continuation on 2026-11-07 Asia/Seoul.",
-    "updater_activation": "source main verified; pending published ZIP download verification"
+    "updater_activation": "production update.json set to285; live check pending",
+    "github_release": "https://github.com/tterx/pad0-updates/releases/tag/v1.0.77",
+    "workflow": "https://github.com/tterx/pad0-updates/actions/runs/42250794082",
+    "uploaded_asset_digest_verified": true,
+    "published_zip_download_sha256_verified": true
   }
 }
