@@ -1,12 +1,12 @@
 # 퍼드0 올인원
 
-[**프로그램 ZIP 다운로드 · v1.0.74**](https://github.com/tterx/pad0-updates/releases/download/v1.0.74/pad0_overlay_windows_v1_0_74.zip) · [전체 릴리스](https://github.com/tterx/pad0-updates/releases)
+[**프로그램 ZIP 다운로드 · v1.0.75**](https://github.com/tterx/pad0-updates/releases/download/v1.0.75/pad0_overlay_windows_v1_0_75.zip) · [전체 릴리스](https://github.com/tterx/pad0-updates/releases)
 
-현재 표시 버전은 **1.0.74**, 자동 업데이트 내부 순번은 **282**입니다.
+현재 표시 버전은 **1.0.75**, 자동 업데이트 내부 순번은 **283**입니다.
 
 새로 설치할 때는 ZIP을 풀고 `시작.vbs`를 실행하세요. 기존 설치는 PAD0를 완전히 종료한 뒤 `시작.vbs`를 다시 실행하면 업데이트됩니다.
 
-최근 버전에는 MuMu SDK 경로의 코너 대기를 보강하고 경로 계산의 시간 예산에도 반영했습니다. 직선 이동 간격과 잘못된 판의 중지 검사는 유지합니다. [변경 내용](docs/reviews/REVIEW282.md) · [검증 기록](releases/v1.0.74/release_checks282.json)
+최근 버전에는 한글 검색을 MuMu 내부에서 처리하고, 획득 가능 던전 정보를 연전 판정에도 반영합니다. 칼리가 부족한데 던전을 나오는 문제를 보완했습니다. [변경 내용](docs/reviews/REVIEW283.md) · [검증 기록](releases/v1.0.75/release_checks283.json)
 
 ## 저장소 안내
 
