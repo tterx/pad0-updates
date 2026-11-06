@@ -250,6 +250,10 @@
     "main_branch_updated": true,
     "source_main_commit": "15990a770066343de77a9b3f4f1b22215e8aab9f",
     "authorization": "Continuing authorized fix/publication workflow following unresolved owner and unavailable diagnostic report supplied by the user on 2026-11-07 Asia/Seoul.",
-    "updater_activation": "source main verified; pending published ZIP download verification"
+    "updater_activation": "production update.json set to287; live check pending",
+    "github_release": "https://github.com/tterx/pad0-updates/releases/tag/v1.0.79",
+    "workflow": "https://github.com/tterx/pad0-updates/actions/runs/42256826802",
+    "uploaded_asset_digest_verified": true,
+    "published_zip_download_sha256_verified": true
   }
 }
