@@ -1,12 +1,12 @@
 # 퍼드0 올인원
 
-[**프로그램 ZIP 다운로드 · v1.0.77**](https://github.com/tterx/pad0-updates/releases/download/v1.0.77/pad0_overlay_windows_v1_0_77.zip) · [전체 릴리스](https://github.com/tterx/pad0-updates/releases)
+[**프로그램 ZIP 다운로드 · v1.0.78**](https://github.com/tterx/pad0-updates/releases/download/v1.0.78/pad0_overlay_windows_v1_0_78.zip) · [전체 릴리스](https://github.com/tterx/pad0-updates/releases)
 
-현재 표시 버전은 **1.0.77**, 자동 업데이트 내부 순번은 **285**입니다.
+현재 표시 버전은 **1.0.78**, 자동 업데이트 내부 순번은 **286**입니다.
 
 새로 설치할 때는 ZIP을 풀고 `시작.vbs`를 실행하세요. 기존 설치는 PAD0를 완전히 종료한 뒤 `시작.vbs`를 다시 실행하면 업데이트됩니다.
 
-최근 버전에는 최초 재료 등록이 임시 이름에서 멈추지 않도록 이름 확인 시작 경로를 보완했습니다. 제목 캡처가 없으면 MuMu에서 대상을 재확인하고, 시작 실패는 보류 상태와 오류 기록으로 남깁니다. [변경 내용](docs/reviews/REVIEW285.md) · [검증 기록](releases/v1.0.77/release_checks285.json)
+최근 버전에는 재료확인 중 다른 OCR과 충돌해 실패하는 문제를 수정했습니다. 현재 재료 인식을 우선 처리하며, 실패 시 이전 작업 창을 새 결과처럼 열지 않고 이전 저장 자료임을 표시합니다. [변경 내용](docs/reviews/REVIEW286.md) · [검증 기록](releases/v1.0.78/release_checks286.json)
 
 ## 저장소 안내
 

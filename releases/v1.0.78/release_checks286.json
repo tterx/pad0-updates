@@ -247,6 +247,10 @@
     "main_branch_updated": true,
     "source_main_commit": "1814e83abcd92680880a8ca1e7bff0ffaafef161",
     "authorization": "Continuing authorized fix/publication workflow following user creation-screen failure and explicit OCR busy status supplied on 2026-11-07 Asia/Seoul.",
-    "updater_activation": "source main verified; pending published ZIP download verification"
+    "updater_activation": "production update.json set to286; live check pending",
+    "github_release": "https://github.com/tterx/pad0-updates/releases/tag/v1.0.78",
+    "workflow": "https://github.com/tterx/pad0-updates/actions/runs/42253739791",
+    "uploaded_asset_digest_verified": true,
+    "published_zip_download_sha256_verified": true
   }
 }
