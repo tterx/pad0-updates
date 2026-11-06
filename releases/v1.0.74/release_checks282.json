@@ -199,6 +199,10 @@
     "main_branch_updated": true,
     "source_main_commit": "6882a21dc29f99e534678a26e9e02f702bae3126",
     "authorization": "Continued authorized bug-fix and publication workflow; user reported gameplay stop with report151 on 2026-11-06.",
-    "updater_activation": "source main verified; pending published ZIP download verification"
+    "updater_activation": "production update.json set to282; live check pending",
+    "github_release": "https://github.com/tterx/pad0-updates/releases/tag/v1.0.74",
+    "workflow": "https://github.com/tterx/pad0-updates/actions/runs/42227696440",
+    "uploaded_asset_digest_verified": true,
+    "published_zip_download_sha256_verified": true
   }
 }
