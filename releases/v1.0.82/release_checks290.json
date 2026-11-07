@@ -364,6 +364,10 @@
     "main_branch_updated": true,
     "source_main_commit": "45375a471681e6c75dfd77a3ef38d172c5d6f70e",
     "authorization": "User supplied report156 after another automatic farming stop on 2026-11-07 Asia/Seoul; continuing authorized repair/publication workflow.",
-    "updater_activation": "source main verified; pending published ZIP download verification"
+    "updater_activation": "production update.json set to290; live check pending",
+    "github_release": "https://github.com/tterx/pad0-updates/releases/tag/v1.0.82",
+    "workflow": "https://github.com/tterx/pad0-updates/actions/runs/42364667857",
+    "uploaded_asset_digest_verified": true,
+    "published_zip_download_sha256_verified": true
   }
 }

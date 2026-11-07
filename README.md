@@ -1,12 +1,12 @@
 # 퍼드0 올인원
 
-[**프로그램 ZIP 다운로드 · v1.0.81**](https://github.com/tterx/pad0-updates/releases/download/v1.0.81/pad0_overlay_windows_v1_0_81.zip) · [전체 릴리스](https://github.com/tterx/pad0-updates/releases)
+[**프로그램 ZIP 다운로드 · v1.0.82**](https://github.com/tterx/pad0-updates/releases/download/v1.0.82/pad0_overlay_windows_v1_0_82.zip) · [전체 릴리스](https://github.com/tterx/pad0-updates/releases)
 
-현재 표시 버전은 **1.0.81**, 자동 업데이트 내부 순번은 **289**입니다.
+현재 표시 버전은 **1.0.82**, 자동 업데이트 내부 순번은 **290**입니다.
 
 새로 설치할 때는 ZIP을 풀고 `시작.vbs`를 실행하세요. 기존 설치는 PAD0를 완전히 종료한 뒤 `시작.vbs`를 다시 실행하면 업데이트됩니다.
 
-최근 버전에는 잡은 방해드롭의 눈이 좁은 확인 영역에서 잘려 경로 확인에 실패하는 문제를 수정했습니다. 얼굴 전체와 위치·크기·투명도를 확인하고, 오류 기록에는 실제 확인 실패 화면을 저장합니다. [변경 내용](docs/reviews/REVIEW289.md) · [검증 기록](releases/v1.0.81/release_checks289.json)
+최근 버전에는 잠입 확인의 보라색 아이콘을 숫자로 읽어 SP14 진입이 중단되는 문제를 수정했습니다. 실제 글자만 분리해 번호를 두 번 확인하고, 배틀 수와 진입 판독 기록도 보완했습니다. [변경 내용](docs/reviews/REVIEW290.md) · [검증 기록](releases/v1.0.82/release_checks290.json)
 
 ## 저장소 안내
 
