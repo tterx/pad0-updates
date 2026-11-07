@@ -283,6 +283,10 @@
     "main_branch_updated": true,
     "source_main_commit": "2aac955ba6be25f43aeea221e89a96203d68a0bf",
     "authorization": "User explicitly replaced stock rechecks with F7 baseline plus reward counts and ordered per-material farming, and specified portrait selection after search on 2026-11-07 Asia/Seoul; continuing authorized publication workflow.",
-    "updater_activation": "source main verified; pending published ZIP download verification"
+    "updater_activation": "production update.json set to288; live check pending",
+    "github_release": "https://github.com/tterx/pad0-updates/releases/tag/v1.0.80",
+    "workflow": "https://github.com/tterx/pad0-updates/actions/runs/42359666926",
+    "uploaded_asset_digest_verified": true,
+    "published_zip_download_sha256_verified": true
   }
 }
