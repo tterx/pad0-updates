@@ -1,12 +1,12 @@
 # 퍼드0 올인원
 
-[**프로그램 ZIP 다운로드 · v1.0.80**](https://github.com/tterx/pad0-updates/releases/download/v1.0.80/pad0_overlay_windows_v1_0_80.zip) · [전체 릴리스](https://github.com/tterx/pad0-updates/releases)
+[**프로그램 ZIP 다운로드 · v1.0.81**](https://github.com/tterx/pad0-updates/releases/download/v1.0.81/pad0_overlay_windows_v1_0_81.zip) · [전체 릴리스](https://github.com/tterx/pad0-updates/releases)
 
-현재 표시 버전은 **1.0.80**, 자동 업데이트 내부 순번은 **288**입니다.
+현재 표시 버전은 **1.0.81**, 자동 업데이트 내부 순번은 **289**입니다.
 
 새로 설치할 때는 ZIP을 풀고 `시작.vbs`를 실행하세요. 기존 설치는 PAD0를 완전히 종료한 뒤 `시작.vbs`를 다시 실행하면 업데이트됩니다.
 
-최근 버전에는 재료확인 때 저장한 보유량과 획득 집계만 사용해 부족 재료를 순서대로 파밍합니다. 드랍이 없으면 현재 던전을 반복하고, 현재 재료가 완료되면 다음 재료로 이동합니다. 육성 검색 후에는 초상화를 한 번 누릅니다. [변경 내용](docs/reviews/REVIEW288.md) · [검증 기록](releases/v1.0.80/release_checks288.json)
+최근 버전에는 잡은 방해드롭의 눈이 좁은 확인 영역에서 잘려 경로 확인에 실패하는 문제를 수정했습니다. 얼굴 전체와 위치·크기·투명도를 확인하고, 오류 기록에는 실제 확인 실패 화면을 저장합니다. [변경 내용](docs/reviews/REVIEW289.md) · [검증 기록](releases/v1.0.81/release_checks289.json)
 
 ## 저장소 안내
 
