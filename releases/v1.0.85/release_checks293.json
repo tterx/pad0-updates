@@ -473,7 +473,462 @@
       },
       "scope": "Bundled runtime: pending OCR material button retention, no-focus mapping, fresh scan delivery; finite repeat lifecycle, real Tk adjacent controls, execution unknown/read retry/failure evidence, retained focus and worker deadlines, prior HUD/save/preparation regressions. Private137 OCR and controlled138/139 mathematical and old/new condition checks. All physical input mocked; no native MuMu or actual Alt-Tab replay."
     },
-    "runtime_bundle_matches_source_commit": true
+    "runtime_bundle_matches_source_commit": true,
+    "production_updater": {
+      "result": "passed",
+      "live_upgrade292_to293": true,
+      "source_sha256_verified": true,
+      "previous_source_backup_verified": true,
+      "repeat_check_no_update": true,
+      "published_bundle_validation": {
+        "result": "passed",
+        "search158": {
+          "result": "passed",
+          "exact158_empty_search_pixels": true,
+          "old_record_searched_both_hints": true,
+          "actual_last_query_confirmed": true,
+          "query_proof": {
+            "readings": [
+              [
+                "서놀한 밤의 가야금 용악사 미나카",
+                0.99486
+              ],
+              [
+                "서놀한 밤의 가야금 용악사 미나카",
+                0.99445
+              ]
+            ],
+            "tokens": []
+          },
+          "empty_search_not_clicked": true,
+          "actual154_training_portrait": [
+            [
+              62,
+              333,
+              179,
+              485
+            ]
+          ],
+          "controlled_actual380_portrait": [
+            [
+              1242,
+              350,
+              1402,
+              558
+            ]
+          ],
+          "controlled_compact_material_row": [
+            [
+              600,
+              358,
+              713,
+              504
+            ]
+          ],
+          "physical_input_calls": 0,
+          "scope": "Actual158 final empty query screenshot and real Korean OCR; first158 query screenshot is absent, so whether its portrait was visible is unestablished. Actual154 training portrait plus an explicitly controlled placement of the actual157 No.380 portrait check frame geometry. Generated UI regression flows prove hint switching and opened-number gates. No physical emulator input; originals stay private."
+        },
+        "search_portraits": {
+          "regressions": 21,
+          "both_hints": true,
+          "stable_visual_portraits": true,
+          "opened_number_required": true,
+          "physical_mumu_unverified": true
+        },
+        "completion_name": {
+          "regressions": 12,
+          "real_tk_entry": true,
+          "manual_name_by_completed_number": true,
+          "counts_and_ocr_preserved": true,
+          "stale_window_rejected": true
+        },
+        "owner157": {
+          "result": "passed",
+          "exact157_pixels": true,
+          "original_title_disagreement_reproduced": true,
+          "number_only_identity": {
+            "number": "380",
+            "name": "No.380",
+            "name_confirmed": false,
+            "source": "current_creation_number_only"
+          },
+          "ocr_evidence": {
+            "title": {
+              "direct_readings": [
+                {
+                  "method": "gray_normalized",
+                  "text": "서늘한 밤의 가야금 용악사 미나카",
+                  "score": 0.97004
+                },
+                {
+                  "method": "otsu_binary",
+                  "text": "서놀한 밤의 가야금 용악사 미나카",
+                  "score": 0.97639
+                }
+              ],
+              "detector_tokens": [
+                {
+                  "text": "서늘한",
+                  "score": 0.9996
+                },
+                {
+                  "text": "밤의",
+                  "score": 0.99914
+                },
+                {
+                  "text": "용악사",
+                  "score": 0.99826
+                }
+              ],
+              "title_box": [
+                246,
+                16,
+                594,
+                47
+              ],
+              "direct_agreement": false
+            },
+            "number_readings": [
+              {
+                "text": "No.380",
+                "score": 0.9792
+              },
+              {
+                "text": "No.380",
+                "score": 0.98028
+              }
+            ]
+          },
+          "physical_input_calls": 0,
+          "scope": "Actual saved title and full frame with local Korean OCR. Quantity registration, SDK binding and navigation are covered separately with generated/mocked UI flows. No physical MuMu input; original pixels remain private."
+        },
+        "number_only_owner": {
+          "regressions": 19,
+          "unrounded_ocr_evidence": true,
+          "current_number_sdk_rebind": true,
+          "search_hints_not_identity": true,
+          "physical_mumu_unverified": true
+        },
+        "entry156": {
+          "result": "passed",
+          "exact156_entry_pixels": true,
+          "old_modifier_prefix_failure_reproduced": true,
+          "ordinary_header_readings": [
+            [
+              "8SP14",
+              0.91596
+            ],
+            [
+              "배틀",
+              0.99904
+            ]
+          ],
+          "clean_label_readings": [
+            {
+              "text": "SP14",
+              "score": 0.9996,
+              "number": "SP14"
+            },
+            {
+              "text": "SP14",
+              "score": 0.9996,
+              "number": "SP14"
+            }
+          ],
+          "confirmed_stage": "SP14",
+          "compact_entry_tokens": true,
+          "challenge_label_confirmed": true,
+          "battle_count": 4,
+          "physical_input_calls": 0,
+          "scope": "Exact156 entry screenshot and actual Korean OCR reproduce8SP14, confirm cleaned SP14 twice, Challenge and full battle4 field. Original full stage DB absent; metadata save uses a declared empty DB/mocked persistence. No device or physical Challenge input; originals/input traces excluded."
+        },
+        "entry_stage": {
+          "regressions": 12,
+          "coloured_modifiers_excluded": true,
+          "complete_battle_count": true,
+          "selected_stage_mismatch_rejected": true,
+          "physical_mumu_unverified": true
+        },
+        "held155": {
+          "result": "passed",
+          "exact155_source_and_held_pixels": true,
+          "old_clipped_reference_rejection_reproduced": true,
+          "stationary_cells_confirmed": 29,
+          "held_cell": 3,
+          "held_eye_matches": [
+            {
+              "center_delta": 0.64823,
+              "area_ratio": 0.98413,
+              "shape_iou": 0.90686,
+              "new_eye_fraction": 1.0
+            },
+            {
+              "center_delta": 0.14754,
+              "area_ratio": 1.0,
+              "shape_iou": 0.94472,
+              "new_eye_fraction": 1.0
+            }
+          ],
+          "held_silhouette_iou": 0.76823,
+          "held_specialist": {
+            "code": "J",
+            "confidence": 0.9997766613960266,
+            "model": "jammer-water-real-211"
+          },
+          "held_artwork_kind": "jammer_complete_eyes_and_silhouette",
+          "negative_cases": 5,
+          "scope": "Exact155 saved pre-drag and held pixels plus recorded trace replay prove final artwork only; no new physical inputs or original post-UP success frame. Stale failure-frame reference, changed other cell and invalid control evidence remain rejected. Originals and input traces excluded."
+        },
+        "held_jammer": {
+          "regressions": 16,
+          "final_positions": 30,
+          "source_shifts": 7,
+          "scale_lift_variants": 24,
+          "opacity_background_variants": 15,
+          "physical_mumu_unverified": true
+        },
+        "search154": {
+          "result": "passed",
+          "exact154_saved_search_pixels": true,
+          "real_korean_query_readings": [
+            [
+              "바닷가의 유포니움 용악사 마리엘",
+              0.9985
+            ],
+            [
+              "바닷가의 유포니움 용악사 마리엘",
+              0.9982
+            ]
+          ],
+          "actual_ordinary_detector_fails_query": true,
+          "unique_portrait_tap": [
+            "results",
+            121.5,
+            387.0
+          ],
+          "fresh_detail_check_called": true,
+          "recorded_no_focus_drop_keeps_farming": true,
+          "automatic_stock_reconciliation_removed": true,
+          "scope": "Exact154 search pixels and real Korean OCR/level detection; menu, text delivery and post-portrait detail effects modeled. Recorded inventory builds an explicit modeled ledger, original full DB/receipt templates absent. No physical MuMu or original post-portrait frame; originals excluded."
+        },
+        "farming_order": {
+          "regressions": 24,
+          "saved_f7_baseline_plus_rewards": true,
+          "no_automatic_inventory_rechecks": true,
+          "zero_drop_repeats": true,
+          "advance_on_current_material_completion": true,
+          "portrait_tap": true,
+          "physical_mumu_unverified": true
+        },
+        "material_owner": {
+          "regressions": 11,
+          "current376_binding": true,
+          "owner_pending_zip_saved": true,
+          "real_tk_diagnostic_controls": true,
+          "physical_mumu_unverified": true
+        },
+        "material_ocr": {
+          "regressions": 12,
+          "real_lock_contention": true,
+          "declared_five_card_quantities": true,
+          "twenty_consecutive_reads_reserved": true,
+          "old_task_not_reopened_on_failure": true,
+          "physical_mumu_unverified": true
+        },
+        "initial_names": {
+          "regressions": 14,
+          "four_material_name_flow": true,
+          "desktop_title_not_required": true,
+          "sdk_owner_proof_required_when_missing": true,
+          "physical_first_registration_unverified": true
+        },
+        "skill_stock": {
+          "result": "passed",
+          "exact153_before_after_pixels": true,
+          "actual_direct_cooldown_readings": [
+            [
+              "4",
+              0.99977
+            ],
+            [
+              "4",
+              0.99976
+            ]
+          ],
+          "visible_cooldown_badge_appears": true,
+          "ready_marker_disappears": true,
+          "recorded_empty_detector_modeled": true,
+          "confirmation_checks": 2,
+          "skill_retry_clicks": 0,
+          "original_receipt_evidence_absent": true,
+          "user_reported_kali_accumulation": 4,
+          "scope": "Exact153 skill pixels and real direct cooldown OCR. Automatic stock reconciliation is retired by user instruction; its former worker tests are replaced by ordered F7-baseline farming regressions. Physical MuMu unverified."
+        },
+        "background_search": {
+          "result": "passed",
+          "exact152_search_pixels": true,
+          "actual_search_placeholder_readings": [
+            [
+              "이름/스킬",
+              0.9999
+            ],
+            [
+              "이름/스킬",
+              0.9999
+            ]
+          ],
+          "puzzle_verified_in_original_report": true,
+          "original_stop_at_host_foreground_guard": true,
+          "real_local_socket_utf8_roundtrip": true,
+          "android_clipboard_ack_and_readback_verified": true,
+          "only_android_key_messages": true,
+          "modeled_zero_kali_stays_zero": true,
+          "old_false_exit_reproduced_with_modeled_db": true,
+          "new_acquisition_evidence_prevents_exit": true,
+          "physical_mumu_verified": false,
+          "scope": "Exact152 screenshot and real Korean OCR plus local socket peer implementing scrcpy3.1 framing. Original receipt amounts, inventory and stage rows are absent: modeled IDs/one-needed-zero-owned are explicitly declared, not recovered. No physical emulator, Windows foreground or game search replay; originals excluded."
+        },
+        "sdk_corners": {
+          "result": "passed",
+          "new_search_move_cap": 23,
+          "new_solver_attributes": 5,
+          "new_solver_final_combos": 6,
+          "original_pixel_reads_rejected": 3,
+          "stationary_mismatch_count": 2,
+          "equivalent_omitted_corners": 2,
+          "straight_sample_ms": 17,
+          "effective_corner_ms": 62.5,
+          "corner_count": 18,
+          "additional_motion_seconds": 0.5940000000000001,
+          "modeled_motion_seconds": 2.382999999999697,
+          "usable_seconds": 4.0,
+          "physical_emulator_replay": false,
+          "scope": "Exact private held pixels prove persistent mismatch; scripted dispatch clock proves timing and pre-DOWN budget only, not game-side correction"
+        },
+        "menu_return_checks": {
+          "result": "passed",
+          "exact150_map_pixels": true,
+          "actual_header_readings": [
+            [
+              "챌린지던전",
+              0.96557
+            ],
+            [
+              "챌린지던전",
+              0.98645
+            ]
+          ],
+          "old_heading_not_supported": true,
+          "old_quit_then_map_timeout_reproduced": true,
+          "new_quit_once_visible_back_once": true,
+          "new_menu_proof_complete": true,
+          "credited_ledger_unchanged": true,
+          "real_korean_ocr_rendered_bottom_team_training": true,
+          "scope": "Exact150 saved map and real title OCR; generated lobby/home plus modeled credited ledger, capture/input/clock. New return does not depend on the unsupported title and reaches a generated verified scroll menu. Rendered bottom controls use real Korean OCR. No physical emulator or complete original navigation replay; originals and input traces excluded."
+        },
+        "creation_return_checks": {
+          "result": "passed",
+          "report149_receipt_credited": true,
+          "report149_failed_during_creation_return": true,
+          "final_search_frame_unavailable": true,
+          "real_korean_ocr_on_rendered_search_placeholder": true,
+          "rendered_placeholder_readings": [
+            [
+              "이름/스킬",
+              0.9999
+            ],
+            [
+              "이름/스킬",
+              0.9996
+            ]
+          ],
+          "search_line_fallback_verified": true,
+          "original149_failure_not_reproduced": true,
+          "scope": "149 metadata locates creation return after credited rewards. Real Korean OCR on a rendered search bar with detector omission modeled as empty page tokens; no original post-plus search frame or physical emulator replay. Originals/input traces excluded."
+        },
+        "private148_replay": {
+          "result": "passed",
+          "exact_private148_material_and_registered_pixels": true,
+          "previous_rejection_reproduced": true,
+          "registered_image_size": [
+            146,
+            212
+          ],
+          "material_image_size": [
+            106,
+            135
+          ],
+          "legacy_card_box": [
+            26,
+            53,
+            133,
+            192
+          ],
+          "normalized_score": 7.696778774261475,
+          "unchanged_name_threshold": 13,
+          "unchanged_f7_threshold": 10,
+          "both_normalized_borders": [
+            "P",
+            "P"
+          ],
+          "f7_reuses_registered_id_despite_exact_cached_draft": true,
+          "name_save_preserves_id_and_fresh_zero": true,
+          "farming_identification_passed": true,
+          "original_kept_and_f7_refresh_verified": true,
+          "scope": "Exact148 saved icon pair with modeled ledger/binding/required6 and history8; source and bundle method replay, no physical emulator/click or complete original local DB. Original images excluded."
+        },
+        "bundle_regressions": 446,
+        "condition_validation": {
+          "result": "passed",
+          "exact_private137_classifier": true,
+          "real_korean_ocr_timer_seconds": 8,
+          "combo_condition_confirmed": true,
+          "legacy_recorded_rejection_reproduced": true,
+          "modeled_condition_read_seconds": 3.906,
+          "modeled_old_final_check_seconds": 2.1,
+          "new_preview_capture_count": 1,
+          "original_source_timestamp_preserved": true,
+          "current_owned_result_accepted": true,
+          "real_parent_solver_ready": true,
+          "prepared_attributes": 5,
+          "prepared_minimum_final_combos": 6,
+          "explicit_execution_required": true,
+          "fresh_execution_rejects_unknown_conditions": true,
+          "automatic_execution_calls": 0,
+          "scope": "Exact137 full-frame pixels and actual Korean OCR; old final-check age branch modeled at2.1seconds after a3.906-second read. Recorded combined reason does not identify age versus cancellation. New owned worker/parent plus real mathematical solver reaches ready without recapture/input; native capture/process boundaries mocked, no physical MuMu replay. Originals excluded."
+        },
+        "current_conditions": {
+          "result": "passed",
+          "exact_private138_139_board_classification": true,
+          "declared_mathematical_test_parameters": {
+            "seconds": 8,
+            "cap": 37,
+            "enemy_required": 0,
+            "bonus": 0
+          },
+          "both_test_routes_verified_five_colour_six_combo": true,
+          "old_same_number_unknown_reported_as_changed": true,
+          "new_persistent_unknown_reported_separately": true,
+          "one_transient_recheck_preserves_valid_route": true,
+          "saved_failure_contains_previous_first_current_and_path": true,
+          "focus_retention_simulation_passed": true,
+          "modeled_worker_startup_does_not_consume_search_window": true,
+          "physical_input_calls": 0,
+          "limitations": "Original138/139 ZIPs lack full-game timer/combo and execution/search values, so original failure causes are unestablished. Native capture/movement/thread/process boundaries mocked; no original full-frame OCR, physical MuMu or actual Alt-Tab replay. Test timer/cap are declared examples, not recovered values. Original images/ZIPs excluded."
+        },
+        "material_image_match": {
+          "regressions": 9,
+          "existing_id_and_fresh_stock_preserved": true,
+          "missing147_reference_not_reconstructed": true
+        },
+        "material_button": {
+          "regressions": 16,
+          "real_tk_verified": true
+        },
+        "scope": "Bundled runtime: pending OCR material button retention, no-focus mapping, fresh scan delivery; finite repeat lifecycle, real Tk adjacent controls, execution unknown/read retry/failure evidence, retained focus and worker deadlines, prior HUD/save/preparation regressions. Private137 OCR and controlled138/139 mathematical and old/new condition checks. All physical input mocked; no native MuMu or actual Alt-Tab replay."
+      },
+      "scope": "Production downloaded bundle with SDK corner dispatch/budget and exact151 held-pixel replay plus exact150 map replay, title-independent menu evidence, stable Back and creation/training routes, prior condition/input regressions; physical MuMu unverified"
+    }
   },
   "scope": [
     "Try both stored owner-name hints using stable visible result portraits independently of result-name OCR",
@@ -489,7 +944,7 @@
     "main_branch_updated": true,
     "source_main_commit": "8fb556afb37ccc8b4fa4734bb264d29d53eccb91",
     "authorization": "User supplied158 and requested trying both names with portrait and owner verification; continuing authorized repair/publication workflow.",
-    "updater_activation": "production update.json set to293; live check pending",
+    "updater_activation": "production updater293 verified: both stored search hints, stable visual result portraits, wrong-number recovery, strict opened-number proof, candidate image archives and actual158 empty-search OCR; persistent real Tk completion name input, explicit manual number/name registration, original OCR/count/receipt preservation and stale-window guards; exact157 title/number OCR, persistent full-precision evidence, number-only F7 registration, SDK owner rebind, candidate-only search and strict opened-number checks; live292-to293 backup/repeat,446 bundled regressions including exact156 entry-label proof without modifier glyphs, complete battle count, exact155 complete held-jammer face proof, adaptive eye regions and translucency variants, F7 baseline plus reward credits, ordered material progression, zero-drop repeats and actual154 query proof, No.376 owner binding, automatic owner-failure ZIPs and accessible diagnostics, contended material OCR reservations and explicit old-data labels, initial four-material names, missing-title SDK owner proof and deferred startup, direct cooldown proof, retired automatic stock reconciliation, ordered farming, visible query portrait taps and153 cooldown pixel replay, background Unicode input, acquisition-attested repeats and exact152 search replay, SDK corner timing and exact151 held-board replay, title-independent return menus, exact150 map replay, visible Back proof, stable pages, no duplicate input, receipt preservation and creation/training routes plus prior regressions; physical MuMu unverified",
     "github_release": "https://github.com/tterx/pad0-updates/releases/tag/v1.0.85",
     "workflow": "https://github.com/tterx/pad0-updates/actions/runs/42509641151",
     "uploaded_asset_digest_verified": true,
