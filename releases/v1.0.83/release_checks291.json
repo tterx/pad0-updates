@@ -428,6 +428,10 @@
     "main_branch_updated": true,
     "source_main_commit": "91997213ba5f3956559b7b56f970e04bac35c27a",
     "authorization": "User requested exact OCR records and number-only continuation on 2026-11-09 Asia/Seoul; continuing previously authorized repair/publication workflow.",
-    "updater_activation": "source main verified; pending published ZIP download verification"
+    "updater_activation": "production update.json set to291; live check pending",
+    "github_release": "https://github.com/tterx/pad0-updates/releases/tag/v1.0.83",
+    "workflow": "https://github.com/tterx/pad0-updates/actions/runs/42504150332",
+    "uploaded_asset_digest_verified": true,
+    "published_zip_download_sha256_verified": true
   }
 }

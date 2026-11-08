@@ -1,12 +1,12 @@
 # 퍼드0 올인원
 
-[**프로그램 ZIP 다운로드 · v1.0.82**](https://github.com/tterx/pad0-updates/releases/download/v1.0.82/pad0_overlay_windows_v1_0_82.zip) · [전체 릴리스](https://github.com/tterx/pad0-updates/releases)
+[**프로그램 ZIP 다운로드 · v1.0.83**](https://github.com/tterx/pad0-updates/releases/download/v1.0.83/pad0_overlay_windows_v1_0_83.zip) · [전체 릴리스](https://github.com/tterx/pad0-updates/releases)
 
-현재 표시 버전은 **1.0.82**, 자동 업데이트 내부 순번은 **290**입니다.
+현재 표시 버전은 **1.0.83**, 자동 업데이트 내부 순번은 **291**입니다.
 
 새로 설치할 때는 ZIP을 풀고 `시작.vbs`를 실행하세요. 기존 설치는 PAD0를 완전히 종료한 뒤 `시작.vbs`를 다시 실행하면 업데이트됩니다.
 
-최근 버전에는 잠입 확인의 보라색 아이콘을 숫자로 읽어 SP14 진입이 중단되는 문제를 수정했습니다. 실제 글자만 분리해 번호를 두 번 확인하고, 배틀 수와 진입 판독 기록도 보완했습니다. [변경 내용](docs/reviews/REVIEW290.md) · [검증 기록](releases/v1.0.82/release_checks290.json)
+최근 버전에는 재료확인 제목이 서로 달라도 현재 번호가 두 번 일치하면 번호로 등록을 이어갑니다. 두 제목과 신뢰도를 그대로 보존하며, 이후 검색과 화면 복귀도 대상 번호로 확인합니다. [변경 내용](docs/reviews/REVIEW291.md) · [검증 기록](releases/v1.0.83/release_checks291.json)
 
 ## 저장소 안내
 
