@@ -822,6 +822,10 @@
     "main_branch_updated": true,
     "source_main_commit": "90816effdf36a69d577aa327a6fbd8dbfa387d8b",
     "authorization": "User supplied159 reporting a correctly searched creature that was never clicked; continuing authorized repair and publication workflow.",
-    "updater_activation": "source main verified; pending published ZIP download verification"
+    "updater_activation": "production update.json set to295; live check pending",
+    "github_release": "https://github.com/tterx/pad0-updates/releases/tag/v1.0.87",
+    "workflow": "https://github.com/tterx/pad0-updates/actions/runs/42523036323",
+    "uploaded_asset_digest_verified": true,
+    "published_zip_download_sha256_verified": true
   }
 }
