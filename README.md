@@ -1,12 +1,12 @@
 # 퍼드0 올인원
 
-[**프로그램 ZIP 다운로드 · v1.0.83**](https://github.com/tterx/pad0-updates/releases/download/v1.0.83/pad0_overlay_windows_v1_0_83.zip) · [전체 릴리스](https://github.com/tterx/pad0-updates/releases)
+[**프로그램 ZIP 다운로드 · v1.0.84**](https://github.com/tterx/pad0-updates/releases/download/v1.0.84/pad0_overlay_windows_v1_0_84.zip) · [전체 릴리스](https://github.com/tterx/pad0-updates/releases)
 
-현재 표시 버전은 **1.0.83**, 자동 업데이트 내부 순번은 **291**입니다.
+현재 표시 버전은 **1.0.84**, 자동 업데이트 내부 순번은 **292**입니다.
 
 새로 설치할 때는 ZIP을 풀고 `시작.vbs`를 실행하세요. 기존 설치는 PAD0를 완전히 종료한 뒤 `시작.vbs`를 다시 실행하면 업데이트됩니다.
 
-최근 버전에는 재료확인 제목이 서로 달라도 현재 번호가 두 번 일치하면 번호로 등록을 이어갑니다. 두 제목과 신뢰도를 그대로 보존하며, 이후 검색과 화면 복귀도 대상 번호로 확인합니다. [변경 내용](docs/reviews/REVIEW291.md) · [검증 기록](releases/v1.0.83/release_checks291.json)
+최근 버전에는 이름 미확정 대상의 파밍 완료창에서 이름을 입력하고 등록할 수 있습니다. 입력 중에는 창이 자동으로 닫히지 않으며, 해당 번호의 이름만 저장하고 수량과 집계를 유지합니다. [변경 내용](docs/reviews/REVIEW292.md) · [검증 기록](releases/v1.0.84/release_checks292.json)
 
 ## 저장소 안내
 
