@@ -776,6 +776,10 @@
     "main_branch_updated": true,
     "source_main_commit": "12578a10ece98a59ea869812e2f11b17ac7f933c",
     "authorization": "User reported continued farming after6 acquired, supplied persistent ledger and crystal DB, and required reliable numberless breakthrough names; continuing authorized repair/publication workflow.",
-    "updater_activation": "source main verified; pending published ZIP download verification"
+    "updater_activation": "production update.json set to294; live check pending",
+    "github_release": "https://github.com/tterx/pad0-updates/releases/tag/v1.0.86",
+    "workflow": "https://github.com/tterx/pad0-updates/actions/runs/42515128097",
+    "uploaded_asset_digest_verified": true,
+    "published_zip_download_sha256_verified": true
   }
 }

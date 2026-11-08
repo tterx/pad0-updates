@@ -1,12 +1,12 @@
 # 퍼드0 올인원
 
-[**프로그램 ZIP 다운로드 · v1.0.85**](https://github.com/tterx/pad0-updates/releases/download/v1.0.85/pad0_overlay_windows_v1_0_85.zip) · [전체 릴리스](https://github.com/tterx/pad0-updates/releases)
+[**프로그램 ZIP 다운로드 · v1.0.86**](https://github.com/tterx/pad0-updates/releases/download/v1.0.86/pad0_overlay_windows_v1_0_86.zip) · [전체 릴리스](https://github.com/tterx/pad0-updates/releases)
 
-현재 표시 버전은 **1.0.85**, 자동 업데이트 내부 순번은 **293**입니다.
+현재 표시 버전은 **1.0.86**, 자동 업데이트 내부 순번은 **294**입니다.
 
 새로 설치할 때는 ZIP을 풀고 `시작.vbs`를 실행하세요. 기존 설치는 PAD0를 완전히 종료한 뒤 `시작.vbs`를 다시 실행하면 업데이트됩니다.
 
-최근 버전에는 재료 복귀 검색에서 두 이름 후보와 초상화를 확인하고 열린 대상 번호로 검증하도록 보완했습니다. 잘못된 번호면 다음 후보로 돌아가며, 후보별 화면을 오류 기록에 남깁니다. [변경 내용](docs/reviews/REVIEW293.md) · [검증 기록](releases/v1.0.85/release_checks293.json)
+최근 버전에는 밝은 결정 테두리의 보상 카드 잘림으로 획득 집계가 누락되는 문제를 보완했습니다. 마지막 판별 기록을 보존하고, 번호가 없는 돌파 확인창은 전체 이름과 새 캡처로 대조합니다. [변경 내용](docs/reviews/REVIEW294.md) · [검증 기록](releases/v1.0.86/release_checks294.json)
 
 ## 저장소 안내
 
