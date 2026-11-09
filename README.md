@@ -1,12 +1,12 @@
 # 퍼드0 올인원
 
-[**프로그램 ZIP 다운로드 · v1.0.87**](https://github.com/tterx/pad0-updates/releases/download/v1.0.87/pad0_overlay_windows_v1_0_87.zip) · [전체 릴리스](https://github.com/tterx/pad0-updates/releases)
+[**프로그램 ZIP 다운로드 · v1.0.88**](https://github.com/tterx/pad0-updates/releases/download/v1.0.88/pad0_overlay_windows_v1_0_88.zip) · [전체 릴리스](https://github.com/tterx/pad0-updates/releases)
 
-현재 표시 버전은 **1.0.87**, 자동 업데이트 내부 순번은 **295**입니다.
+현재 표시 버전은 **1.0.88**, 자동 업데이트 내부 순번은 **296**입니다.
 
 새로 설치할 때는 ZIP을 풀고 `시작.vbs`를 실행하세요. 기존 설치는 PAD0를 완전히 종료한 뒤 `시작.vbs`를 다시 실행하면 업데이트됩니다.
 
-최근 버전에는 검색이 끝났는데 어두운 대상 초상화를 놓쳐 클릭하지 못하는 문제를 수정했습니다. 생성 목록에서 재료 카드와 대상 초상화를 구분하며 검색어·안정 화면·열린 대상 번호 확인을 유지합니다. [변경 내용](docs/reviews/REVIEW295.md) · [검증 기록](releases/v1.0.87/release_checks295.json)
+최근 버전에는 패배 TIPS의 HP0·OK를 확인해 한 번 누르고 결과·크리스탈 획득·연전 확인으로 이어져 재도전하도록 보완했습니다. 재료는 실제 보상만 집계하고 횟수 지정 자동반복은 패배를 완료로 세지 않습니다. [변경 내용](docs/reviews/REVIEW296.md) · [검증 기록](releases/v1.0.88/release_checks296.json)
 
 ## 저장소 안내
 

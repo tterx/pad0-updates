@@ -883,6 +883,10 @@
     "main_branch_updated": true,
     "source_main_commit": "f3a2522cf5c3278fbae898994026d8dfc19a0cba",
     "authorization": "User requested defeat OK followed by result/crystal/replay retry and supplied160; continuing authorized repair and publication workflow.",
-    "updater_activation": "source main verified; pending published ZIP download verification"
+    "updater_activation": "production update.json set to296; live check pending",
+    "github_release": "https://github.com/tterx/pad0-updates/releases/tag/v1.0.88",
+    "workflow": "https://github.com/tterx/pad0-updates/actions/runs/42595256711",
+    "uploaded_asset_digest_verified": true,
+    "published_zip_download_sha256_verified": true
   }
 }
