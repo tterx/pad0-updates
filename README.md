@@ -1,12 +1,12 @@
 # 퍼드0 올인원
 
-[**프로그램 ZIP 다운로드 · v1.0.88**](https://github.com/tterx/pad0-updates/releases/download/v1.0.88/pad0_overlay_windows_v1_0_88.zip) · [전체 릴리스](https://github.com/tterx/pad0-updates/releases)
+[**프로그램 ZIP 다운로드 · v1.0.89**](https://github.com/tterx/pad0-updates/releases/download/v1.0.89/pad0_overlay_windows_v1_0_89.zip) · [전체 릴리스](https://github.com/tterx/pad0-updates/releases)
 
-현재 표시 버전은 **1.0.88**, 자동 업데이트 내부 순번은 **296**입니다.
+현재 표시 버전은 **1.0.89**, 자동 업데이트 내부 순번은 **297**입니다.
 
 새로 설치할 때는 ZIP을 풀고 `시작.vbs`를 실행하세요. 기존 설치는 PAD0를 완전히 종료한 뒤 `시작.vbs`를 다시 실행하면 업데이트됩니다.
 
-최근 버전에는 패배 TIPS의 HP0·OK를 확인해 한 번 누르고 결과·크리스탈 획득·연전 확인으로 이어져 재도전하도록 보완했습니다. 재료는 실제 보상만 집계하고 횟수 지정 자동반복은 패배를 완료로 세지 않습니다. [변경 내용](docs/reviews/REVIEW296.md) · [검증 기록](releases/v1.0.88/release_checks296.json)
+최근 버전에는 패배 OK 이후 크리스탈 창 없이 연전 확인으로 이어지는 경우를 확인해 획득0개로 집계하고 재도전하도록 보완했습니다. 실제 크리스탈 창의 집계는 유지하며 최신 중지 화면을 오류 기록에 남깁니다. [변경 내용](docs/reviews/REVIEW297.md) · [검증 기록](releases/v1.0.89/release_checks297.json)
 
 ## 저장소 안내
 

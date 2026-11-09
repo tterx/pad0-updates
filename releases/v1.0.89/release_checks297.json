@@ -936,6 +936,10 @@
     "main_branch_updated": true,
     "source_main_commit": "fd4c5909038487e60b5cc12fbeb954b940edd90f",
     "authorization": "User supplied161 reporting another stop after the authorized defeat-retry repair; continuing the established repair/publication workflow.",
-    "updater_activation": "source main verified; pending published ZIP download verification"
+    "updater_activation": "production update.json set to297; live check pending",
+    "github_release": "https://github.com/tterx/pad0-updates/releases/tag/v1.0.89",
+    "workflow": "https://github.com/tterx/pad0-updates/actions/runs/42604901877",
+    "uploaded_asset_digest_verified": true,
+    "published_zip_download_sha256_verified": true
   }
 }
