@@ -27,5 +27,14 @@
   },
   "physical_windows_mumu_verified": false,
   "known_unresolved": "Physical multi-cell discrepancies in 166 and 174 remain rejected; root cause unverified",
-  "automatic_update_channel_changed": false
+  "automatic_update_channel_changed": false,
+  "publication": {
+    "approved_release": true,
+    "source_pr_merged": true,
+    "source_branch": "codex/v1-0-92-upload-fixes",
+    "mode": "stable_release_then_auto_update",
+    "zip_bytes_unchanged": true,
+    "source_main_commit": "71f65e2f7a56957ad774688953580efe35cdf2f7",
+    "source_tree_matches_tested_head": true
+  }
 }

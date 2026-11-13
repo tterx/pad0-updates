@@ -1,4 +1,4 @@
-name: Publish checked v1.0.92 candidate
+name: Publish checked v1.0.92 release
 on:
   workflow_dispatch:
 permissions:

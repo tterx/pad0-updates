@@ -1,4 +1,4 @@
-"""Publish verified candidate300 assets; leave the automatic update channel alone."""
+"""Publish verified release300 assets; channel activation remains a separate commit."""
 from pathlib import Path
 import hashlib,json,os,urllib.request,zipfile
 
@@ -10,6 +10,8 @@ meta=json.loads((folder/'release_checks300.json').read_text())
 assert meta['version']=='v1.0.92' and meta['release']==300
 assert meta['windows_ci']['conclusion']=='success'
 assert meta['windows_ci']['head_sha']==meta['source_commit']
+stable=meta.get('publication',{}).get('approved_release') is True
+title='퍼드0 올인원 1.0.92 · 드롭·파티 확인 및 지도 복귀 보완' if stable else '퍼드0 올인원 1.0.92 후보 · 드롭·파티 확인 및 지도 복귀 보완'
 artifact=folder/'pad0_overlay_windows_v1_0_92.zip'
 assert hashlib.sha256(artifact.read_bytes()).hexdigest()==meta['zip_sha256']
 with zipfile.ZipFile(artifact) as z:
@@ -33,7 +35,7 @@ notes=(folder/'release_notes.md').read_text()
 release=next((r for r in api(f'/repos/{repo}/releases?per_page=20') if r['tag_name']=='v1.0.92'),None)
 if release is None:
     release=api(f'/repos/{repo}/releases','POST',dict(tag_name='v1.0.92',target_commitish=os.environ['GITHUB_SHA'],
-        name='퍼드0 올인원 1.0.92 후보 · 드롭·파티 확인 및 지도 복귀 보완',body=notes,draft=True,prerelease=True,make_latest='false'))
+        name=title,body=notes,draft=True,prerelease=not stable,make_latest='false'))
 for path,content_type in [(artifact,'application/zip'),(folder/'checksums_v1_0_92.json','application/json')]:
     digest=hashlib.sha256(path.read_bytes()).hexdigest()
     asset=next((a for a in release['assets'] if a['name']==path.name),None)
@@ -42,11 +44,11 @@ for path,content_type in [(artifact,'application/zip'),(folder/'checksums_v1_0_9
         asset=api(f'https://uploads.github.com/repos/{repo}/releases/{release["id"]}/assets?name={path.name}',
                   'POST',path.read_bytes(),content_type)
     assert asset['size']==path.stat().st_size and asset['digest']=='sha256:'+digest
-if release['draft']:
+if release['draft'] or stable:
     release=api(f'/repos/{repo}/releases/{release["id"]}','PATCH',dict(
-        draft=False,prerelease=True,make_latest='false',target_commitish=os.environ['GITHUB_SHA'],body=notes))
-assert not release['draft'] and release['prerelease']
-print('Published candidate:',release['html_url'])
+        draft=False,prerelease=not stable,make_latest='true' if stable else 'false',target_commitish=os.environ['GITHUB_SHA'],body=notes,name=title))
+assert not release['draft'] and release['prerelease']==(not stable)
+print('Published release:' if stable else 'Published candidate:',release['html_url'])
 with open(os.environ['GITHUB_STEP_SUMMARY'],'a') as summary:
-    summary.write('Published verified v1.0.92 candidate. Automatic update channel unchanged.\n\n')
+    summary.write('Published verified v1.0.92 release. Channel activation is managed separately.\n\n' if stable else 'Published verified v1.0.92 candidate. Automatic update channel unchanged.\n\n')
     summary.write('ZIP SHA256: `'+meta['zip_sha256']+'`\n')
