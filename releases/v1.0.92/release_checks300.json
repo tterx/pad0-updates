@@ -27,14 +27,31 @@
   },
   "physical_windows_mumu_verified": false,
   "known_unresolved": "Physical multi-cell discrepancies in 166 and 174 remain rejected; root cause unverified",
-  "automatic_update_channel_changed": false,
+  "automatic_update_channel_changed": true,
   "publication": {
     "approved_release": true,
     "source_pr_merged": true,
     "source_branch": "codex/v1-0-92-upload-fixes",
-    "mode": "stable_release_then_auto_update",
+    "mode": "stable_release_and_auto_update",
     "zip_bytes_unchanged": true,
     "source_main_commit": "71f65e2f7a56957ad774688953580efe35cdf2f7",
-    "source_tree_matches_tested_head": true
+    "source_tree_matches_tested_head": true,
+    "release_workflow_run": 43506519935,
+    "stable_release_verified": true
+  },
+  "auto_update_verification": {
+    "preview": {
+      "scope": "preview_manifest_with_live_source",
+      "old_release": 298,
+      "new_release": 300,
+      "source_sha256": "99726580a56bf3b5f33c0da0e6d9f3f22cca0ef8a43173c982860e631f307c53",
+      "source_bytes": 2094244,
+      "backup_preserved": true,
+      "personal_data_preserved": true,
+      "repeat_update_skipped": true,
+      "application_executed": false
+    },
+    "live_status": "pending",
+    "manifest_url": "https://raw.githubusercontent.com/tterx/pad0-updates/main/update.json"
   }
 }

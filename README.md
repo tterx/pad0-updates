@@ -1,12 +1,12 @@
 # 퍼드0 올인원
 
-[**프로그램 ZIP 다운로드 · v1.0.90**](https://github.com/tterx/pad0-updates/releases/download/v1.0.90/pad0_overlay_windows_v1_0_90.zip) · [전체 릴리스](https://github.com/tterx/pad0-updates/releases)
+[**프로그램 ZIP 다운로드 · v1.0.92**](https://github.com/tterx/pad0-updates/releases/download/v1.0.92/pad0_overlay_windows_v1_0_92.zip) · [전체 릴리스](https://github.com/tterx/pad0-updates/releases)
 
-현재 표시 버전은 **1.0.90**, 자동 업데이트 내부 순번은 **298**입니다.
+현재 표시 버전은 **1.0.92**, 자동 업데이트 내부 순번은 **300**입니다.
 
 새로 설치할 때는 ZIP을 풀고 `시작.vbs`를 실행하세요. 기존 설치는 PAD0를 완전히 종료한 뒤 `시작.vbs`를 다시 실행하면 업데이트됩니다.
 
-최근 버전에는 할로윈의 주황색 전투 배경을 금색 보상창으로 오인해 진입20초·진행 중40초에서 멈추는 문제를 수정했습니다. 실제 보상창의 연결된 테두리와 내부 영역을 확인하며 기존 보상 집계와 자동반복 정책을 유지합니다. [변경 내용](docs/reviews/REVIEW298.md) · [검증 기록](releases/v1.0.90/release_checks298.json)
+첫 클리어 후 지도 복귀, 반투명 시작·종료 드롭 확인, 파티 초상화 비교, 저장된 대상 번호로 육성 검색을 보완했습니다. Windows 검사 1,108개와 ZIP 번들 검사 64개를 통과했습니다. 실제 여러 칸의 판 불일치는 계속 차단하며 Windows/MuMu 실기 입력은 미검증입니다. [변경 내용](docs/reviews/REVIEW300.md) · [검증 기록](releases/v1.0.92/release_checks300.json)
 
 ## 저장소 안내
 
