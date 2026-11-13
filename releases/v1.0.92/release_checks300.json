@@ -10,7 +10,7 @@
   "source_pull_request": "https://github.com/tterx/pad0-all-in-one/pull/3",
   "windows_ci": {
     "run_id": 43503818615,
-    "conclusion": "pending",
+    "conclusion": "success",
     "head_sha": "5a2a04db0f71836f43e241660ecc293206108ff2",
     "url": "https://github.com/tterx/pad0-all-in-one/actions/runs/43503818615"
   },
@@ -22,7 +22,8 @@
     "failures": 0,
     "errors": 0,
     "skipped": 0,
-    "compatibility_tests": 64
+    "compatibility_tests": 64,
+    "remaining_workflow_tests": 83
   },
   "physical_windows_mumu_verified": false,
   "known_unresolved": "Physical multi-cell discrepancies in 166 and 174 remain rejected; root cause unverified",

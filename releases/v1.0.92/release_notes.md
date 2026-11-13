@@ -16,4 +16,4 @@ v1.0.92 / updater300 후보 배포입니다.
 ZIP SHA256: `77866d7e00be63bc019fd340c3e2da6cf28ea2d894d54ebf2baf10a9e19f6916`
 번들 소스 SHA256: `99726580a56bf3b5f33c0da0e6d9f3f22cca0ef8a43173c982860e631f307c53`
 
-Windows CI: https://github.com/tterx/pad0-all-in-one/actions/runs/43503818615
+Windows CI 전체 통과: https://github.com/tterx/pad0-all-in-one/actions/runs/43503818615
