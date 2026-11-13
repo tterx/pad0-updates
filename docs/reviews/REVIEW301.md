@@ -33,3 +33,5 @@ Windows/MuMu hardware operation and live farming completion are not claimed.
 
 Windows CI: https://github.com/tterx/pad0-all-in-one/actions/runs/43516092888 (success; exact source head 643c39d08e59167ffdc3a57bb3a5812f8c7eb737).
 Windows validation: 1,125 test executions in 112 suites, no failures, errors or skipped tests. Bundled source SHA256 matches the portable artifact.
+
+Publication: stable v1.0.93 ZIP downloaded and verified; live updater300 to updater301 preserved backup and personal-data markers and skipped a second update. PAD0 itself was not executed.
