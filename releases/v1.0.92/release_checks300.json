@@ -1,0 +1,30 @@
+{
+  "zip_sha256": "77866d7e00be63bc019fd340c3e2da6cf28ea2d894d54ebf2baf10a9e19f6916",
+  "source_sha256": "99726580a56bf3b5f33c0da0e6d9f3f22cca0ef8a43173c982860e631f307c53",
+  "source_bytes": 2094244,
+  "zip_bytes": 975144,
+  "release": 300,
+  "version": "v1.0.92",
+  "source_repo": "tterx/pad0-all-in-one",
+  "source_commit": "5a2a04db0f71836f43e241660ecc293206108ff2",
+  "source_pull_request": "https://github.com/tterx/pad0-all-in-one/pull/3",
+  "windows_ci": {
+    "run_id": 43503818615,
+    "conclusion": "pending",
+    "head_sha": "5a2a04db0f71836f43e241660ecc293206108ff2",
+    "url": "https://github.com/tterx/pad0-all-in-one/actions/runs/43503818615"
+  },
+  "local_checks": {
+    "related_tests": 268,
+    "final_tests": 42,
+    "bundled_tests": 64,
+    "uploaded_records": 30,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "compatibility_tests": 64
+  },
+  "physical_windows_mumu_verified": false,
+  "known_unresolved": "Physical multi-cell discrepancies in 166 and 174 remain rejected; root cause unverified",
+  "automatic_update_channel_changed": false
+}
