@@ -1,12 +1,12 @@
 # 퍼드0 올인원
 
-[**프로그램 ZIP 다운로드 · v1.0.95**](https://github.com/tterx/pad0-updates/releases/download/v1.0.95/pad0_overlay_windows_v1_0_95.zip) · [전체 릴리스](https://github.com/tterx/pad0-updates/releases)
+[**프로그램 ZIP 다운로드 · v1.0.96**](https://github.com/tterx/pad0-updates/releases/download/v1.0.96/pad0_overlay_windows_v1_0_96.zip) · [전체 릴리스](https://github.com/tterx/pad0-updates/releases)
 
-현재 표시 버전은 **1.0.95**, 자동 업데이트 내부 순번은 **303**입니다.
+현재 표시 버전은 **1.0.96**, 자동 업데이트 내부 순번은 **304**입니다.
 
 새로 설치할 때는 ZIP을 풀고 `시작.vbs`를 실행하세요. 기존 설치는 PAD0를 완전히 종료한 뒤 `시작.vbs`를 다시 실행하면 업데이트됩니다.
 
-강제 회복 동시 루트를 제거하고 최소 콤보 달성 후에도 최대 콤보를 계속 탐색합니다. 201~203의 입장 번호·어둠 드롭·사전 계산도 보완했습니다. Windows 검사 1,164개와 독립 번들 검사 114개를 통과했습니다. [변경 내용](docs/reviews/REVIEW303.md) · [검증 기록](releases/v1.0.95/release_checks303.json) · [다음 패치 범위: 달인다속](docs/MAINTAINING.md)
+달인다속 계산 버튼은 현재 퍼즐판이 확인될 때만 표시합니다. 메뉴·결과 화면에서 이전 계산 결과로 버튼을 유지하지 않으며, 계산 중에도 별도로 확인합니다. 다른 모드의 동작은 유지합니다. Windows 검사 1,178개와 독립 번들 검사 58개 통과. [변경 내용](docs/reviews/REVIEW304.md) · [검증 기록](releases/v1.0.96/release_checks304.json)
 
 ## 저장소 안내
 
