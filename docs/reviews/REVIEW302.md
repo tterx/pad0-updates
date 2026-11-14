@@ -33,3 +33,5 @@ and release. Regression scenes are generated. Validation is in TESTING.md;
 Windows/MuMu hardware operation and live farming completion are not claimed.
 
 Windows CI: https://github.com/tterx/pad0-all-in-one/actions/runs/43634010980 (success; exact source head 00dbb24b980c7266c49a4534eca9c15626ec2b75). 1,142 test executions in 113 suites, no failures, errors or skipped tests. Portable source SHA256 matches.
+
+Publication: stable v1.0.94 ZIP downloaded and verified. Live updater301 to updater302 preserved backup and personal-data markers and skipped a second update; PAD0 itself was not executed.
