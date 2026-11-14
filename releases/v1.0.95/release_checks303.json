@@ -1,0 +1,46 @@
+{
+  "zip_sha256": "5ef5636911d7162ef41acb408f5a567ff2e9c88562a26bca01f6619f5cf4692e",
+  "source_sha256": "a720b2e9bb9000c478db092af26e714c5b2b17282e41497b3b968691ba92ffcf",
+  "source_bytes": 2089533,
+  "zip_bytes": 975729,
+  "release": 303,
+  "version": "v1.0.95",
+  "source_repo": "tterx/pad0-all-in-one",
+  "source_commit": "bd692c7ea5abc192e016e365d3f28c51483c8b8b",
+  "source_pull_request": "https://github.com/tterx/pad0-all-in-one/pull/6",
+  "windows_ci": {
+    "run_id": 43643301916,
+    "conclusion": "success",
+    "head_sha": "bd692c7ea5abc192e016e365d3f28c51483c8b8b",
+    "url": "https://github.com/tterx/pad0-all-in-one/actions/runs/43643301916",
+    "tests": 1164,
+    "suites": 114,
+    "steps": 126
+  },
+  "local_checks": {
+    "related_passed": 264,
+    "parallel_worker_passed": 55,
+    "tpa_passed": 50,
+    "new_regressions": 22,
+    "bundled_passed": 114,
+    "new_uploaded_records": 3,
+    "private_image_replays": true,
+    "negative_controls_passed": true
+  },
+  "policy": {
+    "objective": "maximum_verified_combos_within_selected_constraints_and_budget",
+    "forced_simultaneous_healing_removed": true,
+    "future_scope": "Only master multicolor mode9 after v1.0.95 unless explicitly expanded by user"
+  },
+  "physical_windows_mumu_verified": false,
+  "known_unresolved": "Earlier physical multi-cell discrepancies in 166 and 174 remain rejected; hardware root cause unverified",
+  "automatic_update_channel_changed": false,
+  "publication": {
+    "approved_release": true,
+    "source_pr_merged": true,
+    "source_branch": "codex/v1-0-95-combos-201-203",
+    "mode": "stable_release_and_auto_update",
+    "source_main_commit": "0e6be90690fd4fe18bfd9e5f9def0af0d3d7dbaf",
+    "source_tree_matches_tested_head": true
+  }
+}
