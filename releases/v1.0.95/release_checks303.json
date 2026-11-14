@@ -34,13 +34,42 @@
   },
   "physical_windows_mumu_verified": false,
   "known_unresolved": "Earlier physical multi-cell discrepancies in 166 and 174 remain rejected; hardware root cause unverified",
-  "automatic_update_channel_changed": false,
+  "automatic_update_channel_changed": true,
   "publication": {
     "approved_release": true,
     "source_pr_merged": true,
     "source_branch": "codex/v1-0-95-combos-201-203",
     "mode": "stable_release_and_auto_update",
     "source_main_commit": "0e6be90690fd4fe18bfd9e5f9def0af0d3d7dbaf",
-    "source_tree_matches_tested_head": true
+    "source_tree_matches_tested_head": true,
+    "release_workflow_run": 43644066835,
+    "stable_release_verified": true,
+    "zip_bytes_unchanged": true
+  },
+  "public_download_verification": {
+    "zip_url": "https://github.com/tterx/pad0-updates/releases/download/v1.0.95/pad0_overlay_windows_v1_0_95.zip",
+    "zip_sha256": "5ef5636911d7162ef41acb408f5a567ff2e9c88562a26bca01f6619f5cf4692e",
+    "source_sha256": "a720b2e9bb9000c478db092af26e714c5b2b17282e41497b3b968691ba92ffcf",
+    "zip_crc_verified": true,
+    "version_verified": true,
+    "updater_release": 303,
+    "source_download_matches_zip": true,
+    "stable_latest_verified": true,
+    "application_executed": false
+  },
+  "auto_update_verification": {
+    "preview": {
+      "scope": "preview_manifest_with_live_source",
+      "old_release": 302,
+      "new_release": 303,
+      "source_sha256": "a720b2e9bb9000c478db092af26e714c5b2b17282e41497b3b968691ba92ffcf",
+      "source_bytes": 2089533,
+      "backup_preserved": true,
+      "personal_data_preserved": true,
+      "repeat_update_skipped": true,
+      "application_executed": false
+    },
+    "live_status": "pending_post_activation_check",
+    "manifest_url": "https://raw.githubusercontent.com/tterx/pad0-updates/main/update.json"
   }
 }
