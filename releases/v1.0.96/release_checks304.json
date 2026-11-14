@@ -1,0 +1,128 @@
+{
+  "zip_sha256": "c7f2d63fb31c7e95c721e78513b5c04589eac0442740bba32bb2729712a2f8d7",
+  "source_sha256": "d7d1290c0b6ef5aeadbd7834d672dc557c00d5df02485c72afeb6cd0c483b943",
+  "source_bytes": 2092959,
+  "zip_bytes": 976667,
+  "release": 304,
+  "version": "v1.0.96",
+  "source_repo": "tterx/pad0-all-in-one",
+  "source_commit": "3e436a8e3017ffacaeaebc3181bbbe13d1a2a45c",
+  "source_pull_request": "https://github.com/tterx/pad0-all-in-one/pull/7",
+  "windows_ci": {
+    "run_id": 43646177821,
+    "conclusion": "success",
+    "head_sha": "3e436a8e3017ffacaeaebc3181bbbe13d1a2a45c",
+    "url": "https://github.com/tterx/pad0-all-in-one/actions/runs/43646177821",
+    "tests": 1178,
+    "suites": 115,
+    "steps": 127
+  },
+  "local_checks": {
+    "focused": {
+      "tests": 39,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "seconds": 4.508,
+      "modules": [
+        "test_master_button304",
+        "test_focus_search266",
+        "test_readiness269",
+        "test_hud_paint271",
+        "test_stable_hud265",
+        "test_ui_module144"
+      ]
+    },
+    "related": {
+      "tests": 118,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "seconds": 24.76,
+      "modules": [
+        "test_tpa_prefind235",
+        "test_manual_tpa233",
+        "test_manual_recovery257",
+        "test_condition_recovery260",
+        "test_condition_delivery261",
+        "test_capture_wait263",
+        "test_confirmed_preview264",
+        "test_route_latency267",
+        "test_stable_hud265",
+        "test_recognition_save259",
+        "test_material_button277"
+      ]
+    },
+    "bundle": {
+      "tests": 58,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "seconds": 4.703,
+      "modules": [
+        "test_master_button304",
+        "test_focus_search266",
+        "test_readiness269",
+        "test_hud_paint271",
+        "test_stable_hud265",
+        "test_combo_objective303"
+      ]
+    }
+  },
+  "controlled_before_after": [
+    {
+      "busy": false,
+      "old_shows_without_puzzle": true,
+      "new_shows_without_puzzle": false,
+      "route_cache_preserved": true
+    },
+    {
+      "busy": true,
+      "old_shows_without_puzzle": true,
+      "new_shows_without_puzzle": false,
+      "route_cache_preserved": true
+    }
+  ],
+  "previous_upload_image_checks": [
+    {
+      "record": "201_entry.png",
+      "expected_puzzle": false,
+      "visible": false,
+      "passed": true
+    },
+    {
+      "record": "202_entry.png",
+      "expected_puzzle": false,
+      "visible": false,
+      "passed": true
+    },
+    {
+      "record": "201_board.png",
+      "expected_puzzle": true,
+      "visible": true,
+      "passed": true
+    },
+    {
+      "record": "203_board.png",
+      "expected_puzzle": true,
+      "visible": true,
+      "passed": true
+    }
+  ],
+  "policy": {
+    "scope": "master_multicolor_mode9_only",
+    "other_modes_unchanged": true,
+    "solver_and_input_unchanged": true
+  },
+  "physical_windows_mumu_verified": false,
+  "exact_user_screen_verified": false,
+  "automatic_update_channel_changed": false,
+  "publication": {
+    "approved_release": true,
+    "source_pr_merged": true,
+    "source_branch": "codex/v1-0-96-master-board-button",
+    "mode": "stable_release_and_auto_update",
+    "source_main_commit": "8ee808178a3bd101c4ffcd2fb62be40b86aa1c0c",
+    "source_tree_matches_tested_head": true
+  }
+}
