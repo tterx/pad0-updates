@@ -45,3 +45,12 @@ and live farming completion are not claimed by offline replays or unit tests.
 Windows CI: https://github.com/tterx/pad0-all-in-one/actions/runs/43643301916 (success; exact source head bd692c7ea5abc192e016e365d3f28c51483c8b8b). 1,164 test executions in 114 suites, no skipped tests. Portable source SHA256 matches.
 
 Future scope: after this release, only 달인다속 (master multicolor / mode9) may be patched unless the user explicitly expands the scope.
+
+Publication verified: PR6 merged as 0e6be90690fd4fe18bfd9e5f9def0af0d3d7dbaf;
+its source tree matches the tested head. Publisher run 43644066835 succeeded.
+The stable latest v1.0.95 ZIP was downloaded from the public release and passed
+SHA256, CRC, version and updater-state checks. The live raw source matches the ZIP.
+Root update.json now points to updater303. The genuine v1.0.94 launcher installed
+303 from the live manifest in an isolated installation, preserved its backup,
+configuration and personal-data markers, and skipped a repeated update.
+The application and physical game input were not executed by this publication check.
