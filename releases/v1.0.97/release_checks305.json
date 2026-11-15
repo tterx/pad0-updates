@@ -154,6 +154,8 @@
     "source_branch": "codex/v1-0-97-branch-learning-204-207",
     "mode": "stable_release_and_auto_update",
     "source_main_commit": "721bb7aa11964b6b4e36bb748317acdf58981687",
-    "source_tree_matches_tested_head": true
+    "source_tree_matches_tested_head": true,
+    "payload_commit": "9ebcf7005e5d985b810517b3e463cc2679c56413",
+    "immutable_source_url": "https://raw.githubusercontent.com/tterx/pad0-updates/9ebcf7005e5d985b810517b3e463cc2679c56413/releases/v1.0.97/pad0_overlay.py"
   }
 }
