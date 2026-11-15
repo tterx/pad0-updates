@@ -1,12 +1,12 @@
 # 퍼드0 올인원
 
-[**프로그램 ZIP 다운로드 · v1.0.96**](https://github.com/tterx/pad0-updates/releases/download/v1.0.96/pad0_overlay_windows_v1_0_96.zip) · [전체 릴리스](https://github.com/tterx/pad0-updates/releases)
+[**프로그램 ZIP 다운로드 · v1.0.97**](https://github.com/tterx/pad0-updates/releases/download/v1.0.97/pad0_overlay_windows_v1_0_97.zip) · [전체 릴리스](https://github.com/tterx/pad0-updates/releases)
 
-현재 표시 버전은 **1.0.96**, 자동 업데이트 내부 순번은 **304**입니다.
+현재 표시 버전은 **1.0.97**, 자동 업데이트 내부 순번은 **305**입니다.
 
 새로 설치할 때는 ZIP을 풀고 `시작.vbs`를 실행하세요. 기존 설치는 PAD0를 완전히 종료한 뒤 `시작.vbs`를 다시 실행하면 업데이트됩니다.
 
-달인다속 계산 버튼은 현재 퍼즐판이 확인될 때만 표시합니다. 메뉴·결과 화면에서 이전 계산 결과로 버튼을 유지하지 않으며, 계산 중에도 별도로 확인합니다. 다른 모드의 동작은 유지합니다. Windows 검사 1,178개와 독립 번들 검사 58개 통과. [변경 내용](docs/reviews/REVIEW304.md) · [검증 기록](releases/v1.0.96/release_checks304.json)
+갈림길에서 목표 크리스탈을 10회 미획득하면 반대쪽으로 전환하고, 획득이 확인된 스테이지·크리스탈·선택지를 저장해 재사용합니다. 204~207의 시작 판독·콤보 턴 진행·패배 안내·지도 복귀도 보완했습니다. Windows 검사 1,206개와 독립 번들 검사 96개 통과. [변경 내용](docs/reviews/REVIEW305.md) · [검증 기록](releases/v1.0.97/release_checks305.json)
 
 ## 저장소 안내
 
