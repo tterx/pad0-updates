@@ -1,0 +1,106 @@
+{
+  "report": 215,
+  "actual_saved_pixels": true,
+  "production_ocr": true,
+  "rapidocr": "3.10.0",
+  "onnxruntime": "1.31.0",
+  "old_error": "획득 스테이지 1곳 중 1곳의 번호를 확정하지 못했습니다.",
+  "old_stage_numbers": [],
+  "fixed_stage_numbers": [
+    "★7-1"
+  ],
+  "old_whole_label_readings": [
+    {
+      "box": [
+        107,
+        488,
+        267,
+        519
+      ],
+      "scale": 2,
+      "text": "*7-1",
+      "score": 0.8775,
+      "number": null
+    },
+    {
+      "box": [
+        107,
+        488,
+        267,
+        519
+      ],
+      "scale": 3,
+      "text": "*7-1",
+      "score": 0.87701,
+      "number": null
+    }
+  ],
+  "fixed_readings": [
+    {
+      "box": [
+        107,
+        488,
+        267,
+        519
+      ],
+      "scale": 2,
+      "text": "*7-1",
+      "score": 0.8775,
+      "number": null
+    },
+    {
+      "box": [
+        107,
+        488,
+        267,
+        519
+      ],
+      "scale": 3,
+      "text": "*7-1",
+      "score": 0.87701,
+      "number": null
+    },
+    {
+      "box": [
+        178,
+        488,
+        267,
+        519
+      ],
+      "scale": 2,
+      "text": "7-1",
+      "score": 0.99966,
+      "number": "★7-1",
+      "method": "star_free_number"
+    },
+    {
+      "box": [
+        178,
+        488,
+        267,
+        519
+      ],
+      "scale": 3,
+      "text": "7-1",
+      "score": 0.99963,
+      "number": "★7-1",
+      "method": "star_free_number"
+    }
+  ],
+  "cleared": [
+    true
+  ],
+  "confirmed_identical_frame_cached": true,
+  "old_identity_binding_fixture": {
+    "normal_header_after_star_selection": "★7-1",
+    "star_header_after_normal_selection": "★7-1"
+  },
+  "fixed_identity_binding_fixture": {
+    "normal_header_after_star_selection": "7-1",
+    "star_header_after_normal_selection": "★7-1"
+  },
+  "uploaded_screenshots_included": false,
+  "original_stage_database_available": false,
+  "application_input_executed": false,
+  "physical_mumu_verified": false
+}

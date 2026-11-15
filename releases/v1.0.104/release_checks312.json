@@ -1,0 +1,109 @@
+{
+  "zip_sha256": "71dbc5b24df14de66d4b233e043b64840c9f283f0af9a00843b320da29044cb6",
+  "source_sha256": "8b71e49073d1eab93db20045a7391735cda81fb344f8ba75a2eb22e2a70b558f",
+  "source_bytes": 2068952,
+  "zip_bytes": 959026,
+  "release": 312,
+  "version": "v1.0.104",
+  "source_repo": "tterx/pad0-all-in-one",
+  "source_commit": "94167361580579db25eeea112cb99efc3359aca3",
+  "source_pull_request": "https://github.com/tterx/pad0-all-in-one/pull/15",
+  "windows_ci": {
+    "run_id": 43727377578,
+    "conclusion": "success",
+    "head_sha": "94167361580579db25eeea112cb99efc3359aca3",
+    "url": "https://github.com/tterx/pad0-all-in-one/actions/runs/43727377578",
+    "tests": 1329,
+    "suites": 125,
+    "steps": 137
+  },
+  "local_checks": {
+    "related-final": {
+      "tests": 101,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "seconds": 19.595,
+      "modules": [
+        "test_stage_number312",
+        "test_star_label273",
+        "test_stage246",
+        "test_material_stage218",
+        "test_stage_medals256",
+        "test_entry_stage290",
+        "test_acquisition219",
+        "test_stage244",
+        "test_stage245",
+        "test_combo_objective303"
+      ]
+    },
+    "bundle-final": {
+      "tests": 57,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "seconds": 2.798,
+      "modules": [
+        "test_stage_number312",
+        "test_star_label273",
+        "test_stage246",
+        "test_entry_stage290",
+        "test_stage_medals256",
+        "test_material_stage218"
+      ]
+    }
+  },
+  "new_regressions": 13,
+  "private_replay": {
+    "report": 215,
+    "actual_saved_pixels": true,
+    "production_ocr": true,
+    "old_whole_label_scores": [
+      0.8775,
+      0.87701
+    ],
+    "focused_number_scores": [
+      0.99966,
+      0.99963
+    ],
+    "old_error": "획득 스테이지 1곳 중 1곳의 번호를 확정하지 못했습니다.",
+    "fixed_stage": "★7-1",
+    "star_kept_as_stage_identity": true,
+    "original_database_available": false,
+    "application_input_executed": false,
+    "details": "ocr_replay312.json"
+  },
+  "integration": {
+    "real_list_inspector_and_picker": true,
+    "generated_artwork_and_controlled_database": true,
+    "mismatched_starred_vs_normal_entry_still_rejected": true,
+    "real_entry_reader_test": true
+  },
+  "policy": {
+    "scope": "active_master_multicolor_farming_only",
+    "starred_and_normal_stages_separate": true,
+    "no_database_or_selected_id_digit_guess": true,
+    "confidence_threshold": 0.9,
+    "two_matching_number_reads": true,
+    "exact_base_identity_before_selected_world_binding": true,
+    "mode_isolated_ocr_cache": true,
+    "F10_checks_before_and_after_extra_reads": true,
+    "other_modes_default_behavior_unchanged": true,
+    "existing_stage_data_unchanged": true,
+    "branch_and_EX_unchanged": true,
+    "maximum_combos_retained": true,
+    "no_forced_healing": true,
+    "drop_status_and_manual_HUD_unchanged": true,
+    "input_pacing_unchanged": true
+  },
+  "physical_windows_mumu_verified": false,
+  "automatic_update_channel_changed": false,
+  "publication": {
+    "approved_release": true,
+    "source_pr_merged": true,
+    "source_branch": "codex/v1-0-104-stage-label-215",
+    "mode": "stable_release_and_auto_update",
+    "source_main_commit": "5b1f65847cb2d0c6d89a50b8b6dac8f9373f7ad6",
+    "source_tree_matches_tested_head": true
+  }
+}
