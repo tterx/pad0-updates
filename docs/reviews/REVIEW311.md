@@ -57,3 +57,11 @@ this review in the release repository.
 Windows CI: https://github.com/tterx/pad0-all-in-one/actions/runs/43723227498 (success; source a12fd1d20b23d416dc32f056241b05a9660c045f); 1,316 executions, 124 suites. Exact package source SHA256 matches.
 
 [Public matrix image](../../releases/v1.0.103/status_matrix311.png) and [case results](../../releases/v1.0.103/status_matrix311.json).
+
+Publication verified: PR14 merged as 9b72b6786516e0e1f6de9ce15163cf38f1c9cfac;
+its tree matches the Windows-tested head. Publisher run 43724241861 succeeded.
+The actual public stable latest v1.0.103 ZIP passed SHA256, CRC, version and updater-state
+checks. Its source equals the live immutable raw payload. Root update.json points to311.
+The genuine v1.0.102 launcher installed311 from the live manifest in an isolated
+installation, preserved its backup, settings, inventory and stage/branch-history
+markers, then skipped a repeat update. No PAD0 or physical game input was executed.
