@@ -104,6 +104,8 @@
     "source_branch": "codex/v1-0-104-stage-label-215",
     "mode": "stable_release_and_auto_update",
     "source_main_commit": "5b1f65847cb2d0c6d89a50b8b6dac8f9373f7ad6",
-    "source_tree_matches_tested_head": true
+    "source_tree_matches_tested_head": true,
+    "payload_commit": "edd721120f3b8df9a33f4f447936e42d3d00af36",
+    "immutable_source_url": "https://raw.githubusercontent.com/tterx/pad0-updates/edd721120f3b8df9a33f4f447936e42d3d00af36/releases/v1.0.104/pad0_overlay.py"
   }
 }
