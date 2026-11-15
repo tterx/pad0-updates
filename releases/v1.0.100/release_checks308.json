@@ -1,0 +1,108 @@
+{
+  "zip_sha256": "35299042a93e2808a870882d168b91290352350da0d8aa2d38237678eac42915",
+  "source_sha256": "871cde6d665d4abd90270eb6fba8ed7da6fac821b72dd80fcc23a83c9c7a3df5",
+  "source_bytes": 2042098,
+  "zip_bytes": 952649,
+  "release": 308,
+  "version": "v1.0.100",
+  "source_repo": "tterx/pad0-all-in-one",
+  "source_commit": "cc91b71c53886d9e46a88114f08d452ef1a64b58",
+  "source_pull_request": "https://github.com/tterx/pad0-all-in-one/pull/11",
+  "windows_ci": {
+    "run_id": 43691300686,
+    "conclusion": "success",
+    "head_sha": "cc91b71c53886d9e46a88114f08d452ef1a64b58",
+    "url": "https://github.com/tterx/pad0-all-in-one/actions/runs/43691300686",
+    "tests": 1253,
+    "suites": 120,
+    "steps": 132
+  },
+  "local_checks": {
+    "final": {
+      "tests": 152,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "seconds": 37.031,
+      "modules": [
+        "test_lock_handoff308",
+        "test_master_button304",
+        "test_focus_search266",
+        "test_recognition_save259",
+        "test_timer_fallback227",
+        "test_short_recovery299",
+        "test_upload_followup305",
+        "test_recovery_hp132",
+        "test_board_clear229",
+        "test_turn248",
+        "test_route_modes230"
+      ]
+    },
+    "bundle-final": {
+      "tests": 84,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "seconds": 19.703,
+      "modules": [
+        "test_lock_handoff308",
+        "test_master_button304",
+        "test_timer_fallback227",
+        "test_route_modes230",
+        "test_combo_objective303"
+      ]
+    }
+  },
+  "new_regressions": 17,
+  "private_replay": {
+    "report": 210,
+    "actual_saved_crops_pass": true,
+    "actual_lock_count": 30,
+    "verified_route": {
+      "attributes": 5,
+      "final_combos": 9,
+      "move_units": 42,
+      "move_cap": 48
+    },
+    "controlled_simulation": {
+      "scope": "injected_transient_final_reads_not_original_frame_sequence",
+      "old_solver_calls": 5,
+      "old_acted": false,
+      "fixed_solver_calls": 1,
+      "fixed_cache_hits": 6,
+      "fixed_mock_drag_count": 1,
+      "old_delayed_button_shows": false,
+      "fixed_delayed_button_shows": true
+    },
+    "original_revalidation_sequence_available": false,
+    "original_manual_transition_sequence_available": false,
+    "application_input_executed": false
+  },
+  "policy": {
+    "master_only": true,
+    "turn_local_verified_route_reuse": true,
+    "fresh_execution_gates_retained": true,
+    "absent_or_unavailable_unlock_allows_locked_swap_progress": true,
+    "positive_lock_count_variation_only": true,
+    "ready_unlock_priority_retained": true,
+    "maximum_combos_retained": true,
+    "no_forced_healing": true,
+    "button_actual_capture_timestamp": true,
+    "button_max_image_age_seconds": 1.2,
+    "obsolete_probe_superseded": true,
+    "menu_negative_still_hides": true,
+    "other_modes_unchanged": true,
+    "branch_and_ex_policy_unchanged": true,
+    "input_pacing_unchanged": true
+  },
+  "physical_windows_mumu_verified": false,
+  "automatic_update_channel_changed": false,
+  "publication": {
+    "approved_release": true,
+    "source_pr_merged": true,
+    "source_branch": "codex/v1-0-100-lock-field-210",
+    "mode": "stable_release_and_auto_update",
+    "source_main_commit": "052213174394b9d6e5d8e7ad5646a6ee241f24b8",
+    "source_tree_matches_tested_head": true
+  }
+}
