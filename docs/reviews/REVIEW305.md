@@ -66,3 +66,11 @@ unchanged. Package execution, rather than comments, is validated independently.
 Windows CI: https://github.com/tterx/pad0-all-in-one/actions/runs/43665050521 (success; source c2d7f417bac7bc8d2197b8729b2d4b8161a1d2d6); 1,206 executions, 117 suites. Exact package source SHA256 matches.
 
 An uncleared map target cannot count as a win; the existing positively confirmed defeat retry retains its clear-status exemption.
+
+Publication verified: PR8 merged as 721bb7aa11964b6b4e36bb748317acdf58981687;
+its tree matches the Windows-tested head. Publisher run 43666073642 succeeded.
+The actual public stable latest v1.0.97 ZIP passed SHA256, CRC, version and updater-state
+checks. Its source equals the live immutable raw payload. Root update.json points to305.
+The genuine v1.0.96 launcher installed305 from the live manifest in an isolated
+installation, preserved its backup, settings, inventory and stage/branch-history
+markers, then skipped a repeat update. No PAD0 or physical game input was executed.
