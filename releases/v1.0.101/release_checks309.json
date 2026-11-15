@@ -123,6 +123,8 @@
     "source_branch": "codex/v1-0-101-f10-skill-211",
     "mode": "stable_release_and_auto_update",
     "source_main_commit": "b602df9479ba0a587792b2619ea6e700d5ebe06d",
-    "source_tree_matches_tested_head": true
+    "source_tree_matches_tested_head": true,
+    "payload_commit": "81439aadc672f934602db6c941cc3c4ea1eb6965",
+    "immutable_source_url": "https://raw.githubusercontent.com/tterx/pad0-updates/81439aadc672f934602db6c941cc3c4ea1eb6965/releases/v1.0.101/pad0_overlay.py"
   }
 }
