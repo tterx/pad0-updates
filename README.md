@@ -1,12 +1,12 @@
 # 퍼드0 올인원
 
-[**프로그램 ZIP 다운로드 · v1.0.104**](https://github.com/tterx/pad0-updates/releases/download/v1.0.104/pad0_overlay_windows_v1_0_104.zip) · [전체 릴리스](https://github.com/tterx/pad0-updates/releases)
+[**프로그램 ZIP 다운로드 · v1.0.105**](https://github.com/tterx/pad0-updates/releases/download/v1.0.105/pad0_overlay_windows_v1_0_105.zip) · [전체 릴리스](https://github.com/tterx/pad0-updates/releases)
 
-현재 표시 버전은 **1.0.104**, 자동 업데이트 내부 순번은 **312**입니다.
+현재 표시 버전은 **1.0.105**, 자동 업데이트 내부 순번은 **313**입니다.
 
 새로 설치할 때는 ZIP을 풀고 `시작.vbs`를 실행하세요. 기존 설치는 PAD0를 완전히 종료한 뒤 `시작.vbs`를 다시 실행하면 업데이트됩니다.
 
-달인다속 파밍의 별표 스테이지 번호 판독을 보완했습니다. 별표와 숫자를 따로 확인해도 ★7-1과7-1은 별도 ID로 유지하고, 진입 화면에서 서로 대체하지 않습니다. 실제 첨부215 OCR 재현, Windows 검사 1,329개와 독립 번들 57개 통과. [변경 내용](docs/reviews/REVIEW312.md) · [검증 기록](releases/v1.0.104/release_checks312.json)
+달인다속의 방해 드롭 시작 확인, F10 화면 확인 작업의 인자 오류와 버튼 표시 시간 갱신, F7 등록의 별표 스테이지 판독을 수정했습니다. 첨부216/217 이미지 재현, Windows 검사 1,350개와 독립 번들 77개 통과. [변경 내용](docs/reviews/REVIEW313.md) · [검증 기록](releases/v1.0.105/release_checks313.json)
 
 ## 저장소 안내
 
