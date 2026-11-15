@@ -1,0 +1,262 @@
+{
+  "old_v104": {
+    "reports": [
+      216,
+      217
+    ],
+    "actual_saved_pixels": true,
+    "start217": {
+      "proof": {
+        "confirmed": false,
+        "reason": "start_lift_unconfirmed",
+        "start_baseline_code": "J",
+        "start_baseline_core_code": "B",
+        "start_baseline_artwork_kind": "jammer_outline",
+        "start_floating_code": "B",
+        "start_match_mae": 0.1669,
+        "start_match_correlation": 0.41803,
+        "start_original_mae": 0.23888,
+        "start_changed_fraction": 0.79585,
+        "start_upper_changed_fraction": 0.82298,
+        "start_lift_offset": 0.34,
+        "start_lift_scale": 1.24,
+        "start_spatial_coarse_patches": 504,
+        "start_spatial_best_correlation": 0.94335,
+        "start_spatial_best_mae": 0.11403,
+        "start_spatial_qualified_candidates": 9,
+        "start_spatial_refinement_anchors": 1,
+        "start_spatial_refined_patches": 44,
+        "start_spatial_refinement_seeds": [
+          {
+            "dx": -0.05,
+            "offset": 0.38,
+            "scale": 1.24,
+            "correlation": 0.84013,
+            "mae": 0.12532
+          }
+        ],
+        "start_spatial_masked_candidates": 0,
+        "start_spatial_reason": "start_spatial_unconfirmed",
+        "start_locked_reason": "start_locked_colour_unconfirmed",
+        "start_jammer_alpha_candidates": 0,
+        "start_jammer_alpha_reason": "start_jammer_alpha_unconfirmed",
+        "start_thorn_reason": "start_thorn_alpha_unconfirmed",
+        "start_timer_reason": "start_timer_unconfirmed"
+      },
+      "wall_seconds": 0.9148,
+      "raw_first_point_matches": true
+    },
+    "pipeline217": {
+      "down_count": 1,
+      "move_count": 0,
+      "up_count": 1,
+      "released": true,
+      "error": "제한시간부족 · 시작 드롭 확인 후 전체 경로 이동 시간을 확보하지 못했습니다.",
+      "feedback_checks": 3,
+      "usable_seconds": 7.0,
+      "movement_estimate_seconds": 4.311,
+      "input_timing": {
+        "sample_seconds": 0.017,
+        "corner_seconds": 0.0625
+      },
+      "controlled_feedback_seconds_per_check": 0.5,
+      "controller_clock_and_final_ack_mocked": true
+    },
+    "manual217": {
+      "error": "TypeError: App._background_probe() takes 2 positional arguments but 3 were given",
+      "real_released_board_pixels": true,
+      "periodic_ticks": 60,
+      "simulated_seconds": 12,
+      "restored_without_board_drag": false,
+      "button_stayed_visible_then_menu_hidden": false,
+      "original_post_F10_desktop_sequence_available": false
+    },
+    "catalog216": {
+      "production_ocr": true,
+      "error": "RuntimeError: 획득 스테이지 1곳 중 1곳의 번호를 확정하지 못했습니다.",
+      "stage_numbers": [],
+      "active_farming": false,
+      "timings": {
+        "stage_list_ocr_reads": 1,
+        "stage_list_ocr_seconds": 6.138,
+        "stage_list_medals": 1,
+        "stage_list_unread_labels": 1,
+        "stage_list_label_reads": [
+          {
+            "box": [
+              107,
+              488,
+              267,
+              519
+            ],
+            "scale": 2,
+            "text": "*7-1",
+            "score": 0.8775,
+            "number": null
+          },
+          {
+            "box": [
+              107,
+              488,
+              267,
+              519
+            ],
+            "scale": 3,
+            "text": "*7-1",
+            "score": 0.87701,
+            "number": null
+          }
+        ]
+      }
+    },
+    "physical_mumu_verified": false,
+    "application_input_executed": false
+  },
+  "fixed_v105": {
+    "reports": [
+      216,
+      217
+    ],
+    "actual_saved_pixels": true,
+    "start217": {
+      "proof": {
+        "confirmed": true,
+        "reason": "start_jammer_body_alpha_lifted",
+        "start_baseline_code": "J",
+        "start_baseline_core_code": "B",
+        "start_baseline_artwork_kind": "jammer_outline",
+        "start_floating_code": "J",
+        "start_match_mae": 0.1669,
+        "start_match_correlation": 0.41803,
+        "start_original_mae": 0.23888,
+        "start_changed_fraction": 0.79585,
+        "start_upper_changed_fraction": 0.82298,
+        "start_lift_offset": 0.38,
+        "start_lift_scale": 1.2,
+        "start_jammer_body_coverage": 0.74576,
+        "start_jammer_alpha_candidates": 8,
+        "start_artwork_kind": "jammer_alpha_and_complete_eyes",
+        "start_jammer_eye_matches": [
+          {
+            "center_delta": 1.08891,
+            "area_ratio": 0.9661,
+            "shape_iou": 0.92308,
+            "new_eye_fraction": 1.0
+          },
+          {
+            "center_delta": 0.93103,
+            "area_ratio": 1.0,
+            "shape_iou": 0.96078,
+            "new_eye_fraction": 1.0
+          }
+        ],
+        "start_jammer_navy_fraction": 0.54517,
+        "start_jammer_alpha": 0.71099,
+        "start_jammer_residual_mae": 0.08365,
+        "start_jammer_texture_correlation": 0.91592,
+        "start_jammer_grey_correlation": 0.93624,
+        "start_lift_x_offset": -0.05,
+        "start_stable_cells": 24
+      },
+      "wall_seconds": 0.7917,
+      "raw_first_point_matches": true
+    },
+    "pipeline217": {
+      "down_count": 1,
+      "move_count": 184,
+      "up_count": 1,
+      "released": true,
+      "error": null,
+      "feedback_checks": 1,
+      "usable_seconds": 7.0,
+      "movement_estimate_seconds": 4.311,
+      "input_timing": {
+        "sample_seconds": 0.017,
+        "corner_seconds": 0.0625
+      },
+      "controlled_feedback_seconds_per_check": 0.5,
+      "controller_clock_and_final_ack_mocked": true
+    },
+    "manual217": {
+      "error": null,
+      "real_released_board_pixels": true,
+      "periodic_ticks": 60,
+      "simulated_seconds": 12,
+      "restored_without_board_drag": true,
+      "button_stayed_visible_then_menu_hidden": true,
+      "original_post_F10_desktop_sequence_available": false
+    },
+    "catalog216": {
+      "production_ocr": true,
+      "error": null,
+      "stage_numbers": [
+        "★7-1"
+      ],
+      "active_farming": false,
+      "timings": {
+        "stage_list_ocr_reads": 1,
+        "stage_list_ocr_seconds": 2.905,
+        "stage_list_medals": 1,
+        "stage_list_unread_labels": 0,
+        "stage_list_label_reads": [
+          {
+            "box": [
+              107,
+              488,
+              267,
+              519
+            ],
+            "scale": 2,
+            "text": "*7-1",
+            "score": 0.8775,
+            "number": null
+          },
+          {
+            "box": [
+              107,
+              488,
+              267,
+              519
+            ],
+            "scale": 3,
+            "text": "*7-1",
+            "score": 0.87701,
+            "number": null
+          },
+          {
+            "box": [
+              178,
+              488,
+              267,
+              519
+            ],
+            "scale": 2,
+            "text": "7-1",
+            "score": 0.99966,
+            "number": "★7-1",
+            "method": "star_free_number"
+          },
+          {
+            "box": [
+              178,
+              488,
+              267,
+              519
+            ],
+            "scale": 3,
+            "text": "7-1",
+            "score": 0.99963,
+            "number": "★7-1",
+            "method": "star_free_number"
+          }
+        ]
+      }
+    },
+    "physical_mumu_verified": false,
+    "application_input_executed": false
+  },
+  "uploaded_screenshots_included": false,
+  "physical_mumu_verified": false,
+  "original_post_F10_desktop_sequence_available": false,
+  "application_input_executed": false
+}

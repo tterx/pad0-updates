@@ -1,0 +1,124 @@
+{
+  "zip_sha256": "1ea38badffca7f86b8339b0af7daae998689f1db5a454165ce5ce186c5771964",
+  "source_sha256": "4c275cee59696ea94708fbe801f673414470b053730b2520ee6b0b686bc99619",
+  "source_bytes": 2071045,
+  "zip_bytes": 959401,
+  "release": 313,
+  "version": "v1.0.105",
+  "source_repo": "tterx/pad0-all-in-one",
+  "source_commit": "965d1461903fa6b922c405783c4533a5deb5c683",
+  "source_pull_request": "https://github.com/tterx/pad0-all-in-one/pull/16",
+  "windows_ci": {
+    "run_id": 43769128879,
+    "conclusion": "success",
+    "head_sha": "965d1461903fa6b922c405783c4533a5deb5c683",
+    "url": "https://github.com/tterx/pad0-all-in-one/actions/runs/43769128879",
+    "tests": 1350,
+    "suites": 127,
+    "steps": 139
+  },
+  "local_checks": {
+    "related-verified": {
+      "tests": 190,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "seconds": 85.824,
+      "modules": [
+        "test_start_hud313",
+        "test_catalog_scope313",
+        "test_material_stage218",
+        "test_material_names136",
+        "test_material_ocr286",
+        "test_stage_number312",
+        "test_master_button304",
+        "test_lock_handoff308",
+        "test_master_handoff309",
+        "test_locked_start311",
+        "test_start209",
+        "test_start_skill216",
+        "test_jammer211",
+        "test_held_jammer289",
+        "test_thorn_start228"
+      ]
+    },
+    "bundle-final": {
+      "tests": 77,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "seconds": 45.322,
+      "modules": [
+        "test_start_hud313",
+        "test_catalog_scope313",
+        "test_master_button304",
+        "test_stage_number312",
+        "test_material_stage218",
+        "test_locked_start311"
+      ]
+    }
+  },
+  "new_regressions": 21,
+  "private_replay": {
+    "reports": [
+      216,
+      217
+    ],
+    "actual_saved_pixels": true,
+    "details": "replay313.json",
+    "start217": {
+      "old_confirmed": false,
+      "fixed_confirmed": true,
+      "body_coverage": 0.74576,
+      "texture_correlation": 0.91592,
+      "residual": 0.08365,
+      "old_move_count": 0,
+      "fixed_move_count": 184,
+      "old_feedback_checks": 3,
+      "fixed_feedback_checks": 1,
+      "controlled_feedback_seconds_per_check": 0.5,
+      "controller_clock_and_final_ack_mocked": true
+    },
+    "manual217": {
+      "old_worker_type_error": true,
+      "fixed_real_worker_and_consumer": true,
+      "periodic_ticks": 60,
+      "simulated_seconds": 12,
+      "actual_released_board_pixels": true,
+      "restored_without_board_drag": true,
+      "button_stayed_visible_then_menu_hidden": true,
+      "original_post_F10_desktop_sequence_available": false
+    },
+    "catalog216": {
+      "production_ocr": true,
+      "active_farming": false,
+      "fixed_stage": "★7-1",
+      "owner_and_epoch_bound_mode_ticket": true
+    }
+  },
+  "policy": {
+    "scope": "master_multicolor_only_with_default_worker_signature_restored",
+    "maximum_combos_retained": true,
+    "no_forced_healing": true,
+    "input_pacing_unchanged": true,
+    "input_budgets_unchanged": true,
+    "final_layout_and_release_checks_retained": true,
+    "extra_DOWN_or_recovery_clicks": false,
+    "branch_and_EX_unchanged": true,
+    "starred_normal_and_Hidden_stage_records_separate": true,
+    "F7_name_recognition_and_data_migration_unchanged": true,
+    "other_modes_default_recognition_unchanged": true,
+    "manual_presence_freshness_unchanged": true,
+    "captured_time_not_completion_time": true
+  },
+  "physical_windows_mumu_verified": false,
+  "automatic_update_channel_changed": false,
+  "publication": {
+    "approved_release": true,
+    "source_pr_merged": true,
+    "source_branch": "codex/v1-0-105-start-budget-manual-217",
+    "mode": "stable_release_and_auto_update",
+    "source_main_commit": "81ab53a7bf17791d101b7609ed88cf75b4e3b58a",
+    "source_tree_matches_tested_head": true
+  }
+}
