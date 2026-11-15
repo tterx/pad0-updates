@@ -119,6 +119,8 @@
     "source_branch": "codex/v1-0-105-start-budget-manual-217",
     "mode": "stable_release_and_auto_update",
     "source_main_commit": "81ab53a7bf17791d101b7609ed88cf75b4e3b58a",
-    "source_tree_matches_tested_head": true
+    "source_tree_matches_tested_head": true,
+    "payload_commit": "f816af9e4944fe6f2feff35a29565bdd494b7f4c",
+    "immutable_source_url": "https://raw.githubusercontent.com/tterx/pad0-updates/f816af9e4944fe6f2feff35a29565bdd494b7f4c/releases/v1.0.105/pad0_overlay.py"
   }
 }
