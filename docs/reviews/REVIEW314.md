@@ -92,3 +92,11 @@ The product source and frozen model are unchanged by this fixture correction.
 Windows CI: https://github.com/tterx/pad0-all-in-one/actions/runs/43775287737 (success; source e6b22b8f3b902928fceef45b4446dbdcd9798b73); 1,389 executions, 130 suites. Exact package source SHA256 matches.
 
 [Public replay comparison](../../releases/v1.0.106/replay314.json).
+
+Publication verified: PR17 merged as 652baa23a72795c64958b0ac4ae770c1e66e1bb4;
+its tree matches the Windows-tested head. Publisher run 43776557118 succeeded.
+The actual public stable latest v1.0.106 ZIP passed SHA256, CRC, version and updater-state
+checks. Its source equals the live immutable raw payload. Root update.json points to314.
+The genuine v1.0.105 launcher installed314 from the live manifest in an isolated
+installation, preserved its backup, settings, inventory and stage/branch-history
+markers, then skipped a repeat update. No PAD0 or physical game input was executed.
