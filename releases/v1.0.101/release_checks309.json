@@ -128,7 +128,8 @@
     "immutable_source_url": "https://raw.githubusercontent.com/tterx/pad0-updates/81439aadc672f934602db6c941cc3c4ea1eb6965/releases/v1.0.101/pad0_overlay.py",
     "release_workflow_run": 43714556454,
     "stable_release_verified": true,
-    "zip_bytes_unchanged": true
+    "zip_bytes_unchanged": true,
+    "auto_update_verified": true
   },
   "public_download_verification": {
     "zip_url": "https://github.com/tterx/pad0-updates/releases/download/v1.0.101/pad0_overlay_windows_v1_0_101.zip",
@@ -154,7 +155,19 @@
       "repeat_update_skipped": true,
       "application_executed": false
     },
-    "live_status": "pending_post_activation_check",
-    "manifest_url": "https://raw.githubusercontent.com/tterx/pad0-updates/main/update.json"
+    "live_status": "success",
+    "manifest_url": "https://raw.githubusercontent.com/tterx/pad0-updates/main/update.json",
+    "live": {
+      "scope": "live_manifest_and_live_source",
+      "old_release": 308,
+      "new_release": 309,
+      "source_sha256": "494182f2bb1f0a0269a35434cf5958b1bf49cca848e6414c0c017573d114112a",
+      "source_bytes": 2049909,
+      "backup_preserved": true,
+      "personal_data_preserved": true,
+      "branch_history_preserved": true,
+      "repeat_update_skipped": true,
+      "application_executed": false
+    }
   }
 }
