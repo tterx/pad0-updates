@@ -49,3 +49,11 @@ recorded in the release repository. Physical MuMu farming completion and the
 original unrecorded manual flicker sequence remain unverified.
 
 Windows CI: https://github.com/tterx/pad0-all-in-one/actions/runs/43691300686 (success; source cc91b71c53886d9e46a88114f08d452ef1a64b58); 1,253 executions, 120 suites. Exact package source SHA256 matches.
+
+Publication verified: PR11 merged as 052213174394b9d6e5d8e7ad5646a6ee241f24b8;
+its tree matches the Windows-tested head. Publisher run 43692048263 succeeded.
+The actual public stable latest v1.0.100 ZIP passed SHA256, CRC, version and updater-state
+checks. Its source equals the live immutable raw payload. Root update.json points to308.
+The genuine v1.0.99 launcher installed308 from the live manifest in an isolated
+installation, preserved its backup, settings, inventory and stage/branch-history
+markers, then skipped a repeat update. No PAD0 or physical game input was executed.
