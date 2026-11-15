@@ -118,6 +118,8 @@
     "source_branch": "codex/v1-0-98-bound-party-208",
     "mode": "stable_release_and_auto_update",
     "source_main_commit": "88d8e09c61a2c4c8f58117f1f3b342337dedaa84",
-    "source_tree_matches_tested_head": true
+    "source_tree_matches_tested_head": true,
+    "payload_commit": "75bb7dda168fa15f92a48a4b5378ebfda9facac2",
+    "immutable_source_url": "https://raw.githubusercontent.com/tterx/pad0-updates/75bb7dda168fa15f92a48a4b5378ebfda9facac2/releases/v1.0.98/pad0_overlay.py"
   }
 }
