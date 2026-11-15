@@ -1,12 +1,12 @@
 # 퍼드0 올인원
 
-[**프로그램 ZIP 다운로드 · v1.0.97**](https://github.com/tterx/pad0-updates/releases/download/v1.0.97/pad0_overlay_windows_v1_0_97.zip) · [전체 릴리스](https://github.com/tterx/pad0-updates/releases)
+[**프로그램 ZIP 다운로드 · v1.0.98**](https://github.com/tterx/pad0-updates/releases/download/v1.0.98/pad0_overlay_windows_v1_0_98.zip) · [전체 릴리스](https://github.com/tterx/pad0-updates/releases)
 
-현재 표시 버전은 **1.0.97**, 자동 업데이트 내부 순번은 **305**입니다.
+현재 표시 버전은 **1.0.98**, 자동 업데이트 내부 순번은 **306**입니다.
 
 새로 설치할 때는 ZIP을 풀고 `시작.vbs`를 실행하세요. 기존 설치는 PAD0를 완전히 종료한 뒤 `시작.vbs`를 다시 실행하면 업데이트됩니다.
 
-갈림길에서 목표 크리스탈을 10회 미획득하면 반대쪽으로 전환하고, 획득이 확인된 스테이지·크리스탈·선택지를 저장해 재사용합니다. 204~207의 시작 판독·콤보 턴 진행·패배 안내·지도 복귀도 보완했습니다. Windows 검사 1,206개와 독립 번들 검사 96개 통과. [변경 내용](docs/reviews/REVIEW305.md) · [검증 기록](releases/v1.0.97/release_checks305.json)
+자동 파밍에서 분기 스테이지도 같은 기준으로 고르며, 목표 재료를 얻을 일반 후보가 있으면 EX보다 우선합니다. EX만 가능한 경우에만 EX를 고릅니다. 달인다속의 바인드 초상화 오인식으로 발생한 208번 중단도 보완했습니다. Windows 검사 1,220개와 독립 번들 검사 78개 통과. [변경 내용](docs/reviews/REVIEW306.md) · [검증 기록](releases/v1.0.98/release_checks306.json)
 
 ## 저장소 안내
 
