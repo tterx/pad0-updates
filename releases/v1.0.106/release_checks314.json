@@ -1,0 +1,338 @@
+{
+  "zip_sha256": "1bfd0ef227a95e01ce853353ef4be7dd4f54a2266c8d7d799d79438ba7b86060",
+  "source_sha256": "03afb5e75705c2f3cf10c8f315c1108aaf284253228a8d72fa8f2894269e6dca",
+  "source_bytes": 2086951,
+  "zip_bytes": 971825,
+  "release": 314,
+  "version": "v1.0.106",
+  "source_repo": "tterx/pad0-all-in-one",
+  "source_commit": "e6b22b8f3b902928fceef45b4446dbdcd9798b73",
+  "source_pull_request": "https://github.com/tterx/pad0-all-in-one/pull/17",
+  "windows_ci": {
+    "run_id": 43775287737,
+    "conclusion": "success",
+    "head_sha": "e6b22b8f3b902928fceef45b4446dbdcd9798b73",
+    "url": "https://github.com/tterx/pad0-all-in-one/actions/runs/43775287737",
+    "tests": 1389,
+    "suites": 130,
+    "steps": 142
+  },
+  "local_checks": {
+    "related-final": {
+      "tests": 320,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "seconds": 225.471,
+      "modules": [
+        "test_start_hud313",
+        "test_catalog_scope313",
+        "test_material_stage218",
+        "test_material_names136",
+        "test_material_ocr286",
+        "test_stage_number312",
+        "test_master_button304",
+        "test_lock_handoff308",
+        "test_master_handoff309",
+        "test_locked_start311",
+        "test_start209",
+        "test_start_skill216",
+        "test_jammer211",
+        "test_held_jammer289",
+        "test_thorn_start228",
+        "test_status_matrix311",
+        "test_sdk_corners282",
+        "test_start250",
+        "test_start253",
+        "test_training_jammer301",
+        "test_upload_feedback300",
+        "test_combo_objective303",
+        "test_all_drop_learning314",
+        "test_learned_start314",
+        "test_learned_presence314"
+      ]
+    },
+    "bundle-final": {
+      "tests": 103,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "seconds": 159.455,
+      "modules": [
+        "test_all_drop_learning314",
+        "test_learned_start314",
+        "test_learned_presence314",
+        "test_status_matrix311",
+        "test_locked_start311",
+        "test_master_button304",
+        "test_start_hud313",
+        "test_sdk_corners282"
+      ]
+    },
+    "observation-mocks": {
+      "tests": 105,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "seconds": 8.533,
+      "modules": [
+        "test_preparation_latency262",
+        "test_turn248",
+        "test_tpa_prefind235",
+        "test_held223",
+        "test_hazard_preparation270",
+        "test_route237",
+        "test_condition_save258",
+        "test_recognition_save259",
+        "test_execution_condition266",
+        "test_condition_delivery261"
+      ]
+    },
+    "timer-fixture": {
+      "tests": 16,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "seconds": 4.637,
+      "modules": [
+        "test_timer_fallback227"
+      ]
+    }
+  },
+  "new_suite_executions": 39,
+  "new_test_methods": 25,
+  "inherited_presence_gate_cases": 14,
+  "validation_followups": {
+    "first_windows_run": 43774511494,
+    "first_result": "failed_timer_fixture_observation_mismatch",
+    "corrected_fixture_commit": "e6b22b8f3b902928fceef45b4446dbdcd9798b73",
+    "product_bundle_unchanged": true,
+    "real_pixel_tests_unchanged": true
+  },
+  "model": {
+    "id": "all-drop-314",
+    "sha256": "46000b8bb720eedd7f64367d6288a3a39f51bfd01129a8d68cdc3d1ba78db27c",
+    "offline_retraining_reproduced_exact_weights": true,
+    "train": {
+      "total": 18520,
+      "correct": 18520,
+      "accepted": 17685,
+      "accepted_errors": 0,
+      "per_kind": {
+        "R": {
+          "total": 1920,
+          "correct": 1920,
+          "accepted": 1901
+        },
+        "B": {
+          "total": 1280,
+          "correct": 1280,
+          "accepted": 1275
+        },
+        "G": {
+          "total": 1280,
+          "correct": 1280,
+          "accepted": 1271
+        },
+        "Y": {
+          "total": 1280,
+          "correct": 1280,
+          "accepted": 1274
+        },
+        "P": {
+          "total": 3840,
+          "correct": 3840,
+          "accepted": 3777
+        },
+        "H": {
+          "total": 1920,
+          "correct": 1920,
+          "accepted": 1902
+        },
+        "J": {
+          "total": 1920,
+          "correct": 1920,
+          "accepted": 1888
+        },
+        "S": {
+          "total": 4480,
+          "correct": 4480,
+          "accepted": 4397
+        },
+        "?": {
+          "total": 600,
+          "correct": 600,
+          "accepted": 0
+        }
+      }
+    },
+    "validation": {
+      "total": 1776,
+      "correct": 1776,
+      "accepted": 1424,
+      "accepted_errors": 0,
+      "per_kind": {
+        "R": {
+          "total": 128,
+          "correct": 128,
+          "accepted": 126
+        },
+        "B": {
+          "total": 128,
+          "correct": 128,
+          "accepted": 75
+        },
+        "G": {
+          "total": 128,
+          "correct": 128,
+          "accepted": 127
+        },
+        "Y": {
+          "total": 128,
+          "correct": 128,
+          "accepted": 128
+        },
+        "P": {
+          "total": 128,
+          "correct": 128,
+          "accepted": 126
+        },
+        "H": {
+          "total": 128,
+          "correct": 128,
+          "accepted": 101
+        },
+        "J": {
+          "total": 128,
+          "correct": 128,
+          "accepted": 118
+        },
+        "S": {
+          "total": 640,
+          "correct": 640,
+          "accepted": 623
+        },
+        "?": {
+          "total": 240,
+          "correct": 240,
+          "accepted": 0
+        }
+      }
+    },
+    "test": {
+      "total": 1400,
+      "correct": 1398,
+      "accepted": 1219,
+      "accepted_errors": 0,
+      "per_kind": {
+        "R": {
+          "total": 128,
+          "correct": 128,
+          "accepted": 126
+        },
+        "B": {
+          "total": 128,
+          "correct": 128,
+          "accepted": 115
+        },
+        "G": {
+          "total": 128,
+          "correct": 128,
+          "accepted": 127
+        },
+        "Y": {
+          "total": 128,
+          "correct": 128,
+          "accepted": 124
+        },
+        "P": {
+          "total": 128,
+          "correct": 128,
+          "accepted": 125
+        },
+        "H": {
+          "total": 128,
+          "correct": 128,
+          "accepted": 127
+        },
+        "J": {
+          "total": 256,
+          "correct": 254,
+          "accepted": 222
+        },
+        "S": {
+          "total": 256,
+          "correct": 256,
+          "accepted": 253
+        },
+        "?": {
+          "total": 120,
+          "correct": 120,
+          "accepted": 0
+        }
+      }
+    },
+    "details": "drop_learning314.json",
+    "original_tile_split_disjoint": true,
+    "whole_source_screens_disjoint": false,
+    "report218_excluded_from_fit": true,
+    "regression_set_used_during_development": true,
+    "online_self_labeling": false
+  },
+  "private_replay": {
+    "report": 218,
+    "actual_saved_pixels": true,
+    "details": "replay314.json",
+    "start218": {
+      "old_confirmed": false,
+      "fixed_confirmed": true,
+      "source_confidence": [
+        0.99919,
+        0.99826
+      ],
+      "body_coverage": 0.5121,
+      "texture_correlation": 0.90587,
+      "residual": 0.05122,
+      "alpha": 0.72719,
+      "reconstruction_model_abstained": true,
+      "independent_visible_art_kind": "G",
+      "stable_remote_cells": 26,
+      "old_move_count": 0,
+      "fixed_move_count": 116,
+      "old_feedback_checks": 4,
+      "fixed_feedback_checks": 1,
+      "controlled_feedback_seconds_per_check": 0.5,
+      "controller_clock_and_final_ack_mocked": true
+    },
+    "display": {
+      "saved_frames_all_pass": true,
+      "original_post_F10_desktop_sequence_available": false,
+      "actual218_frames_use_existing_fallback": true,
+      "learned_fast_presence_validated_on_controlled_real_art_grid": true
+    }
+  },
+  "policy": {
+    "scope": "master_multicolor_only",
+    "maximum_combos_retained": true,
+    "no_forced_healing": true,
+    "input_pacing_unchanged": true,
+    "input_budgets_unchanged": true,
+    "final_layout_and_release_checks_retained": true,
+    "extra_DOWN_or_recovery_clicks": false,
+    "branch_and_EX_unchanged": true,
+    "starred_normal_and_Hidden_stage_records_separate": true,
+    "other_modes_default_recognition_unchanged": true,
+    "manual_presence_freshness_unchanged": true,
+    "captured_time_not_completion_time": true
+  },
+  "physical_windows_mumu_verified": false,
+  "automatic_update_channel_changed": false,
+  "publication": {
+    "approved_release": true,
+    "source_pr_merged": true,
+    "source_branch": "codex/v1-0-106-all-drop-learning-218",
+    "mode": "stable_release_and_auto_update",
+    "source_main_commit": "652baa23a72795c64958b0ac4ae770c1e66e1bb4",
+    "source_tree_matches_tested_head": true
+  }
+}

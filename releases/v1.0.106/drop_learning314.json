@@ -1,0 +1,191 @@
+{
+  "schema": 1,
+  "id": "all-drop-314",
+  "features": 148,
+  "hidden": 24,
+  "classes": [
+    "R",
+    "B",
+    "G",
+    "Y",
+    "P",
+    "H",
+    "J",
+    "S",
+    "unknown"
+  ],
+  "epochs": 900,
+  "fit_runs": 3,
+  "optimizer_steps": 2700,
+  "seed": 316,
+  "validation": {
+    "total": 1776,
+    "correct": 1776,
+    "accepted": 1424,
+    "accepted_errors": 0,
+    "per_kind": {
+      "R": {
+        "total": 128,
+        "correct": 128,
+        "accepted": 126
+      },
+      "B": {
+        "total": 128,
+        "correct": 128,
+        "accepted": 75
+      },
+      "G": {
+        "total": 128,
+        "correct": 128,
+        "accepted": 127
+      },
+      "Y": {
+        "total": 128,
+        "correct": 128,
+        "accepted": 128
+      },
+      "P": {
+        "total": 128,
+        "correct": 128,
+        "accepted": 126
+      },
+      "H": {
+        "total": 128,
+        "correct": 128,
+        "accepted": 101
+      },
+      "J": {
+        "total": 128,
+        "correct": 128,
+        "accepted": 118
+      },
+      "S": {
+        "total": 640,
+        "correct": 640,
+        "accepted": 623
+      },
+      "?": {
+        "total": 240,
+        "correct": 240,
+        "accepted": 0
+      }
+    }
+  },
+  "test": {
+    "total": 1400,
+    "correct": 1398,
+    "accepted": 1219,
+    "accepted_errors": 0,
+    "per_kind": {
+      "R": {
+        "total": 128,
+        "correct": 128,
+        "accepted": 126
+      },
+      "B": {
+        "total": 128,
+        "correct": 128,
+        "accepted": 115
+      },
+      "G": {
+        "total": 128,
+        "correct": 128,
+        "accepted": 127
+      },
+      "Y": {
+        "total": 128,
+        "correct": 128,
+        "accepted": 124
+      },
+      "P": {
+        "total": 128,
+        "correct": 128,
+        "accepted": 125
+      },
+      "H": {
+        "total": 128,
+        "correct": 128,
+        "accepted": 127
+      },
+      "J": {
+        "total": 256,
+        "correct": 254,
+        "accepted": 222
+      },
+      "S": {
+        "total": 256,
+        "correct": 256,
+        "accepted": 253
+      },
+      "?": {
+        "total": 120,
+        "correct": 120,
+        "accepted": 0
+      }
+    }
+  },
+  "train": {
+    "total": 18520,
+    "correct": 18520,
+    "accepted": 17685,
+    "accepted_errors": 0,
+    "per_kind": {
+      "R": {
+        "total": 1920,
+        "correct": 1920,
+        "accepted": 1901
+      },
+      "B": {
+        "total": 1280,
+        "correct": 1280,
+        "accepted": 1275
+      },
+      "G": {
+        "total": 1280,
+        "correct": 1280,
+        "accepted": 1271
+      },
+      "Y": {
+        "total": 1280,
+        "correct": 1280,
+        "accepted": 1274
+      },
+      "P": {
+        "total": 3840,
+        "correct": 3840,
+        "accepted": 3777
+      },
+      "H": {
+        "total": 1920,
+        "correct": 1920,
+        "accepted": 1902
+      },
+      "J": {
+        "total": 1920,
+        "correct": 1920,
+        "accepted": 1888
+      },
+      "S": {
+        "total": 4480,
+        "correct": 4480,
+        "accepted": 4397
+      },
+      "?": {
+        "total": 600,
+        "correct": 600,
+        "accepted": 0
+      }
+    }
+  },
+  "bytes": 7847,
+  "sha256": "46000b8bb720eedd7f64367d6288a3a39f51bfd01129a8d68cdc3d1ba78db27c",
+  "threshold": 0.995,
+  "split_policy": "distinct_original_tiles_and_all_their_augmentations; some screens shared; report218 excluded",
+  "source_tiles_disjoint": true,
+  "all_states": [
+    "plain",
+    "lock",
+    "thorn",
+    "both"
+  ]
+}

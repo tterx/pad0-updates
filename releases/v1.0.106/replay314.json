@@ -1,0 +1,169 @@
+{
+  "old_v105": {
+    "report": 218,
+    "actual_saved_pixels": true,
+    "start218": {
+      "proof": {
+        "confirmed": false,
+        "reason": "start_lift_unconfirmed",
+        "start_baseline_code": "G",
+        "start_floating_code": "G",
+        "start_match_mae": 0.16163,
+        "start_match_correlation": 0.34482,
+        "start_original_mae": 0.2414,
+        "start_changed_fraction": 0.84949,
+        "start_upper_changed_fraction": 0.8179,
+        "start_lift_offset": 0.34,
+        "start_lift_scale": 1.24,
+        "start_spatial_coarse_patches": 504,
+        "start_spatial_best_correlation": 0.65345,
+        "start_spatial_best_mae": 0.12536,
+        "start_spatial_qualified_candidates": 0,
+        "start_spatial_masked_candidates": 0,
+        "start_spatial_reason": "start_spatial_unconfirmed",
+        "start_locked_reason": "start_locked_colour_unconfirmed",
+        "start_jammer_alpha_reason": "start_jammer_alpha_unconfirmed",
+        "start_thorn_reason": "start_thorn_alpha_unconfirmed",
+        "start_timer_reason": "start_timer_unconfirmed"
+      },
+      "wall_seconds": 1.5874,
+      "raw_first_point_matches": true
+    },
+    "pipeline218": {
+      "down_count": 1,
+      "move_count": 0,
+      "up_count": 1,
+      "released": true,
+      "error": "MuMu SDK 시작 드롭이 잡힌 것을 확인하지 못했습니다. 경로 이동을 보내지 않았습니다.",
+      "feedback_checks": 4,
+      "usable_seconds": 7.0,
+      "movement_estimate_seconds": 2.882,
+      "input_timing": {
+        "sample_seconds": 0.017,
+        "corner_seconds": 0.0625
+      },
+      "controlled_feedback_seconds_per_check": 0.5,
+      "controller_clock_and_final_ack_mocked": true
+    },
+    "actual218_presence": [
+      {
+        "frame": "start_baseline.png",
+        "visible": true,
+        "model": null,
+        "wall_seconds": 0.7051
+      },
+      {
+        "frame": "start.png",
+        "visible": true,
+        "model": null,
+        "wall_seconds": 0.60012
+      },
+      {
+        "frame": "released.png",
+        "visible": true,
+        "model": null,
+        "wall_seconds": 0.64181
+      },
+      {
+        "frame": "board.png",
+        "visible": true,
+        "model": null,
+        "wall_seconds": 0.61483
+      }
+    ],
+    "physical_mumu_verified": false,
+    "application_input_executed": false,
+    "original_post_F10_desktop_sequence_available": false
+  },
+  "fixed_v106": {
+    "report": 218,
+    "actual_saved_pixels": true,
+    "start218": {
+      "proof": {
+        "confirmed": true,
+        "reason": "start_learned_all_drop_lifted",
+        "start_baseline_code": "G",
+        "start_floating_code": "G",
+        "start_match_mae": 0.16163,
+        "start_match_correlation": 0.34482,
+        "start_original_mae": 0.2414,
+        "start_changed_fraction": 0.84949,
+        "start_upper_changed_fraction": 0.8179,
+        "start_lift_offset": 0.38,
+        "start_lift_scale": 1.16,
+        "start_learned_source_kinds": [
+          "G",
+          "G"
+        ],
+        "start_learned_source_confidence": [
+          0.99919,
+          0.99826
+        ],
+        "start_learned_candidates": 1,
+        "start_learned_selected_thorn": true,
+        "start_learned_model": "all-drop-314",
+        "start_learned_selected_confidence": 0.88341,
+        "start_learned_selected_reader": "independent_artwork",
+        "start_learned_texture_correlation": 0.90587,
+        "start_learned_residual_mae": 0.05122,
+        "start_learned_alpha": 0.72719,
+        "start_learned_coverage": 0.5121,
+        "start_learned_source_lock": false,
+        "start_learned_source_thorn": true,
+        "start_lift_x_offset": -0.1,
+        "start_stable_cells": 26
+      },
+      "wall_seconds": 0.2862,
+      "raw_first_point_matches": true
+    },
+    "pipeline218": {
+      "down_count": 1,
+      "move_count": 116,
+      "up_count": 1,
+      "released": true,
+      "error": null,
+      "feedback_checks": 1,
+      "usable_seconds": 7.0,
+      "movement_estimate_seconds": 2.882,
+      "input_timing": {
+        "sample_seconds": 0.017,
+        "corner_seconds": 0.0625
+      },
+      "controlled_feedback_seconds_per_check": 0.5,
+      "controller_clock_and_final_ack_mocked": true
+    },
+    "actual218_presence": [
+      {
+        "frame": "start_baseline.png",
+        "visible": true,
+        "model": null,
+        "wall_seconds": 0.47441
+      },
+      {
+        "frame": "start.png",
+        "visible": true,
+        "model": null,
+        "wall_seconds": 0.45696
+      },
+      {
+        "frame": "released.png",
+        "visible": true,
+        "model": null,
+        "wall_seconds": 0.48251
+      },
+      {
+        "frame": "board.png",
+        "visible": true,
+        "model": null,
+        "wall_seconds": 0.46108
+      }
+    ],
+    "physical_mumu_verified": false,
+    "application_input_executed": false,
+    "original_post_F10_desktop_sequence_available": false
+  },
+  "uploaded_full_screenshots_included": false,
+  "physical_mumu_verified": false,
+  "original_post_F10_desktop_sequence_available": false,
+  "application_input_executed": false
+}
