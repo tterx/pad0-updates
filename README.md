@@ -1,12 +1,12 @@
 # 퍼드0 올인원
 
-[**프로그램 ZIP 다운로드 · v1.0.102**](https://github.com/tterx/pad0-updates/releases/download/v1.0.102/pad0_overlay_windows_v1_0_102.zip) · [전체 릴리스](https://github.com/tterx/pad0-updates/releases)
+[**프로그램 ZIP 다운로드 · v1.0.103**](https://github.com/tterx/pad0-updates/releases/download/v1.0.103/pad0_overlay_windows_v1_0_103.zip) · [전체 릴리스](https://github.com/tterx/pad0-updates/releases)
 
-현재 표시 버전은 **1.0.102**, 자동 업데이트 내부 순번은 **310**입니다.
+현재 표시 버전은 **1.0.103**, 자동 업데이트 내부 순번은 **311**입니다.
 
 새로 설치할 때는 ZIP을 풀고 `시작.vbs`를 실행하세요. 기존 설치는 PAD0를 완전히 종료한 뒤 `시작.vbs`를 다시 실행하면 업데이트됩니다.
 
-분기 스테이지에서 목표 출현 위치 미식별만으로 입장 전에 멈추던 문제를 수정했습니다. 현재 획득처로 확인한 경우 검증된 시도·획득 기록을 쌓으며, 기존 출현 순서 분류와 저장한 경로를 우선합니다. Windows 검사 1,289개와 독립 번들 검사 66개 통과. [변경 내용](docs/reviews/REVIEW310.md) · [검증 기록](releases/v1.0.102/release_checks310.json)
+달인다속의 잠금·가시·방해·독 인식, 잠금 드롭 시작 확인과 F10 수동 버튼 표시를 수정했습니다. 전체 종류·상태 1,920칸과 시작 검증 1,128건, Windows 검사 1,316개 통과. [변경 내용](docs/reviews/REVIEW311.md) · [검사 이미지](releases/v1.0.103/status_matrix311.png) · [검증 기록](releases/v1.0.103/release_checks311.json)
 
 ## 저장소 안내
 
