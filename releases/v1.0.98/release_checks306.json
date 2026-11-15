@@ -1,0 +1,123 @@
+{
+  "zip_sha256": "09a1726701a3f48da9c9e7be201b24085f43726a1d5f28c827d56f5c8243a35f",
+  "source_sha256": "21f3d8cb36a0c71b59269786ad2614d312745473c2f48dbeae36d355be39be22",
+  "source_bytes": 2034738,
+  "zip_bytes": 950799,
+  "release": 306,
+  "version": "v1.0.98",
+  "source_repo": "tterx/pad0-all-in-one",
+  "source_commit": "76c3cdcc9a6cb9292a7d2a58bfb98869fb89f885",
+  "source_pull_request": "https://github.com/tterx/pad0-all-in-one/pull/9",
+  "windows_ci": {
+    "run_id": 43671355681,
+    "conclusion": "success",
+    "head_sha": "76c3cdcc9a6cb9292a7d2a58bfb98869fb89f885",
+    "url": "https://github.com/tterx/pad0-all-in-one/actions/runs/43671355681",
+    "tests": 1220,
+    "suites": 118,
+    "steps": 130
+  },
+  "local_checks": {
+    "final": {
+      "tests": 117,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "seconds": 65.99,
+      "modules": [
+        "test_party_stage306",
+        "test_party247",
+        "test_branch_stage274",
+        "test_stage244",
+        "test_stage245",
+        "test_stage246",
+        "test_stage_continue283",
+        "test_farming_order288",
+        "test_branch_learning305",
+        "test_auto_repeat266"
+      ]
+    },
+    "bundle-final": {
+      "tests": 78,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "seconds": 44.529,
+      "modules": [
+        "test_party_stage306",
+        "test_party247",
+        "test_stage244",
+        "test_branch_stage274",
+        "test_branch_learning305",
+        "test_auto_repeat266"
+      ]
+    }
+  },
+  "new_regressions": 14,
+  "private_replay": {
+    "report": 208,
+    "legacy_mismatch_slots": [
+      4
+    ],
+    "fixed_genuine_matches": 6,
+    "wrong_reference_swaps_rejected": 5,
+    "bind_slot": 4,
+    "source_texture_proof": {
+      "exposure": 0.50453,
+      "bias": 2.579,
+      "correlation": 0.91072,
+      "mean_difference": 12.232,
+      "visible_fraction": 0.553,
+      "pose": [
+        1.25,
+        1.0,
+        -0.5,
+        0
+      ],
+      "regions": [
+        {
+          "correlation": 0.97717,
+          "mean_difference": 8.851
+        },
+        {
+          "correlation": 0.84004,
+          "mean_difference": 19.227
+        },
+        {
+          "correlation": 0.84676,
+          "mean_difference": 16.301
+        }
+      ]
+    },
+    "candidate_list": [
+      "17-5",
+      "18-5",
+      "EX5",
+      "★7-1"
+    ],
+    "equal_normal_battle_count_selection": "17-5",
+    "application_input_executed": false
+  },
+  "policy": {
+    "non_ex_before_ex": true,
+    "branch_stages_ranked_equally": true,
+    "ranking": "target_overlap_then_battle_count",
+    "ex_only_when_no_eligible_normal": true,
+    "bound_identity_master_only": true,
+    "wrong_party_guard_retained": true,
+    "bound_portrait_never_cached_as_unbound_reference": true,
+    "branch_learning_retained": true,
+    "no_forced_healing": true,
+    "input_pacing_unchanged": true
+  },
+  "physical_windows_mumu_verified": false,
+  "automatic_update_channel_changed": false,
+  "publication": {
+    "approved_release": true,
+    "source_pr_merged": true,
+    "source_branch": "codex/v1-0-98-bound-party-208",
+    "mode": "stable_release_and_auto_update",
+    "source_main_commit": "88d8e09c61a2c4c8f58117f1f3b342337dedaa84",
+    "source_tree_matches_tested_head": true
+  }
+}
