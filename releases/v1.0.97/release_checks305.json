@@ -1,0 +1,159 @@
+{
+  "zip_sha256": "892b2922d74858dd34639683d7d61923b103193898d52bd0c3912ed1dcbfd3a0",
+  "source_sha256": "c5da556c2c4d964782f19bcbc2ec798622ff8a1e2b798167bfefd19cf9992ec7",
+  "source_bytes": 2033556,
+  "zip_bytes": 949981,
+  "release": 305,
+  "version": "v1.0.97",
+  "source_repo": "tterx/pad0-all-in-one",
+  "source_commit": "c2d7f417bac7bc8d2197b8729b2d4b8161a1d2d6",
+  "source_pull_request": "https://github.com/tterx/pad0-all-in-one/pull/8",
+  "windows_ci": {
+    "run_id": 43665050521,
+    "conclusion": "success",
+    "head_sha": "c2d7f417bac7bc8d2197b8729b2d4b8161a1d2d6",
+    "url": "https://github.com/tterx/pad0-all-in-one/actions/runs/43665050521",
+    "tests": 1206,
+    "suites": 117,
+    "steps": 129
+  },
+  "local_checks": {
+    "related": {
+      "tests": 188,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "seconds": 95.641,
+      "modules": [
+        "test_branch_stage274",
+        "test_repeat_map299",
+        "test_defeat296",
+        "test_defeat_result297",
+        "test_stage_continue283",
+        "test_farming_order288",
+        "test_board_clear229",
+        "test_short_recovery299",
+        "test_start209",
+        "test_start_skill216",
+        "test_start253",
+        "test_start250",
+        "test_combo_objective303",
+        "test_master_button304"
+      ]
+    },
+    "new-final": {
+      "tests": 43,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "seconds": 29.575,
+      "modules": [
+        "test_branch_learning305",
+        "test_upload_followup305",
+        "test_defeat_result297"
+      ]
+    },
+    "short-label": {
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "seconds": 0.405,
+      "modules": [
+        "test_branch_learning305.BranchLearning305Tests.test_short_choice_words_are_supported_but_number_only_labels_are_rejected"
+      ]
+    },
+    "bundle": {
+      "tests": 96,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "seconds": 38.246,
+      "modules": [
+        "test_branch_learning305",
+        "test_upload_followup305",
+        "test_defeat_result297",
+        "test_repeat_map299",
+        "test_combo_objective303",
+        "test_master_button304"
+      ]
+    },
+    "remaining": {
+      "tests": 359,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "seconds": 112.456,
+      "modules": [
+        "test_turn248",
+        "test_skill249",
+        "test_start250",
+        "test_inventory251",
+        "test_quantity252",
+        "test_start253",
+        "test_retarget254",
+        "test_material_owner255",
+        "test_stage_medals256",
+        "test_manual_recovery257",
+        "test_condition_save258",
+        "test_recognition_save259",
+        "test_condition_recovery260",
+        "test_condition_delivery261",
+        "test_preparation_latency262",
+        "test_capture_wait263",
+        "test_confirmed_preview264",
+        "test_stable_hud265",
+        "test_execution_condition266",
+        "test_focus_search266",
+        "test_auto_repeat266",
+        "test_route_latency267",
+        "test_compact_solver268",
+        "test_readiness269",
+        "test_hazard_preparation270",
+        "test_hud_paint271",
+        "test_repeat_only272",
+        "test_star_label273",
+        "test_branch_stage274",
+        "test_return_route275",
+        "test_completion_route275",
+        "test_clear_confirm276",
+        "test_material_button277",
+        "test_material_match278",
+        "test_legacy_crystal279",
+        "test_creation_return280",
+        "test_return_menu281"
+      ]
+    }
+  },
+  "new_regressions": 28,
+  "private_replays": {
+    "start204_positive_and_negative_controls": true,
+    "exact_original204_baseline_available": false,
+    "defeat205_actual_ocr_and_mock_ok_verified": true,
+    "branch207_actual_ocr_verified": true,
+    "map206_logged_recognitions_with_fixed_final_portrait": true,
+    "original206_animation_frames_available": false
+  },
+  "policy": {
+    "initial_branch": "verified_complete_preview_last_four",
+    "switch_after_verified_target_misses": 10,
+    "keep_confirmed_option": true,
+    "persist_per_full_stage_and_crystal": true,
+    "record_other_identified_loot": true,
+    "exclude_stop_unknown_and_loss_misses": true,
+    "branch_scope": "all_detected_two_choice_stages_with_target",
+    "no_forced_healing": true,
+    "master_combo_and_start_only": true,
+    "input_pacing_unchanged": true
+  },
+  "physical_windows_mumu_verified": false,
+  "automatic_update_channel_changed": false,
+  "publication": {
+    "approved_release": true,
+    "source_pr_merged": true,
+    "source_branch": "codex/v1-0-97-branch-learning-204-207",
+    "mode": "stable_release_and_auto_update",
+    "source_main_commit": "721bb7aa11964b6b4e36bb748317acdf58981687",
+    "source_tree_matches_tested_head": true
+  }
+}
