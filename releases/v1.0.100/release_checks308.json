@@ -96,7 +96,7 @@
     "input_pacing_unchanged": true
   },
   "physical_windows_mumu_verified": false,
-  "automatic_update_channel_changed": false,
+  "automatic_update_channel_changed": true,
   "publication": {
     "approved_release": true,
     "source_pr_merged": true,
@@ -105,6 +105,36 @@
     "source_main_commit": "052213174394b9d6e5d8e7ad5646a6ee241f24b8",
     "source_tree_matches_tested_head": true,
     "payload_commit": "2d7d295839f5bd63cddbab7fdb3363c4931a6602",
-    "immutable_source_url": "https://raw.githubusercontent.com/tterx/pad0-updates/2d7d295839f5bd63cddbab7fdb3363c4931a6602/releases/v1.0.100/pad0_overlay.py"
+    "immutable_source_url": "https://raw.githubusercontent.com/tterx/pad0-updates/2d7d295839f5bd63cddbab7fdb3363c4931a6602/releases/v1.0.100/pad0_overlay.py",
+    "release_workflow_run": 43692048263,
+    "stable_release_verified": true,
+    "zip_bytes_unchanged": true
+  },
+  "public_download_verification": {
+    "zip_url": "https://github.com/tterx/pad0-updates/releases/download/v1.0.100/pad0_overlay_windows_v1_0_100.zip",
+    "zip_sha256": "35299042a93e2808a870882d168b91290352350da0d8aa2d38237678eac42915",
+    "source_sha256": "871cde6d665d4abd90270eb6fba8ed7da6fac821b72dd80fcc23a83c9c7a3df5",
+    "zip_crc_verified": true,
+    "version_verified": true,
+    "updater_release": 308,
+    "source_download_matches_zip": true,
+    "stable_latest_verified": true,
+    "application_executed": false
+  },
+  "auto_update_verification": {
+    "preview": {
+      "scope": "preview_manifest_with_live_source",
+      "old_release": 307,
+      "new_release": 308,
+      "source_sha256": "871cde6d665d4abd90270eb6fba8ed7da6fac821b72dd80fcc23a83c9c7a3df5",
+      "source_bytes": 2042098,
+      "backup_preserved": true,
+      "personal_data_preserved": true,
+      "branch_history_preserved": true,
+      "repeat_update_skipped": true,
+      "application_executed": false
+    },
+    "live_status": "pending_post_activation_check",
+    "manifest_url": "https://raw.githubusercontent.com/tterx/pad0-updates/main/update.json"
   }
 }
