@@ -37,3 +37,11 @@ The complete Windows workflow builds the exact tested package; independent ZIP
 checks and publication/updater download proofs are recorded in the updates repo.
 
 Windows CI: https://github.com/tterx/pad0-all-in-one/actions/runs/43671355681 (success; source 76c3cdcc9a6cb9292a7d2a58bfb98869fb89f885); 1,220 executions, 118 suites. Exact package source SHA256 matches.
+
+Publication verified: PR9 merged as 88d8e09c61a2c4c8f58117f1f3b342337dedaa84;
+its tree matches the Windows-tested head. Publisher run 43672074546 succeeded.
+The actual public stable latest v1.0.98 ZIP passed SHA256, CRC, version and updater-state
+checks. Its source equals the live immutable raw payload. Root update.json points to306.
+The genuine v1.0.97 launcher installed306 from the live manifest in an isolated
+installation, preserved its backup, settings, inventory and stage/branch-history
+markers, then skipped a repeat update. No PAD0 or physical game input was executed.
