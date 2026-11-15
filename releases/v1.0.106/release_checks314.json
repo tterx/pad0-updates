@@ -333,6 +333,8 @@
     "source_branch": "codex/v1-0-106-all-drop-learning-218",
     "mode": "stable_release_and_auto_update",
     "source_main_commit": "652baa23a72795c64958b0ac4ae770c1e66e1bb4",
-    "source_tree_matches_tested_head": true
+    "source_tree_matches_tested_head": true,
+    "payload_commit": "6dd58e317e7f617a2d69df8b469bdc7b6ef9bafd",
+    "immutable_source_url": "https://raw.githubusercontent.com/tterx/pad0-updates/6dd58e317e7f617a2d69df8b469bdc7b6ef9bafd/releases/v1.0.106/pad0_overlay.py"
   }
 }
