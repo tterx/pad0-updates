@@ -103,6 +103,8 @@
     "source_branch": "codex/v1-0-100-lock-field-210",
     "mode": "stable_release_and_auto_update",
     "source_main_commit": "052213174394b9d6e5d8e7ad5646a6ee241f24b8",
-    "source_tree_matches_tested_head": true
+    "source_tree_matches_tested_head": true,
+    "payload_commit": "2d7d295839f5bd63cddbab7fdb3363c4931a6602",
+    "immutable_source_url": "https://raw.githubusercontent.com/tterx/pad0-updates/2d7d295839f5bd63cddbab7fdb3363c4931a6602/releases/v1.0.100/pad0_overlay.py"
   }
 }
