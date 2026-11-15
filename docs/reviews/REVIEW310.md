@@ -44,3 +44,11 @@ Full Windows/package/public ZIP/updater proofs are recorded in the release repo.
 Physical MuMu and the original unrecorded navigation sequence remain unverified.
 
 Windows CI: https://github.com/tterx/pad0-all-in-one/actions/runs/43716327041 (success; source 29d2b73d8582dc08f0ac6f623c5233d6ed65e2f9); 1,289 executions, 122 suites. Exact package source SHA256 matches.
+
+Publication verified: PR13 merged as fb2b3d871b653840a2e5ddcb472fa6f0c5e1523e;
+its tree matches the Windows-tested head. Publisher run 43717381106 succeeded.
+The actual public stable latest v1.0.102 ZIP passed SHA256, CRC, version and updater-state
+checks. Its source equals the live immutable raw payload. Root update.json points to310.
+The genuine v1.0.101 launcher installed310 from the live manifest in an isolated
+installation, preserved its backup, settings, inventory and stage/branch-history
+markers, then skipped a repeat update. No PAD0 or physical game input was executed.
