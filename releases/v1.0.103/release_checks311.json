@@ -171,6 +171,8 @@
     "source_branch": "codex/v1-0-103-locked-start-213",
     "mode": "stable_release_and_auto_update",
     "source_main_commit": "9b72b6786516e0e1f6de9ce15163cf38f1c9cfac",
-    "source_tree_matches_tested_head": true
+    "source_tree_matches_tested_head": true,
+    "payload_commit": "1daec858f5a1851bf6b5604c6028deb9fd4d2aed",
+    "immutable_source_url": "https://raw.githubusercontent.com/tterx/pad0-updates/1daec858f5a1851bf6b5604c6028deb9fd4d2aed/releases/v1.0.103/pad0_overlay.py"
   }
 }
