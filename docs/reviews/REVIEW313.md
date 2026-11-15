@@ -53,3 +53,11 @@ source, public ZIP and genuine old-launcher updater proofs accompany the release
 Windows CI: https://github.com/tterx/pad0-all-in-one/actions/runs/43769128879 (success; source 965d1461903fa6b922c405783c4533a5deb5c683); 1,350 executions, 127 suites. Exact package source SHA256 matches.
 
 [Public replay comparison](../../releases/v1.0.105/replay313.json).
+
+Publication verified: PR16 merged as 81ab53a7bf17791d101b7609ed88cf75b4e3b58a;
+its tree matches the Windows-tested head. Publisher run 43769948852 succeeded.
+The actual public stable latest v1.0.105 ZIP passed SHA256, CRC, version and updater-state
+checks. Its source equals the live immutable raw payload. Root update.json points to313.
+The genuine v1.0.104 launcher installed313 from the live manifest in an isolated
+installation, preserved its backup, settings, inventory and stage/branch-history
+markers, then skipped a repeat update. No PAD0 or physical game input was executed.
