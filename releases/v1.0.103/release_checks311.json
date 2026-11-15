@@ -1,0 +1,176 @@
+{
+  "zip_sha256": "77ff0558bde3be05deb1cd648feb52a7c049ad65041e93776e7ddc47dc8c097d",
+  "source_sha256": "1edb3287313522e668f57ef8c020073f3fe5f73351f3adeebfe8c34203f85383",
+  "source_bytes": 2066892,
+  "zip_bytes": 958381,
+  "release": 311,
+  "version": "v1.0.103",
+  "source_repo": "tterx/pad0-all-in-one",
+  "source_commit": "a12fd1d20b23d416dc32f056241b05a9660c045f",
+  "source_pull_request": "https://github.com/tterx/pad0-all-in-one/pull/14",
+  "windows_ci": {
+    "run_id": 43723227498,
+    "conclusion": "success",
+    "head_sha": "a12fd1d20b23d416dc32f056241b05a9660c045f",
+    "url": "https://github.com/tterx/pad0-all-in-one/actions/runs/43723227498",
+    "tests": 1316,
+    "suites": 124,
+    "steps": 136
+  },
+  "local_checks": {
+    "related-final": {
+      "tests": 198,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "seconds": 82.076,
+      "modules": [
+        "test_master_handoff309",
+        "test_lock_handoff308",
+        "test_master_button304",
+        "test_start209",
+        "test_start_skill216",
+        "test_upload_feedback300",
+        "test_upload_followup305",
+        "test_bound_party307",
+        "test_cloud_policy226",
+        "test_hud_paint271",
+        "test_recognition_save259",
+        "test_skill_counter284",
+        "test_upload_continuation302",
+        "test_best_available207",
+        "test_skill_policy179",
+        "test_skill_model_pipeline205.ControllerSkills205Tests.test_character_and_use_reach_same_maa_controller_and_confirm_board_effect",
+        "test_skill_model_pipeline205.ControllerSkills205Tests.test_failed_maa_click_releases_without_second_down_or_other_transport",
+        "test_skill_model_pipeline205.ControllerSkills205Tests.test_cancelled_click_does_not_send_down",
+        "test_skill_model_pipeline205.ControllerSkills205Tests.test_skill_click_is_blocked_while_puzzle_context_is_active",
+        "test_skill_model_pipeline205.ControllerSkills205Tests.test_worker_rejects_puzzle_coordinates_for_ui_command",
+        "test_skill_model_pipeline205.ControllerSkills205Tests.test_puzzle_path_retains_input_operation_and_all_waypoints",
+        "test_skill_model_pipeline205.ControllerSkills205Tests.test_ui_rpc_clears_transient_cancel_but_never_f10",
+        "test_skill_model_pipeline205.ControllerSkills205Tests.test_changed_board_after_release_prevents_character_down",
+        "test_skill_model_pipeline205.ControllerSkills205Tests.test_original_up_precedes_click_even_when_host_is_idle",
+        "test_skill_model_pipeline205.ControllerSkills205Tests.test_held_ui_has_completed_down_then_80ms_before_up_without_capture",
+        "test_skill_model_pipeline205.ControllerSkills205Tests.test_f10_during_ui_hold_releases_original_contact_without_new_down",
+        "test_skill_model_pipeline205.ControllerSkills205Tests.test_073_highlight_pulse_keeps_safe_use_click_on_original_controller",
+        "test_skill_model_pipeline205.ControllerSkills205Tests.test_changed_popup_or_unsafe_target_blocks_use_without_retry",
+        "test_skill_model_pipeline205.ControllerSkills205Tests.test_retired_cleanup_does_not_start_local_model_upload_even_after_success",
+        "test_skill_model_pipeline205.ControllerSkills205Tests.test_failed_cleanup_never_starts_upload",
+        "test_skill_model_pipeline205.ModelUpload205Tests.test_upload_contains_only_current_weights_and_checks_remote_bytes",
+        "test_skill_model_pipeline205.ModelUpload205Tests.test_upload_failure_preserves_model_and_explicit_retry",
+        "test_skill_model_pipeline205.ModelUpload205Tests.test_bad_remote_checksum_never_acknowledges_success",
+        "test_skill_model_pipeline205.ModelUpload205Tests.test_disabled_setting_preserves_pending_without_network",
+        "test_skill_model_pipeline205.ModelUpload205Tests.test_changed_model_does_not_upload",
+        "test_skill_model_pipeline205.ModelUpload205Tests.test_retry_rejects_a_rolled_back_or_replaced_model",
+        "test_skill_model_pipeline205.ModelUpload205Tests.test_quantity_weights_only_use_the_same_upload_pipeline",
+        "test_skill_model_pipeline205.ModelUpload205Tests.test_cancelled_upload_keeps_local_model",
+        "test_skill_model_pipeline205.QuantityCleanup205Tests.test_cleanup_preserves_unique_digits_pending_and_protected_sources"
+      ]
+    },
+    "final-targeted": {
+      "tests": 38,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "seconds": 42.531,
+      "modules": [
+        "test_status_matrix311.StatusMatrix311Tests.test_both_artwork_variants_all_types_all_positions_and_each_status",
+        "test_status_matrix311.StatusMatrix311Tests.test_mixed_kinds_and_statuses_remain_bound_to_each_cell_after_resampling",
+        "test_upload_continuation302",
+        "test_locked_start311"
+      ]
+    },
+    "ready-final": {
+      "tests": 15,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "seconds": 17.694,
+      "modules": [
+        "test_status_matrix311.StatusMatrix311Tests.test_real_worker_uses_master_kind_and_thorn_evidence",
+        "test_master_button304"
+      ]
+    },
+    "bundle-final": {
+      "tests": 75,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "seconds": 84.438,
+      "modules": [
+        "test_locked_start311",
+        "test_status_matrix311",
+        "test_master_handoff309",
+        "test_skill_confirm112",
+        "test_skill_counter284",
+        "test_master_button304"
+      ]
+    }
+  },
+  "new_regressions": 27,
+  "status_matrix": {
+    "types": [
+      "R",
+      "B",
+      "G",
+      "Y",
+      "P",
+      "H",
+      "J",
+      "S"
+    ],
+    "states": [
+      "lock",
+      "thorn",
+      "both"
+    ],
+    "boards": 64,
+    "cell_checks": 1920,
+    "requested_status_cells": 1440,
+    "plain_control_cells": 480,
+    "mixed_layouts": 12,
+    "full_field_readiness_boards": 24,
+    "start_hold_positive_cases": 840,
+    "start_hold_negative_cases": 288,
+    "false_accepts": 0,
+    "false_rejects": 0,
+    "source": "independent_labels_and_controlled_composites_of_existing_real_artwork",
+    "public_cases": "status_matrix311.json",
+    "public_image": "status_matrix311.png"
+  },
+  "private_replay": {
+    "report": 213,
+    "actual_saved_pixels": true,
+    "board_and_spikes_match_report": true,
+    "old_start_confirmed": false,
+    "fixed_start_confirmed": true,
+    "old_move_count": 0,
+    "fixed_move_count": 192,
+    "down_count": 1,
+    "up_count": 1,
+    "controller_clock_and_final_ack_mocked": true,
+    "original_manual_screen_sequence_available": false,
+    "user_confirms_F10_status_text": true,
+    "stale_capture_and_route_overlay_cleared_in_fixture": true,
+    "application_input_executed": false
+  },
+  "policy": {
+    "scope": "master_multicolor_only",
+    "maximum_combos_retained": true,
+    "no_forced_healing": true,
+    "branch_and_EX_unchanged": true,
+    "other_modes_default_recognition_unchanged": true,
+    "input_pacing_unchanged": true,
+    "release_and_final_board_checks_retained": true,
+    "extra_down_or_recovery_clicks": false
+  },
+  "physical_windows_mumu_verified": false,
+  "automatic_update_channel_changed": false,
+  "publication": {
+    "approved_release": true,
+    "source_pr_merged": true,
+    "source_branch": "codex/v1-0-103-locked-start-213",
+    "mode": "stable_release_and_auto_update",
+    "source_main_commit": "9b72b6786516e0e1f6de9ce15163cf38f1c9cfac",
+    "source_tree_matches_tested_head": true
+  }
+}
