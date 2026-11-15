@@ -1,0 +1,129 @@
+{
+  "zip_sha256": "eed1624adcd32b053b7f5d1a0cb9a1ee79c01e1617d37c6a45af833a4c37ea39",
+  "source_sha256": "4970415b045cb1e22c2d446809df17e81073850e4391369f76477716f8a630ee",
+  "source_bytes": 2050888,
+  "zip_bytes": 954631,
+  "release": 310,
+  "version": "v1.0.102",
+  "source_repo": "tterx/pad0-all-in-one",
+  "source_commit": "29d2b73d8582dc08f0ac6f623c5233d6ed65e2f9",
+  "source_pull_request": "https://github.com/tterx/pad0-all-in-one/pull/13",
+  "windows_ci": {
+    "run_id": 43716327041,
+    "conclusion": "success",
+    "head_sha": "29d2b73d8582dc08f0ac6f623c5233d6ed65e2f9",
+    "url": "https://github.com/tterx/pad0-all-in-one/actions/runs/43716327041",
+    "tests": 1289,
+    "suites": 122,
+    "steps": 134
+  },
+  "local_checks": {
+    "final": {
+      "tests": 150,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "seconds": 116.749,
+      "modules": [
+        "test_branch_source310",
+        "test_branch_learning305",
+        "test_branch_stage274",
+        "test_acquisition219",
+        "test_stage_continue283",
+        "test_party_stage306",
+        "test_entry_stage290",
+        "test_stage244",
+        "test_stage246",
+        "test_farming_order288",
+        "test_master_handoff309",
+        "test_auto_repeat266"
+      ]
+    },
+    "bundle": {
+      "tests": 66,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "seconds": 90.499,
+      "modules": [
+        "test_branch_source310",
+        "test_branch_learning305",
+        "test_branch_stage274",
+        "test_acquisition219",
+        "test_stage_continue283",
+        "test_auto_repeat266"
+      ]
+    },
+    "encoding-fix": {
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "seconds": 17.976,
+      "modules": [
+        "test_branch_source310.BranchSource310Tests.test_real_picker_worker_ten_misses_switch_then_receipt_reuses_route"
+      ]
+    }
+  },
+  "new_regressions": 14,
+  "private_replay": {
+    "report": 212,
+    "actual_images_and_report_drop_order": true,
+    "neither_saved_image_is_branch_dialog": true,
+    "controlled_selected_stage_ranking": true,
+    "full_stage_database_available": false,
+    "old_error": "unresolved_branch_target_position",
+    "old_stage_taps": 0,
+    "fixed_stage_taps": 1,
+    "fixed_basis": "current_acquisition_trial",
+    "preview_drop_ids_unchanged": true,
+    "application_input_executed": false
+  },
+  "integration": {
+    "real_picker_worker_receipt_flow": true,
+    "generated_images_mocked_input": true,
+    "first_ten_choices": [
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1
+    ],
+    "eleventh_choice": 2,
+    "successful_route_reused_after_JSON_restart": true
+  },
+  "policy": {
+    "scope": "shared_branch_paths_explicitly_authorized_for_all_choice_stages",
+    "known_last_four_rule_preserved": true,
+    "learned_choices_first": true,
+    "unknown_position_trial_requires_current_acquisition_list": true,
+    "complete_trusted_preview_required": true,
+    "full_entry_stage_identity_required": true,
+    "provenance_scoped_to_stage_and_material": true,
+    "old_provenance_invalidated": true,
+    "actual_button_pair_required": true,
+    "no_fake_crystal_ids": true,
+    "ten_verified_misses_switch": true,
+    "receipt_confirmed_route_retained": true,
+    "maximum_combos_retained": true,
+    "no_forced_healing": true,
+    "skill_and_F10_unchanged": true,
+    "ex_ranking_unchanged": true,
+    "input_pacing_unchanged": true
+  },
+  "physical_windows_mumu_verified": false,
+  "automatic_update_channel_changed": false,
+  "publication": {
+    "approved_release": true,
+    "source_pr_merged": true,
+    "source_branch": "codex/v1-0-102-branch-source-212",
+    "mode": "stable_release_and_auto_update",
+    "source_main_commit": "fb2b3d871b653840a2e5ddcb472fa6f0c5e1523e",
+    "source_tree_matches_tested_head": true
+  }
+}
