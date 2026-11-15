@@ -1,0 +1,128 @@
+{
+  "zip_sha256": "27895badcae4ba169f50d3669d0681b31e2e75dffcfb9c92776e2e943b6b0bd2",
+  "source_sha256": "494182f2bb1f0a0269a35434cf5958b1bf49cca848e6414c0c017573d114112a",
+  "source_bytes": 2049909,
+  "zip_bytes": 954343,
+  "release": 309,
+  "version": "v1.0.101",
+  "source_repo": "tterx/pad0-all-in-one",
+  "source_commit": "4248dbc17cf66f035d30282aa3fb9f4574819314",
+  "source_pull_request": "https://github.com/tterx/pad0-all-in-one/pull/12",
+  "windows_ci": {
+    "run_id": 43713728382,
+    "conclusion": "success",
+    "head_sha": "4248dbc17cf66f035d30282aa3fb9f4574819314",
+    "url": "https://github.com/tterx/pad0-all-in-one/actions/runs/43713728382",
+    "tests": 1275,
+    "suites": 121,
+    "steps": 133
+  },
+  "local_checks": {
+    "final": {
+      "tests": 151,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "seconds": 45.006,
+      "modules": [
+        "test_master_handoff309",
+        "test_skill_confirm112",
+        "test_skill_counter284",
+        "test_upload_continuation302",
+        "test_skill249",
+        "test_skill_fallback213",
+        "test_lock_handoff308",
+        "test_master_button304",
+        "test_auto_repeat266",
+        "test_background_settings206",
+        "test_branch_learning305",
+        "test_upload_followup305"
+      ]
+    },
+    "bundle": {
+      "tests": 79,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "seconds": 13.661,
+      "modules": [
+        "test_master_handoff309",
+        "test_skill_confirm112",
+        "test_skill_counter284",
+        "test_skill249",
+        "test_lock_handoff308",
+        "test_auto_repeat266"
+      ]
+    }
+  },
+  "new_regressions": 22,
+  "private_replay": {
+    "report": 211,
+    "actual_saved_crops_match": true,
+    "actual_lock_count": 30,
+    "actual_ocr": {
+      "time_before": 8,
+      "time_after": 11,
+      "cooldown_readings": [
+        [
+          "2",
+          0.99178
+        ],
+        [
+          "2",
+          0.99147
+        ]
+      ]
+    },
+    "controlled_simulation": {
+      "scope": "reported_observations_generated_frames_and_mocked_device_UI",
+      "old_confirmation": false,
+      "fixed_confirmation": true,
+      "checks": 3,
+      "old_manual_unblocked_before_archive": false,
+      "fixed_manual_unblocked_before_archive": true,
+      "late_archive_preserves_manual_epoch": true
+    },
+    "full_turn": {
+      "scope": "actual_board_real_solver_mocked_device_and_reported_condition_reads",
+      "acted": true,
+      "mock_drags": 1,
+      "skill_casts": 0,
+      "combos": 8,
+      "moves": 44.0,
+      "usable_seconds": 8.0,
+      "enemy_floor": 9,
+      "execution_floor": 6,
+      "physical_input_executed": false
+    },
+    "original_manual_transition_sequence_available": false,
+    "application_input_executed": false
+  },
+  "policy": {
+    "master_only": true,
+    "stable_independent_skill_evidence": true,
+    "no_skill_reclick": true,
+    "full_lock_conversion_skip": true,
+    "ready_unlock_priority_retained": true,
+    "maximum_combos_retained": true,
+    "no_forced_healing": true,
+    "input_release_before_archive": true,
+    "archive_run_ownership": true,
+    "focus_without_mouse_or_keyboard": true,
+    "fresh_ROI_proof_precedes_window_fallback": true,
+    "menu_negative_still_hides": true,
+    "other_modes_unchanged": true,
+    "branch_and_ex_policy_unchanged": true,
+    "input_pacing_unchanged": true
+  },
+  "physical_windows_mumu_verified": false,
+  "automatic_update_channel_changed": false,
+  "publication": {
+    "approved_release": true,
+    "source_pr_merged": true,
+    "source_branch": "codex/v1-0-101-f10-skill-211",
+    "mode": "stable_release_and_auto_update",
+    "source_main_commit": "b602df9479ba0a587792b2619ea6e700d5ebe06d",
+    "source_tree_matches_tested_head": true
+  }
+}
