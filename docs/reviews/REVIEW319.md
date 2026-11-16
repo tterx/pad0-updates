@@ -58,3 +58,11 @@ ordinary/starred/Hidden records retain their existing behavior.
 Windows CI: https://github.com/tterx/pad0-all-in-one/actions/runs/43814407910 (success; source 772878d80418ca29e2a802696e1c6b219837f380); 1,506 executions, 139 suites. Exact package source SHA256 matches.
 
 [Public replay comparison](../../releases/v1.0.111/replay319.json).
+
+Publication verified: PR22 merged as 2604a2b25bd23204c5fca7bc53e4b74b6f2685f6;
+its tree matches the Windows-tested head. Publisher run 43816084780 succeeded.
+The actual public stable latest v1.0.111 ZIP passed SHA256, CRC, version and updater-state
+checks. Its source equals the live immutable raw payload. Root update.json points to319.
+The genuine v1.0.110 launcher installed319 from the live manifest in an isolated
+installation, preserved its backup, settings, inventory and stage/branch-history
+markers, then skipped a repeat update. No PAD0 or physical game input was executed.
