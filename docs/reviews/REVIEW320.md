@@ -57,3 +57,12 @@ branch learning, EX ranking and separate normal/starred/Hidden records remain.
 The user confirmed report222 occurred during automatic-only operation with no manual clicks or drop moves. External manual intervention is not assumed; the precise automatic-input interruption remains unresolved.
 
 Windows CI: https://github.com/tterx/pad0-all-in-one/actions/runs/43905794163 (success; source 0d7ef4c995599f5fd8b4063269939ba15495fd0b); 1517 tests, 140 suites. Exact package source SHA256 matches.
+
+Publication verified: PR23 merged as f45a7e8574fcc5b52cee3f5bfde4db9ac3521940.
+Its tree matches the Windows-tested head. Publisher run 43908600921 succeeded.
+The actual stable latest v1.0.112 download passed SHA256, ZIP CRC, version and updater-state checks.
+Its source matches the immutable payload and root update.json activates320.
+The genuine v1.0.111 launcher installed320 from the live manifest in an isolated installation,
+retained its backup, settings, inventory and four separate stage/branch markers,
+and skipped a repeat update. No PAD0 or physical game input was executed.
+Report222's exact input interruption cause remains unresolved; its stop is preserved.
