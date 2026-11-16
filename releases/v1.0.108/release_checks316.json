@@ -1,0 +1,132 @@
+{
+  "zip_sha256": "4dbda2d7bcc3f82fa36c11e94e917a8955c1ca89058b8c4cc4dbe6bd79a1ba6d",
+  "source_sha256": "ab84ac8b4b1f76ff0b7600713e4ebb51d6679ed52f80c76d8a11eeb69d62714d",
+  "source_bytes": 2076619,
+  "zip_bytes": 972901,
+  "release": 316,
+  "version": "v1.0.108",
+  "source_repo": "tterx/pad0-all-in-one",
+  "source_commit": "d5f0a694d27e42e169f2366eec2beab592dfb943",
+  "source_pull_request": "https://github.com/tterx/pad0-all-in-one/pull/19",
+  "windows_ci": {
+    "run_id": 43802417626,
+    "conclusion": "success",
+    "head_sha": "d5f0a694d27e42e169f2366eec2beab592dfb943",
+    "url": "https://github.com/tterx/pad0-all-in-one/actions/runs/43802417626",
+    "tests": 1437,
+    "suites": 136,
+    "steps": 148
+  },
+  "local_checks": {
+    "related-final": {
+      "tests": 215,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "seconds": 104.785,
+      "modules": [
+        "test_party_detail316",
+        "test_party_archive316",
+        "test_release_compaction316",
+        "test_party_geometry315",
+        "test_party_registration315",
+        "test_party_ui315",
+        "test_party247",
+        "test_awakening230",
+        "test_bound_party307",
+        "test_party_stage306",
+        "test_ui_module144",
+        "test_ai_module143",
+        "test_background_settings206",
+        "test_auto_repeat266",
+        "test_upload_followup305",
+        "test_upload_feedback300",
+        "test_locked_start311",
+        "test_start_hud313",
+        "test_recognition_save259",
+        "test_condition_save258"
+      ]
+    },
+    "bundle-final": {
+      "tests": 156,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "seconds": 88.778,
+      "modules": [
+        "test_party_detail316",
+        "test_party_archive316",
+        "test_release_compaction316",
+        "test_party_geometry315",
+        "test_party_registration315",
+        "test_party_ui315",
+        "test_party247",
+        "test_awakening230",
+        "test_bound_party307",
+        "test_party_stage306",
+        "test_ai_module143",
+        "test_ui_module144",
+        "test_upload_followup305",
+        "test_all_drop_learning314",
+        "test_learned_start314",
+        "test_learned_presence314"
+      ]
+    },
+    "new-final": {
+      "tests": 27,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "seconds": 1.465,
+      "modules": [
+        "test_party_detail316",
+        "test_party_archive316",
+        "test_release_compaction316"
+      ]
+    }
+  },
+  "new_regressions": 27,
+  "private_replay": {
+    "details": "replay316.json",
+    "actual_game_font_crop_from_report": 211,
+    "current_inline_full_screenshot_replayed": false,
+    "whole_frame_identity_tokens_controlled": true,
+    "controller_mocked": true,
+    "old_reader_rejected": true,
+    "new_reader_number": 463,
+    "focused_real_ocr_scores": [
+      0.99987,
+      0.99992
+    ],
+    "old_manual_zip_count": 0,
+    "new_manual_zip_count": 1,
+    "zip_crc_verified": true,
+    "cleanup_before_archive": true
+  },
+  "policy": {
+    "scope": "master_multicolor_manual_party_detail_and_error_archival",
+    "maximum_combos_retained": true,
+    "no_forced_healing": true,
+    "all_eight_drop_model_unchanged": true,
+    "input_pacing_unchanged": true,
+    "input_budgets_unchanged": true,
+    "final_layout_and_release_checks_retained": true,
+    "extra_DOWN_or_recovery_clicks": false,
+    "branch_and_EX_unchanged": true,
+    "starred_normal_and_Hidden_stage_records_separate": true,
+    "other_modes_legacy_detail_guard_retained": true,
+    "creature_number_two_read_agreement_retained": true,
+    "high_resolution_identity_algorithm_and_thresholds_unchanged": true,
+    "generated_source_whitespace_compaction_ast_equivalent": true
+  },
+  "physical_windows_mumu_verified": false,
+  "automatic_update_channel_changed": false,
+  "publication": {
+    "approved_release": true,
+    "source_pr_merged": true,
+    "source_branch": "codex/v1-0-108-party-detail-read",
+    "mode": "stable_release_and_auto_update",
+    "source_main_commit": "f3931fc5559393478da0e19b4ee9c6faaf54da5a",
+    "source_tree_matches_tested_head": true
+  }
+}

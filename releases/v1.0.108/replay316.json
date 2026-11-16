@@ -1,0 +1,88 @@
+{
+  "old_v107": {
+    "reader": {
+      "error": "RuntimeError: 4번 상세 화면을 확인하지 못했습니다.",
+      "profile_number": null,
+      "level": null,
+      "cooldown": null,
+      "fresh_independent_captures": 0,
+      "focused_recognizer_calls": 0,
+      "focused_readings": [],
+      "whole_frame_header_tokens_controlled": true,
+      "actual_game_font_pixels_source": "prior211_cyan_skill_heading_crop",
+      "current_inline_screenshot_replayed": false
+    },
+    "manual_failure_archive": {
+      "created": false,
+      "count": 0,
+      "forced_focused_reader_response": "스킨",
+      "controller_mocked": true,
+      "cleanup_touch_calls": 1,
+      "cleanup_capture_calls": 1,
+      "controller_press_calls": 0
+    },
+    "current_full_screenshot_available_locally": false,
+    "physical_mumu_registration_verified": false,
+    "application_input_executed": false
+  },
+  "fixed_v108": {
+    "reader": {
+      "error": null,
+      "profile_number": 463,
+      "level": 40,
+      "cooldown": 4,
+      "fresh_independent_captures": 1,
+      "focused_recognizer_calls": 4,
+      "focused_readings": [
+        [
+          [
+            "스킬",
+            0.99987
+          ],
+          [
+            "스킬",
+            0.99992
+          ]
+        ],
+        [
+          [
+            "스킬",
+            0.99987
+          ],
+          [
+            "스킬",
+            0.99992
+          ]
+        ]
+      ],
+      "whole_frame_header_tokens_controlled": true,
+      "actual_game_font_pixels_source": "prior211_cyan_skill_heading_crop",
+      "current_inline_screenshot_replayed": false
+    },
+    "manual_failure_archive": {
+      "created": true,
+      "count": 1,
+      "forced_focused_reader_response": "스킨",
+      "controller_mocked": true,
+      "cleanup_touch_calls": 1,
+      "cleanup_capture_calls": 1,
+      "controller_press_calls": 0,
+      "png_names": [
+        "party_detail_first.png",
+        "failure.png",
+        "game.png"
+      ],
+      "phase": "party_skill_detail_verification",
+      "slot": 4,
+      "ocr_checks": 4,
+      "cleanup_before_archive": true,
+      "crc_verified": true
+    },
+    "current_full_screenshot_available_locally": false,
+    "physical_mumu_registration_verified": false,
+    "application_input_executed": false
+  },
+  "uploaded_full_screenshots_included": false,
+  "physical_mumu_verified": false,
+  "application_input_executed": false
+}
