@@ -120,6 +120,8 @@
     "source_branch": "codex/v1-0-107-party-registration-219",
     "mode": "stable_release_and_auto_update",
     "source_main_commit": "3a200aaa653f732544b5cb0b3f6bea6492316911",
-    "source_tree_matches_tested_head": true
+    "source_tree_matches_tested_head": true,
+    "payload_commit": "95450684f37202302107e87fcf5ddce8febf3678",
+    "immutable_source_url": "https://raw.githubusercontent.com/tterx/pad0-updates/95450684f37202302107e87fcf5ddce8febf3678/releases/v1.0.107/pad0_overlay.py"
   }
 }
