@@ -1,0 +1,23 @@
+name: Quarantine v116 and restore v115
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths: [.github/workflows/rollback325.yml]
+permissions:
+  contents: write
+jobs:
+  restore:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout: |
+            .github/scripts
+            releases/v1.0.115
+            releases/v1.0.116
+      - name: Verify immutable assets and quarantine reported regression
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: python .github/scripts/rollback325.py
