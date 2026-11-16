@@ -1,12 +1,12 @@
 # 퍼드0 올인원
 
-[**프로그램 ZIP 다운로드 · v1.0.106**](https://github.com/tterx/pad0-updates/releases/download/v1.0.106/pad0_overlay_windows_v1_0_106.zip) · [전체 릴리스](https://github.com/tterx/pad0-updates/releases)
+[**프로그램 ZIP 다운로드 · v1.0.107**](https://github.com/tterx/pad0-updates/releases/download/v1.0.107/pad0_overlay_windows_v1_0_107.zip) · [전체 릴리스](https://github.com/tterx/pad0-updates/releases)
 
-현재 표시 버전은 **1.0.106**, 자동 업데이트 내부 순번은 **314**입니다.
+현재 표시 버전은 **1.0.107**, 자동 업데이트 내부 순번은 **315**입니다.
 
 새로 설치할 때는 ZIP을 풀고 `시작.vbs`를 실행하세요. 기존 설치는 PAD0를 완전히 종료한 뒤 `시작.vbs`를 다시 실행하면 업데이트됩니다.
 
-달인다속의 모든8종 드롭에 잠금·가시 상태를 포함한 공통 학습 보정을 적용했습니다. 실제218 시작 확인과 모의 경로 입력을 재현하고, Windows 검사 1,389회와 독립 번들 103회 통과. [변경·검증 범위](docs/reviews/REVIEW314.md) · [검증 기록](releases/v1.0.106/release_checks314.json)
+달인다속 파티 등록의 혼합 이미지와 고정 클릭 좌표를 실제 카드 위치로 수정하고, 카드 표시가 안정된 뒤 등록합니다. Windows 검사 1,410개와 독립 번들 118개 통과. [변경·검증 범위](docs/reviews/REVIEW315.md) · [검증 기록](releases/v1.0.107/release_checks315.json)
 
 ## 저장소 안내
 
