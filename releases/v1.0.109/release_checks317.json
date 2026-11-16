@@ -135,6 +135,8 @@
     "source_branch": "codex/v1-0-109-challenge-return",
     "mode": "stable_release_and_auto_update",
     "source_main_commit": "9628f1357b5247b4db093d4f26f7905eb8a428ce",
-    "source_tree_matches_tested_head": true
+    "source_tree_matches_tested_head": true,
+    "payload_commit": "45fcf8168931c2743fa4eda89feea58e58edfe54",
+    "immutable_source_url": "https://raw.githubusercontent.com/tterx/pad0-updates/45fcf8168931c2743fa4eda89feea58e58edfe54/releases/v1.0.109/pad0_overlay.py"
   }
 }
