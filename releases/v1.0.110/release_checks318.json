@@ -1,0 +1,121 @@
+{
+  "zip_sha256": "0ed5a5e113cf3257904cbae0f9d228df9b42bc46975b92d795ec54c3188eba2e",
+  "source_sha256": "b972a33ad1d0266f382b54548d89c62621f3baf8ccbf7a4b405868cbb5fd7ee8",
+  "source_bytes": 2081475,
+  "zip_bytes": 974938,
+  "release": 318,
+  "version": "v1.0.110",
+  "source_repo": "tterx/pad0-all-in-one",
+  "source_commit": "0d1c44c3b778191020c362c23d85c0ef1ce7864f",
+  "source_pull_request": "https://github.com/tterx/pad0-all-in-one/pull/21",
+  "windows_ci": {
+    "run_id": 43809690416,
+    "conclusion": "success",
+    "head_sha": "0d1c44c3b778191020c362c23d85c0ef1ce7864f",
+    "url": "https://github.com/tterx/pad0-all-in-one/actions/runs/43809690416",
+    "tests": 1485,
+    "suites": 138,
+    "steps": 150
+  },
+  "local_checks": {
+    "related-final": {
+      "tests": 198,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "seconds": 46.857,
+      "modules": [
+        "test_manual_presence318",
+        "test_master_button304",
+        "test_learned_presence314",
+        "test_master_handoff309",
+        "test_lock_handoff308",
+        "test_manual_recovery257",
+        "test_focus_search266",
+        "test_condition_save258",
+        "test_recognition_save259",
+        "test_preparation_latency262",
+        "test_readiness269",
+        "test_ui_module144",
+        "test_learned_start314",
+        "test_farming_map317"
+      ]
+    },
+    "bundle-final": {
+      "tests": 148,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "seconds": 25.362,
+      "modules": [
+        "test_manual_presence318",
+        "test_master_button304",
+        "test_learned_presence314",
+        "test_master_handoff309",
+        "test_lock_handoff308",
+        "test_focus_search266",
+        "test_manual_recovery257",
+        "test_condition_save258",
+        "test_ui_module144",
+        "test_ai_module143",
+        "test_upload_followup305"
+      ]
+    },
+    "new-final": {
+      "tests": 21,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "seconds": 3.732,
+      "modules": [
+        "test_manual_presence318"
+      ]
+    }
+  },
+  "new_regressions": 21,
+  "private_replay": {
+    "details": "replay318.json",
+    "real_game_artwork": true,
+    "real_tk_window": true,
+    "real_presence_worker": true,
+    "current_inline_screenshot_replayed": false,
+    "controlled_skill_and_readiness_transition": true,
+    "host_capture_and_visibility_mocked": true,
+    "old_visible_after_skill": 0,
+    "new_visible_after_skill": 46,
+    "post_skill_checks": 46,
+    "both_hid_on_menu": true,
+    "calculation_calls": 0,
+    "explicit_new_click_requested_reading_only": true
+  },
+  "policy": {
+    "scope": "master_multicolor_manual_presence_and_preparation_wiring",
+    "maximum_combos_retained": true,
+    "no_forced_healing": true,
+    "all_eight_drop_model_unchanged": true,
+    "input_pacing_unchanged": true,
+    "input_budgets_unchanged": true,
+    "final_layout_and_release_checks_retained": true,
+    "battle_touch_retry_or_extra_DOWN": false,
+    "branch_learning_and_EX_ranking_unchanged": true,
+    "starred_normal_and_Hidden_stage_records_separate": true,
+    "other_modes_original_readiness_gates_retained": true,
+    "visibility_cannot_supply_full_board_or_execute_route": true,
+    "presence_pixel_expiry_seconds": 1.2,
+    "existing_preparation_wait_seconds": 12,
+    "preparation_completion_requires_another_execution_click": true,
+    "nonbattle_invalidates_old_generations": true,
+    "F9_and_background_holds_preserved": true,
+    "high_resolution_identity_algorithm_and_thresholds_unchanged": true
+  },
+  "physical_windows_mumu_verified": false,
+  "automatic_update_channel_changed": false,
+  "publication": {
+    "approved_release": true,
+    "source_pr_merged": true,
+    "source_branch": "codex/v1-0-110-manual-skill-button",
+    "mode": "stable_release_and_auto_update",
+    "source_main_commit": "8cf68a8cefa3bbb9be01798d7e3284812cd44bd8",
+    "source_tree_matches_tested_head": true
+  }
+}

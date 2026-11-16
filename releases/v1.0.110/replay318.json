@@ -1,0 +1,1029 @@
+{
+  "old_v109": {
+    "real_game_artwork": true,
+    "controlled_skill_and_readiness_transition": true,
+    "exact_inline_screenshot_replayed": false,
+    "real_tk_window": true,
+    "real_presence_worker": true,
+    "host_capture_and_visibility_mocked": true,
+    "visible_before_skill": 8,
+    "menu_hidden": true,
+    "visible_after_skill": 0,
+    "after_skill_checks": 46,
+    "final_solver_ready": false,
+    "capture_count": 7,
+    "calculation_calls": 0,
+    "readonly_click": null,
+    "rows": [
+      {
+        "tick": 0,
+        "phase": "before_skill",
+        "visible": false,
+        "ready": true,
+        "captures": 0
+      },
+      {
+        "tick": 1,
+        "phase": "before_skill",
+        "visible": true,
+        "ready": true,
+        "captures": 1
+      },
+      {
+        "tick": 2,
+        "phase": "before_skill",
+        "visible": true,
+        "ready": true,
+        "captures": 1
+      },
+      {
+        "tick": 3,
+        "phase": "before_skill",
+        "visible": true,
+        "ready": true,
+        "captures": 1
+      },
+      {
+        "tick": 4,
+        "phase": "before_skill",
+        "visible": true,
+        "ready": true,
+        "captures": 2
+      },
+      {
+        "tick": 5,
+        "phase": "before_skill",
+        "visible": true,
+        "ready": true,
+        "captures": 2
+      },
+      {
+        "tick": 6,
+        "phase": "before_skill",
+        "visible": true,
+        "ready": true,
+        "captures": 2
+      },
+      {
+        "tick": 7,
+        "phase": "before_skill",
+        "visible": true,
+        "ready": true,
+        "captures": 3
+      },
+      {
+        "tick": 8,
+        "phase": "before_skill",
+        "visible": true,
+        "ready": true,
+        "captures": 3
+      },
+      {
+        "tick": 9,
+        "phase": "before_skill",
+        "visible": true,
+        "ready": true,
+        "captures": 3
+      },
+      {
+        "tick": 10,
+        "phase": "skill_menu",
+        "visible": true,
+        "ready": true,
+        "captures": 4
+      },
+      {
+        "tick": 11,
+        "phase": "skill_menu",
+        "visible": false,
+        "ready": true,
+        "captures": 4
+      },
+      {
+        "tick": 12,
+        "phase": "skill_menu",
+        "visible": false,
+        "ready": true,
+        "captures": 4
+      },
+      {
+        "tick": 13,
+        "phase": "skill_menu",
+        "visible": false,
+        "ready": true,
+        "captures": 5
+      },
+      {
+        "tick": 14,
+        "phase": "skill_menu",
+        "visible": false,
+        "ready": true,
+        "captures": 5
+      },
+      {
+        "tick": 15,
+        "phase": "skill_menu",
+        "visible": false,
+        "ready": true,
+        "captures": 5
+      },
+      {
+        "tick": 16,
+        "phase": "skill_menu",
+        "visible": false,
+        "ready": true,
+        "captures": 6
+      },
+      {
+        "tick": 17,
+        "phase": "skill_menu",
+        "visible": false,
+        "ready": true,
+        "captures": 6
+      },
+      {
+        "tick": 18,
+        "phase": "skill_menu",
+        "visible": false,
+        "ready": true,
+        "captures": 6
+      },
+      {
+        "tick": 19,
+        "phase": "skill_menu",
+        "visible": false,
+        "ready": true,
+        "captures": 7
+      },
+      {
+        "tick": 20,
+        "phase": "after_skill",
+        "visible": false,
+        "ready": false,
+        "captures": 7
+      },
+      {
+        "tick": 21,
+        "phase": "after_skill",
+        "visible": false,
+        "ready": false,
+        "captures": 7
+      },
+      {
+        "tick": 22,
+        "phase": "after_skill",
+        "visible": false,
+        "ready": false,
+        "captures": 7
+      },
+      {
+        "tick": 23,
+        "phase": "after_skill",
+        "visible": false,
+        "ready": false,
+        "captures": 7
+      },
+      {
+        "tick": 24,
+        "phase": "after_skill",
+        "visible": false,
+        "ready": false,
+        "captures": 7
+      },
+      {
+        "tick": 25,
+        "phase": "after_skill",
+        "visible": false,
+        "ready": false,
+        "captures": 7
+      },
+      {
+        "tick": 26,
+        "phase": "after_skill",
+        "visible": false,
+        "ready": false,
+        "captures": 7
+      },
+      {
+        "tick": 27,
+        "phase": "after_skill",
+        "visible": false,
+        "ready": false,
+        "captures": 7
+      },
+      {
+        "tick": 28,
+        "phase": "after_skill",
+        "visible": false,
+        "ready": false,
+        "captures": 7
+      },
+      {
+        "tick": 29,
+        "phase": "after_skill",
+        "visible": false,
+        "ready": false,
+        "captures": 7
+      },
+      {
+        "tick": 30,
+        "phase": "after_skill",
+        "visible": false,
+        "ready": false,
+        "captures": 7
+      },
+      {
+        "tick": 31,
+        "phase": "after_skill",
+        "visible": false,
+        "ready": false,
+        "captures": 7
+      },
+      {
+        "tick": 32,
+        "phase": "after_skill",
+        "visible": false,
+        "ready": false,
+        "captures": 7
+      },
+      {
+        "tick": 33,
+        "phase": "after_skill",
+        "visible": false,
+        "ready": false,
+        "captures": 7
+      },
+      {
+        "tick": 34,
+        "phase": "after_skill",
+        "visible": false,
+        "ready": false,
+        "captures": 7
+      },
+      {
+        "tick": 35,
+        "phase": "after_skill",
+        "visible": false,
+        "ready": false,
+        "captures": 7
+      },
+      {
+        "tick": 36,
+        "phase": "after_skill",
+        "visible": false,
+        "ready": false,
+        "captures": 7
+      },
+      {
+        "tick": 37,
+        "phase": "after_skill",
+        "visible": false,
+        "ready": false,
+        "captures": 7
+      },
+      {
+        "tick": 38,
+        "phase": "after_skill",
+        "visible": false,
+        "ready": false,
+        "captures": 7
+      },
+      {
+        "tick": 39,
+        "phase": "after_skill",
+        "visible": false,
+        "ready": false,
+        "captures": 7
+      },
+      {
+        "tick": 40,
+        "phase": "after_skill",
+        "visible": false,
+        "ready": false,
+        "captures": 7
+      },
+      {
+        "tick": 41,
+        "phase": "after_skill",
+        "visible": false,
+        "ready": false,
+        "captures": 7
+      },
+      {
+        "tick": 42,
+        "phase": "after_skill",
+        "visible": false,
+        "ready": false,
+        "captures": 7
+      },
+      {
+        "tick": 43,
+        "phase": "after_skill",
+        "visible": false,
+        "ready": false,
+        "captures": 7
+      },
+      {
+        "tick": 44,
+        "phase": "after_skill",
+        "visible": false,
+        "ready": false,
+        "captures": 7
+      },
+      {
+        "tick": 45,
+        "phase": "after_skill",
+        "visible": false,
+        "ready": false,
+        "captures": 7
+      },
+      {
+        "tick": 46,
+        "phase": "after_skill",
+        "visible": false,
+        "ready": false,
+        "captures": 7
+      },
+      {
+        "tick": 47,
+        "phase": "after_skill",
+        "visible": false,
+        "ready": false,
+        "captures": 7
+      },
+      {
+        "tick": 48,
+        "phase": "after_skill",
+        "visible": false,
+        "ready": false,
+        "captures": 7
+      },
+      {
+        "tick": 49,
+        "phase": "after_skill",
+        "visible": false,
+        "ready": false,
+        "captures": 7
+      },
+      {
+        "tick": 50,
+        "phase": "after_skill",
+        "visible": false,
+        "ready": false,
+        "captures": 7
+      },
+      {
+        "tick": 51,
+        "phase": "after_skill",
+        "visible": false,
+        "ready": false,
+        "captures": 7
+      },
+      {
+        "tick": 52,
+        "phase": "after_skill",
+        "visible": false,
+        "ready": false,
+        "captures": 7
+      },
+      {
+        "tick": 53,
+        "phase": "after_skill",
+        "visible": false,
+        "ready": false,
+        "captures": 7
+      },
+      {
+        "tick": 54,
+        "phase": "after_skill",
+        "visible": false,
+        "ready": false,
+        "captures": 7
+      },
+      {
+        "tick": 55,
+        "phase": "after_skill",
+        "visible": false,
+        "ready": false,
+        "captures": 7
+      },
+      {
+        "tick": 56,
+        "phase": "after_skill",
+        "visible": false,
+        "ready": false,
+        "captures": 7
+      },
+      {
+        "tick": 57,
+        "phase": "after_skill",
+        "visible": false,
+        "ready": false,
+        "captures": 7
+      },
+      {
+        "tick": 58,
+        "phase": "after_skill",
+        "visible": false,
+        "ready": false,
+        "captures": 7
+      },
+      {
+        "tick": 59,
+        "phase": "after_skill",
+        "visible": false,
+        "ready": false,
+        "captures": 7
+      },
+      {
+        "tick": 60,
+        "phase": "after_skill",
+        "visible": false,
+        "ready": false,
+        "captures": 7
+      },
+      {
+        "tick": 61,
+        "phase": "after_skill",
+        "visible": false,
+        "ready": false,
+        "captures": 7
+      },
+      {
+        "tick": 62,
+        "phase": "after_skill",
+        "visible": false,
+        "ready": false,
+        "captures": 7
+      },
+      {
+        "tick": 63,
+        "phase": "after_skill",
+        "visible": false,
+        "ready": false,
+        "captures": 7
+      },
+      {
+        "tick": 64,
+        "phase": "after_skill",
+        "visible": false,
+        "ready": false,
+        "captures": 7
+      },
+      {
+        "tick": 65,
+        "phase": "after_skill",
+        "visible": false,
+        "ready": false,
+        "captures": 7
+      },
+      {
+        "tick": 66,
+        "phase": "after_skill",
+        "visible": false,
+        "ready": false,
+        "captures": 7
+      },
+      {
+        "tick": 67,
+        "phase": "after_skill",
+        "visible": false,
+        "ready": false,
+        "captures": 7
+      },
+      {
+        "tick": 68,
+        "phase": "after_skill",
+        "visible": false,
+        "ready": false,
+        "captures": 7
+      },
+      {
+        "tick": 69,
+        "phase": "after_skill",
+        "visible": false,
+        "ready": false,
+        "captures": 7
+      }
+    ],
+    "application_input_executed": false,
+    "physical_mumu_verified": false
+  },
+  "fixed_v110": {
+    "real_game_artwork": true,
+    "controlled_skill_and_readiness_transition": true,
+    "exact_inline_screenshot_replayed": false,
+    "real_tk_window": true,
+    "real_presence_worker": true,
+    "host_capture_and_visibility_mocked": true,
+    "visible_before_skill": 8,
+    "menu_hidden": true,
+    "visible_after_skill": 46,
+    "after_skill_checks": 46,
+    "final_solver_ready": false,
+    "capture_count": 23,
+    "calculation_calls": 0,
+    "readonly_click": {
+      "status": "현재 퍼즐판 다시 읽는 중 · 확인 후 경로를 준비합니다 · 자동 이동 없음",
+      "waiting_for_board": true,
+      "calculation_calls": 0
+    },
+    "rows": [
+      {
+        "tick": 0,
+        "phase": "before_skill",
+        "visible": false,
+        "ready": true,
+        "captures": 0
+      },
+      {
+        "tick": 1,
+        "phase": "before_skill",
+        "visible": true,
+        "ready": true,
+        "captures": 1
+      },
+      {
+        "tick": 2,
+        "phase": "before_skill",
+        "visible": true,
+        "ready": true,
+        "captures": 1
+      },
+      {
+        "tick": 3,
+        "phase": "before_skill",
+        "visible": true,
+        "ready": true,
+        "captures": 1
+      },
+      {
+        "tick": 4,
+        "phase": "before_skill",
+        "visible": true,
+        "ready": true,
+        "captures": 2
+      },
+      {
+        "tick": 5,
+        "phase": "before_skill",
+        "visible": true,
+        "ready": true,
+        "captures": 2
+      },
+      {
+        "tick": 6,
+        "phase": "before_skill",
+        "visible": true,
+        "ready": true,
+        "captures": 2
+      },
+      {
+        "tick": 7,
+        "phase": "before_skill",
+        "visible": true,
+        "ready": true,
+        "captures": 3
+      },
+      {
+        "tick": 8,
+        "phase": "before_skill",
+        "visible": true,
+        "ready": true,
+        "captures": 3
+      },
+      {
+        "tick": 9,
+        "phase": "before_skill",
+        "visible": true,
+        "ready": true,
+        "captures": 3
+      },
+      {
+        "tick": 10,
+        "phase": "skill_menu",
+        "visible": true,
+        "ready": true,
+        "captures": 4
+      },
+      {
+        "tick": 11,
+        "phase": "skill_menu",
+        "visible": false,
+        "ready": true,
+        "captures": 4
+      },
+      {
+        "tick": 12,
+        "phase": "skill_menu",
+        "visible": false,
+        "ready": true,
+        "captures": 4
+      },
+      {
+        "tick": 13,
+        "phase": "skill_menu",
+        "visible": false,
+        "ready": true,
+        "captures": 5
+      },
+      {
+        "tick": 14,
+        "phase": "skill_menu",
+        "visible": false,
+        "ready": true,
+        "captures": 5
+      },
+      {
+        "tick": 15,
+        "phase": "skill_menu",
+        "visible": false,
+        "ready": true,
+        "captures": 5
+      },
+      {
+        "tick": 16,
+        "phase": "skill_menu",
+        "visible": false,
+        "ready": true,
+        "captures": 6
+      },
+      {
+        "tick": 17,
+        "phase": "skill_menu",
+        "visible": false,
+        "ready": true,
+        "captures": 6
+      },
+      {
+        "tick": 18,
+        "phase": "skill_menu",
+        "visible": false,
+        "ready": true,
+        "captures": 6
+      },
+      {
+        "tick": 19,
+        "phase": "skill_menu",
+        "visible": false,
+        "ready": true,
+        "captures": 7
+      },
+      {
+        "tick": 20,
+        "phase": "after_skill",
+        "visible": false,
+        "ready": false,
+        "captures": 7
+      },
+      {
+        "tick": 21,
+        "phase": "after_skill",
+        "visible": false,
+        "ready": false,
+        "captures": 7
+      },
+      {
+        "tick": 22,
+        "phase": "after_skill",
+        "visible": true,
+        "ready": false,
+        "captures": 8
+      },
+      {
+        "tick": 23,
+        "phase": "after_skill",
+        "visible": true,
+        "ready": false,
+        "captures": 8
+      },
+      {
+        "tick": 24,
+        "phase": "after_skill",
+        "visible": true,
+        "ready": false,
+        "captures": 8
+      },
+      {
+        "tick": 25,
+        "phase": "after_skill",
+        "visible": true,
+        "ready": false,
+        "captures": 9
+      },
+      {
+        "tick": 26,
+        "phase": "after_skill",
+        "visible": true,
+        "ready": false,
+        "captures": 9
+      },
+      {
+        "tick": 27,
+        "phase": "after_skill",
+        "visible": true,
+        "ready": false,
+        "captures": 9
+      },
+      {
+        "tick": 28,
+        "phase": "after_skill",
+        "visible": true,
+        "ready": false,
+        "captures": 10
+      },
+      {
+        "tick": 29,
+        "phase": "after_skill",
+        "visible": true,
+        "ready": false,
+        "captures": 10
+      },
+      {
+        "tick": 30,
+        "phase": "after_skill",
+        "visible": true,
+        "ready": false,
+        "captures": 10
+      },
+      {
+        "tick": 31,
+        "phase": "after_skill",
+        "visible": true,
+        "ready": false,
+        "captures": 11
+      },
+      {
+        "tick": 32,
+        "phase": "after_skill",
+        "visible": true,
+        "ready": false,
+        "captures": 11
+      },
+      {
+        "tick": 33,
+        "phase": "after_skill",
+        "visible": true,
+        "ready": false,
+        "captures": 11
+      },
+      {
+        "tick": 34,
+        "phase": "after_skill",
+        "visible": true,
+        "ready": false,
+        "captures": 12
+      },
+      {
+        "tick": 35,
+        "phase": "after_skill",
+        "visible": true,
+        "ready": false,
+        "captures": 12
+      },
+      {
+        "tick": 36,
+        "phase": "after_skill",
+        "visible": true,
+        "ready": false,
+        "captures": 12
+      },
+      {
+        "tick": 37,
+        "phase": "after_skill",
+        "visible": true,
+        "ready": false,
+        "captures": 13
+      },
+      {
+        "tick": 38,
+        "phase": "after_skill",
+        "visible": true,
+        "ready": false,
+        "captures": 13
+      },
+      {
+        "tick": 39,
+        "phase": "after_skill",
+        "visible": true,
+        "ready": false,
+        "captures": 13
+      },
+      {
+        "tick": 40,
+        "phase": "after_skill",
+        "visible": true,
+        "ready": false,
+        "captures": 14
+      },
+      {
+        "tick": 41,
+        "phase": "after_skill",
+        "visible": true,
+        "ready": false,
+        "captures": 14
+      },
+      {
+        "tick": 42,
+        "phase": "after_skill",
+        "visible": true,
+        "ready": false,
+        "captures": 14
+      },
+      {
+        "tick": 43,
+        "phase": "after_skill",
+        "visible": true,
+        "ready": false,
+        "captures": 15
+      },
+      {
+        "tick": 44,
+        "phase": "after_skill",
+        "visible": true,
+        "ready": false,
+        "captures": 15
+      },
+      {
+        "tick": 45,
+        "phase": "after_skill",
+        "visible": true,
+        "ready": false,
+        "captures": 15
+      },
+      {
+        "tick": 46,
+        "phase": "after_skill",
+        "visible": true,
+        "ready": false,
+        "captures": 16
+      },
+      {
+        "tick": 47,
+        "phase": "after_skill",
+        "visible": true,
+        "ready": false,
+        "captures": 16
+      },
+      {
+        "tick": 48,
+        "phase": "after_skill",
+        "visible": true,
+        "ready": false,
+        "captures": 16
+      },
+      {
+        "tick": 49,
+        "phase": "after_skill",
+        "visible": true,
+        "ready": false,
+        "captures": 17
+      },
+      {
+        "tick": 50,
+        "phase": "after_skill",
+        "visible": true,
+        "ready": false,
+        "captures": 17
+      },
+      {
+        "tick": 51,
+        "phase": "after_skill",
+        "visible": true,
+        "ready": false,
+        "captures": 17
+      },
+      {
+        "tick": 52,
+        "phase": "after_skill",
+        "visible": true,
+        "ready": false,
+        "captures": 18
+      },
+      {
+        "tick": 53,
+        "phase": "after_skill",
+        "visible": true,
+        "ready": false,
+        "captures": 18
+      },
+      {
+        "tick": 54,
+        "phase": "after_skill",
+        "visible": true,
+        "ready": false,
+        "captures": 18
+      },
+      {
+        "tick": 55,
+        "phase": "after_skill",
+        "visible": true,
+        "ready": false,
+        "captures": 19
+      },
+      {
+        "tick": 56,
+        "phase": "after_skill",
+        "visible": true,
+        "ready": false,
+        "captures": 19
+      },
+      {
+        "tick": 57,
+        "phase": "after_skill",
+        "visible": true,
+        "ready": false,
+        "captures": 19
+      },
+      {
+        "tick": 58,
+        "phase": "after_skill",
+        "visible": true,
+        "ready": false,
+        "captures": 20
+      },
+      {
+        "tick": 59,
+        "phase": "after_skill",
+        "visible": true,
+        "ready": false,
+        "captures": 20
+      },
+      {
+        "tick": 60,
+        "phase": "after_skill",
+        "visible": true,
+        "ready": false,
+        "captures": 20
+      },
+      {
+        "tick": 61,
+        "phase": "after_skill",
+        "visible": true,
+        "ready": false,
+        "captures": 21
+      },
+      {
+        "tick": 62,
+        "phase": "after_skill",
+        "visible": true,
+        "ready": false,
+        "captures": 21
+      },
+      {
+        "tick": 63,
+        "phase": "after_skill",
+        "visible": true,
+        "ready": false,
+        "captures": 21
+      },
+      {
+        "tick": 64,
+        "phase": "after_skill",
+        "visible": true,
+        "ready": false,
+        "captures": 22
+      },
+      {
+        "tick": 65,
+        "phase": "after_skill",
+        "visible": true,
+        "ready": false,
+        "captures": 22
+      },
+      {
+        "tick": 66,
+        "phase": "after_skill",
+        "visible": true,
+        "ready": false,
+        "captures": 22
+      },
+      {
+        "tick": 67,
+        "phase": "after_skill",
+        "visible": true,
+        "ready": false,
+        "captures": 23
+      },
+      {
+        "tick": 68,
+        "phase": "after_skill",
+        "visible": true,
+        "ready": false,
+        "captures": 23
+      },
+      {
+        "tick": 69,
+        "phase": "after_skill",
+        "visible": true,
+        "ready": false,
+        "captures": 23
+      }
+    ],
+    "application_input_executed": false,
+    "physical_mumu_verified": false
+  },
+  "uploaded_full_screenshots_included": false,
+  "physical_mumu_verified": false,
+  "application_input_executed": false
+}
