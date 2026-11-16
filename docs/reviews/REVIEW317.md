@@ -61,3 +61,11 @@ Windows/MuMu clicks and a completed physical farming run remain unverified.
 Windows CI: https://github.com/tterx/pad0-all-in-one/actions/runs/43806884968 (success; source 5b1b15251246bbd6c43aa819445207b9d5d34d45); 1,464 executions, 137 suites. Exact package source SHA256 matches.
 
 [Public replay comparison](../../releases/v1.0.109/replay317.json).
+
+Publication verified: PR20 merged as 9628f1357b5247b4db093d4f26f7905eb8a428ce;
+its tree matches the Windows-tested head. Publisher run 43808137677 succeeded.
+The actual public stable latest v1.0.109 ZIP passed SHA256, CRC, version and updater-state
+checks. Its source equals the live immutable raw payload. Root update.json points to317.
+The genuine v1.0.108 launcher installed317 from the live manifest in an isolated
+installation, preserved its backup, settings, inventory and stage/branch-history
+markers, then skipped a repeat update. No PAD0 or physical game input was executed.
