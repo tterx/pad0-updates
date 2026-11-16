@@ -101,6 +101,8 @@
     "source_branch": "codex/v1-0-115-manual-controls",
     "mode": "stable_release_and_auto_update",
     "source_main_commit": "1ab50cade583cd5accd3f7bbb98b6f94b20b776d",
-    "source_tree_matches_tested_head": true
+    "source_tree_matches_tested_head": true,
+    "payload_commit": "b4c7fd1da4b4893078dcf388af6e89de05601e11",
+    "immutable_source_url": "https://raw.githubusercontent.com/tterx/pad0-updates/b4c7fd1da4b4893078dcf388af6e89de05601e11/releases/v1.0.115/pad0_overlay.py"
   }
 }
