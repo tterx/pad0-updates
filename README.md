@@ -1,12 +1,12 @@
 # 퍼드0 올인원
 
-[**프로그램 ZIP 다운로드 · v1.0.108**](https://github.com/tterx/pad0-updates/releases/download/v1.0.108/pad0_overlay_windows_v1_0_108.zip) · [전체 릴리스](https://github.com/tterx/pad0-updates/releases)
+[**프로그램 ZIP 다운로드 · v1.0.109**](https://github.com/tterx/pad0-updates/releases/download/v1.0.109/pad0_overlay_windows_v1_0_109.zip) · [전체 릴리스](https://github.com/tterx/pad0-updates/releases)
 
-현재 표시 버전은 **1.0.108**, 자동 업데이트 내부 순번은 **316**입니다.
+현재 표시 버전은 **1.0.109**, 자동 업데이트 내부 순번은 **317**입니다.
 
 새로 설치할 때는 ZIP을 풀고 `시작.vbs`를 실행하세요. 기존 설치는 PAD0를 완전히 종료한 뒤 `시작.vbs`를 다시 실행하면 업데이트됩니다.
 
-달인다속 파티 상세의 작은 스킬 표제 판독과 수동 읽기 오류 ZIP 저장을 수정했습니다. Windows 검사 1,437개와 독립 번들 156개 통과. [변경·검증 범위](docs/reviews/REVIEW316.md) · [검증 기록](releases/v1.0.108/release_checks316.json)
+달인다속 재료 자동파밍의 챌린지 지도 복귀 중지를 수정하고, 발광 번호를 보정해 같은 스테이지로 재진입합니다. Windows 검사 1,464개와 독립 번들 170개 통과. [변경·검증 범위](docs/reviews/REVIEW317.md) · [검증 기록](releases/v1.0.109/release_checks317.json)
 
 ## 저장소 안내
 
