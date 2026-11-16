@@ -1,0 +1,102 @@
+{
+  "zip_sha256": "15b67f8084561215a65de9219bdc777e73986ea4e704026a7d1d08bcc750efd8",
+  "source_sha256": "b4970de14f06498ecdbe2149d5435a5e6554c9be8ba88f6e436ef16621a6d240",
+  "source_bytes": 2096365,
+  "zip_bytes": 978424,
+  "release": 324,
+  "version": "v1.0.116",
+  "source_repo": "tterx/pad0-all-in-one",
+  "source_commit": "1eb7919198bb74acb43d2ca838a234102af68636",
+  "source_pull_request": "https://github.com/tterx/pad0-all-in-one/pull/27",
+  "windows_ci": {
+    "run_id": 43969557412,
+    "conclusion": "success",
+    "head_sha": "1eb7919198bb74acb43d2ca838a234102af68636",
+    "url": "https://github.com/tterx/pad0-all-in-one/actions/runs/43969557412",
+    "attempt": 1,
+    "tests": 1559,
+    "suites": 144,
+    "steps": 156
+  },
+  "local_checks": {
+    "new": {
+      "tests": 37,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "seconds": 4.02,
+      "modules": [
+        "test_visible_board324",
+        "test_manual_context319",
+        "test_manual_controls323"
+      ]
+    },
+    "bundle": {
+      "tests": 148,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "seconds": 42.484,
+      "modules": [
+        "test_visible_board324",
+        "test_manual_context319",
+        "test_manual_controls323",
+        "test_manual_capture322",
+        "test_manual_latency321",
+        "test_manual_presence318",
+        "test_master_button304",
+        "test_condition_save258",
+        "test_recognition_save259",
+        "test_combo_objective303"
+      ]
+    }
+  },
+  "new_regressions": 7,
+  "unchanged_modules_sha256": {
+    "pad0_solver.py": "b86ef61e32cfdcaa651269f8ce0fb685b07a795e71cae653c492fe174f418036",
+    "pad0_input.py": "c0cee53f925c51923605cb3e5beda1912c45512473d99560039218c251f32539",
+    "pad0_ai.py": "30f46d4eda0dc49c0a825bfd2742cc7bba50b6bf33382ef6e86661ac0a8483a0",
+    "pad0_drop_learning.py": "3b5a714e752004fc414c5ec459db2f3d7d5accd2618e70c24ebcda8f8aad10b5",
+    "pad0_ui.py": "510a067e9be9cd16820864e77d7b4c49cd55b78839c2a0bb1720213dc20a2696"
+  },
+  "only_app_methods_changed": [
+    "_route_button_game_in_foreground",
+    "_v83_route_button_focus_tick",
+    "_save_master_control_diagnostic",
+    "_attribute_probe_game_visible"
+  ],
+  "policy": {
+    "scope": "master_multicolor",
+    "exposed_master_board_read_without_foreground_activation": true,
+    "native_30_centers_and_4_corners_required": true,
+    "pixel_presence_and_expiry_required": true,
+    "foreign_occlusion_blocks_reading": true,
+    "hidden_minimized_and_mouse_drag_still_pause": true,
+    "hud_only_foreground_policy_opt_in": true,
+    "strict_default_action_title_reward_and_condition_capture_focus_unchanged": true,
+    "other_modes_original_policy": true,
+    "two_matching_fresh_reads_required": true,
+    "old_shortage_cleared_until_confirmation": true,
+    "f9_user_hide_retained": true,
+    "visibility_gate_and_monotonic_time_recorded": true,
+    "no_screen_or_game_input_on_state_save": true,
+    "maximum_combo_objective_and_search_budgets_unchanged": true,
+    "final_execution_checks_unchanged": true,
+    "gesture_timing_unchanged": true,
+    "branch_records_unchanged": true
+  },
+  "known_limitation": {
+    "current_runtime_stall": "Uploaded control report shows pre-recognition wait, null board and positive presence ticket; foreground ownership and actual occlusion unconfirmed, visible foreign-focus wait reproduced in native fixture",
+    "report222_automatic_input_interruption": "Unresolved; outside the manual preparation change"
+  },
+  "physical_windows_mumu_verified": false,
+  "automatic_update_channel_changed": false,
+  "publication": {
+    "approved_release": true,
+    "source_pr_merged": true,
+    "source_branch": "codex/v1-0-116-visible-board",
+    "mode": "stable_release_and_auto_update",
+    "source_main_commit": "0fdb94949d8e912c867f1d499b4078c76c3d27bd",
+    "source_tree_matches_tested_head": true
+  }
+}
