@@ -1,0 +1,188 @@
+{
+  "old_v112": {
+    "cases": [
+      {
+        "case": "identical_captures",
+        "samples": [
+          {
+            "seconds": 1.637829,
+            "read_seconds": [
+              0.371387,
+              0.403742,
+              0.349806
+            ]
+          },
+          {
+            "seconds": 1.693087,
+            "read_seconds": [
+              0.353207,
+              0.367326,
+              0.393477
+            ]
+          },
+          {
+            "seconds": 1.656367,
+            "read_seconds": [
+              0.368281,
+              0.436128,
+              0.347206
+            ]
+          },
+          {
+            "seconds": 1.411589,
+            "read_seconds": [
+              0.301318,
+              0.35738,
+              0.287743
+            ]
+          }
+        ],
+        "total_seconds": 6.398872,
+        "full_window_board_samples": 4,
+        "exact_pixel_cache_hits": 0,
+        "exact_pixel_cache_misses": 0
+      },
+      {
+        "case": "every_capture_changes",
+        "samples": [
+          {
+            "seconds": 1.401455,
+            "read_seconds": [
+              0.311943,
+              0.321839,
+              0.306075
+            ]
+          },
+          {
+            "seconds": 1.571196,
+            "read_seconds": [
+              0.322939,
+              0.296966,
+              0.386291
+            ]
+          },
+          {
+            "seconds": 1.507072,
+            "read_seconds": [
+              0.347984,
+              0.317786,
+              0.31438
+            ]
+          },
+          {
+            "seconds": 1.818133,
+            "read_seconds": [
+              0.481084,
+              0.469608,
+              0.374037
+            ]
+          }
+        ],
+        "total_seconds": 6.297856,
+        "full_window_board_samples": 4,
+        "exact_pixel_cache_hits": 0,
+        "exact_pixel_cache_misses": 0
+      }
+    ],
+    "actual_uploaded_pixels": true,
+    "all_raw_colours_masks_and_combo_badges_match": true,
+    "capture_and_native_host_controlled": true,
+    "presence_proof_from_real_worker": true,
+    "scope": "Repeated manual colour/mask preparation and bootstrap scheduling only; excludes OCR, math search, UI and physical game latency.",
+    "solver_budget_or_objective_changed": false,
+    "game_input_executed": false
+  },
+  "fixed_v113": {
+    "cases": [
+      {
+        "case": "identical_captures",
+        "samples": [
+          {
+            "seconds": 0.378719,
+            "read_seconds": [
+              0.369309,
+              0.002334,
+              0.00572
+            ]
+          },
+          {
+            "seconds": 0.010977,
+            "read_seconds": [
+              0.002883,
+              0.002821,
+              0.004048
+            ]
+          },
+          {
+            "seconds": 0.007184,
+            "read_seconds": [
+              0.002507,
+              0.001565,
+              0.002228
+            ]
+          },
+          {
+            "seconds": 0.006183,
+            "read_seconds": [
+              0.001767,
+              0.001917,
+              0.001553
+            ]
+          }
+        ],
+        "total_seconds": 0.403063,
+        "full_window_board_samples": 0,
+        "exact_pixel_cache_hits": 11,
+        "exact_pixel_cache_misses": 1
+      },
+      {
+        "case": "every_capture_changes",
+        "samples": [
+          {
+            "seconds": 0.955931,
+            "read_seconds": [
+              0.309627,
+              0.329347,
+              0.315174
+            ]
+          },
+          {
+            "seconds": 0.973673,
+            "read_seconds": [
+              0.343027,
+              0.327474,
+              0.302026
+            ]
+          },
+          {
+            "seconds": 0.970918,
+            "read_seconds": [
+              0.33154,
+              0.315507,
+              0.321656
+            ]
+          },
+          {
+            "seconds": 1.104892,
+            "read_seconds": [
+              0.370764,
+              0.322013,
+              0.410627
+            ]
+          }
+        ],
+        "total_seconds": 4.005414,
+        "full_window_board_samples": 0,
+        "exact_pixel_cache_hits": 0,
+        "exact_pixel_cache_misses": 12
+      }
+    ],
+    "actual_uploaded_pixels": true,
+    "all_raw_colours_masks_and_combo_badges_match": true,
+    "capture_and_native_host_controlled": true,
+    "presence_proof_from_real_worker": true,
+    "scope": "Repeated manual colour/mask preparation and bootstrap scheduling only; excludes OCR, math search, UI and physical game latency.",
+    "solver_budget_or_objective_changed": false,
+    "game_input_executed": false
+  }
+}

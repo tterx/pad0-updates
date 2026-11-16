@@ -1,0 +1,167 @@
+{
+  "zip_sha256": "54d82ec366421d9fc4d4754ce893e8bfb93565cc2a9fc737523ad82570d05fd4",
+  "source_sha256": "9c8557cf4acb1c05f4b383d9ef47497c5b4b49a9267944d43cd4e9d8539cab9a",
+  "source_bytes": 2090278,
+  "zip_bytes": 977126,
+  "release": 321,
+  "version": "v1.0.113",
+  "source_repo": "tterx/pad0-all-in-one",
+  "source_commit": "fcd9e43cd546ca1e09eb56214723487cba507669",
+  "source_pull_request": "https://github.com/tterx/pad0-all-in-one/pull/24",
+  "windows_ci": {
+    "run_id": 43919500460,
+    "conclusion": "success",
+    "head_sha": "fcd9e43cd546ca1e09eb56214723487cba507669",
+    "url": "https://github.com/tterx/pad0-all-in-one/actions/runs/43919500460",
+    "attempt": 1,
+    "tests": 1532,
+    "suites": 141,
+    "steps": 153
+  },
+  "local_checks": {
+    "related": {
+      "tests": 169,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "seconds": 77.024,
+      "modules": [
+        "test_manual_latency321",
+        "test_preparation_latency262",
+        "test_condition_delivery261",
+        "test_condition_recovery260",
+        "test_execution_condition266",
+        "test_focus_search266",
+        "test_manual_context319",
+        "test_manual_presence318",
+        "test_learned_presence314",
+        "test_uploaded320",
+        "test_combo_objective303",
+        "test_hazard_preparation270"
+      ]
+    },
+    "portable_bundle": {
+      "tests": 91,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "seconds": 49.106,
+      "modules": [
+        "test_manual_latency321",
+        "test_preparation_latency262",
+        "test_manual_context319",
+        "test_manual_presence318",
+        "test_combo_objective303",
+        "test_release_compaction316"
+      ]
+    },
+    "final_concurrent_initialization": {
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "seconds": 0.629,
+      "modules": [
+        "test_manual_latency321.ManualLatency321Tests.test_concurrent_workers_share_one_inference"
+      ]
+    },
+    "root_tree_revalidation": {
+      "tests": 2,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "seconds": 0.151,
+      "modules": [
+        "test_manual_latency321.ManualLatency321Tests.test_unknown_geometry_and_failure_hold_do_not_suppress_discovery",
+        "test_manual_latency321.ManualLatency321Tests.test_current_roi_suppresses_duplicate_full_window_probe"
+      ]
+    },
+    "tpa_quality_baseline": {
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "seconds": 4.302,
+      "modules": [
+        "test_start250.ManualSpeed250Tests.test_tpa_optimization_keeps_combo_drop_bonuses_without_first_hit_stop"
+      ]
+    },
+    "tpa_quality_final": {
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "seconds": 2.078,
+      "modules": [
+        "test_start250.ManualSpeed250Tests.test_tpa_optimization_keeps_combo_drop_bonuses_without_first_hit_stop"
+      ]
+    },
+    "quality_module": {
+      "tests": 14,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "seconds": 14.102,
+      "modules": [
+        "test_start250"
+      ]
+    },
+    "quality_module_bundle": {
+      "tests": 14,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "seconds": 14.751,
+      "modules": [
+        "test_start250"
+      ]
+    }
+  },
+  "new_regressions": 15,
+  "unchanged_modules_sha256": {
+    "pad0_solver.py": "b86ef61e32cfdcaa651269f8ce0fb685b07a795e71cae653c492fe174f418036",
+    "pad0_input.py": "c0cee53f925c51923605cb3e5beda1912c45512473d99560039218c251f32539",
+    "pad0_ai.py": "30f46d4eda0dc49c0a825bfd2742cc7bba50b6bf33382ef6e86661ac0a8483a0",
+    "pad0_drop_learning.py": "3b5a714e752004fc414c5ec459db2f3d7d5accd2618e70c24ebcda8f8aad10b5"
+  },
+  "latency_verification": {
+    "details": "latency321.json",
+    "actual_uploaded_pixels": true,
+    "scope": "Serial colour/mask preparation and bootstrap scheduling; excludes OCR/math/Tk/physical capture and live game latency",
+    "capture_and_native_host_controlled": true,
+    "game_input_executed": false
+  },
+  "policy": {
+    "scope": "master_multicolor",
+    "identical_rgb_pixels_only": true,
+    "inference_cache_entries": 4,
+    "full_captures_still_required": true,
+    "two_matching_captures_before_readiness": true,
+    "capture_timestamps_not_renewed_by_cache": true,
+    "all_eight_drop_models_and_thresholds_unchanged": true,
+    "maximum_combo_objective_and_search_budgets_unchanged": true,
+    "final_board_timer_condition_and_release_checks_retained": true,
+    "presence_native_host_and_geometry_required": true,
+    "presence_capture_expiry_seconds": 1.2,
+    "negative_or_stale_proof_resumes_discovery": true,
+    "other_modes_original_uncached_reads_and_scheduling": true,
+    "gesture_timing_unchanged": true,
+    "branch_and_receipt_records_unchanged": true
+  },
+  "validation_notes": {
+    "first_windows_attempt": "Existing unchanged TPA deadline-search test failed; Deterministic quality-clock harness verified on baseline and final math; final full Windows pass required"
+  },
+  "known_limitation": {
+    "report222_automatic_input_interruption": "Unresolved; outside the manual-latency change"
+  },
+  "physical_windows_mumu_verified": false,
+  "automatic_update_channel_changed": false,
+  "publication": {
+    "approved_release": true,
+    "source_pr_merged": true,
+    "source_branch": "codex/v1-0-113-manual-latency",
+    "mode": "stable_release_and_auto_update",
+    "source_main_commit": "89489206674c26d202a8b2e175db87a7ffdc124e",
+    "source_tree_matches_tested_head": true
+  }
+}
