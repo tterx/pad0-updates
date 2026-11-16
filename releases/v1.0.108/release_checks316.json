@@ -120,7 +120,7 @@
     "generated_source_whitespace_compaction_ast_equivalent": true
   },
   "physical_windows_mumu_verified": false,
-  "automatic_update_channel_changed": false,
+  "automatic_update_channel_changed": true,
   "publication": {
     "approved_release": true,
     "source_pr_merged": true,
@@ -129,6 +129,37 @@
     "source_main_commit": "f3931fc5559393478da0e19b4ee9c6faaf54da5a",
     "source_tree_matches_tested_head": true,
     "payload_commit": "c8d307dbab1e43aca68e6a3953f67ea26439509e",
-    "immutable_source_url": "https://raw.githubusercontent.com/tterx/pad0-updates/c8d307dbab1e43aca68e6a3953f67ea26439509e/releases/v1.0.108/pad0_overlay.py"
+    "immutable_source_url": "https://raw.githubusercontent.com/tterx/pad0-updates/c8d307dbab1e43aca68e6a3953f67ea26439509e/releases/v1.0.108/pad0_overlay.py",
+    "release_workflow_run": 43803697893,
+    "stable_release_verified": true,
+    "zip_bytes_unchanged": true
+  },
+  "public_download_verification": {
+    "zip_url": "https://github.com/tterx/pad0-updates/releases/download/v1.0.108/pad0_overlay_windows_v1_0_108.zip",
+    "zip_sha256": "4dbda2d7bcc3f82fa36c11e94e917a8955c1ca89058b8c4cc4dbe6bd79a1ba6d",
+    "source_sha256": "ab84ac8b4b1f76ff0b7600713e4ebb51d6679ed52f80c76d8a11eeb69d62714d",
+    "zip_crc_verified": true,
+    "version_verified": true,
+    "updater_release": 316,
+    "source_download_matches_zip": true,
+    "stable_latest_verified": true,
+    "application_executed": false
+  },
+  "auto_update_verification": {
+    "preview": {
+      "scope": "preview_manifest_with_live_source",
+      "old_release": 315,
+      "new_release": 316,
+      "source_sha256": "ab84ac8b4b1f76ff0b7600713e4ebb51d6679ed52f80c76d8a11eeb69d62714d",
+      "source_bytes": 2076619,
+      "backup_preserved": true,
+      "personal_data_preserved": true,
+      "branch_history_preserved": true,
+      "repeat_update_skipped": true,
+      "separate_starred_normal_hidden_records_preserved": true,
+      "application_executed": false
+    },
+    "live_status": "pending_post_activation_check",
+    "manifest_url": "https://raw.githubusercontent.com/tterx/pad0-updates/main/update.json"
   }
 }
