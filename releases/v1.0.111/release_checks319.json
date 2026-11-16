@@ -1,0 +1,133 @@
+{
+  "zip_sha256": "8b86e13f2d2eb38d348f30036a3825320b14566a84b7e1daa78bebb8f1fb3820",
+  "source_sha256": "496d2e2bcf7377913adfc7734a5fd20d1d0c401b991acc7930b74ea82b8ce644",
+  "source_bytes": 2085008,
+  "zip_bytes": 975677,
+  "release": 319,
+  "version": "v1.0.111",
+  "source_repo": "tterx/pad0-all-in-one",
+  "source_commit": "772878d80418ca29e2a802696e1c6b219837f380",
+  "source_pull_request": "https://github.com/tterx/pad0-all-in-one/pull/22",
+  "windows_ci": {
+    "run_id": 43814407910,
+    "conclusion": "success",
+    "head_sha": "772878d80418ca29e2a802696e1c6b219837f380",
+    "url": "https://github.com/tterx/pad0-all-in-one/actions/runs/43814407910",
+    "tests": 1506,
+    "suites": 139,
+    "steps": 151
+  },
+  "local_checks": {
+    "related-final": {
+      "tests": 219,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "seconds": 54.312,
+      "modules": [
+        "test_manual_context319",
+        "test_manual_presence318",
+        "test_master_button304",
+        "test_learned_presence314",
+        "test_master_handoff309",
+        "test_lock_handoff308",
+        "test_manual_recovery257",
+        "test_focus_search266",
+        "test_condition_save258",
+        "test_recognition_save259",
+        "test_preparation_latency262",
+        "test_readiness269",
+        "test_ui_module144",
+        "test_learned_start314",
+        "test_farming_map317"
+      ]
+    },
+    "bundle-final": {
+      "tests": 169,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "seconds": 26.974,
+      "modules": [
+        "test_manual_context319",
+        "test_manual_presence318",
+        "test_master_button304",
+        "test_learned_presence314",
+        "test_master_handoff309",
+        "test_lock_handoff308",
+        "test_focus_search266",
+        "test_manual_recovery257",
+        "test_condition_save258",
+        "test_ui_module144",
+        "test_ai_module143",
+        "test_upload_followup305"
+      ]
+    },
+    "new-final": {
+      "tests": 21,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "seconds": 3.023,
+      "modules": [
+        "test_manual_context319"
+      ]
+    }
+  },
+  "new_regressions": 21,
+  "private_replay": {
+    "details": "replay319.json",
+    "real_game_artwork": true,
+    "real_tk_window_and_placement": true,
+    "actual_geometry_and_visibility_functions": true,
+    "real_full_window_producer_and_ui_queue_consumer": true,
+    "real_f6_poll": true,
+    "current_device_state_verified": false,
+    "exact_current_screenshot_replayed": false,
+    "native_api_and_host_capture_emulated": true,
+    "heading_classification_controlled": true,
+    "old_visible_cases": 0,
+    "new_visible_cases": 3,
+    "cases": [
+      "cold_no_keys",
+      "cold_with_f6",
+      "moved_with_anchor"
+    ],
+    "old_f6_empty_region_request_cancelled": true,
+    "new_f6_request_pending_with_original_deadline": true,
+    "calculation_calls": 0
+  },
+  "policy": {
+    "scope": "master_multicolor_normal_manual_board_context_and_F6_initialization",
+    "maximum_combos_retained": true,
+    "no_forced_healing": true,
+    "all_eight_drop_model_unchanged": true,
+    "input_pacing_unchanged": true,
+    "input_budgets_unchanged": true,
+    "final_layout_and_release_checks_retained": true,
+    "battle_touch_retry_or_extra_DOWN": false,
+    "branch_learning_and_EX_ranking_unchanged": true,
+    "starred_normal_and_Hidden_stage_records_separate": true,
+    "other_modes_original_readiness_gates_retained": true,
+    "visibility_cannot_supply_full_board_or_execute_route": true,
+    "presence_pixel_expiry_seconds": 1.2,
+    "existing_preparation_wait_seconds": 12,
+    "preparation_completion_requires_another_execution_click": true,
+    "nonbattle_invalidates_old_generations": true,
+    "F9_and_background_holds_preserved": true,
+    "current_native_host_and_hit_points_required": true,
+    "verified_geometry_retires_old_routes": true,
+    "other_modes_and_F10_paths_retained": true,
+    "high_resolution_identity_algorithm_and_thresholds_unchanged": true
+  },
+  "physical_windows_mumu_verified": false,
+  "automatic_update_channel_changed": false,
+  "publication": {
+    "approved_release": true,
+    "source_pr_merged": true,
+    "source_branch": "codex/v1-0-111-manual-board-context",
+    "mode": "stable_release_and_auto_update",
+    "source_main_commit": "2604a2b25bd23204c5fca7bc53e4b74b6f2685f6",
+    "source_tree_matches_tested_head": true
+  }
+}

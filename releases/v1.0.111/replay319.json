@@ -1,0 +1,406 @@
+{
+  "old_v110": {
+    "cases": [
+      {
+        "case": "cold_no_keys",
+        "normal_messages": 0,
+        "board_rect": null,
+        "expected_rect": [
+          701,
+          260,
+          432,
+          358
+        ],
+        "region_matches": false,
+        "button_visible": false,
+        "solver_ready": false,
+        "f6_request_pending_at_start": null,
+        "f6_deadline_unchanged": null,
+        "f6_region_attached": null,
+        "roi_captures": [],
+        "native_point_checks": 12,
+        "f10_manual_flag": false,
+        "stopped": false,
+        "calculation_calls": 0,
+        "context_evidence": null,
+        "relative": null,
+        "proof": null,
+        "pending": null,
+        "foreground": true
+      },
+      {
+        "case": "cold_with_f6",
+        "normal_messages": 0,
+        "board_rect": null,
+        "expected_rect": [
+          701,
+          260,
+          432,
+          358
+        ],
+        "region_matches": false,
+        "button_visible": false,
+        "solver_ready": false,
+        "f6_request_pending_at_start": false,
+        "f6_deadline_unchanged": null,
+        "f6_region_attached": null,
+        "roi_captures": [],
+        "native_point_checks": 12,
+        "f10_manual_flag": false,
+        "stopped": false,
+        "calculation_calls": 0,
+        "context_evidence": null,
+        "relative": null,
+        "proof": null,
+        "pending": null,
+        "foreground": true
+      },
+      {
+        "case": "moved_with_anchor",
+        "normal_messages": 0,
+        "board_rect": [
+          882,
+          255,
+          692,
+          572
+        ],
+        "expected_rect": [
+          701,
+          260,
+          432,
+          358
+        ],
+        "region_matches": false,
+        "button_visible": false,
+        "solver_ready": false,
+        "f6_request_pending_at_start": null,
+        "f6_deadline_unchanged": null,
+        "f6_region_attached": null,
+        "roi_captures": [],
+        "native_point_checks": 12,
+        "f10_manual_flag": false,
+        "stopped": false,
+        "calculation_calls": 0,
+        "context_evidence": null,
+        "relative": [
+          701,
+          260,
+          432,
+          358
+        ],
+        "proof": null,
+        "pending": null,
+        "foreground": true
+      }
+    ],
+    "real_game_artwork": true,
+    "actual_geometry_and_visibility_functions": true,
+    "real_full_window_producer_and_ui_queue_consumer": true,
+    "real_f6_poll": true,
+    "real_tk_window_and_placement": true,
+    "native_api_and_host_capture_emulated": true,
+    "heading_classification_controlled": true,
+    "exact_current_screenshot_replayed": false,
+    "physical_mumu_verified": false,
+    "application_input_executed": false
+  },
+  "fixed_v111": {
+    "cases": [
+      {
+        "case": "cold_no_keys",
+        "normal_messages": 2,
+        "board_rect": [
+          701,
+          260,
+          432,
+          358
+        ],
+        "expected_rect": [
+          701,
+          260,
+          432,
+          358
+        ],
+        "region_matches": true,
+        "button_visible": true,
+        "solver_ready": true,
+        "f6_request_pending_at_start": null,
+        "f6_deadline_unchanged": null,
+        "f6_region_attached": null,
+        "roi_captures": [
+          {
+            "left": 701,
+            "top": 260,
+            "width": 432,
+            "height": 358
+          }
+        ],
+        "native_point_checks": 182,
+        "f10_manual_flag": false,
+        "stopped": false,
+        "calculation_calls": 0,
+        "context_evidence": {
+          "context": [
+            900,
+            [
+              150,
+              100,
+              1000,
+              588
+            ]
+          ],
+          "epoch": 0,
+          "captured_at": 142899.870701009,
+          "accepted": true,
+          "reason": "visible_host_board",
+          "board_rect": [
+            701,
+            260,
+            432,
+            358
+          ],
+          "partial": false
+        },
+        "relative": [
+          701,
+          260,
+          432,
+          358
+        ],
+        "proof": {
+          "identity": [
+            [
+              701,
+              260,
+              432,
+              358
+            ],
+            0,
+            [
+              false,
+              false,
+              true,
+              false,
+              false,
+              false,
+              false,
+              6,
+              0,
+              true
+            ],
+            1
+          ],
+          "started": 142900.638962186,
+          "visible": true,
+          "done": true,
+          "captured_at": 142900.640145803,
+          "presence_model": "all-drop-314",
+          "completed_at": 142900.667979348
+        },
+        "pending": null,
+        "foreground": true
+      },
+      {
+        "case": "cold_with_f6",
+        "normal_messages": 2,
+        "board_rect": [
+          701,
+          260,
+          432,
+          358
+        ],
+        "expected_rect": [
+          701,
+          260,
+          432,
+          358
+        ],
+        "region_matches": true,
+        "button_visible": true,
+        "solver_ready": true,
+        "f6_request_pending_at_start": true,
+        "f6_deadline_unchanged": true,
+        "f6_region_attached": true,
+        "roi_captures": [
+          {
+            "left": 701,
+            "top": 260,
+            "width": 432,
+            "height": 358
+          }
+        ],
+        "native_point_checks": 182,
+        "f10_manual_flag": false,
+        "stopped": false,
+        "calculation_calls": 0,
+        "context_evidence": {
+          "context": [
+            900,
+            [
+              150,
+              100,
+              1000,
+              588
+            ]
+          ],
+          "epoch": 0,
+          "captured_at": 142901.64406648,
+          "accepted": true,
+          "reason": "visible_host_board",
+          "board_rect": [
+            701,
+            260,
+            432,
+            358
+          ],
+          "partial": false
+        },
+        "relative": [
+          701,
+          260,
+          432,
+          358
+        ],
+        "proof": {
+          "identity": [
+            [
+              701,
+              260,
+              432,
+              358
+            ],
+            0,
+            [
+              false,
+              false,
+              true,
+              false,
+              false,
+              false,
+              false,
+              6,
+              0,
+              true
+            ],
+            1
+          ],
+          "started": 142902.221160375,
+          "visible": true,
+          "done": true,
+          "captured_at": 142902.221982176,
+          "presence_model": "all-drop-314",
+          "completed_at": 142902.242944945
+        },
+        "pending": null,
+        "foreground": true
+      },
+      {
+        "case": "moved_with_anchor",
+        "normal_messages": 2,
+        "board_rect": [
+          701,
+          260,
+          432,
+          358
+        ],
+        "expected_rect": [
+          701,
+          260,
+          432,
+          358
+        ],
+        "region_matches": true,
+        "button_visible": true,
+        "solver_ready": true,
+        "f6_request_pending_at_start": null,
+        "f6_deadline_unchanged": null,
+        "f6_region_attached": null,
+        "roi_captures": [
+          {
+            "left": 701,
+            "top": 260,
+            "width": 432,
+            "height": 358
+          }
+        ],
+        "native_point_checks": 182,
+        "f10_manual_flag": false,
+        "stopped": false,
+        "calculation_calls": 0,
+        "context_evidence": {
+          "context": [
+            900,
+            [
+              150,
+              100,
+              1000,
+              588
+            ]
+          ],
+          "epoch": 0,
+          "captured_at": 142903.105378736,
+          "accepted": true,
+          "reason": "visible_host_board",
+          "board_rect": [
+            701,
+            260,
+            432,
+            358
+          ],
+          "partial": false
+        },
+        "relative": [
+          701,
+          260,
+          432,
+          358
+        ],
+        "proof": {
+          "identity": [
+            [
+              701,
+              260,
+              432,
+              358
+            ],
+            0,
+            [
+              false,
+              false,
+              true,
+              false,
+              false,
+              false,
+              false,
+              6,
+              0,
+              true
+            ],
+            1
+          ],
+          "started": 142903.649621001,
+          "visible": true,
+          "done": true,
+          "captured_at": 142903.650395012,
+          "presence_model": "all-drop-314",
+          "completed_at": 142903.675114056
+        },
+        "pending": null,
+        "foreground": true
+      }
+    ],
+    "real_game_artwork": true,
+    "actual_geometry_and_visibility_functions": true,
+    "real_full_window_producer_and_ui_queue_consumer": true,
+    "real_f6_poll": true,
+    "real_tk_window_and_placement": true,
+    "native_api_and_host_capture_emulated": true,
+    "heading_classification_controlled": true,
+    "exact_current_screenshot_replayed": false,
+    "physical_mumu_verified": false,
+    "application_input_executed": false
+  },
+  "uploaded_full_screenshots_included": false,
+  "physical_mumu_verified": false,
+  "application_input_executed": false
+}
