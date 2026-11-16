@@ -41,3 +41,13 @@ execution validation are unchanged. Physical Windows/MuMu behavior and the exact
 colour-count/solver failure beyond this recorded gate remain unverified.
 
 Windows CI: https://github.com/tterx/pad0-all-in-one/actions/runs/43969557412 (success; source 1eb7919198bb74acb43d2ca838a234102af68636); 1559 tests, 144 suites. Exact package source SHA256 matches.
+
+Publication verified: PR27 merged as 0fdb94949d8e912c867f1d499b4078c76c3d27bd.
+Its tree matches the Windows-tested head. Publisher run 43972145706 succeeded.
+The actual stable latest v1.0.116 download passed SHA256, ZIP CRC, version and updater-state checks.
+Its source matches the immutable payload and root update.json activates324.
+The genuine v1.0.115 launcher installed324 from the live manifest in an isolated installation,
+retained its backup, settings, inventory and four separate stage/branch markers,
+and skipped a repeat update. No PAD0 or physical game input was executed.
+The exact colour-count and search failure remains unconfirmed from window-only reports;
+exposed foreign-focus reading and HUD gating are addressed by this patch.
