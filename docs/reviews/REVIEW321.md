@@ -67,3 +67,12 @@ Physical Windows/MuMu behavior remains unverified. The earlier report222 automat
 input interruption is outside this latency change and is not claimed resolved.
 
 Windows CI: https://github.com/tterx/pad0-all-in-one/actions/runs/43919500460 (success; source fcd9e43cd546ca1e09eb56214723487cba507669); 1532 tests, 141 suites. Exact package source SHA256 matches. Final repeated measurements: releases/v1.0.113/latency321.json.
+
+Publication verified: PR24 merged as 89489206674c26d202a8b2e175db87a7ffdc124e.
+Its tree matches the Windows-tested head. Publisher run 43922095676 succeeded.
+The actual stable latest v1.0.113 download passed SHA256, ZIP CRC, version and updater-state checks.
+Its source matches the immutable payload and root update.json activates321.
+The genuine v1.0.112 launcher installed321 from the live manifest in an isolated installation,
+retained its backup, settings, inventory and four separate stage/branch markers,
+and skipped a repeat update. No PAD0 or physical game input was executed.
+Report222's exact input interruption cause remains unresolved; its stop is preserved.
