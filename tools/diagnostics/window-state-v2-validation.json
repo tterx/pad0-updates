@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "ci_url": "https://github.com/tterx/pad0-updates/actions/runs/43962726519",
+  "head_sha": "22f00fb01b8d8cb1b3b6d95c220faee98bb05ae7",
+  "conclusion": "success",
+  "windows_powershell": "5.1.26100.33648",
+  "powershell": "7.6.9",
+  "samples_per_run": 12,
+  "native_fixture_process_and_geometry_verified": true,
+  "zip_created": true
+}
