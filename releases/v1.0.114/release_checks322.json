@@ -1,0 +1,115 @@
+{
+  "zip_sha256": "1f3a5936ef8357b6e1eb4e732b5fecc6e76cf09523642eab55dfeb0de9727088",
+  "source_sha256": "d5357600c293ddff8eaebdffe161314fdf0baf72397051a11965af3129826e44",
+  "source_bytes": 2092428,
+  "zip_bytes": 977621,
+  "release": 322,
+  "version": "v1.0.114",
+  "source_repo": "tterx/pad0-all-in-one",
+  "source_commit": "dcdf1a10c4ef93c0d5ea648246de9398a03a7843",
+  "source_pull_request": "https://github.com/tterx/pad0-all-in-one/pull/25",
+  "windows_ci": {
+    "run_id": 43926753524,
+    "conclusion": "success",
+    "head_sha": "dcdf1a10c4ef93c0d5ea648246de9398a03a7843",
+    "url": "https://github.com/tterx/pad0-all-in-one/actions/runs/43926753524",
+    "attempt": 1,
+    "tests": 1543,
+    "suites": 142,
+    "steps": 154
+  },
+  "local_checks": {
+    "related": {
+      "tests": 181,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "seconds": 61.796,
+      "modules": [
+        "test_manual_capture322",
+        "test_manual_latency321",
+        "test_manual_context319",
+        "test_manual_presence318",
+        "test_master_button304",
+        "test_learned_presence314",
+        "test_capture_wait263",
+        "test_preparation_latency262",
+        "test_condition_delivery261",
+        "test_condition_recovery260",
+        "test_execution_condition266",
+        "test_combo_objective303",
+        "test_release_compaction316"
+      ]
+    },
+    "bundle": {
+      "tests": 103,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "seconds": 51.529,
+      "modules": [
+        "test_manual_capture322",
+        "test_manual_latency321",
+        "test_manual_context319",
+        "test_manual_presence318",
+        "test_combo_objective303",
+        "test_capture_wait263"
+      ]
+    }
+  },
+  "new_regressions": 11,
+  "unchanged_modules_sha256": {
+    "pad0_solver.py": "b86ef61e32cfdcaa651269f8ce0fb685b07a795e71cae653c492fe174f418036",
+    "pad0_input.py": "c0cee53f925c51923605cb3e5beda1912c45512473d99560039218c251f32539",
+    "pad0_ai.py": "30f46d4eda0dc49c0a825bfd2742cc7bba50b6bf33382ef6e86661ac0a8483a0",
+    "pad0_drop_learning.py": "3b5a714e752004fc414c5ec459db2f3d7d5accd2618e70c24ebcda8f8aad10b5",
+    "pad0_ui.py": "b4d5e314f0732508980ccb9ac878adf9d38b71b328e9b156f973509398093740"
+  },
+  "only_app_methods_changed": [
+    "_master_path_button_board_visible",
+    "_master_manual_observation",
+    "_prefind_probe_worker"
+  ],
+  "reproduced_baseline": {
+    "cache_hit_blocked_by_unrelated_inference": true,
+    "capture_label_includes_inference": true,
+    "cold_presence_requires_full_window_bootstrap": true,
+    "tests": 11,
+    "failures": 7,
+    "errors": 1
+  },
+  "policy": {
+    "scope": "master_multicolor",
+    "inference_outside_cache_lock": true,
+    "identical_rgb_pixels_only": true,
+    "inference_cache_entries": 4,
+    "late_epoch_or_model_results_not_cached": true,
+    "full_captures_still_required": true,
+    "two_matching_captures_before_readiness": true,
+    "capture_timestamps_not_renewed_by_cache": true,
+    "cold_geometry_requires_current_positive_pixels": true,
+    "cold_native_host_and_geometry_required": true,
+    "presence_capture_expiry_seconds": 1.2,
+    "unready_f6_deadline_unchanged": true,
+    "presence_grants_no_recognition_or_input": true,
+    "maximum_combo_objective_and_search_budgets_unchanged": true,
+    "final_board_timer_condition_and_release_checks_retained": true,
+    "other_modes_original_behavior": true,
+    "gesture_timing_unchanged": true,
+    "branch_and_receipt_records_unchanged": true
+  },
+  "known_limitation": {
+    "current_runtime_stall": "Exact native capture/inference point unconfirmed without current condition-error ZIP; fixes cover reproducible contention and cold-button dependencies",
+    "report222_automatic_input_interruption": "Unresolved; outside the manual preparation change"
+  },
+  "physical_windows_mumu_verified": false,
+  "automatic_update_channel_changed": false,
+  "publication": {
+    "approved_release": true,
+    "source_pr_merged": true,
+    "source_branch": "codex/v1-0-114-manual-capture",
+    "mode": "stable_release_and_auto_update",
+    "source_main_commit": "257ed47b072e0b24471a16acebc9b73e120b8edb",
+    "source_tree_matches_tested_head": true
+  }
+}
