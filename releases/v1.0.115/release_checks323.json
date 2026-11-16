@@ -1,0 +1,106 @@
+{
+  "zip_sha256": "584914bda0fe10831f0d63e616e60445bc9e10c72cda1e52ac00524d1f3e723f",
+  "source_sha256": "ebec46918587ad0cc99fde5680147b2f84eed271fc457997e283175f14b15ae4",
+  "source_bytes": 2095689,
+  "zip_bytes": 978243,
+  "release": 323,
+  "version": "v1.0.115",
+  "source_repo": "tterx/pad0-all-in-one",
+  "source_commit": "311e048488b47a8bb428dbcf75843909c6bfdc07",
+  "source_pull_request": "https://github.com/tterx/pad0-all-in-one/pull/26",
+  "windows_ci": {
+    "run_id": 43965148009,
+    "conclusion": "success",
+    "head_sha": "311e048488b47a8bb428dbcf75843909c6bfdc07",
+    "url": "https://github.com/tterx/pad0-all-in-one/actions/runs/43965148009",
+    "attempt": 1,
+    "tests": 1552,
+    "suites": 143,
+    "steps": 155
+  },
+  "local_checks": {
+    "related": {
+      "tests": 146,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "seconds": 46.738,
+      "modules": [
+        "test_manual_controls323",
+        "test_condition_save258",
+        "test_recognition_save259",
+        "test_manual_context319",
+        "test_manual_presence318",
+        "test_master_button304",
+        "test_stable_hud265",
+        "test_manual_latency321",
+        "test_manual_capture322",
+        "test_combo_objective303"
+      ]
+    },
+    "bundle": {
+      "tests": 147,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "seconds": 55.422,
+      "modules": [
+        "test_manual_controls323",
+        "test_condition_save258",
+        "test_recognition_save259",
+        "test_manual_context319",
+        "test_manual_presence318",
+        "test_master_button304",
+        "test_stable_hud265",
+        "test_manual_latency321",
+        "test_manual_capture322",
+        "test_combo_objective303"
+      ]
+    }
+  },
+  "new_regressions": 9,
+  "unchanged_modules_sha256": {
+    "pad0_solver.py": "b86ef61e32cfdcaa651269f8ce0fb685b07a795e71cae653c492fe174f418036",
+    "pad0_input.py": "c0cee53f925c51923605cb3e5beda1912c45512473d99560039218c251f32539",
+    "pad0_ai.py": "30f46d4eda0dc49c0a825bfd2742cc7bba50b6bf33382ef6e86661ac0a8483a0",
+    "pad0_drop_learning.py": "3b5a714e752004fc414c5ec459db2f3d7d5accd2618e70c24ebcda8f8aad10b5"
+  },
+  "only_app_methods_changed": [
+    "_route_button_game_in_foreground",
+    "save_manual_board_error",
+    "_save_master_control_diagnostic",
+    "save_button_detection_debug",
+    "_accept_attribute_probe"
+  ],
+  "policy": {
+    "scope": "master_multicolor",
+    "own_main_focus_allowed": true,
+    "native_puzzle_occlusion_required": true,
+    "first_changed_board_invalidates_old_route_and_readiness": true,
+    "two_matching_fresh_reads_required": true,
+    "old_shortage_cleared_until_confirmation": true,
+    "f12_independent_of_focus_capture_busy_and_inference": true,
+    "missing_original_saves_state_only_without_old_images": true,
+    "native_and_search_inspection_errors_still_saved": true,
+    "no_screen_or_game_input_on_state_save": true,
+    "maximum_combo_objective_and_search_budgets_unchanged": true,
+    "final_execution_checks_unchanged": true,
+    "other_modes_original_behavior": true,
+    "gesture_timing_unchanged": true,
+    "branch_records_unchanged": true
+  },
+  "known_limitation": {
+    "current_runtime_stall": "Two 12-sample window logs confirm focus-dependent presentation only; actual colour/solver failure remains unconfirmed without pixels or internal state",
+    "report222_automatic_input_interruption": "Unresolved; outside the manual preparation change"
+  },
+  "physical_windows_mumu_verified": false,
+  "automatic_update_channel_changed": false,
+  "publication": {
+    "approved_release": true,
+    "source_pr_merged": true,
+    "source_branch": "codex/v1-0-115-manual-controls",
+    "mode": "stable_release_and_auto_update",
+    "source_main_commit": "1ab50cade583cd5accd3f7bbb98b6f94b20b776d",
+    "source_tree_matches_tested_head": true
+  }
+}
