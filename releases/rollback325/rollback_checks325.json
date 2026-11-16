@@ -23,5 +23,21 @@
     "separate_starred_normal_hidden_records_preserved": true,
     "application_executed": false
   },
-  "physical_regression_recovery_verified": false
+  "physical_regression_recovery_verified": false,
+  "latest_restored": "v1.0.115",
+  "v116_quarantined": true,
+  "release_workflow": "https://github.com/tterx/pad0-updates/actions/runs/43974675587",
+  "live_launcher_verification": {
+    "scope": "live_manifest_and_live_source",
+    "old_release": 324,
+    "new_release": 325,
+    "source_sha256": "ebec46918587ad0cc99fde5680147b2f84eed271fc457997e283175f14b15ae4",
+    "source_bytes": 2095689,
+    "backup_preserved": true,
+    "personal_data_preserved": true,
+    "branch_history_preserved": true,
+    "repeat_update_skipped": true,
+    "separate_starred_normal_hidden_records_preserved": true,
+    "application_executed": false
+  }
 }
