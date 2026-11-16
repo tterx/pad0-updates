@@ -1,0 +1,25 @@
+name: Publish checked v1.0.107 release
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths: [.github/workflows/publish315.yml]
+permissions:
+  contents: write
+concurrency:
+  group: publish-v1-0-107-candidate-315
+  cancel-in-progress: false
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout: |
+            .github/scripts
+            releases/v1.0.107
+      - name: Verify exact checked bytes and publish release assets
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: python .github/scripts/publish315.py
