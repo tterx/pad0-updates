@@ -73,3 +73,11 @@ pixels, controlled transitions, mocked input/number reading and real Tk renderin
 Windows CI: https://github.com/tterx/pad0-all-in-one/actions/runs/43780441339 (success; source d2b6ec1a7774dc1a87e89dc8a20fe0ef34f6d88d); 1,410 executions, 133 suites. Exact package source SHA256 matches.
 
 [Public replay comparison](../../releases/v1.0.107/replay315.json).
+
+Publication verified: PR18 merged as 3a200aaa653f732544b5cb0b3f6bea6492316911;
+its tree matches the Windows-tested head. Publisher run 43782126931 succeeded.
+The actual public stable latest v1.0.107 ZIP passed SHA256, CRC, version and updater-state
+checks. Its source equals the live immutable raw payload. Root update.json points to315.
+The genuine v1.0.106 launcher installed315 from the live manifest in an isolated
+installation, preserved its backup, settings, inventory and stage/branch-history
+markers, then skipped a repeat update. No PAD0 or physical game input was executed.
