@@ -52,3 +52,11 @@ EX ranking and separate ordinary/starred/Hidden stage records are unchanged.
 Windows CI: https://github.com/tterx/pad0-all-in-one/actions/runs/43809690416 (success; source 0d1c44c3b778191020c362c23d85c0ef1ce7864f); 1,485 executions, 138 suites. Exact package source SHA256 matches.
 
 [Public replay comparison](../../releases/v1.0.110/replay318.json).
+
+Publication verified: PR21 merged as 8cf68a8cefa3bbb9be01798d7e3284812cd44bd8;
+its tree matches the Windows-tested head. Publisher run 43811239591 succeeded.
+The actual public stable latest v1.0.110 ZIP passed SHA256, CRC, version and updater-state
+checks. Its source equals the live immutable raw payload. Root update.json points to318.
+The genuine v1.0.109 launcher installed318 from the live manifest in an isolated
+installation, preserved its backup, settings, inventory and stage/branch-history
+markers, then skipped a repeat update. No PAD0 or physical game input was executed.
