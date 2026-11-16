@@ -116,6 +116,8 @@
     "source_branch": "codex/v1-0-110-manual-skill-button",
     "mode": "stable_release_and_auto_update",
     "source_main_commit": "8cf68a8cefa3bbb9be01798d7e3284812cd44bd8",
-    "source_tree_matches_tested_head": true
+    "source_tree_matches_tested_head": true,
+    "payload_commit": "88c3a2d946ce8591709e9b094a5f5e45b2ab6d86",
+    "immutable_source_url": "https://raw.githubusercontent.com/tterx/pad0-updates/88c3a2d946ce8591709e9b094a5f5e45b2ab6d86/releases/v1.0.110/pad0_overlay.py"
   }
 }
