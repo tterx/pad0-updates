@@ -36,3 +36,13 @@ runtime colour-count or solver-failure cause on the user's PC. Report222's earli
 automatic input interruption is outside this change and remains unresolved.
 
 Windows CI: https://github.com/tterx/pad0-all-in-one/actions/runs/43965148009 (success; source 311e048488b47a8bb428dbcf75843909c6bfdc07); 1552 tests, 143 suites. Exact package source SHA256 matches.
+
+Publication verified: PR26 merged as 1ab50cade583cd5accd3f7bbb98b6f94b20b776d.
+Its tree matches the Windows-tested head. Publisher run 43967457714 succeeded.
+The actual stable latest v1.0.115 download passed SHA256, ZIP CRC, version and updater-state checks.
+Its source matches the immutable payload and root update.json activates323.
+The genuine v1.0.114 launcher installed323 from the live manifest in an isolated installation,
+retained its backup, settings, inventory and four separate stage/branch markers,
+and skipped a repeat update. No PAD0 or physical game input was executed.
+The exact colour-count and search failure remains unconfirmed from window-only reports;
+focus, stale readiness and gated diagnostic writes are addressed by this patch.
