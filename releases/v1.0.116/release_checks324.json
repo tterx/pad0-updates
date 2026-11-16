@@ -97,6 +97,8 @@
     "source_branch": "codex/v1-0-116-visible-board",
     "mode": "stable_release_and_auto_update",
     "source_main_commit": "0fdb94949d8e912c867f1d499b4078c76c3d27bd",
-    "source_tree_matches_tested_head": true
+    "source_tree_matches_tested_head": true,
+    "payload_commit": "d14adb59d81f47ad0804870782a3538d38fee06b",
+    "immutable_source_url": "https://raw.githubusercontent.com/tterx/pad0-updates/d14adb59d81f47ad0804870782a3538d38fee06b/releases/v1.0.116/pad0_overlay.py"
   }
 }
