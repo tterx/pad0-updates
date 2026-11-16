@@ -1,0 +1,25 @@
+name: Publish checked v1.0.114 release
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths: [.github/workflows/publish322.yml]
+permissions:
+  contents: write
+concurrency:
+  group: publish-v1-0-114-candidate-322
+  cancel-in-progress: false
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout: |
+            .github/scripts
+            releases/v1.0.114
+      - name: Verify exact checked bytes and publish release assets
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: python .github/scripts/publish322.py
