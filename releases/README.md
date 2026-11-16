@@ -6,6 +6,7 @@
 
 | 버전 | 내부 순번 | ZIP | 배포 검증 | 업데이트 기록 |
 | --- | --- | --- | --- | --- |
+| v1.0.110 | 318 | [pad0_overlay_windows_v1_0_110.zip](v1.0.110/pad0_overlay_windows_v1_0_110.zip) | [검증](v1.0.110/release_checks318.json) | [update.json](v1.0.110/update.json) |
 | v1.0.109 | 317 | [pad0_overlay_windows_v1_0_109.zip](v1.0.109/pad0_overlay_windows_v1_0_109.zip) | [검증](v1.0.109/release_checks317.json) | [update.json](v1.0.109/update.json) |
 | v1.0.108 | 316 | [pad0_overlay_windows_v1_0_108.zip](v1.0.108/pad0_overlay_windows_v1_0_108.zip) | [검증](v1.0.108/release_checks316.json) | [update.json](v1.0.108/update.json) |
 | v1.0.107 | 315 | [pad0_overlay_windows_v1_0_107.zip](v1.0.107/pad0_overlay_windows_v1_0_107.zip) | [검증](v1.0.107/release_checks315.json) | [update.json](v1.0.107/update.json) |
