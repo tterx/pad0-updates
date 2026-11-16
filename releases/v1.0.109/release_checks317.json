@@ -1,0 +1,140 @@
+{
+  "zip_sha256": "521cc171a679c39df421f8c3b144d38b9b0cc7f65ab65e69c79a97f2c8801a46",
+  "source_sha256": "8376ff15a2963265be1174b443965c3fadd30dcc21b9d7c3dca4aec22f3776aa",
+  "source_bytes": 2079659,
+  "zip_bytes": 974682,
+  "release": 317,
+  "version": "v1.0.109",
+  "source_repo": "tterx/pad0-all-in-one",
+  "source_commit": "5b1b15251246bbd6c43aa819445207b9d5d34d45",
+  "source_pull_request": "https://github.com/tterx/pad0-all-in-one/pull/20",
+  "windows_ci": {
+    "run_id": 43806884968,
+    "conclusion": "success",
+    "head_sha": "5b1b15251246bbd6c43aa819445207b9d5d34d45",
+    "url": "https://github.com/tterx/pad0-all-in-one/actions/runs/43806884968",
+    "tests": 1464,
+    "suites": 137,
+    "steps": 149
+  },
+  "local_checks": {
+    "related-final": {
+      "tests": 231,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "seconds": 175.496,
+      "modules": [
+        "test_farming_map317",
+        "test_repeat_map299",
+        "test_auto_repeat266",
+        "test_stage_continue283",
+        "test_defeat296",
+        "test_defeat_result297",
+        "test_upload_continuation302",
+        "test_upload_feedback300",
+        "test_upload_followup305",
+        "test_retarget254",
+        "test_branch_learning305",
+        "test_branch_stage274",
+        "test_party_stage306",
+        "test_branch_source310",
+        "test_stage_number312",
+        "test_party_archive316"
+      ]
+    },
+    "bundle-final": {
+      "tests": 170,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "seconds": 126.536,
+      "modules": [
+        "test_farming_map317",
+        "test_repeat_map299",
+        "test_stage_continue283",
+        "test_defeat_result297",
+        "test_upload_continuation302",
+        "test_upload_feedback300",
+        "test_branch_learning305",
+        "test_branch_source310",
+        "test_stage_number312",
+        "test_party_stage306",
+        "test_ai_module143",
+        "test_ui_module144",
+        "test_upload_followup305"
+      ]
+    },
+    "new-final": {
+      "tests": 27,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "seconds": 7.467,
+      "modules": [
+        "test_farming_map317"
+      ]
+    }
+  },
+  "new_regressions": 27,
+  "private_replay": {
+    "details": "replay317.json",
+    "report": 220,
+    "actual_map_and_entry_pixels": true,
+    "production_korean_rapidocr": true,
+    "real_ex5_focused_scores": [
+      0.99028,
+      0.99073
+    ],
+    "controlled_defeat_mana_and_rewards": true,
+    "controller_mocked": true,
+    "acquisition_selection_attestation_controlled_from_report": true,
+    "header_classification_controlled": true,
+    "input_preflight_mocked": true,
+    "old_unexpected_map_failure": true,
+    "new_failure": false,
+    "new_same_stage_portrait_clicks": 1,
+    "new_controlled_stock": 1,
+    "old_receipts": [
+      {}
+    ],
+    "new_receipts": [
+      {},
+      {
+        "a": 1
+      }
+    ]
+  },
+  "policy": {
+    "scope": "master_multicolor_material_result_to_map_return",
+    "maximum_combos_retained": true,
+    "no_forced_healing": true,
+    "all_eight_drop_model_unchanged": true,
+    "input_pacing_unchanged": true,
+    "input_budgets_unchanged": true,
+    "final_layout_and_release_checks_retained": true,
+    "battle_touch_retry_or_extra_DOWN": false,
+    "result_map_navigation_actions": [
+      "same_stage_portrait",
+      "challenge_after_fresh_entry_preflight"
+    ],
+    "existing_branch_learning_and_EX_ranking_unchanged": true,
+    "starred_normal_and_Hidden_stage_records_separate": true,
+    "unattested_manual_world_not_guessed": true,
+    "other_modes_and_finite_repeat_map_behavior_unchanged": true,
+    "owned_credited_receipt_required": true,
+    "same_stage_and_original_six_party_portraits_required": true,
+    "no_guessed_empty_reward_credit": true,
+    "high_resolution_identity_algorithm_and_thresholds_unchanged": true
+  },
+  "physical_windows_mumu_verified": false,
+  "automatic_update_channel_changed": false,
+  "publication": {
+    "approved_release": true,
+    "source_pr_merged": true,
+    "source_branch": "codex/v1-0-109-challenge-return",
+    "mode": "stable_release_and_auto_update",
+    "source_main_commit": "9628f1357b5247b4db093d4f26f7905eb8a428ce",
+    "source_tree_matches_tested_head": true
+  }
+}

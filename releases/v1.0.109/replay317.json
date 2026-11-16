@@ -1,0 +1,586 @@
+{
+  "old_v108": {
+    "report": 220,
+    "actual_map_and_entry_pixels": true,
+    "production_korean_rapidocr": true,
+    "stage": {
+      "tokens": [],
+      "readings": [
+        {
+          "text": "EX5",
+          "score": 0.7711,
+          "number": "EX5"
+        },
+        {
+          "text": "EX5",
+          "score": 0.7989,
+          "number": "EX5"
+        }
+      ],
+      "method": "focused_rgb_stage_label",
+      "focused_readings": [
+        {
+          "text": "EX5",
+          "score": 0.99438,
+          "number": "EX5"
+        },
+        {
+          "text": "EX5",
+          "score": 0.99453,
+          "number": "EX5"
+        }
+      ],
+      "number": "EX5"
+    },
+    "failure_called": 1,
+    "primary_error": "재료 파밍 중지 · 자동파밍 진행 중 예상하지 못한 화면: 챌린지던전 · 자동파밍 획득 마나 12",
+    "actions": [
+      [
+        "entry",
+        1050.0,
+        720.0
+      ],
+      [
+        "defeat",
+        800.0,
+        608.5
+      ],
+      [
+        "mana",
+        800,
+        800
+      ],
+      [
+        "reward",
+        800.5,
+        793.0
+      ]
+    ],
+    "target_stock": 0,
+    "receipt_amounts": [
+      {}
+    ],
+    "map_returns": [],
+    "real_ocr_readings": [
+      [
+        "EX5",
+        0.77105
+      ],
+      [
+        "EX5",
+        0.79891
+      ],
+      [
+        "EX5",
+        0.99438
+      ],
+      [
+        "EX5",
+        0.99453
+      ]
+    ],
+    "controls": {
+      "defeat_mana_and_rewards_generated": true,
+      "target_ledger_and_reward_quantities_controlled": true,
+      "header_classification_controlled": true,
+      "acquisition_selection_attestation_controlled_from_report": true,
+      "android_controller_mocked": true,
+      "battle_turns_mocked": true,
+      "input_preflight_mocked": true
+    },
+    "physical_mumu_verified": false,
+    "application_input_executed": false
+  },
+  "fixed_v109": {
+    "report": 220,
+    "actual_map_and_entry_pixels": true,
+    "production_korean_rapidocr": true,
+    "stage": {
+      "tokens": [],
+      "readings": [
+        {
+          "text": "EX5",
+          "score": 0.7711,
+          "number": "EX5"
+        },
+        {
+          "text": "EX5",
+          "score": 0.7989,
+          "number": "EX5"
+        }
+      ],
+      "method": "focused_rgb_stage_label",
+      "focused_readings": [
+        {
+          "text": "EX5",
+          "score": 0.99438,
+          "number": "EX5"
+        },
+        {
+          "text": "EX5",
+          "score": 0.99453,
+          "number": "EX5"
+        }
+      ],
+      "number": "EX5"
+    },
+    "failure_called": 0,
+    "primary_error": null,
+    "actions": [
+      [
+        "entry",
+        1050.0,
+        720.0
+      ],
+      [
+        "defeat",
+        800.0,
+        608.5
+      ],
+      [
+        "mana",
+        800,
+        800
+      ],
+      [
+        "reward",
+        800.5,
+        793.0
+      ],
+      [
+        "map",
+        1193.8011265164644,
+        425.6854419410745
+      ],
+      [
+        "entry",
+        1050.0,
+        720.0
+      ],
+      [
+        "reward",
+        800.5,
+        793.0
+      ],
+      [
+        "lobby",
+        600.0,
+        722.0
+      ]
+    ],
+    "target_stock": 1,
+    "receipt_amounts": [
+      {},
+      {
+        "a": 1
+      }
+    ],
+    "map_returns": [
+      {
+        "stage": "EX5",
+        "session": "f3ec7ee46378408384b386dd3c73fa1d",
+        "defeated": true,
+        "header": "챌린지던전",
+        "steps": [
+          {
+            "target": {
+              "point": [
+                1193.8011265164644,
+                425.6854419410745
+              ],
+              "cleared": null,
+              "box": [
+                1114,
+                504,
+                1274,
+                535
+              ]
+            },
+            "labels": [
+              {
+                "box": [
+                  551,
+                  504,
+                  711,
+                  535
+                ],
+                "number": "★6-24",
+                "readings": [
+                  [
+                    "6-24",
+                    0.98802
+                  ],
+                  [
+                    "6-24",
+                    0.99036
+                  ]
+                ],
+                "focused_readings": [],
+                "verified_number": "★6-24",
+                "star_verified": true,
+                "hidden": false
+              },
+              {
+                "box": [
+                  1114,
+                  504,
+                  1274,
+                  535
+                ],
+                "number": "EX5",
+                "readings": [
+                  [
+                    "ㄴX6",
+                    0.4021
+                  ],
+                  [
+                    "ㄴX5",
+                    0.40818
+                  ]
+                ],
+                "focused_readings": [
+                  [
+                    "EX5",
+                    0.99028
+                  ],
+                  [
+                    "EX5",
+                    0.99073
+                  ]
+                ],
+                "verified_number": "EX5",
+                "star_verified": false,
+                "hidden": false
+              },
+              {
+                "box": [
+                  270,
+                  641,
+                  430,
+                  672
+                ],
+                "number": "★6-23",
+                "readings": [
+                  [
+                    "6-23",
+                    0.99961
+                  ],
+                  [
+                    "6-23",
+                    0.99961
+                  ]
+                ],
+                "focused_readings": [],
+                "verified_number": "★6-23",
+                "star_verified": true,
+                "hidden": false
+              },
+              {
+                "box": [
+                  833,
+                  641,
+                  993,
+                  672
+                ],
+                "number": "★6-25",
+                "readings": [
+                  [
+                    "6-25",
+                    0.99943
+                  ],
+                  [
+                    "6-25",
+                    0.99943
+                  ]
+                ],
+                "focused_readings": [],
+                "verified_number": "★6-25",
+                "star_verified": true,
+                "hidden": false
+              },
+              {
+                "box": [
+                  1395,
+                  641,
+                  1555,
+                  672
+                ],
+                "number": "★7-1",
+                "readings": [
+                  [
+                    "7-1",
+                    0.92164
+                  ],
+                  [
+                    "7-1",
+                    0.94608
+                  ]
+                ],
+                "focused_readings": [],
+                "verified_number": "★7-1",
+                "star_verified": true,
+                "hidden": false
+              }
+            ]
+          },
+          {
+            "target": {
+              "point": [
+                1193.8011265164644,
+                425.6854419410745
+              ],
+              "cleared": null,
+              "box": [
+                1114,
+                504,
+                1274,
+                535
+              ]
+            },
+            "labels": [
+              {
+                "box": [
+                  551,
+                  504,
+                  711,
+                  535
+                ],
+                "number": "★6-24",
+                "readings": [
+                  [
+                    "6-24",
+                    0.98802
+                  ],
+                  [
+                    "6-24",
+                    0.99036
+                  ]
+                ],
+                "focused_readings": [],
+                "verified_number": "★6-24",
+                "star_verified": true,
+                "hidden": false
+              },
+              {
+                "box": [
+                  1114,
+                  504,
+                  1274,
+                  535
+                ],
+                "number": "EX5",
+                "readings": [
+                  [
+                    "ㄴX6",
+                    0.4021
+                  ],
+                  [
+                    "ㄴX5",
+                    0.40818
+                  ]
+                ],
+                "focused_readings": [
+                  [
+                    "EX5",
+                    0.99028
+                  ],
+                  [
+                    "EX5",
+                    0.99073
+                  ]
+                ],
+                "verified_number": "EX5",
+                "star_verified": false,
+                "hidden": false
+              },
+              {
+                "box": [
+                  270,
+                  641,
+                  430,
+                  672
+                ],
+                "number": "★6-23",
+                "readings": [
+                  [
+                    "6-23",
+                    0.99961
+                  ],
+                  [
+                    "6-23",
+                    0.99961
+                  ]
+                ],
+                "focused_readings": [],
+                "verified_number": "★6-23",
+                "star_verified": true,
+                "hidden": false
+              },
+              {
+                "box": [
+                  833,
+                  641,
+                  993,
+                  672
+                ],
+                "number": "★6-25",
+                "readings": [
+                  [
+                    "6-25",
+                    0.99943
+                  ],
+                  [
+                    "6-25",
+                    0.99943
+                  ]
+                ],
+                "focused_readings": [],
+                "verified_number": "★6-25",
+                "star_verified": true,
+                "hidden": false
+              },
+              {
+                "box": [
+                  1395,
+                  641,
+                  1555,
+                  672
+                ],
+                "number": "★7-1",
+                "readings": [
+                  [
+                    "7-1",
+                    0.92164
+                  ],
+                  [
+                    "7-1",
+                    0.94608
+                  ]
+                ],
+                "focused_readings": [],
+                "verified_number": "★7-1",
+                "star_verified": true,
+                "hidden": false
+              }
+            ]
+          }
+        ],
+        "verified": true,
+        "action": "same_stage_portrait",
+        "challenge_sent": true
+      }
+    ],
+    "real_ocr_readings": [
+      [
+        "EX5",
+        0.77105
+      ],
+      [
+        "EX5",
+        0.79891
+      ],
+      [
+        "EX5",
+        0.99438
+      ],
+      [
+        "EX5",
+        0.99453
+      ],
+      [
+        "6-24",
+        0.98802
+      ],
+      [
+        "6-24",
+        0.99036
+      ],
+      [
+        "ㄴX6",
+        0.4021
+      ],
+      [
+        "ㄴX5",
+        0.40818
+      ],
+      [
+        "EX5",
+        0.99028
+      ],
+      [
+        "EX5",
+        0.99073
+      ],
+      [
+        "6-23",
+        0.99961
+      ],
+      [
+        "6-23",
+        0.99961
+      ],
+      [
+        "6-25",
+        0.99943
+      ],
+      [
+        "6-25",
+        0.99943
+      ],
+      [
+        "7-1",
+        0.92164
+      ],
+      [
+        "7-1",
+        0.94608
+      ],
+      [
+        "EX5",
+        0.77105
+      ],
+      [
+        "EX5",
+        0.79891
+      ],
+      [
+        "EX5",
+        0.99438
+      ],
+      [
+        "EX5",
+        0.99453
+      ],
+      [
+        "EX5",
+        0.77105
+      ],
+      [
+        "EX5",
+        0.79891
+      ],
+      [
+        "EX5",
+        0.99438
+      ],
+      [
+        "EX5",
+        0.99453
+      ]
+    ],
+    "controls": {
+      "defeat_mana_and_rewards_generated": true,
+      "target_ledger_and_reward_quantities_controlled": true,
+      "header_classification_controlled": true,
+      "acquisition_selection_attestation_controlled_from_report": true,
+      "android_controller_mocked": true,
+      "battle_turns_mocked": true,
+      "input_preflight_mocked": true
+    },
+    "physical_mumu_verified": false,
+    "application_input_executed": false
+  },
+  "uploaded_full_screenshots_included": false,
+  "physical_mumu_verified": false,
+  "application_input_executed": false
+}
