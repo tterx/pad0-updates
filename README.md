@@ -1,12 +1,12 @@
 # 퍼드0 올인원
 
-[**프로그램 ZIP 다운로드 · v1.0.113**](https://github.com/tterx/pad0-updates/releases/download/v1.0.113/pad0_overlay_windows_v1_0_113.zip) · [전체 릴리스](https://github.com/tterx/pad0-updates/releases)
+[**프로그램 ZIP 다운로드 · v1.0.114**](https://github.com/tterx/pad0-updates/releases/download/v1.0.114/pad0_overlay_windows_v1_0_114.zip) · [전체 릴리스](https://github.com/tterx/pad0-updates/releases)
 
-현재 표시 버전은 **1.0.113**, 자동 업데이트 내부 순번은 **321**입니다.
+현재 표시 버전은 **1.0.114**, 자동 업데이트 내부 순번은 **322**입니다.
 
 새로 설치할 때는 ZIP을 풀고 `시작.vbs`를 실행하세요. 기존 설치는 PAD0를 완전히 종료한 뒤 `시작.vbs`를 다시 실행하면 업데이트됩니다.
 
-달인다속의 동일 픽셀 속성·가림 판독과 중복 전체 화면 확인을 정리해 계산 준비의 경쟁을 줄였습니다. 최대 콤보 탐색과 최종 검사는 유지합니다. [변경·검증 범위](docs/reviews/REVIEW321.md) · [검증 기록](releases/v1.0.113/release_checks321.json)
+달인다속 수동 판독의 공용 잠금 대기를 제거하고, 최초 버튼을 실제 퍼즐판 확인으로 준비하도록 보완했습니다. 최대 콤보 탐색과 최종 검사는 유지합니다. [변경·검증 범위](docs/reviews/REVIEW322.md) · [검증 기록](releases/v1.0.114/release_checks322.json)
 
 ## 저장소 안내
 
