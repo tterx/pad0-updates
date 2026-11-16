@@ -1,12 +1,12 @@
 # 퍼드0 올인원
 
-[**프로그램 ZIP 다운로드 · v1.0.111**](https://github.com/tterx/pad0-updates/releases/download/v1.0.111/pad0_overlay_windows_v1_0_111.zip) · [전체 릴리스](https://github.com/tterx/pad0-updates/releases)
+[**프로그램 ZIP 다운로드 · v1.0.112**](https://github.com/tterx/pad0-updates/releases/download/v1.0.112/pad0_overlay_windows_v1_0_112.zip) · [전체 릴리스](https://github.com/tterx/pad0-updates/releases)
 
-현재 표시 버전은 **1.0.111**, 자동 업데이트 내부 순번은 **319**입니다.
+현재 표시 버전은 **1.0.112**, 자동 업데이트 내부 순번은 **320**입니다.
 
 새로 설치할 때는 ZIP을 풀고 `시작.vbs`를 실행하세요. 기존 설치는 PAD0를 완전히 종료한 뒤 `시작.vbs`를 다시 실행하면 업데이트됩니다.
 
-달인다속 일반 수동 시작의 퍼즐 좌표 초기화·창 이동·F6 무좌표 대기를 보완했습니다. Windows 검사 1,506개와 독립 번들 169개 통과. [변경·검증 범위](docs/reviews/REVIEW319.md) · [검증 기록](releases/v1.0.111/release_checks319.json)
+달인다속 수동 버튼 판독 지연과221번 방해 드롭 위치 탐색을 수정했습니다. 222번 입력 유지 중단 원인은 미확정이며 진단을 구분합니다. [변경·검증 범위](docs/reviews/REVIEW320.md) · [검증 기록](releases/v1.0.112/release_checks320.json)
 
 ## 저장소 안내
 
