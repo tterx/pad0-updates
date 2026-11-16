@@ -66,3 +66,11 @@ Entry Confirmation before reopening automatic party registration.
 Windows CI: https://github.com/tterx/pad0-all-in-one/actions/runs/43802417626 (success; source d5f0a694d27e42e169f2366eec2beab592dfb943); 1,437 executions, 136 suites. Exact package source SHA256 matches.
 
 [Public replay comparison](../../releases/v1.0.108/replay316.json).
+
+Publication verified: PR19 merged as f3931fc5559393478da0e19b4ee9c6faaf54da5a;
+its tree matches the Windows-tested head. Publisher run 43803697893 succeeded.
+The actual public stable latest v1.0.108 ZIP passed SHA256, CRC, version and updater-state
+checks. Its source equals the live immutable raw payload. Root update.json points to316.
+The genuine v1.0.107 launcher installed316 from the live manifest in an isolated
+installation, preserved its backup, settings, inventory and stage/branch-history
+markers, then skipped a repeat update. No PAD0 or physical game input was executed.
