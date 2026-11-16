@@ -1,0 +1,1313 @@
+{
+  "old_v111": {
+    "actual_uploaded_pixels": true,
+    "real_tk": true,
+    "concurrent_production_roi_workers": true,
+    "native_api_and_capture_emulated": true,
+    "full_window_bootstrap_exercised": false,
+    "solver_feedback_controlled": true,
+    "game_input_executed": false,
+    "physical_windows_mumu_verified": false,
+    "cases": [
+      {
+        "case": "ordinary_manual",
+        "stages": {
+          "board": {
+            "first_visible": 3.592,
+            "hidden_after_first_visible": 3,
+            "visible_after_settle": 8,
+            "samples": 78,
+            "ready_at_end": true
+          },
+          "menu": {
+            "first_visible": 0.2,
+            "hidden_after_first_visible": 62,
+            "visible_after_settle": 0,
+            "samples": 83,
+            "ready_at_end": true
+          },
+          "restored_board": {
+            "first_visible": 1.397,
+            "hidden_after_first_visible": 33,
+            "visible_after_settle": 16,
+            "samples": 85,
+            "ready_at_end": true
+          }
+        },
+        "calculation_calls": 0
+      },
+      {
+        "case": "F10_manual",
+        "stages": {
+          "board": {
+            "first_visible": null,
+            "hidden_after_first_visible": 0,
+            "visible_after_settle": 0,
+            "samples": 72,
+            "ready_at_end": true
+          },
+          "menu": {
+            "first_visible": null,
+            "hidden_after_first_visible": 0,
+            "visible_after_settle": 0,
+            "samples": 78,
+            "ready_at_end": true
+          },
+          "restored_board": {
+            "first_visible": 3.426,
+            "hidden_after_first_visible": 7,
+            "visible_after_settle": 8,
+            "samples": 83,
+            "ready_at_end": true
+          }
+        },
+        "calculation_calls": 0
+      }
+    ],
+    "worker_timings": [
+      {
+        "case": "ordinary_manual",
+        "samples": [
+          {
+            "stage": "board",
+            "seconds": 0.107,
+            "visible": false,
+            "ready": false,
+            "candidate": false,
+            "epoch": 190,
+            "proof_age": null,
+            "worker_seconds": null,
+            "presence_model": null
+          },
+          {
+            "stage": "board",
+            "seconds": 0.669,
+            "visible": false,
+            "ready": false,
+            "candidate": false,
+            "epoch": 190,
+            "proof_age": null,
+            "worker_seconds": null,
+            "presence_model": null
+          },
+          {
+            "stage": "board",
+            "seconds": 1.15,
+            "visible": false,
+            "ready": false,
+            "candidate": false,
+            "epoch": 190,
+            "proof_age": null,
+            "worker_seconds": null,
+            "presence_model": null
+          },
+          {
+            "stage": "board",
+            "seconds": 1.651,
+            "visible": false,
+            "ready": false,
+            "candidate": true,
+            "epoch": 190,
+            "proof_age": 1.652,
+            "worker_seconds": 1.232,
+            "presence_model": null
+          },
+          {
+            "stage": "board",
+            "seconds": 2.151,
+            "visible": false,
+            "ready": false,
+            "candidate": true,
+            "epoch": 190,
+            "proof_age": 2.151,
+            "worker_seconds": 1.232,
+            "presence_model": null
+          },
+          {
+            "stage": "board",
+            "seconds": 2.751,
+            "visible": false,
+            "ready": true,
+            "candidate": true,
+            "epoch": 190,
+            "proof_age": 1.453,
+            "worker_seconds": 1.206,
+            "presence_model": null
+          },
+          {
+            "stage": "board",
+            "seconds": 3.251,
+            "visible": false,
+            "ready": true,
+            "candidate": true,
+            "epoch": 190,
+            "proof_age": 1.953,
+            "worker_seconds": 1.206,
+            "presence_model": null
+          },
+          {
+            "stage": "board",
+            "seconds": 3.717,
+            "visible": true,
+            "ready": true,
+            "candidate": true,
+            "epoch": 190,
+            "proof_age": 1.158,
+            "worker_seconds": 0.917,
+            "presence_model": null
+          },
+          {
+            "stage": "menu",
+            "seconds": 0.142,
+            "visible": false,
+            "ready": true,
+            "candidate": true,
+            "epoch": 190,
+            "proof_age": 1.634,
+            "worker_seconds": 0.917,
+            "presence_model": null
+          },
+          {
+            "stage": "menu",
+            "seconds": 0.645,
+            "visible": true,
+            "ready": true,
+            "candidate": true,
+            "epoch": 190,
+            "proof_age": 1.155,
+            "worker_seconds": 0.586,
+            "presence_model": null
+          },
+          {
+            "stage": "menu",
+            "seconds": 1.101,
+            "visible": false,
+            "ready": true,
+            "candidate": true,
+            "epoch": 190,
+            "proof_age": 0.957,
+            "worker_seconds": 0.722,
+            "presence_model": null
+          },
+          {
+            "stage": "menu",
+            "seconds": 1.586,
+            "visible": false,
+            "ready": true,
+            "candidate": true,
+            "epoch": 190,
+            "proof_age": 1.442,
+            "worker_seconds": 0.722,
+            "presence_model": null
+          },
+          {
+            "stage": "menu",
+            "seconds": 2.1,
+            "visible": false,
+            "ready": true,
+            "candidate": true,
+            "epoch": 190,
+            "proof_age": 1.111,
+            "worker_seconds": 0.748,
+            "presence_model": null
+          },
+          {
+            "stage": "menu",
+            "seconds": 2.602,
+            "visible": false,
+            "ready": true,
+            "candidate": true,
+            "epoch": 190,
+            "proof_age": 0.855,
+            "worker_seconds": 0.774,
+            "presence_model": null
+          },
+          {
+            "stage": "menu",
+            "seconds": 3.085,
+            "visible": false,
+            "ready": true,
+            "candidate": true,
+            "epoch": 190,
+            "proof_age": 1.338,
+            "worker_seconds": 0.774,
+            "presence_model": null
+          },
+          {
+            "stage": "menu",
+            "seconds": 3.504,
+            "visible": false,
+            "ready": true,
+            "candidate": true,
+            "epoch": 190,
+            "proof_age": 0.954,
+            "worker_seconds": 0.778,
+            "presence_model": null
+          },
+          {
+            "stage": "menu",
+            "seconds": 4.003,
+            "visible": false,
+            "ready": true,
+            "candidate": true,
+            "epoch": 190,
+            "proof_age": 1.453,
+            "worker_seconds": 0.778,
+            "presence_model": null
+          },
+          {
+            "stage": "restored_board",
+            "seconds": 0.44,
+            "visible": false,
+            "ready": true,
+            "candidate": true,
+            "epoch": 190,
+            "proof_age": 1.067,
+            "worker_seconds": 0.78,
+            "presence_model": null
+          },
+          {
+            "stage": "restored_board",
+            "seconds": 0.941,
+            "visible": false,
+            "ready": true,
+            "candidate": true,
+            "epoch": 190,
+            "proof_age": 1.568,
+            "worker_seconds": 0.78,
+            "presence_model": null
+          },
+          {
+            "stage": "restored_board",
+            "seconds": 1.438,
+            "visible": true,
+            "ready": true,
+            "candidate": true,
+            "epoch": 190,
+            "proof_age": 1.27,
+            "worker_seconds": 1.161,
+            "presence_model": null
+          },
+          {
+            "stage": "restored_board",
+            "seconds": 1.924,
+            "visible": false,
+            "ready": true,
+            "candidate": true,
+            "epoch": 190,
+            "proof_age": 1.756,
+            "worker_seconds": 1.161,
+            "presence_model": null
+          },
+          {
+            "stage": "restored_board",
+            "seconds": 2.397,
+            "visible": false,
+            "ready": true,
+            "candidate": true,
+            "epoch": 190,
+            "proof_age": 2.228,
+            "worker_seconds": 1.161,
+            "presence_model": null
+          },
+          {
+            "stage": "restored_board",
+            "seconds": 2.859,
+            "visible": true,
+            "ready": true,
+            "candidate": true,
+            "epoch": 190,
+            "proof_age": 1.508,
+            "worker_seconds": 1.068,
+            "presence_model": null
+          },
+          {
+            "stage": "restored_board",
+            "seconds": 3.342,
+            "visible": false,
+            "ready": true,
+            "candidate": true,
+            "epoch": 190,
+            "proof_age": 1.991,
+            "worker_seconds": 1.068,
+            "presence_model": null
+          },
+          {
+            "stage": "restored_board",
+            "seconds": 3.804,
+            "visible": true,
+            "ready": true,
+            "candidate": true,
+            "epoch": 190,
+            "proof_age": 1.272,
+            "worker_seconds": 0.986,
+            "presence_model": null
+          }
+        ]
+      },
+      {
+        "case": "F10_manual",
+        "samples": [
+          {
+            "stage": "board",
+            "seconds": 0.041,
+            "visible": false,
+            "ready": false,
+            "candidate": false,
+            "epoch": 190,
+            "proof_age": null,
+            "worker_seconds": null,
+            "presence_model": null
+          },
+          {
+            "stage": "board",
+            "seconds": 0.63,
+            "visible": false,
+            "ready": false,
+            "candidate": false,
+            "epoch": 190,
+            "proof_age": null,
+            "worker_seconds": null,
+            "presence_model": null
+          },
+          {
+            "stage": "board",
+            "seconds": 1.24,
+            "visible": false,
+            "ready": false,
+            "candidate": false,
+            "epoch": 190,
+            "proof_age": null,
+            "worker_seconds": null,
+            "presence_model": null
+          },
+          {
+            "stage": "board",
+            "seconds": 1.734,
+            "visible": false,
+            "ready": false,
+            "candidate": true,
+            "epoch": 190,
+            "proof_age": 1.733,
+            "worker_seconds": 1.648,
+            "presence_model": null
+          },
+          {
+            "stage": "board",
+            "seconds": 2.232,
+            "visible": false,
+            "ready": false,
+            "candidate": true,
+            "epoch": 190,
+            "proof_age": 2.232,
+            "worker_seconds": 1.648,
+            "presence_model": null
+          },
+          {
+            "stage": "board",
+            "seconds": 2.975,
+            "visible": false,
+            "ready": false,
+            "candidate": true,
+            "epoch": 190,
+            "proof_age": 2.975,
+            "worker_seconds": 1.648,
+            "presence_model": null
+          },
+          {
+            "stage": "board",
+            "seconds": 3.489,
+            "visible": false,
+            "ready": true,
+            "candidate": true,
+            "epoch": 190,
+            "proof_age": 3.489,
+            "worker_seconds": 1.648,
+            "presence_model": null
+          },
+          {
+            "stage": "board",
+            "seconds": 3.99,
+            "visible": false,
+            "ready": true,
+            "candidate": true,
+            "epoch": 190,
+            "proof_age": 2.292,
+            "worker_seconds": 1.747,
+            "presence_model": null
+          },
+          {
+            "stage": "menu",
+            "seconds": 0.454,
+            "visible": false,
+            "ready": true,
+            "candidate": true,
+            "epoch": 190,
+            "proof_age": 2.792,
+            "worker_seconds": 1.747,
+            "presence_model": null
+          },
+          {
+            "stage": "menu",
+            "seconds": 0.955,
+            "visible": false,
+            "ready": true,
+            "candidate": true,
+            "epoch": 190,
+            "proof_age": 1.485,
+            "worker_seconds": 1.305,
+            "presence_model": null
+          },
+          {
+            "stage": "menu",
+            "seconds": 1.511,
+            "visible": false,
+            "ready": true,
+            "candidate": true,
+            "epoch": 190,
+            "proof_age": 2.041,
+            "worker_seconds": 1.305,
+            "presence_model": null
+          },
+          {
+            "stage": "menu",
+            "seconds": 2.095,
+            "visible": false,
+            "ready": true,
+            "candidate": true,
+            "epoch": 190,
+            "proof_age": 2.625,
+            "worker_seconds": 1.305,
+            "presence_model": null
+          },
+          {
+            "stage": "menu",
+            "seconds": 2.6,
+            "visible": false,
+            "ready": true,
+            "candidate": true,
+            "epoch": 190,
+            "proof_age": 1.804,
+            "worker_seconds": 1.6,
+            "presence_model": null
+          },
+          {
+            "stage": "menu",
+            "seconds": 3.105,
+            "visible": false,
+            "ready": true,
+            "candidate": true,
+            "epoch": 190,
+            "proof_age": 2.309,
+            "worker_seconds": 1.6,
+            "presence_model": null
+          },
+          {
+            "stage": "menu",
+            "seconds": 3.583,
+            "visible": false,
+            "ready": true,
+            "candidate": true,
+            "epoch": 190,
+            "proof_age": 2.787,
+            "worker_seconds": 1.6,
+            "presence_model": null
+          },
+          {
+            "stage": "restored_board",
+            "seconds": 0.043,
+            "visible": false,
+            "ready": true,
+            "candidate": true,
+            "epoch": 190,
+            "proof_age": 1.604,
+            "worker_seconds": 1.297,
+            "presence_model": null
+          },
+          {
+            "stage": "restored_board",
+            "seconds": 0.556,
+            "visible": false,
+            "ready": true,
+            "candidate": true,
+            "epoch": 190,
+            "proof_age": 2.116,
+            "worker_seconds": 1.297,
+            "presence_model": null
+          },
+          {
+            "stage": "restored_board",
+            "seconds": 1.016,
+            "visible": false,
+            "ready": false,
+            "candidate": false,
+            "epoch": 191,
+            "proof_age": 1.173,
+            "worker_seconds": 0.772,
+            "presence_model": null
+          },
+          {
+            "stage": "restored_board",
+            "seconds": 1.55,
+            "visible": false,
+            "ready": false,
+            "candidate": false,
+            "epoch": 191,
+            "proof_age": 1.707,
+            "worker_seconds": 0.772,
+            "presence_model": null
+          },
+          {
+            "stage": "restored_board",
+            "seconds": 2.059,
+            "visible": false,
+            "ready": false,
+            "candidate": false,
+            "epoch": 191,
+            "proof_age": 2.216,
+            "worker_seconds": 0.772,
+            "presence_model": null
+          },
+          {
+            "stage": "restored_board",
+            "seconds": 2.548,
+            "visible": false,
+            "ready": false,
+            "candidate": false,
+            "epoch": 191,
+            "proof_age": 1.862,
+            "worker_seconds": 1.443,
+            "presence_model": null
+          },
+          {
+            "stage": "restored_board",
+            "seconds": 2.999,
+            "visible": false,
+            "ready": false,
+            "candidate": false,
+            "epoch": 191,
+            "proof_age": 2.313,
+            "worker_seconds": 1.443,
+            "presence_model": null
+          },
+          {
+            "stage": "restored_board",
+            "seconds": 3.507,
+            "visible": true,
+            "ready": false,
+            "candidate": true,
+            "epoch": 191,
+            "proof_age": 1.315,
+            "worker_seconds": 1.014,
+            "presence_model": null
+          },
+          {
+            "stage": "restored_board",
+            "seconds": 3.939,
+            "visible": false,
+            "ready": true,
+            "candidate": true,
+            "epoch": 191,
+            "proof_age": 1.746,
+            "worker_seconds": 1.014,
+            "presence_model": null
+          }
+        ]
+      }
+    ]
+  },
+  "fixed_v112": {
+    "actual_uploaded_pixels": true,
+    "real_tk": true,
+    "concurrent_production_roi_workers": true,
+    "native_api_and_capture_emulated": true,
+    "full_window_bootstrap_exercised": false,
+    "solver_feedback_controlled": true,
+    "game_input_executed": false,
+    "physical_windows_mumu_verified": false,
+    "cases": [
+      {
+        "case": "ordinary_manual",
+        "stages": {
+          "board": {
+            "first_visible": 0.383,
+            "hidden_after_first_visible": 0,
+            "visible_after_settle": 48,
+            "samples": 89,
+            "ready_at_end": true
+          },
+          "menu": {
+            "first_visible": 0.043,
+            "hidden_after_first_visible": 60,
+            "visible_after_settle": 0,
+            "samples": 83,
+            "ready_at_end": true
+          },
+          "restored_board": {
+            "first_visible": 0.352,
+            "hidden_after_first_visible": 0,
+            "visible_after_settle": 48,
+            "samples": 91,
+            "ready_at_end": true
+          }
+        },
+        "calculation_calls": 0
+      },
+      {
+        "case": "F10_manual",
+        "stages": {
+          "board": {
+            "first_visible": 0.302,
+            "hidden_after_first_visible": 0,
+            "visible_after_settle": 48,
+            "samples": 94,
+            "ready_at_end": true
+          },
+          "menu": {
+            "first_visible": 0.04,
+            "hidden_after_first_visible": 69,
+            "visible_after_settle": 0,
+            "samples": 94,
+            "ready_at_end": true
+          },
+          "restored_board": {
+            "first_visible": 0.64,
+            "hidden_after_first_visible": 0,
+            "visible_after_settle": 48,
+            "samples": 95,
+            "ready_at_end": true
+          }
+        },
+        "calculation_calls": 0
+      }
+    ],
+    "worker_timings": [
+      {
+        "case": "ordinary_manual",
+        "samples": [
+          {
+            "stage": "board",
+            "seconds": 0.049,
+            "visible": false,
+            "ready": false,
+            "candidate": false,
+            "epoch": 190,
+            "proof_age": null,
+            "worker_seconds": null,
+            "presence_model": null
+          },
+          {
+            "stage": "board",
+            "seconds": 0.55,
+            "visible": true,
+            "ready": false,
+            "candidate": false,
+            "epoch": 190,
+            "proof_age": 0.551,
+            "worker_seconds": 0.183,
+            "presence_model": "orb-grid-preview-320"
+          },
+          {
+            "stage": "board",
+            "seconds": 0.975,
+            "visible": true,
+            "ready": false,
+            "candidate": true,
+            "epoch": 190,
+            "proof_age": 0.416,
+            "worker_seconds": 0.142,
+            "presence_model": "orb-grid-preview-320"
+          },
+          {
+            "stage": "board",
+            "seconds": 1.529,
+            "visible": true,
+            "ready": true,
+            "candidate": true,
+            "epoch": 190,
+            "proof_age": 0.541,
+            "worker_seconds": 0.318,
+            "presence_model": "orb-grid-preview-320"
+          },
+          {
+            "stage": "board",
+            "seconds": 1.955,
+            "visible": true,
+            "ready": true,
+            "candidate": true,
+            "epoch": 190,
+            "proof_age": 0.517,
+            "worker_seconds": 0.153,
+            "presence_model": "orb-grid-preview-320"
+          },
+          {
+            "stage": "board",
+            "seconds": 2.379,
+            "visible": true,
+            "ready": true,
+            "candidate": true,
+            "epoch": 190,
+            "proof_age": 0.508,
+            "worker_seconds": 0.275,
+            "presence_model": "orb-grid-preview-320"
+          },
+          {
+            "stage": "board",
+            "seconds": 2.81,
+            "visible": true,
+            "ready": true,
+            "candidate": true,
+            "epoch": 190,
+            "proof_age": 0.513,
+            "worker_seconds": 0.173,
+            "presence_model": "orb-grid-preview-320"
+          },
+          {
+            "stage": "board",
+            "seconds": 3.238,
+            "visible": true,
+            "ready": true,
+            "candidate": true,
+            "epoch": 190,
+            "proof_age": 0.525,
+            "worker_seconds": 0.279,
+            "presence_model": "orb-grid-preview-320"
+          },
+          {
+            "stage": "board",
+            "seconds": 3.666,
+            "visible": true,
+            "ready": true,
+            "candidate": true,
+            "epoch": 190,
+            "proof_age": 0.514,
+            "worker_seconds": 0.122,
+            "presence_model": "orb-grid-preview-320"
+          },
+          {
+            "stage": "menu",
+            "seconds": 0.083,
+            "visible": true,
+            "ready": true,
+            "candidate": true,
+            "epoch": 190,
+            "proof_age": 0.518,
+            "worker_seconds": 0.113,
+            "presence_model": "orb-grid-preview-320"
+          },
+          {
+            "stage": "menu",
+            "seconds": 0.51,
+            "visible": true,
+            "ready": true,
+            "candidate": true,
+            "epoch": 190,
+            "proof_age": 0.944,
+            "worker_seconds": 0.113,
+            "presence_model": "orb-grid-preview-320"
+          },
+          {
+            "stage": "menu",
+            "seconds": 0.953,
+            "visible": true,
+            "ready": true,
+            "candidate": true,
+            "epoch": 190,
+            "proof_age": 1.387,
+            "worker_seconds": 0.113,
+            "presence_model": "orb-grid-preview-320"
+          },
+          {
+            "stage": "menu",
+            "seconds": 1.37,
+            "visible": false,
+            "ready": true,
+            "candidate": true,
+            "epoch": 190,
+            "proof_age": 1.368,
+            "worker_seconds": 0.91,
+            "presence_model": null
+          },
+          {
+            "stage": "menu",
+            "seconds": 1.813,
+            "visible": false,
+            "ready": true,
+            "candidate": true,
+            "epoch": 190,
+            "proof_age": 1.811,
+            "worker_seconds": 0.91,
+            "presence_model": null
+          },
+          {
+            "stage": "menu",
+            "seconds": 2.236,
+            "visible": false,
+            "ready": true,
+            "candidate": true,
+            "epoch": 190,
+            "proof_age": 1.239,
+            "worker_seconds": 0.841,
+            "presence_model": null
+          },
+          {
+            "stage": "menu",
+            "seconds": 2.711,
+            "visible": false,
+            "ready": true,
+            "candidate": true,
+            "epoch": 190,
+            "proof_age": 1.714,
+            "worker_seconds": 0.841,
+            "presence_model": null
+          },
+          {
+            "stage": "menu",
+            "seconds": 3.234,
+            "visible": false,
+            "ready": true,
+            "candidate": true,
+            "epoch": 190,
+            "proof_age": 1.336,
+            "worker_seconds": 0.796,
+            "presence_model": null
+          },
+          {
+            "stage": "menu",
+            "seconds": 3.967,
+            "visible": false,
+            "ready": true,
+            "candidate": true,
+            "epoch": 190,
+            "proof_age": 2.068,
+            "worker_seconds": 0.796,
+            "presence_model": null
+          },
+          {
+            "stage": "restored_board",
+            "seconds": 0.392,
+            "visible": true,
+            "ready": true,
+            "candidate": true,
+            "epoch": 190,
+            "proof_age": 0.342,
+            "worker_seconds": 0.177,
+            "presence_model": "orb-grid-preview-320"
+          },
+          {
+            "stage": "restored_board",
+            "seconds": 0.89,
+            "visible": true,
+            "ready": false,
+            "candidate": false,
+            "epoch": 191,
+            "proof_age": 0.839,
+            "worker_seconds": 0.177,
+            "presence_model": "orb-grid-preview-320"
+          },
+          {
+            "stage": "restored_board",
+            "seconds": 1.325,
+            "visible": true,
+            "ready": false,
+            "candidate": false,
+            "epoch": 191,
+            "proof_age": 0.383,
+            "worker_seconds": 0.118,
+            "presence_model": "orb-grid-preview-320"
+          },
+          {
+            "stage": "restored_board",
+            "seconds": 1.746,
+            "visible": true,
+            "ready": false,
+            "candidate": false,
+            "epoch": 191,
+            "proof_age": 0.376,
+            "worker_seconds": 0.134,
+            "presence_model": "orb-grid-preview-320"
+          },
+          {
+            "stage": "restored_board",
+            "seconds": 2.218,
+            "visible": true,
+            "ready": false,
+            "candidate": true,
+            "epoch": 191,
+            "proof_age": 0.423,
+            "worker_seconds": 0.205,
+            "presence_model": "orb-grid-preview-320"
+          },
+          {
+            "stage": "restored_board",
+            "seconds": 2.639,
+            "visible": true,
+            "ready": true,
+            "candidate": true,
+            "epoch": 191,
+            "proof_age": 0.376,
+            "worker_seconds": 0.145,
+            "presence_model": "orb-grid-preview-320"
+          },
+          {
+            "stage": "restored_board",
+            "seconds": 3.061,
+            "visible": true,
+            "ready": true,
+            "candidate": true,
+            "epoch": 191,
+            "proof_age": 0.38,
+            "worker_seconds": 0.206,
+            "presence_model": "orb-grid-preview-320"
+          },
+          {
+            "stage": "restored_board",
+            "seconds": 3.481,
+            "visible": true,
+            "ready": true,
+            "candidate": true,
+            "epoch": 191,
+            "proof_age": 0.372,
+            "worker_seconds": 0.079,
+            "presence_model": "orb-grid-preview-320"
+          },
+          {
+            "stage": "restored_board",
+            "seconds": 3.916,
+            "visible": true,
+            "ready": true,
+            "candidate": true,
+            "epoch": 191,
+            "proof_age": 0.375,
+            "worker_seconds": 0.166,
+            "presence_model": "orb-grid-preview-320"
+          }
+        ]
+      },
+      {
+        "case": "F10_manual",
+        "samples": [
+          {
+            "stage": "board",
+            "seconds": 0.042,
+            "visible": false,
+            "ready": false,
+            "candidate": false,
+            "epoch": 190,
+            "proof_age": null,
+            "worker_seconds": null,
+            "presence_model": null
+          },
+          {
+            "stage": "board",
+            "seconds": 0.468,
+            "visible": true,
+            "ready": false,
+            "candidate": false,
+            "epoch": 190,
+            "proof_age": 0.47,
+            "worker_seconds": 0.252,
+            "presence_model": "orb-grid-preview-320"
+          },
+          {
+            "stage": "board",
+            "seconds": 0.901,
+            "visible": true,
+            "ready": false,
+            "candidate": true,
+            "epoch": 190,
+            "proof_age": 0.428,
+            "worker_seconds": 0.173,
+            "presence_model": "orb-grid-preview-320"
+          },
+          {
+            "stage": "board",
+            "seconds": 1.33,
+            "visible": true,
+            "ready": false,
+            "candidate": true,
+            "epoch": 190,
+            "proof_age": 0.413,
+            "worker_seconds": 0.124,
+            "presence_model": "orb-grid-preview-320"
+          },
+          {
+            "stage": "board",
+            "seconds": 1.751,
+            "visible": true,
+            "ready": true,
+            "candidate": true,
+            "epoch": 190,
+            "proof_age": 0.418,
+            "worker_seconds": 0.168,
+            "presence_model": "orb-grid-preview-320"
+          },
+          {
+            "stage": "board",
+            "seconds": 2.178,
+            "visible": true,
+            "ready": true,
+            "candidate": true,
+            "epoch": 190,
+            "proof_age": 0.424,
+            "worker_seconds": 0.174,
+            "presence_model": "orb-grid-preview-320"
+          },
+          {
+            "stage": "board",
+            "seconds": 2.606,
+            "visible": true,
+            "ready": true,
+            "candidate": true,
+            "epoch": 190,
+            "proof_age": 0.425,
+            "worker_seconds": 0.101,
+            "presence_model": "orb-grid-preview-320"
+          },
+          {
+            "stage": "board",
+            "seconds": 3.033,
+            "visible": true,
+            "ready": true,
+            "candidate": true,
+            "epoch": 190,
+            "proof_age": 0.416,
+            "worker_seconds": 0.206,
+            "presence_model": "orb-grid-preview-320"
+          },
+          {
+            "stage": "board",
+            "seconds": 3.461,
+            "visible": true,
+            "ready": true,
+            "candidate": true,
+            "epoch": 190,
+            "proof_age": 0.424,
+            "worker_seconds": 0.157,
+            "presence_model": "orb-grid-preview-320"
+          },
+          {
+            "stage": "board",
+            "seconds": 3.896,
+            "visible": true,
+            "ready": true,
+            "candidate": true,
+            "epoch": 190,
+            "proof_age": 0.432,
+            "worker_seconds": 0.212,
+            "presence_model": "orb-grid-preview-320"
+          },
+          {
+            "stage": "menu",
+            "seconds": 0.286,
+            "visible": true,
+            "ready": true,
+            "candidate": true,
+            "epoch": 190,
+            "proof_age": 0.455,
+            "worker_seconds": 0.151,
+            "presence_model": "orb-grid-preview-320"
+          },
+          {
+            "stage": "menu",
+            "seconds": 0.716,
+            "visible": true,
+            "ready": true,
+            "candidate": true,
+            "epoch": 190,
+            "proof_age": 0.884,
+            "worker_seconds": 0.151,
+            "presence_model": "orb-grid-preview-320"
+          },
+          {
+            "stage": "menu",
+            "seconds": 1.138,
+            "visible": false,
+            "ready": true,
+            "candidate": true,
+            "epoch": 190,
+            "proof_age": 0.847,
+            "worker_seconds": 0.49,
+            "presence_model": null
+          },
+          {
+            "stage": "menu",
+            "seconds": 1.554,
+            "visible": false,
+            "ready": true,
+            "candidate": true,
+            "epoch": 190,
+            "proof_age": 0.627,
+            "worker_seconds": 0.499,
+            "presence_model": null
+          },
+          {
+            "stage": "menu",
+            "seconds": 1.972,
+            "visible": false,
+            "ready": true,
+            "candidate": true,
+            "epoch": 190,
+            "proof_age": 1.045,
+            "worker_seconds": 0.499,
+            "presence_model": null
+          },
+          {
+            "stage": "menu",
+            "seconds": 2.385,
+            "visible": false,
+            "ready": true,
+            "candidate": true,
+            "epoch": 190,
+            "proof_age": 0.956,
+            "worker_seconds": 0.537,
+            "presence_model": null
+          },
+          {
+            "stage": "menu",
+            "seconds": 2.804,
+            "visible": false,
+            "ready": true,
+            "candidate": true,
+            "epoch": 190,
+            "proof_age": 0.749,
+            "worker_seconds": 0.41,
+            "presence_model": null
+          },
+          {
+            "stage": "menu",
+            "seconds": 3.281,
+            "visible": false,
+            "ready": true,
+            "candidate": true,
+            "epoch": 190,
+            "proof_age": 0.729,
+            "worker_seconds": 0.637,
+            "presence_model": null
+          },
+          {
+            "stage": "menu",
+            "seconds": 3.704,
+            "visible": false,
+            "ready": true,
+            "candidate": true,
+            "epoch": 190,
+            "proof_age": 1.152,
+            "worker_seconds": 0.637,
+            "presence_model": null
+          },
+          {
+            "stage": "restored_board",
+            "seconds": 0.123,
+            "visible": false,
+            "ready": true,
+            "candidate": true,
+            "epoch": 190,
+            "proof_age": 0.932,
+            "worker_seconds": 0.645,
+            "presence_model": null
+          },
+          {
+            "stage": "restored_board",
+            "seconds": 0.553,
+            "visible": false,
+            "ready": false,
+            "candidate": false,
+            "epoch": 191,
+            "proof_age": 0.601,
+            "worker_seconds": 0.504,
+            "presence_model": null
+          },
+          {
+            "stage": "restored_board",
+            "seconds": 0.968,
+            "visible": true,
+            "ready": false,
+            "candidate": false,
+            "epoch": 191,
+            "proof_age": 0.497,
+            "worker_seconds": 0.084,
+            "presence_model": "orb-grid-preview-320"
+          },
+          {
+            "stage": "restored_board",
+            "seconds": 1.385,
+            "visible": true,
+            "ready": false,
+            "candidate": true,
+            "epoch": 191,
+            "proof_age": 0.372,
+            "worker_seconds": 0.183,
+            "presence_model": "orb-grid-preview-320"
+          },
+          {
+            "stage": "restored_board",
+            "seconds": 1.809,
+            "visible": true,
+            "ready": false,
+            "candidate": true,
+            "epoch": 191,
+            "proof_age": 0.381,
+            "worker_seconds": 0.142,
+            "presence_model": "orb-grid-preview-320"
+          },
+          {
+            "stage": "restored_board",
+            "seconds": 2.232,
+            "visible": true,
+            "ready": true,
+            "candidate": true,
+            "epoch": 191,
+            "proof_age": 0.376,
+            "worker_seconds": 0.147,
+            "presence_model": "orb-grid-preview-320"
+          },
+          {
+            "stage": "restored_board",
+            "seconds": 2.647,
+            "visible": true,
+            "ready": true,
+            "candidate": true,
+            "epoch": 191,
+            "proof_age": 0.791,
+            "worker_seconds": 0.147,
+            "presence_model": "orb-grid-preview-320"
+          },
+          {
+            "stage": "restored_board",
+            "seconds": 3.073,
+            "visible": true,
+            "ready": true,
+            "candidate": true,
+            "epoch": 191,
+            "proof_age": 0.373,
+            "worker_seconds": 0.159,
+            "presence_model": "orb-grid-preview-320"
+          },
+          {
+            "stage": "restored_board",
+            "seconds": 3.488,
+            "visible": true,
+            "ready": true,
+            "candidate": true,
+            "epoch": 191,
+            "proof_age": 0.788,
+            "worker_seconds": 0.159,
+            "presence_model": "orb-grid-preview-320"
+          },
+          {
+            "stage": "restored_board",
+            "seconds": 3.93,
+            "visible": true,
+            "ready": true,
+            "candidate": true,
+            "epoch": 191,
+            "proof_age": 0.399,
+            "worker_seconds": 0.139,
+            "presence_model": "orb-grid-preview-320"
+          }
+        ]
+      }
+    ]
+  }
+}

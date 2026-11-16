@@ -1,0 +1,113 @@
+{
+  "zip_sha256": "bdb6b6e0d2360763a8bafd792128da5d3343bd4d3c51391dc73ad1a830280390",
+  "source_sha256": "3be99861ba0cddcfacffce5572bc302fff0e8d8564a5d5e8040e6f0902a895fc",
+  "source_bytes": 2086721,
+  "zip_bytes": 976254,
+  "release": 320,
+  "version": "v1.0.112",
+  "source_repo": "tterx/pad0-all-in-one",
+  "source_commit": "0d7ef4c995599f5fd8b4063269939ba15495fd0b",
+  "source_pull_request": "https://github.com/tterx/pad0-all-in-one/pull/23",
+  "windows_ci": {
+    "run_id": 43905794163,
+    "conclusion": "success",
+    "head_sha": "0d7ef4c995599f5fd8b4063269939ba15495fd0b",
+    "url": "https://github.com/tterx/pad0-all-in-one/actions/runs/43905794163",
+    "tests": 1517,
+    "suites": 140,
+    "steps": 152
+  },
+  "local_checks": {
+    "related": {
+      "tests": 176,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "seconds": 62.398,
+      "modules": [
+        "test_uploaded320",
+        "test_master_button304",
+        "test_manual_presence318",
+        "test_manual_context319",
+        "test_held_jammer289",
+        "test_upload_continuation302",
+        "test_training_jammer301",
+        "test_sdk_corners282",
+        "test_master_handoff309",
+        "test_lock_handoff308",
+        "test_party_archive316"
+      ]
+    },
+    "portable_bundle": {
+      "tests": 78,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "seconds": 21.929,
+      "modules": [
+        "test_uploaded320",
+        "test_master_button304",
+        "test_manual_presence318",
+        "test_manual_context319",
+        "test_sdk_corners282",
+        "test_release_compaction316"
+      ]
+    },
+    "fast_presence": {
+      "tests": 19,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "seconds": 10.236,
+      "modules": [
+        "test_learned_presence314"
+      ]
+    },
+    "fast_presence_bundle": {
+      "tests": 19,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "seconds": 8.347,
+      "modules": [
+        "test_learned_presence314"
+      ]
+    }
+  },
+  "new_regressions": 11,
+  "replay": {
+    "details": "replay320.json",
+    "actual_uploaded_pixels": true,
+    "real_tk": true,
+    "concurrent_production_roi_workers": true,
+    "native_api_and_capture_emulated": true,
+    "physical_mumu_verified": false,
+    "game_input_executed": false
+  },
+  "policy": {
+    "scope": "master_multicolor",
+    "maximum_combos_retained": true,
+    "no_forced_healing": true,
+    "all_eight_drop_models_unchanged": true,
+    "input_pacing_and_budgets_unchanged": true,
+    "final_layout_and_release_guards_retained": true,
+    "presence_capture_expiry_seconds": 1.2,
+    "presence_does_not_supply_route_readiness": true,
+    "other_modes_original_paths_retained": true,
+    "branch_and_receipt_records_unchanged": true
+  },
+  "known_limitation": {
+    "report222_user_confirmed_automatic_only": true,
+    "report222": "attack visible before planned UP; precise cause of input interruption unresolved; stop retained, diagnostic distinction added"
+  },
+  "physical_windows_mumu_verified": false,
+  "automatic_update_channel_changed": false,
+  "publication": {
+    "approved_release": true,
+    "source_pr_merged": true,
+    "source_branch": "codex/v1-0-112-reports-221-222-manual",
+    "mode": "stable_release_and_auto_update",
+    "source_main_commit": "f45a7e8574fcc5b52cee3f5bfde4db9ac3521940",
+    "source_tree_matches_tested_head": true
+  }
+}
