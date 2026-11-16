@@ -1,0 +1,125 @@
+{
+  "zip_sha256": "5bb0ebf5d1dbe54ab2eee6dda4a196ded2c7a0408aae3ca1922e0ffab2fe56d1",
+  "source_sha256": "fe932735b5e37511507036a53c691b022117b0d6bb1f6510f64246749d210afc",
+  "source_bytes": 2094090,
+  "zip_bytes": 974088,
+  "release": 315,
+  "version": "v1.0.107",
+  "source_repo": "tterx/pad0-all-in-one",
+  "source_commit": "d2b6ec1a7774dc1a87e89dc8a20fe0ef34f6d88d",
+  "source_pull_request": "https://github.com/tterx/pad0-all-in-one/pull/18",
+  "windows_ci": {
+    "run_id": 43780441339,
+    "conclusion": "success",
+    "head_sha": "d2b6ec1a7774dc1a87e89dc8a20fe0ef34f6d88d",
+    "url": "https://github.com/tterx/pad0-all-in-one/actions/runs/43780441339",
+    "tests": 1410,
+    "suites": 133,
+    "steps": 145
+  },
+  "local_checks": {
+    "related-final": {
+      "tests": 242,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "seconds": 215.789,
+      "modules": [
+        "test_party247",
+        "test_awakening230",
+        "test_bound_party307",
+        "test_party_stage306",
+        "test_party_geometry315",
+        "test_party_registration315",
+        "test_party_ui315",
+        "test_ui_module144",
+        "test_background_settings206",
+        "test_auto_repeat266",
+        "test_combo_objective303",
+        "test_branch_learning305",
+        "test_master_handoff309",
+        "test_locked_start311",
+        "test_all_drop_learning314",
+        "test_learned_start314",
+        "test_learned_presence314",
+        "test_status_matrix311",
+        "test_start_hud313"
+      ]
+    },
+    "bundle-final": {
+      "tests": 118,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "seconds": 85.851,
+      "modules": [
+        "test_party_geometry315",
+        "test_party_registration315",
+        "test_party_ui315",
+        "test_party247",
+        "test_awakening230",
+        "test_bound_party307",
+        "test_party_stage306",
+        "test_background_settings206",
+        "test_all_drop_learning314",
+        "test_learned_start314",
+        "test_learned_presence314"
+      ]
+    }
+  },
+  "new_regressions": 21,
+  "private_replay": {
+    "report": 219,
+    "details": "replay315.json",
+    "actual_saved_failure_pixels": true,
+    "actual_saved_entry_layout_reports": [
+      208,
+      209,
+      217,
+      218
+    ],
+    "controlled_art_shifts": true,
+    "original219_party_or_detail_frame_available": false,
+    "original219_prepress_frame_available": false,
+    "failure_frame_used_as_hypothetical_initial_scene": true,
+    "old_blank_scene_press_count": 1,
+    "new_blank_scene_press_count": 0,
+    "source_face_mae_old_range": [
+      51.9521,
+      75.1917
+    ],
+    "source_face_mae_new_range": [
+      4.6604,
+      7.1719
+    ],
+    "game_capture_header_detail_identity_and_controller_mocked": true,
+    "real_tk_window_rendering": true
+  },
+  "policy": {
+    "scope": "master_multicolor_registration_with_shared_image_format_display",
+    "maximum_combos_retained": true,
+    "no_forced_healing": true,
+    "all_eight_drop_model_unchanged": true,
+    "input_pacing_unchanged": true,
+    "long_press_milliseconds": 4200,
+    "input_budgets_unchanged": true,
+    "final_layout_and_release_checks_retained": true,
+    "extra_DOWN_or_recovery_clicks": false,
+    "branch_and_EX_unchanged": true,
+    "starred_normal_and_Hidden_stage_records_separate": true,
+    "other_modes_default_geometry_and_press_unchanged": true,
+    "high_resolution_identity_algorithm_and_thresholds_unchanged": true,
+    "old_mixed_image_references_revalidated": true,
+    "unrelated_character_metadata_and_user_corrections_preserved": true
+  },
+  "physical_windows_mumu_verified": false,
+  "automatic_update_channel_changed": false,
+  "publication": {
+    "approved_release": true,
+    "source_pr_merged": true,
+    "source_branch": "codex/v1-0-107-party-registration-219",
+    "mode": "stable_release_and_auto_update",
+    "source_main_commit": "3a200aaa653f732544b5cb0b3f6bea6492316911",
+    "source_tree_matches_tested_head": true
+  }
+}

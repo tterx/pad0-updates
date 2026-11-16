@@ -1,0 +1,431 @@
+{
+  "old_v106": {
+    "controlled_shifted_scene_replays": [
+      {
+        "source_art": 208,
+        "controlled_shift": [
+          -66,
+          0
+        ],
+        "measured": false,
+        "per_slot_source_face_mae": [
+          51.9521,
+          63.0635,
+          56.3385,
+          75.1917,
+          52.8875,
+          56.0625
+        ],
+        "rects": [
+          [
+            94,
+            228,
+            226,
+            450
+          ],
+          [
+            230,
+            228,
+            362,
+            450
+          ],
+          [
+            366,
+            228,
+            498,
+            450
+          ],
+          [
+            502,
+            228,
+            634,
+            450
+          ],
+          [
+            638,
+            228,
+            770,
+            450
+          ],
+          [
+            774,
+            228,
+            906,
+            450
+          ]
+        ]
+      },
+      {
+        "source_art": 218,
+        "controlled_shift": [
+          -66,
+          0
+        ],
+        "measured": false,
+        "per_slot_source_face_mae": [
+          51.9521,
+          63.0635,
+          56.3385,
+          53.0385,
+          68.2146,
+          55.0948
+        ],
+        "rects": [
+          [
+            94,
+            228,
+            226,
+            450
+          ],
+          [
+            230,
+            228,
+            362,
+            450
+          ],
+          [
+            366,
+            228,
+            498,
+            450
+          ],
+          [
+            502,
+            228,
+            634,
+            450
+          ],
+          [
+            638,
+            228,
+            770,
+            450
+          ],
+          [
+            774,
+            228,
+            906,
+            450
+          ]
+        ]
+      }
+    ],
+    "actual_saved_entry_layouts": [],
+    "report219_blank_scene": {
+      "scene": "actual219_failure_frame_used_as_hypothetical_initial_scene",
+      "original_prepress_frame_available": false,
+      "error": "RuntimeError: 4번 상세 화면을 확인하지 못했습니다.",
+      "long_press_count": 1,
+      "capture_count": 0,
+      "saved_slot_count": 0,
+      "actual_input_executed": false,
+      "press": [
+        568.0,
+        310,
+        568.0,
+        310,
+        4200
+      ]
+    },
+    "original219_party_or_detail_frame_available": false,
+    "physical_mumu_registration_verified": false,
+    "application_input_executed": false
+  },
+  "fixed_v107": {
+    "controlled_shifted_scene_replays": [
+      {
+        "source_art": 208,
+        "controlled_shift": [
+          -66,
+          0
+        ],
+        "measured": true,
+        "per_slot_source_face_mae": [
+          4.7198,
+          4.7771,
+          7.1719,
+          6.625,
+          5.3177,
+          4.8396
+        ],
+        "rects": [
+          [
+            27,
+            229,
+            157,
+            450
+          ],
+          [
+            162,
+            229,
+            293,
+            450
+          ],
+          [
+            297,
+            229,
+            428,
+            450
+          ],
+          [
+            433,
+            229,
+            563,
+            450
+          ],
+          [
+            568,
+            229,
+            699,
+            450
+          ],
+          [
+            704,
+            229,
+            834,
+            450
+          ]
+        ]
+      },
+      {
+        "source_art": 218,
+        "controlled_shift": [
+          -66,
+          0
+        ],
+        "measured": true,
+        "per_slot_source_face_mae": [
+          4.7198,
+          4.6604,
+          7.1719,
+          6.625,
+          5.7542,
+          4.8396
+        ],
+        "rects": [
+          [
+            27,
+            229,
+            157,
+            450
+          ],
+          [
+            161,
+            229,
+            293,
+            450
+          ],
+          [
+            297,
+            229,
+            428,
+            450
+          ],
+          [
+            433,
+            229,
+            563,
+            450
+          ],
+          [
+            568,
+            229,
+            699,
+            450
+          ],
+          [
+            704,
+            229,
+            834,
+            450
+          ]
+        ]
+      }
+    ],
+    "actual_saved_entry_layouts": [
+      {
+        "report": 208,
+        "measured": true,
+        "rects": [
+          [
+            93,
+            229,
+            223,
+            450
+          ],
+          [
+            228,
+            229,
+            359,
+            450
+          ],
+          [
+            363,
+            229,
+            494,
+            450
+          ],
+          [
+            499,
+            229,
+            629,
+            450
+          ],
+          [
+            634,
+            229,
+            765,
+            450
+          ],
+          [
+            770,
+            229,
+            900,
+            450
+          ]
+        ]
+      },
+      {
+        "report": 209,
+        "measured": true,
+        "rects": [
+          [
+            93,
+            229,
+            223,
+            450
+          ],
+          [
+            228,
+            229,
+            359,
+            450
+          ],
+          [
+            363,
+            229,
+            494,
+            450
+          ],
+          [
+            499,
+            229,
+            629,
+            450
+          ],
+          [
+            634,
+            229,
+            765,
+            450
+          ],
+          [
+            770,
+            229,
+            900,
+            450
+          ]
+        ]
+      },
+      {
+        "report": 217,
+        "measured": true,
+        "rects": [
+          [
+            93,
+            229,
+            223,
+            450
+          ],
+          [
+            227,
+            229,
+            359,
+            450
+          ],
+          [
+            363,
+            229,
+            494,
+            450
+          ],
+          [
+            499,
+            229,
+            629,
+            450
+          ],
+          [
+            634,
+            229,
+            765,
+            450
+          ],
+          [
+            770,
+            229,
+            900,
+            450
+          ]
+        ]
+      },
+      {
+        "report": 218,
+        "measured": true,
+        "rects": [
+          [
+            93,
+            229,
+            223,
+            450
+          ],
+          [
+            227,
+            229,
+            359,
+            450
+          ],
+          [
+            363,
+            229,
+            494,
+            450
+          ],
+          [
+            499,
+            229,
+            629,
+            450
+          ],
+          [
+            634,
+            229,
+            765,
+            450
+          ],
+          [
+            770,
+            229,
+            900,
+            450
+          ]
+        ]
+      }
+    ],
+    "report219_blank_scene": {
+      "scene": "actual219_failure_frame_used_as_hypothetical_initial_scene",
+      "original_prepress_frame_available": false,
+      "error": "RuntimeError: 파티 카드 6장이 안정적으로 표시된 것을 확인하지 못했습니다. 카드가 표시된 팀·잠입 확인 화면에서 다시 읽어주세요.",
+      "long_press_count": 0,
+      "capture_count": 7,
+      "saved_slot_count": 0,
+      "actual_input_executed": false
+    },
+    "original219_party_or_detail_frame_available": false,
+    "physical_mumu_registration_verified": false,
+    "application_input_executed": false
+  },
+  "uploaded_full_screenshots_included": false,
+  "physical_mumu_verified": false,
+  "application_input_executed": false
+}
