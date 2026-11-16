@@ -54,3 +54,13 @@ all-drop models and branch/receipt data are unchanged. The report222 automatic
 input interruption remains unresolved and is not claimed fixed by this patch.
 
 Windows CI: https://github.com/tterx/pad0-all-in-one/actions/runs/43926753524 (success; source dcdf1a10c4ef93c0d5ea648246de9398a03a7843); 1543 tests, 142 suites. Exact package source SHA256 matches.
+
+Publication verified: PR25 merged as 257ed47b072e0b24471a16acebc9b73e120b8edb.
+Its tree matches the Windows-tested head. Publisher run 43929742847 succeeded.
+The actual stable latest v1.0.114 download passed SHA256, ZIP CRC, version and updater-state checks.
+Its source matches the immutable payload and root update.json activates322.
+The genuine v1.0.113 launcher installed322 from the live manifest in an isolated installation,
+retained its backup, settings, inventory and four separate stage/branch markers,
+and skipped a repeat update. No PAD0 or physical game input was executed.
+The exact current native stall remains unconfirmed without new runtime evidence;
+the cache convoy and cold discovery dependency are reproduced regression fixes.
