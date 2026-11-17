@@ -266,7 +266,7 @@
     "infeasible_budget": "No legal input can be granted with zero move cap or no observed starting drop",
     "route_quality": "Best found bounded search; no globally optimal route or dungeon victory claimed"
   },
-  "automatic_update_channel_changed": false,
+  "automatic_update_channel_changed": true,
   "publication": {
     "approved_release": true,
     "source_pr_merged": true,
@@ -277,6 +277,38 @@
     "artifact_storage": "immutable_repository_file",
     "payload_commit": "8443b22320352b439c5947517b97189395826584",
     "immutable_source_url": "https://raw.githubusercontent.com/tterx/pad0-updates/8443b22320352b439c5947517b97189395826584/releases/v1.0.124/pad0_overlay.py",
-    "zip_download_url": "https://raw.githubusercontent.com/tterx/pad0-updates/8443b22320352b439c5947517b97189395826584/releases/v1.0.124/pad0_overlay_windows_v1_0_124.zip"
+    "zip_download_url": "https://raw.githubusercontent.com/tterx/pad0-updates/8443b22320352b439c5947517b97189395826584/releases/v1.0.124/pad0_overlay_windows_v1_0_124.zip",
+    "stable_release_verified": true,
+    "zip_bytes_unchanged": true
+  },
+  "public_download_verification": {
+    "zip_url": "https://raw.githubusercontent.com/tterx/pad0-updates/8443b22320352b439c5947517b97189395826584/releases/v1.0.124/pad0_overlay_windows_v1_0_124.zip",
+    "zip_sha256": "7003db6a4adb1700dcc1370c540e4210bba27eae766a8923c40e28a233ebc927",
+    "source_sha256": "295f2d763dac76ec6da2eaa0d92f6c01207c6d8671ae44b43f08a75090d05871",
+    "zip_crc_verified": true,
+    "version_verified": true,
+    "updater_release": 333,
+    "source_download_matches_zip": true,
+    "stable_latest_verified": true,
+    "artifact_storage": "immutable_repository_file",
+    "application_executed": false
+  },
+  "auto_update_verification": {
+    "preview": {
+      "scope": "preview_manifest_with_live_source",
+      "old_release": 332,
+      "new_release": 333,
+      "source_sha256": "295f2d763dac76ec6da2eaa0d92f6c01207c6d8671ae44b43f08a75090d05871",
+      "source_bytes": 2095760,
+      "backup_preserved": true,
+      "personal_data_preserved": true,
+      "branch_history_preserved": true,
+      "repeat_update_skipped": true,
+      "separate_starred_normal_hidden_records_preserved": true,
+      "application_executed": false,
+      "adaptive_retry_profile_preserved": true
+    },
+    "live_status": "pending_post_activation_check",
+    "manifest_url": "https://raw.githubusercontent.com/tterx/pad0-updates/main/update.json"
   }
 }
