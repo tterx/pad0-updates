@@ -1,6 +1,6 @@
 # 퍼드0 올인원
 
-[**프로그램 ZIP 다운로드 · v1.0.117**](https://github.com/tterx/pad0-updates/releases/download/v1.0.117/pad0_overlay_windows_v1_0_117.zip) · [전체 릴리스](https://github.com/tterx/pad0-updates/releases)
+[**프로그램 ZIP 다운로드 · v1.0.117**](https://raw.githubusercontent.com/tterx/pad0-updates/60f6d48f949e85ba83374a4a1cca729da0acb85d/releases/v1.0.117/pad0_overlay_windows_v1_0_117.zip) · [전체 릴리스](https://github.com/tterx/pad0-updates/releases)
 
 현재 표시 버전은 **1.0.117**, 자동 업데이트 내부 순번은 **326**입니다.
 

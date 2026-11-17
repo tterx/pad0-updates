@@ -38,14 +38,10 @@ release=next((r for r in api(f'/repos/{repo}/releases?per_page=20') if r['tag_na
 if release is None:
     release=api(f'/repos/{repo}/releases','POST',dict(tag_name='v1.0.117',target_commitish=os.environ['GITHUB_SHA'],
         name=title,body=notes,draft=True,prerelease=not stable,make_latest='false'))
-for path,content_type in [(artifact,'application/zip'),(folder/'checksums_v1_0_117.json','application/json')]:
-    digest=hashlib.sha256(path.read_bytes()).hexdigest()
-    asset=next((a for a in release['assets'] if a['name']==path.name),None)
-    if asset is None:
-        assert release['draft'],'Never replace a published candidate asset'
-        asset=api(f'https://uploads.github.com/repos/{repo}/releases/{release["id"]}/assets?name={path.name}',
-                  'POST',path.read_bytes(),content_type)
-    assert asset['size']==path.stat().st_size and asset['digest']=='sha256:'+digest
+download_url=meta['publication']['zip_download_url']
+assert download_url.startswith('https://raw.githubusercontent.com/tterx/pad0-updates/')
+with urllib.request.urlopen(download_url,timeout=60) as response:published_zip=response.read(8*1024*1024)
+assert hashlib.sha256(published_zip).hexdigest()==meta['zip_sha256']
 if release['draft'] or stable:
     release=api(f'/repos/{repo}/releases/{release["id"]}','PATCH',dict(
         draft=False,prerelease=not stable,make_latest='true' if stable else 'false',target_commitish=os.environ['GITHUB_SHA'],body=notes,name=title))

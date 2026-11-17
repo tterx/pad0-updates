@@ -1,3 +1,5 @@
+[**프로그램 ZIP 다운로드 · v1.0.117**](https://raw.githubusercontent.com/tterx/pad0-updates/60f6d48f949e85ba83374a4a1cca729da0acb85d/releases/v1.0.117/pad0_overlay_windows_v1_0_117.zip)
+
 달인다속의 계산 버튼에 **항상 표시** 설정을 추가했습니다.
 
 - 메인 창에서 **달인다속 계산 버튼 항상 표시 (입력·캡처 중 제외)**를 켜면 퍼즐판 판독을 기다리지 않고 버튼을 표시합니다. 설정은 저장되며 F9으로 숨길 수 있습니다.
@@ -8,3 +10,5 @@
 사용자 요청에 따라 분석·테스트·패키징·게시를 Codex에서 진행했으며 GitHub Actions를 실행하지 않았습니다. 로컬 기존/신규 검사1,577개 중1,576개 통과, Windows 전용 DLL 검사1개는 Linux에서 제외됐습니다. 실제 배포 소스의 관련45개 검사도 통과했습니다. 물리적 Windows/MuMu 플레이는 미검증입니다. [변경·검증 범위](https://github.com/tterx/pad0-updates/blob/main/docs/reviews/REVIEW326.md)
 
 PAD0를 완전히 종료한 뒤 시작.vbs를 다시 실행하면 업데이트됩니다. 설정·수량·분기 기록은 유지됩니다.
+
+ZIP은 위 저장소 고정 주소에서 받습니다. 릴리스 첨부 업로드의 인증 오류로 첨부 자산 대신 동일한 검증 파일을 제공합니다.
