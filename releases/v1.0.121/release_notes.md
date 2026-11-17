@@ -1,3 +1,5 @@
+[**프로그램 ZIP 다운로드 · v1.0.121**](https://raw.githubusercontent.com/tterx/pad0-updates/99437d3c51e2bcff038d0d81927533c1a426d004/releases/v1.0.121/pad0_overlay_windows_v1_0_121.zip)
+
 달인다속의 223번 중단과 수동 경로 이동 중 버튼 숨김을 보완했습니다.
 
 - 223번은 들고 있는 물 드롭이 옆 칸의 방해 드롭을 가려 물로 읽힌 경우입니다. 가려지지 않은 무늬를 이동 전 원본과 비교해 확인합니다. 다른 칸의 불일치·입력 전달 실패·손 떼기 전 공격은 계속 거부합니다.
@@ -8,3 +10,5 @@
 Codex에서 관련377개와 배포 코드100개 검사를 모두 통과했습니다. 신규18개 검사를 포함합니다. Actions는 실행하지 않았으며 Windows/MuMu 실기는 미검증입니다. [원인·검증 범위](https://github.com/tterx/pad0-updates/blob/main/docs/reviews/REVIEW330.md)
 
 PAD0를 완전히 종료한 뒤 시작.vbs를 다시 실행하면 업데이트됩니다. 설정·수량·분기 기록은 유지됩니다.
+
+ZIP은 위의 저장소 고정 다운로드 주소에서 제공합니다.
