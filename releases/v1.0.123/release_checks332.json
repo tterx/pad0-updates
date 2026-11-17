@@ -312,6 +312,9 @@
     "source_tree_matches_tested_head": true,
     "source_branch": "codex/v1-0-123-defeat-adaptive-retry",
     "method": "Direct publication from Codex; no Actions run",
-    "artifact_storage": "immutable_repository_file"
+    "artifact_storage": "immutable_repository_file",
+    "payload_commit": "dc9f8dc1a04e0dba1f72724c5ba9c21842e28638",
+    "immutable_source_url": "https://raw.githubusercontent.com/tterx/pad0-updates/dc9f8dc1a04e0dba1f72724c5ba9c21842e28638/releases/v1.0.123/pad0_overlay.py",
+    "zip_download_url": "https://raw.githubusercontent.com/tterx/pad0-updates/dc9f8dc1a04e0dba1f72724c5ba9c21842e28638/releases/v1.0.123/pad0_overlay_windows_v1_0_123.zip"
   }
 }

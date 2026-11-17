@@ -1,3 +1,5 @@
+[**프로그램 ZIP 다운로드 · v1.0.123**](https://raw.githubusercontent.com/tterx/pad0-updates/dc9f8dc1a04e0dba1f72724c5ba9c21842e28638/releases/v1.0.123/pad0_overlay_windows_v1_0_123.zip)
+
 달인다속 자동플레이에서 이동 오차로 던전 전체를 중단하지 않고, 던전 패배 때만 코너 대기를 보정합니다.
 
 - 원래 잡은 드롭·전체 이동 기록·손 떼기가 확인된 경로 오차는 실패 기록으로 남기고 던전을 계속 진행합니다. 잘못된 배치를 성공으로 처리하거나 경로를 다시 누르지 않습니다.
@@ -8,3 +10,5 @@
 Codex 관련349개·배포 코드153개 검사를 모두 통과했습니다. 신규21개 검사를 포함하며 Actions는 실행하지 않았습니다. Windows/MuMu 실기는 미검증입니다. [변경·검증 범위](https://github.com/tterx/pad0-updates/blob/main/docs/reviews/REVIEW332.md)
 
 PAD0를 완전히 종료한 뒤 시작.vbs를 다시 실행하면 업데이트됩니다. 설정·수량·분기 기록은 유지됩니다.
+
+ZIP은 위의 저장소 고정 다운로드 주소에서 제공합니다.
