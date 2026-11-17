@@ -1,3 +1,5 @@
+[**프로그램 ZIP 다운로드 · v1.0.124**](https://raw.githubusercontent.com/tterx/pad0-updates/8443b22320352b439c5947517b97189395826584/releases/v1.0.124/pad0_overlay_windows_v1_0_124.zip)
+
 달인다속 자동플레이에서 탐색 목표에 못 미쳐 중단되던 227번을 수정했습니다.
 
 - v123에는 이동 후 불일치 계속 진행만 적용되어, 이동 전 ‘5속성·6콤보 탐색 실패’ 중단이 남아 있었습니다.
@@ -8,3 +10,5 @@
 Codex 관련362개·배포 코드166개 검사를 통과했습니다. 신규13개 검사를 포함하며 Actions는 실행하지 않았습니다. Windows/MuMu 실기는 미검증입니다. [원인·검증 범위](https://github.com/tterx/pad0-updates/blob/main/docs/reviews/REVIEW333.md)
 
 PAD0를 완전히 종료한 뒤 시작.vbs를 다시 실행하면 업데이트됩니다. 설정·수량·분기 기록·기기별 보정값은 유지됩니다.
+
+ZIP은 위의 저장소 고정 다운로드 주소에서 제공합니다.
