@@ -52,3 +52,15 @@ All work runs in Codex without Actions. Physical Windows/MuMu play is unverified
 no globally optimal route or successful dungeon clear is claimed by these fixtures.
 
 Validation: source 8d84ce3898818c2d9021f04e897054edc833ec57;362 related tests in27 suites,166 bundled tests, no failures/errors/skips. Thirteen new regressions. No Actions executed.
+
+Publication verified: PR35 merged as 48380ea94940caf1173eccd52b4b6e6692e1faae.
+Its tree matches the locally checked head. No source, build or publish Actions ran.
+The actual v1.0.124 ZIP downloaded from the immutable repository URL passed SHA256,
+ZIP CRC, version and updater-state checks; release v1.0.124 is stable latest.
+The release notes and root README point to that working repository ZIP URL;
+no attached release asset is claimed.
+The source matches the immutable payload and root update.json activates333.
+The unchanged launcher installed333 from the live manifest over v1.0.123 in an
+isolated installation at state332, preserving the backup, settings, inventory and
+four separate normal/starred/hidden stage/branch markers, and skipped a repeat.
+No PAD0 or physical game input was executed during updater verification.
