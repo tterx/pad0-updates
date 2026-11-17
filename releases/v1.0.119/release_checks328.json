@@ -273,7 +273,7 @@
     "physical_windows_shell": "Native taskbar behavior tested with controlled Win32 fixtures; physical Windows shell and MuMu not run",
     "permanent_capture_block": "Existing bounded native reader/restart policy unchanged"
   },
-  "automatic_update_channel_changed": false,
+  "automatic_update_channel_changed": true,
   "publication": {
     "approved_release": true,
     "source_pr_merged": true,
@@ -281,6 +281,40 @@
     "source_tree_matches_tested_head": true,
     "source_branch": "codex/v1-0-119-board-overlay",
     "method": "Direct publication from Codex; no Actions run",
-    "artifact_storage": "immutable_repository_file"
+    "artifact_storage": "immutable_repository_file",
+    "payload_commit": "6296170b90f9d9f00d746680c61413026155225e",
+    "immutable_source_url": "https://raw.githubusercontent.com/tterx/pad0-updates/6296170b90f9d9f00d746680c61413026155225e/releases/v1.0.119/pad0_overlay.py",
+    "zip_download_url": "https://raw.githubusercontent.com/tterx/pad0-updates/6296170b90f9d9f00d746680c61413026155225e/releases/v1.0.119/pad0_overlay_windows_v1_0_119.zip",
+    "stable_release_verified": true,
+    "zip_bytes_unchanged": true
+  },
+  "public_download_verification": {
+    "zip_url": "https://raw.githubusercontent.com/tterx/pad0-updates/6296170b90f9d9f00d746680c61413026155225e/releases/v1.0.119/pad0_overlay_windows_v1_0_119.zip",
+    "zip_sha256": "98c73d174421639dd581ab71905c4aeb1dfaf820a15106033637fa9d5b5f4a5c",
+    "source_sha256": "a20e17a8b73c2a298b2344db54002be32d0761bf48f106997a5bae4c83de88e1",
+    "zip_crc_verified": true,
+    "version_verified": true,
+    "updater_release": 328,
+    "source_download_matches_zip": true,
+    "stable_latest_verified": true,
+    "artifact_storage": "immutable_repository_file",
+    "application_executed": false
+  },
+  "auto_update_verification": {
+    "preview": {
+      "scope": "preview_manifest_with_live_source",
+      "old_release": 327,
+      "new_release": 328,
+      "source_sha256": "a20e17a8b73c2a298b2344db54002be32d0761bf48f106997a5bae4c83de88e1",
+      "source_bytes": 2094908,
+      "backup_preserved": true,
+      "personal_data_preserved": true,
+      "branch_history_preserved": true,
+      "repeat_update_skipped": true,
+      "separate_starred_normal_hidden_records_preserved": true,
+      "application_executed": false
+    },
+    "live_status": "pending_post_activation_check",
+    "manifest_url": "https://raw.githubusercontent.com/tterx/pad0-updates/main/update.json"
   }
 }

@@ -1,3 +1,5 @@
+[**프로그램 ZIP 다운로드 · v1.0.119**](https://raw.githubusercontent.com/tterx/pad0-updates/6296170b90f9d9f00d746680c61413026155225e/releases/v1.0.119/pad0_overlay_windows_v1_0_119.zip)
+
 달인다속 경로 버튼을 작업표시줄에 나타나지 않는 퍼즐판 오버레이로 정리했습니다.
 
 - 일반 수동 플레이와 F10 이후 모두 같은 도구 창으로 표시하며, 창 표시 전에 작업표시줄 제외 속성을 적용합니다. 메인 창의 작업표시줄 아이콘은 유지합니다.
@@ -8,3 +10,5 @@
 Codex에서 관련297개와 실제 배포 코드50개 검사를 모두 통과했습니다. 신규15개 검사와 v118에서 실패하는 두 재현을 포함합니다. Actions는 실행하지 않았습니다. Windows API는 제어된 모형으로 확인했으며 Windows 셸/MuMu 실기는 미검증입니다. [변경·검증 범위](https://github.com/tterx/pad0-updates/blob/main/docs/reviews/REVIEW328.md)
 
 PAD0를 완전히 종료한 뒤 시작.vbs를 다시 실행하면 업데이트됩니다. 설정·수량·분기 기록은 유지됩니다.
+
+ZIP은 위의 저장소 고정 다운로드 주소에서 제공합니다.
