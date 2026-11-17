@@ -1,12 +1,12 @@
 # 퍼드0 올인원
 
-[**프로그램 ZIP 다운로드 · v1.0.120**](https://raw.githubusercontent.com/tterx/pad0-updates/50a74da7690a326351a387eeed7c3e8981808eb9/releases/v1.0.120/pad0_overlay_windows_v1_0_120.zip) · [전체 릴리스](https://github.com/tterx/pad0-updates/releases)
+프로그램 ZIP 다운로드 · v1.0.121 · 고정 다운로드 주소 검증 중
 
-현재 표시 버전은 **1.0.120**, 자동 업데이트 내부 순번은 **329**입니다.
+현재 표시 버전은 **1.0.121**, 자동 업데이트 내부 순번은 **330**입니다.
 
 새로 설치할 때는 ZIP을 풀고 `시작.vbs`를 실행하세요. 기존 설치는 PAD0를 완전히 종료한 뒤 `시작.vbs`를 다시 실행하면 업데이트됩니다.
 
-달인다속 경로 버튼은 전투를 확인한 뒤 결과창까지 유지합니다. 판독 실패·스킬 연출·F10은 전투 표시를 종료하지 않습니다. [변경·검증 범위](docs/reviews/REVIEW329.md) · [검증 기록](releases/v1.0.120/release_checks329.json)
+달인다속의 223번 가림 인식을 보완하고, 수동 경로 자동 이동 중 버튼을 남깁니다. 이동 중 중복 실행은 막고 완료·F10 후 조작을 복구합니다. [원인·검증 범위](docs/reviews/REVIEW330.md) · [검증 기록](releases/v1.0.121/release_checks330.json)
 
 ## 저장소 안내
 
