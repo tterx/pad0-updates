@@ -1,3 +1,5 @@
+[**프로그램 ZIP 다운로드 · v1.0.125**](https://raw.githubusercontent.com/tterx/pad0-updates/a8f39ae5094ca27f5075dccd4060ecb92144451e/releases/v1.0.125/pad0_overlay_windows_v1_0_125.zip)
+
 달인다속 자동플레이에서 시작 드롭 확인에 시간이 걸려 이동 전에 멈춘 228번을 보완했습니다.
 
 - 228번은 시작 방해 드롭 확인에 약3초를 쓰고, 4초 잔여를 지키기 위해 경로 이동 없이 손을 뗀 뒤 중단됐습니다.
@@ -9,3 +11,5 @@
 Codex 관련375개·배포 코드179개 검사를 통과했습니다. 신규13개 검사를 포함하며 Actions는 실행하지 않았습니다. Windows/MuMu 실기는 미검증입니다. [원인·검증 범위](https://github.com/tterx/pad0-updates/blob/main/docs/reviews/REVIEW334.md)
 
 PAD0를 완전히 종료한 뒤 시작.vbs를 다시 실행하면 업데이트됩니다. 설정·수량·분기 기록·기기별 보정값은 유지됩니다.
+
+ZIP은 위의 저장소 고정 다운로드 주소에서 제공합니다.
