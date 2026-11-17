@@ -1,0 +1,170 @@
+{
+  "zip_sha256": "f0918d1959379b18ee9825c9183d2e407551b228bb96a68193ec09bdec94bb56",
+  "source_sha256": "e1a0cbe3ae5c1f3eb8c13424603e2e28f5f17699119ca32cb4aafbfe15e2e1f5",
+  "source_bytes": 2096629,
+  "zip_bytes": 986716,
+  "release": 331,
+  "version": "v1.0.122",
+  "source_repo": "tterx/pad0-all-in-one",
+  "source_commit": "7362938cf34034752fa60a79d4795a2ab2349438",
+  "source_pull_request": "https://github.com/tterx/pad0-all-in-one/pull/33",
+  "scope": {
+    "base": "4dfc32fe59f7510ab4356178c356690470d07739",
+    "changes": {
+      "pad0_overlay.py": {
+        "changed": [
+          "App._background_header",
+          "App._background_probe"
+        ]
+      },
+      "pad0_manual_controls.py": {
+        "changed": [
+          "ManualControlsMixin._master_combat_end_heading"
+        ]
+      }
+    },
+    "unchanged_modules_sha256": {
+      "pad0_ui.py": "54c89fb6a18218db4d175bb6dea3b9a6a93a735eb0ae6b56beb8c7b4df49dcaa",
+      "pad0_solver.py": "b86ef61e32cfdcaa651269f8ce0fb685b07a795e71cae653c492fe174f418036",
+      "pad0_input.py": "c0cee53f925c51923605cb3e5beda1912c45512473d99560039218c251f32539",
+      "pad0_ai.py": "30f46d4eda0dc49c0a825bfd2742cc7bba50b6bf33382ef6e86661ac0a8483a0",
+      "pad0_drop_learning.py": "3b5a714e752004fc414c5ec459db2f3d7d5accd2618e70c24ebcda8f8aad10b5",
+      "pad0_party.py": "8a35cc41dc816d3488846ff85c450bb80ce383003340749b499e1c114fcadfd2",
+      "pad0_crystal.py": "c59bee45cb4d27b8eec3764a562c97d044cfa5d274876b4cec9db53c92c09e2b",
+      "pad0_battle.py": "19e19c52b71230d19ab96c0dd2ed01756a96aab827a316f51b820d2d84a18fe8",
+      "pad0_launcher.py": "24f0536b0326a206775b298d39a4a19da8958f280c31450de82d7f57626d6e7f",
+      "pad0_install.py": "1917d1fc368ff3848dc6b19d3c01bc32b6eb6a8cededa3aaf917a182c4345ba6"
+    }
+  },
+  "validation": {
+    "environment": "Codex Linux; controlled OCR on synthetic title strokes, real title reader, passive capture/queue and real Tk/Win32 fixtures; isolated suite subprocesses",
+    "github_actions_executed": false,
+    "user_requested_local_execution": true,
+    "local": {
+      "suites": 11,
+      "tests": 173,
+      "skipped": 0,
+      "failed": [],
+      "rows": [
+        {
+          "file": "test_upload_continuation302.py",
+          "code": 0,
+          "tests": 17,
+          "skipped": 0
+        },
+        {
+          "file": "test_master_button304.py",
+          "code": 0,
+          "tests": 14,
+          "skipped": 0
+        },
+        {
+          "file": "test_stable_hud265.py",
+          "code": 0,
+          "tests": 6,
+          "skipped": 0
+        },
+        {
+          "file": "test_manual_presence318.py",
+          "code": 0,
+          "tests": 21,
+          "skipped": 0
+        },
+        {
+          "file": "test_manual_context319.py",
+          "code": 0,
+          "tests": 21,
+          "skipped": 0
+        },
+        {
+          "file": "test_manual_pipeline326.py",
+          "code": 0,
+          "tests": 25,
+          "skipped": 0
+        },
+        {
+          "file": "test_ui_entry327.py",
+          "code": 0,
+          "tests": 10,
+          "skipped": 0
+        },
+        {
+          "file": "test_board_overlay328.py",
+          "code": 0,
+          "tests": 15,
+          "skipped": 0
+        },
+        {
+          "file": "test_combat_overlay329.py",
+          "code": 0,
+          "tests": 16,
+          "skipped": 0
+        },
+        {
+          "file": "test_feedback330.py",
+          "code": 0,
+          "tests": 18,
+          "skipped": 0
+        },
+        {
+          "file": "test_levelup331.py",
+          "code": 0,
+          "tests": 10,
+          "skipped": 0
+        }
+      ]
+    },
+    "additional": {
+      "bundle": {
+        "tests": 94,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0,
+        "seconds": 13.92,
+        "modules": [
+          "test_levelup331",
+          "test_combat_overlay329",
+          "test_board_overlay328",
+          "test_ui_entry327",
+          "test_manual_pipeline326",
+          "test_feedback330"
+        ]
+      }
+    },
+    "new_regression_count": 10,
+    "physical_windows_shell_and_mumu_verified": false,
+    "supplied_screenshot_visually_inspected": true,
+    "supplied_screenshot_not_available_as_local_fixture": true
+  },
+  "policy": {
+    "scope": "master_multicolor",
+    "levelup_requires_two_matching_confident_title_readings": true,
+    "levelup_heading_ends_combat_display": true,
+    "separate_master_display_title_cache": true,
+    "ordinary_navigation_and_other_mode_headings_preserved": true,
+    "fresh_owned_epoch_and_game_context_required": true,
+    "slow_ocr_recaptures_identical_actual_title_pixels": true,
+    "stale_foreign_retired_or_old_epoch_cannot_end_battle": true,
+    "f10_title_result_hides_without_resuming_actions": true,
+    "fresh_puzzle_can_start_next_battle": true,
+    "combat_missing_frames_do_not_hide_hud": true,
+    "v121_manual_movement_feedback_unchanged": true,
+    "taskbar_and_f9_capture_policy_unchanged": true,
+    "diagnostic_always_option_remains_explicit_exception": true,
+    "recognition_and_execution_checks_unchanged": true
+  },
+  "known_limitation": {
+    "physical_windows_shell": "Physical Windows shell and MuMu not run; new OCR tests use controlled readings",
+    "blocked_capture": "Cannot end combat display without a current readable title; existing blocked-reader policy unchanged"
+  },
+  "automatic_update_channel_changed": false,
+  "publication": {
+    "approved_release": true,
+    "source_pr_merged": true,
+    "source_main_commit": "1a1183a23f986c8987038327e97b7ac2d73b3c64",
+    "source_tree_matches_tested_head": true,
+    "source_branch": "codex/v1-0-122-levelup-overlay",
+    "method": "Direct publication from Codex; no Actions run",
+    "artifact_storage": "immutable_repository_file"
+  }
+}
