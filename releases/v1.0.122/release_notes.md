@@ -1,3 +1,5 @@
+[**프로그램 ZIP 다운로드 · v1.0.122**](https://raw.githubusercontent.com/tterx/pad0-updates/1938e165151f0fcfb49c9c695ce0b7662438db8e/releases/v1.0.122/pad0_overlay_windows_v1_0_122.zip)
+
 달인다속에서 레벨 업 확인창에 경로 버튼이 남는 문제를 수정했습니다.
 
 - ‘레벨 업 확인’이 제목 판별·전투 종료 목록에서 누락되어 이전 전투 표시가 남았습니다. 제목을 두 번 일치하게 읽으면 전투 표시와 이전 경로를 해제합니다.
@@ -7,3 +9,5 @@
 Codex에서 관련173개와 배포 코드94개 검사를 모두 통과했습니다. 신규10개 검사를 포함합니다. Actions는 실행하지 않았으며 Windows/MuMu 실기는 미검증입니다. 새 OCR 검사는 통제된 판독값을 사용합니다. [원인·검증 범위](https://github.com/tterx/pad0-updates/blob/main/docs/reviews/REVIEW331.md)
 
 PAD0를 완전히 종료한 뒤 시작.vbs를 다시 실행하면 업데이트됩니다. 설정·수량·분기 기록은 유지됩니다.
+
+ZIP은 위의 저장소 고정 다운로드 주소에서 제공합니다.
