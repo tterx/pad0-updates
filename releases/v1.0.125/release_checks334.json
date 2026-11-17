@@ -1,0 +1,314 @@
+{
+  "zip_sha256": "4c83c470c20302676ae6c9f736c4a5236ba2dbd077d7111c99c8797a4d4e536b",
+  "source_sha256": "5035d72be60a2fcf89a35d0d71a0ddc982302f933c901ac9e06a158f29b3b72d",
+  "source_bytes": 2095056,
+  "zip_bytes": 993286,
+  "release": 334,
+  "version": "v1.0.125",
+  "source_repo": "tterx/pad0-all-in-one",
+  "source_commit": "39ce5046308f885c8c7134cf3a56f715dfcb3ece",
+  "source_pull_request": "https://github.com/tterx/pad0-all-in-one/pull/36",
+  "scope": {
+    "base": "48380ea94940caf1173eccd52b4b6e6692e1faae",
+    "changes": {
+      "pad0_overlay.py": {
+        "changed": [
+          "App._background_battle_turn"
+        ],
+        "added": [],
+        "removed": [
+          "App._capture_route_timer_image",
+          "App._lower_root_without_activation",
+          "App._restore_root_without_activation"
+        ]
+      },
+      "pad0_retry.py": {
+        "changed": [
+          "MasterRetryMixin._master_retry_prepare"
+        ],
+        "added": [
+          "MasterRetryMixin._master_recover_unstarted_route",
+          "blocked_start_cells",
+          "cancelled_start_pair",
+          "equivalent_start_prefix",
+          "resting_start_proof",
+          "start_board_key"
+        ],
+        "removed": []
+      },
+      "pad0_input.py": {
+        "changed": [
+          "NativeSDKInputMixin.play_input"
+        ],
+        "added": [],
+        "removed": []
+      },
+      "pad0_manual_controls.py": {
+        "changed": [],
+        "added": [
+          "ManualControlsMixin._capture_route_timer_image",
+          "ManualControlsMixin._lower_root_without_activation",
+          "ManualControlsMixin._restore_root_without_activation"
+        ],
+        "removed": []
+      }
+    },
+    "unchanged_modules_sha256": {
+      "pad0_ui.py": "54c89fb6a18218db4d175bb6dea3b9a6a93a735eb0ae6b56beb8c7b4df49dcaa",
+      "pad0_solver.py": "b86ef61e32cfdcaa651269f8ce0fb685b07a795e71cae653c492fe174f418036",
+      "pad0_battle.py": "80601cdb596903d0cd69d7390978457534fb2593000d56c7028fcd5ee29d6de4",
+      "pad0_ai.py": "30f46d4eda0dc49c0a825bfd2742cc7bba50b6bf33382ef6e86661ac0a8483a0",
+      "pad0_drop_learning.py": "3b5a714e752004fc414c5ec459db2f3d7d5accd2618e70c24ebcda8f8aad10b5",
+      "pad0_party.py": "8a35cc41dc816d3488846ff85c450bb80ce383003340749b499e1c114fcadfd2",
+      "pad0_crystal.py": "c59bee45cb4d27b8eec3764a562c97d044cfa5d274876b4cec9db53c92c09e2b",
+      "pad0_launcher.py": "24f0536b0326a206775b298d39a4a19da8958f280c31450de82d7f57626d6e7f",
+      "pad0_install.py": "1917d1fc368ff3848dc6b19d3c01bc32b6eb6a8cededa3aaf917a182c4345ba6",
+      "tools/build_release_source.py": "d07999393e3b3e48b5b875a31e6330f4615acfbd6f3b75c950fcb7fa2e02befd"
+    },
+    "moved_manual_methods_ast_identical": true,
+    "moved_method_global_dependencies_verified": true,
+    "defeat_learning_and_complete_route_continuation_ast_unchanged": true
+  },
+  "validation": {
+    "environment": "Codex Linux; actual report228 cropped start/baseline/released board pixels and DOWN/UP trace; real automatic turn caller, controlled native/UI/defeat fixtures; isolated suite subprocesses",
+    "github_actions_executed": false,
+    "user_requested_local_execution": true,
+    "local": {
+      "suites": 28,
+      "tests": 375,
+      "skipped": 0,
+      "failed": [],
+      "rows": [
+        {
+          "file": "test_input_choice197.py",
+          "code": 0,
+          "tests": 12,
+          "skipped": 0
+        },
+        {
+          "file": "test_background_settings206.py",
+          "code": 0,
+          "tests": 5,
+          "skipped": 0
+        },
+        {
+          "file": "test_best_available207.py",
+          "code": 0,
+          "tests": 5,
+          "skipped": 0
+        },
+        {
+          "file": "test_recovery_hp132.py",
+          "code": 0,
+          "tests": 15,
+          "skipped": 0
+        },
+        {
+          "file": "test_replay208.py",
+          "code": 0,
+          "tests": 9,
+          "skipped": 0
+        },
+        {
+          "file": "test_sdk_corners282.py",
+          "code": 0,
+          "tests": 8,
+          "skipped": 0
+        },
+        {
+          "file": "test_upload_continuation302.py",
+          "code": 0,
+          "tests": 17,
+          "skipped": 0
+        },
+        {
+          "file": "test_master_button304.py",
+          "code": 0,
+          "tests": 14,
+          "skipped": 0
+        },
+        {
+          "file": "test_lock_handoff308.py",
+          "code": 0,
+          "tests": 17,
+          "skipped": 0
+        },
+        {
+          "file": "test_locked_start311.py",
+          "code": 0,
+          "tests": 19,
+          "skipped": 0
+        },
+        {
+          "file": "test_defeat296.py",
+          "code": 0,
+          "tests": 22,
+          "skipped": 0
+        },
+        {
+          "file": "test_defeat_result297.py",
+          "code": 0,
+          "tests": 16,
+          "skipped": 0
+        },
+        {
+          "file": "test_stage_continue283.py",
+          "code": 0,
+          "tests": 5,
+          "skipped": 0
+        },
+        {
+          "file": "test_held223.py",
+          "code": 0,
+          "tests": 5,
+          "skipped": 0
+        },
+        {
+          "file": "test_timer_fallback227.py",
+          "code": 0,
+          "tests": 16,
+          "skipped": 0
+        },
+        {
+          "file": "test_condition_recovery260.py",
+          "code": 0,
+          "tests": 10,
+          "skipped": 0
+        },
+        {
+          "file": "test_condition_delivery261.py",
+          "code": 0,
+          "tests": 11,
+          "skipped": 0
+        },
+        {
+          "file": "test_auto_repeat266.py",
+          "code": 0,
+          "tests": 17,
+          "skipped": 0
+        },
+        {
+          "file": "test_uploaded320.py",
+          "code": 0,
+          "tests": 11,
+          "skipped": 0
+        },
+        {
+          "file": "test_manual_pipeline326.py",
+          "code": 0,
+          "tests": 25,
+          "skipped": 0
+        },
+        {
+          "file": "test_ui_entry327.py",
+          "code": 0,
+          "tests": 10,
+          "skipped": 0
+        },
+        {
+          "file": "test_board_overlay328.py",
+          "code": 0,
+          "tests": 15,
+          "skipped": 0
+        },
+        {
+          "file": "test_combat_overlay329.py",
+          "code": 0,
+          "tests": 16,
+          "skipped": 0
+        },
+        {
+          "file": "test_feedback330.py",
+          "code": 0,
+          "tests": 18,
+          "skipped": 0
+        },
+        {
+          "file": "test_levelup331.py",
+          "code": 0,
+          "tests": 10,
+          "skipped": 0
+        },
+        {
+          "file": "test_retry332.py",
+          "code": 0,
+          "tests": 21,
+          "skipped": 0
+        },
+        {
+          "file": "test_search_progress333.py",
+          "code": 0,
+          "tests": 13,
+          "skipped": 0
+        },
+        {
+          "file": "test_start_recovery334.py",
+          "code": 0,
+          "tests": 13,
+          "skipped": 0
+        }
+      ]
+    },
+    "additional": {
+      "bundle": {
+        "tests": 179,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0,
+        "seconds": 107.557,
+        "modules": [
+          "test_start_recovery334",
+          "test_search_progress333",
+          "test_retry332",
+          "test_defeat296",
+          "test_defeat_result297",
+          "test_sdk_corners282",
+          "test_feedback330",
+          "test_manual_pipeline326",
+          "test_levelup331",
+          "test_combat_overlay329",
+          "test_upload_continuation302"
+        ]
+      }
+    },
+    "new_regression_count": 13,
+    "physical_windows_shell_and_mumu_verified": false
+  },
+  "policy": {
+    "scope": "master_multicolor_automatic_selected_MAA_transport",
+    "strict_lifted_start_evidence_retained": true,
+    "probe_cost_reserved_before_another_check": true,
+    "no_move_without_confirmed_start": true,
+    "no_move_recovery_requires_owned_down_up_and_release": true,
+    "two_fresh_passive_same_board_geometry_readings": true,
+    "resting_start_compared_to_baseline": true,
+    "partial_move_wrong_start_and_transport_error_not_recovered": true,
+    "no_nested_down_in_cancelled_gesture": true,
+    "failed_start_exclusion_scoped_to_board_geometry_and_device": true,
+    "equal_colour_prefix_requires_exact_final_colours_combo_flags_and_thorns": true,
+    "alternative_route_replayed_with_current_cap_and_known_start": true,
+    "fresh_timer_board_and_status_preflight_retained": true,
+    "possible_defeat_handed_to_existing_full_detector": true,
+    "four_second_reserve_kept": true,
+    "start_miss_does_not_increment_corner_wait": true,
+    "defeat_only10ms_learning_unchanged": true,
+    "manual_methods_relocated_with_identical_ast": true,
+    "manual_and_other_modes_preserved": true
+  },
+  "known_limitation": {
+    "physical_windows_shell": "Physical Windows shell and MuMu not run",
+    "lifted_jammer": "Actual228 lifted jammer still fails strict start evidence; release and new-start replan avoids repeating this start",
+    "infeasible_budget": "No grant with unknown or <=4s timer, zero move cap, no confirmed observed start, incomplete release or changed/unresolved board",
+    "route_quality": "Best found bounded route; no global maximum or dungeon victory claimed"
+  },
+  "automatic_update_channel_changed": false,
+  "publication": {
+    "approved_release": true,
+    "source_pr_merged": true,
+    "source_main_commit": "1c50cdf657eaccafa27e7e47ed6db7192764eaf8",
+    "source_tree_matches_tested_head": true,
+    "source_branch": "codex/v1-0-125-start-recovery",
+    "method": "Direct publication from Codex; no Actions run",
+    "artifact_storage": "immutable_repository_file"
+  }
+}
