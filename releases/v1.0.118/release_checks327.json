@@ -1,0 +1,232 @@
+{
+  "zip_sha256": "1a12f1c1fcc76d5199247aabbf1c76285bbd092883c503226c25498dccda0634",
+  "source_sha256": "9e3ff775fe863fda4d604760fcd7c4d15ba12b540bc490d53b58206ecbafb906",
+  "source_bytes": 2093671,
+  "zip_bytes": 983272,
+  "release": 327,
+  "version": "v1.0.118",
+  "source_repo": "tterx/pad0-all-in-one",
+  "source_commit": "243a219fd956d182fe778802b2c98dbfe670f255",
+  "source_pull_request": "https://github.com/tterx/pad0-all-in-one/pull/29",
+  "scope": {
+    "base": "c848dc06d44ed954cb566201937ee37e8b9aee4e",
+    "changes": {
+      "pad0_overlay.py": {
+        "changed": [
+          "selected_goals",
+          "_background_probe"
+        ],
+        "added": []
+      },
+      "pad0_manual_controls.py": {
+        "changed": [],
+        "added": [
+          "_manual_fresh_entry_frame"
+        ]
+      }
+    },
+    "unchanged_modules_sha256": {
+      "pad0_ui.py": "0f0463d514743e694fad9c68b3d56032109478be40fb8b01a8c7889955a973e1",
+      "pad0_solver.py": "b86ef61e32cfdcaa651269f8ce0fb685b07a795e71cae653c492fe174f418036",
+      "pad0_input.py": "c0cee53f925c51923605cb3e5beda1912c45512473d99560039218c251f32539",
+      "pad0_ai.py": "30f46d4eda0dc49c0a825bfd2742cc7bba50b6bf33382ef6e86661ac0a8483a0",
+      "pad0_drop_learning.py": "3b5a714e752004fc414c5ec459db2f3d7d5accd2618e70c24ebcda8f8aad10b5",
+      "pad0_party.py": "8a35cc41dc816d3488846ff85c450bb80ce383003340749b499e1c114fcadfd2",
+      "pad0_battle.py": "d67894720d7d9fbb4cc0ff127bf628ab0151054c7613ae8c294b92b15817a496",
+      "pad0_crystal.py": "c59bee45cb4d27b8eec3764a562c97d044cfa5d274876b4cec9db53c92c09e2b",
+      "pad0_launcher.py": "24f0536b0326a206775b298d39a4a19da8958f280c31450de82d7f57626d6e7f",
+      "pad0_install.py": "1917d1fc368ff3848dc6b19d3c01bc32b6eb6a8cededa3aaf917a182c4345ba6"
+    }
+  },
+  "validation": {
+    "environment": "Codex Linux; real Tk and controlled Win32 fixtures; isolated suite subprocesses",
+    "github_actions_executed": false,
+    "user_requested_local_execution": true,
+    "local": {
+      "suites": 20,
+      "tests": 228,
+      "skipped": 0,
+      "failed": [],
+      "rows": [
+        {
+          "file": "test_replay208.py",
+          "code": 0,
+          "tests": 9,
+          "skipped": 0
+        },
+        {
+          "file": "test_stage_number312.py",
+          "code": 0,
+          "tests": 13,
+          "skipped": 0
+        },
+        {
+          "file": "test_start_hud313.py",
+          "code": 0,
+          "tests": 15,
+          "skipped": 0
+        },
+        {
+          "file": "test_catalog_scope313.py",
+          "code": 0,
+          "tests": 6,
+          "skipped": 0
+        },
+        {
+          "file": "test_entry_stage290.py",
+          "code": 0,
+          "tests": 12,
+          "skipped": 0
+        },
+        {
+          "file": "test_route_modes230.py",
+          "code": 0,
+          "tests": 15,
+          "skipped": 0
+        },
+        {
+          "file": "test_goal239.py",
+          "code": 0,
+          "tests": 3,
+          "skipped": 0
+        },
+        {
+          "file": "test_stable_hud265.py",
+          "code": 0,
+          "tests": 6,
+          "skipped": 0
+        },
+        {
+          "file": "test_execution_condition266.py",
+          "code": 0,
+          "tests": 12,
+          "skipped": 0
+        },
+        {
+          "file": "test_focus_search266.py",
+          "code": 0,
+          "tests": 8,
+          "skipped": 0
+        },
+        {
+          "file": "test_hud_paint271.py",
+          "code": 0,
+          "tests": 4,
+          "skipped": 0
+        },
+        {
+          "file": "test_party_ui315.py",
+          "code": 0,
+          "tests": 1,
+          "skipped": 0
+        },
+        {
+          "file": "test_party_archive316.py",
+          "code": 0,
+          "tests": 12,
+          "skipped": 0
+        },
+        {
+          "file": "test_manual_presence318.py",
+          "code": 0,
+          "tests": 21,
+          "skipped": 0
+        },
+        {
+          "file": "test_manual_context319.py",
+          "code": 0,
+          "tests": 21,
+          "skipped": 0
+        },
+        {
+          "file": "test_manual_latency321.py",
+          "code": 0,
+          "tests": 15,
+          "skipped": 0
+        },
+        {
+          "file": "test_manual_capture322.py",
+          "code": 0,
+          "tests": 11,
+          "skipped": 0
+        },
+        {
+          "file": "test_manual_controls323.py",
+          "code": 0,
+          "tests": 9,
+          "skipped": 0
+        },
+        {
+          "file": "test_manual_pipeline326.py",
+          "code": 0,
+          "tests": 25,
+          "skipped": 0
+        },
+        {
+          "file": "test_ui_entry327.py",
+          "code": 0,
+          "tests": 10,
+          "skipped": 0
+        }
+      ]
+    },
+    "additional": {
+      "bundle": {
+        "tests": 44,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0,
+        "seconds": 1.577,
+        "modules": [
+          "test_ui_entry327",
+          "test_manual_pipeline326",
+          "test_manual_controls323"
+        ]
+      }
+    },
+    "new_regression_count": 10,
+    "before_fix": {
+      "tests": 10,
+      "failures": 4,
+      "errors": 0,
+      "skipped": 0,
+      "seconds": 0.539,
+      "modules": [
+        "test_ui_entry327"
+      ]
+    },
+    "explicit_master_20_queries_seconds": {
+      "before": 0.45314042199606774,
+      "after": 0.00012009700003545731
+    },
+    "physical_windows_mumu_verified": false
+  },
+  "policy": {
+    "scope": "master_multicolor",
+    "explicit_master_skips_unused_party_inference": true,
+    "implicit_selection_and_other_modes_unchanged": true,
+    "slow_entry_requires_actual_new_capture": true,
+    "exact_title_rgb_pixels_required": true,
+    "retired_ticket_rejected": true,
+    "stage_and_party_validation_unchanged": true,
+    "starred_and_normal_stage_identity_unchanged": true,
+    "always_visible_option_unchanged": true,
+    "f9_and_input_capture_hides_unchanged": true,
+    "solver_models_input_unchanged": true
+  },
+  "known_limitation": {
+    "user_physical_black_main_window": "Exact physical rendering cause unconfirmed; repeated UI work measured and removed, real Tk widget mapping tested",
+    "passive_native_hang": "Existing bounded native job/restart policy unchanged",
+    "physical_windows_mumu": "Not performed"
+  },
+  "automatic_update_channel_changed": false,
+  "publication": {
+    "approved_release": true,
+    "source_pr_merged": true,
+    "source_main_commit": "92cf40b1f75cbdc9dc2b882bac7f9d0bd8a0fae5",
+    "source_tree_matches_tested_head": true,
+    "source_branch": "codex/v1-0-118-ui-entry",
+    "method": "Direct publication from Codex; no Actions run",
+    "artifact_storage": "immutable_repository_file"
+  }
+}

@@ -1,12 +1,12 @@
 # 퍼드0 올인원
 
-[**프로그램 ZIP 다운로드 · v1.0.117**](https://raw.githubusercontent.com/tterx/pad0-updates/60f6d48f949e85ba83374a4a1cca729da0acb85d/releases/v1.0.117/pad0_overlay_windows_v1_0_117.zip) · [전체 릴리스](https://github.com/tterx/pad0-updates/releases)
+프로그램 ZIP 다운로드 · v1.0.118 · 고정 다운로드 주소 검증 중
 
-현재 표시 버전은 **1.0.117**, 자동 업데이트 내부 순번은 **326**입니다.
+현재 표시 버전은 **1.0.118**, 자동 업데이트 내부 순번은 **327**입니다.
 
 새로 설치할 때는 ZIP을 풀고 `시작.vbs`를 실행하세요. 기존 설치는 PAD0를 완전히 종료한 뒤 `시작.vbs`를 다시 실행하면 업데이트됩니다.
 
-달인다속 **계산 버튼 항상 표시** 설정과 판독 작업 복구를 추가했습니다. F9·입력 중 숨김과 실제 실행 검사는 유지합니다. Codex에서 검증·패키징하며 Actions 자동 검사는 실행하지 않습니다. [변경·검증 범위](docs/reviews/REVIEW326.md) · [검증 기록](releases/v1.0.117/release_checks326.json)
+달인다속 모드 확인의 불필요한 파티 이미지 비교를 제거하고, 지연된 잠입 제목 판독은 현재 픽셀을 다시 확인해 버튼을 표시합니다. [변경·검증 범위](docs/reviews/REVIEW327.md) · [검증 기록](releases/v1.0.118/release_checks327.json)
 
 ## 저장소 안내
 
