@@ -1,12 +1,12 @@
 # 퍼드0 올인원
 
-[**프로그램 ZIP 다운로드 · v1.0.122**](https://raw.githubusercontent.com/tterx/pad0-updates/1938e165151f0fcfb49c9c695ce0b7662438db8e/releases/v1.0.122/pad0_overlay_windows_v1_0_122.zip) · [전체 릴리스](https://github.com/tterx/pad0-updates/releases)
+프로그램 ZIP 다운로드 · v1.0.123 · 고정 다운로드 주소 검증 중
 
-현재 표시 버전은 **1.0.122**, 자동 업데이트 내부 순번은 **331**입니다.
+현재 표시 버전은 **1.0.123**, 자동 업데이트 내부 순번은 **332**입니다.
 
 새로 설치할 때는 ZIP을 풀고 `시작.vbs`를 실행하세요. 기존 설치는 PAD0를 완전히 종료한 뒤 `시작.vbs`를 다시 실행하면 업데이트됩니다.
 
-달인다속에서 레벨 업 확인창의 경로 버튼을 숨깁니다. 전투 중 유지·이동 중 버튼 유지와 새 퍼즐판 재표시는 유지합니다. [원인·검증 범위](docs/reviews/REVIEW331.md) · [검증 기록](releases/v1.0.122/release_checks331.json)
+달인다속 자동플레이는 이동 오차를 기록하고 던전을 계속 진행하며, 실제 던전 패배 때만 코너 대기를 10ms씩 누적해 재도전합니다. 기기별 보정 저장·4초 잔여·F10을 유지합니다. [변경·검증 범위](docs/reviews/REVIEW332.md) · [검증 기록](releases/v1.0.123/release_checks332.json)
 
 ## 저장소 안내
 

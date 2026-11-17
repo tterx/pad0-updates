@@ -1,0 +1,317 @@
+{
+  "zip_sha256": "6995df1892cca757f705c355561c4da89fef7874d26ae9f6e38da673ea73bee8",
+  "source_sha256": "96cb4deefaf01e076e44dcbdbdc6704658cff3ebee6fe45a9111efea547c7c5d",
+  "source_bytes": 2093802,
+  "zip_bytes": 990179,
+  "release": 332,
+  "version": "v1.0.123",
+  "source_repo": "tterx/pad0-all-in-one",
+  "source_commit": "5cfca49231ca9dac03370d997067c575e3854155",
+  "source_pull_request": "https://github.com/tterx/pad0-all-in-one/pull/34",
+  "scope": {
+    "base": "1a1183a23f986c8987038327e97b7ac2d73b3c64",
+    "changes": {
+      "pad0_overlay.py": {
+        "changed": [
+          "App._background_battle_turn",
+          "App._background_tick",
+          "App._background_worker"
+        ],
+        "added": [],
+        "removed": [
+          "App._background_cache_input_failure",
+          "App.stop_playback"
+        ]
+      },
+      "pad0_manual_controls.py": {
+        "changed": [],
+        "added": [
+          "ManualControlsMixin._background_cache_input_failure",
+          "ManualControlsMixin.stop_playback"
+        ],
+        "removed": []
+      },
+      "pad0_battle.py": {
+        "changed": [
+          "DefeatRecovery.step"
+        ],
+        "added": [],
+        "removed": []
+      },
+      "pad0_input.py": {
+        "changed": [
+          "NativeSDKInputMixin.play_input",
+          "maa_playback_move_budget"
+        ],
+        "added": [],
+        "removed": []
+      }
+    },
+    "unchanged_modules_sha256": {
+      "pad0_ui.py": "54c89fb6a18218db4d175bb6dea3b9a6a93a735eb0ae6b56beb8c7b4df49dcaa",
+      "pad0_solver.py": "b86ef61e32cfdcaa651269f8ce0fb685b07a795e71cae653c492fe174f418036",
+      "pad0_ai.py": "30f46d4eda0dc49c0a825bfd2742cc7bba50b6bf33382ef6e86661ac0a8483a0",
+      "pad0_drop_learning.py": "3b5a714e752004fc414c5ec459db2f3d7d5accd2618e70c24ebcda8f8aad10b5",
+      "pad0_party.py": "8a35cc41dc816d3488846ff85c450bb80ce383003340749b499e1c114fcadfd2",
+      "pad0_crystal.py": "c59bee45cb4d27b8eec3764a562c97d044cfa5d274876b4cec9db53c92c09e2b",
+      "pad0_launcher.py": "24f0536b0326a206775b298d39a4a19da8958f280c31450de82d7f57626d6e7f",
+      "pad0_install.py": "1917d1fc368ff3848dc6b19d3c01bc32b6eb6a8cededa3aaf917a182c4345ba6"
+    },
+    "moved_identical_ast": [
+      "stop_playback",
+      "_background_cache_input_failure"
+    ],
+    "strict_low_level_layout_verifiers_unchanged": true,
+    "new_policy_module": "pad0_retry.py"
+  },
+  "validation": {
+    "environment": "Codex Linux; actual cropped report226, real turn caller/defeat parser/settings file; fake-clock native input and real Tk/Win32 fixtures in isolated suite subprocesses",
+    "github_actions_executed": false,
+    "user_requested_local_execution": true,
+    "local": {
+      "suites": 26,
+      "tests": 349,
+      "skipped": 0,
+      "failed": [],
+      "rows": [
+        {
+          "file": "test_input_choice197.py",
+          "code": 0,
+          "tests": 12,
+          "skipped": 0
+        },
+        {
+          "file": "test_background_settings206.py",
+          "code": 0,
+          "tests": 5,
+          "skipped": 0,
+          "final_recheck": "recheck332-test_background_settings206.py.log"
+        },
+        {
+          "file": "test_best_available207.py",
+          "code": 0,
+          "tests": 5,
+          "skipped": 0
+        },
+        {
+          "file": "test_recovery_hp132.py",
+          "code": 0,
+          "tests": 15,
+          "skipped": 0
+        },
+        {
+          "file": "test_replay208.py",
+          "code": 0,
+          "tests": 9,
+          "skipped": 0,
+          "final_recheck": "recheck332-test_replay208.py.log"
+        },
+        {
+          "file": "test_sdk_corners282.py",
+          "code": 0,
+          "tests": 8,
+          "skipped": 0
+        },
+        {
+          "file": "test_master_button304.py",
+          "code": 0,
+          "tests": 14,
+          "skipped": 0
+        },
+        {
+          "file": "test_lock_handoff308.py",
+          "code": 0,
+          "tests": 17,
+          "skipped": 0
+        },
+        {
+          "file": "test_locked_start311.py",
+          "code": 0,
+          "tests": 19,
+          "skipped": 0,
+          "final_recheck": "recheck332-test_locked_start311.py.log"
+        },
+        {
+          "file": "test_defeat296.py",
+          "code": 0,
+          "tests": 22,
+          "skipped": 0
+        },
+        {
+          "file": "test_defeat_result297.py",
+          "code": 0,
+          "tests": 16,
+          "skipped": 0
+        },
+        {
+          "file": "test_stage_continue283.py",
+          "code": 0,
+          "tests": 5,
+          "skipped": 0,
+          "final_recheck": "recheck332-test_stage_continue283.py.log"
+        },
+        {
+          "file": "test_held223.py",
+          "code": 0,
+          "tests": 5,
+          "skipped": 0
+        },
+        {
+          "file": "test_timer_fallback227.py",
+          "code": 0,
+          "tests": 16,
+          "skipped": 0
+        },
+        {
+          "file": "test_condition_recovery260.py",
+          "code": 0,
+          "tests": 10,
+          "skipped": 0
+        },
+        {
+          "file": "test_condition_delivery261.py",
+          "code": 0,
+          "tests": 11,
+          "skipped": 0
+        },
+        {
+          "file": "test_auto_repeat266.py",
+          "code": 0,
+          "tests": 17,
+          "skipped": 0,
+          "final_recheck": "recheck332-test_auto_repeat266.py.log"
+        },
+        {
+          "file": "test_uploaded320.py",
+          "code": 0,
+          "tests": 11,
+          "skipped": 0
+        },
+        {
+          "file": "test_manual_pipeline326.py",
+          "code": 0,
+          "tests": 25,
+          "skipped": 0,
+          "final_recheck": "recheck332-test_manual_pipeline326.py.log"
+        },
+        {
+          "file": "test_ui_entry327.py",
+          "code": 0,
+          "tests": 10,
+          "skipped": 0,
+          "final_recheck": "recheck332-test_ui_entry327.py.log"
+        },
+        {
+          "file": "test_board_overlay328.py",
+          "code": 0,
+          "tests": 15,
+          "skipped": 0,
+          "final_recheck": "recheck332-test_board_overlay328.py.log"
+        },
+        {
+          "file": "test_combat_overlay329.py",
+          "code": 0,
+          "tests": 16,
+          "skipped": 0
+        },
+        {
+          "file": "test_feedback330.py",
+          "code": 0,
+          "tests": 18,
+          "skipped": 0,
+          "final_recheck": "recheck332-test_feedback330.py.log"
+        },
+        {
+          "file": "test_levelup331.py",
+          "code": 0,
+          "tests": 10,
+          "skipped": 0
+        },
+        {
+          "file": "test_retry332.py",
+          "code": 0,
+          "tests": 21,
+          "skipped": 0,
+          "final_recheck": "recheck332-test_retry332.py.log"
+        },
+        {
+          "file": "test_upload_continuation302.py",
+          "code": 0,
+          "tests": 17,
+          "skipped": 0,
+          "final_recheck": "tests332-normal-resume.log"
+        }
+      ]
+    },
+    "additional": {
+      "bundle": {
+        "tests": 153,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0,
+        "seconds": 71.512,
+        "modules": [
+          "test_retry332",
+          "test_defeat296",
+          "test_defeat_result297",
+          "test_sdk_corners282",
+          "test_feedback330",
+          "test_manual_pipeline326",
+          "test_levelup331",
+          "test_combat_overlay329",
+          "test_upload_continuation302"
+        ]
+      },
+      "normal_capture_resume": {
+        "tests": 38,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0,
+        "seconds": 18.211,
+        "modules": [
+          "test_retry332",
+          "test_upload_continuation302"
+        ]
+      }
+    },
+    "new_regression_count": 21,
+    "physical_windows_shell_and_mumu_verified": false,
+    "display_fixture": "Portable Xvfb on :100; initial missing-display failures rerun successfully"
+  },
+  "policy": {
+    "scope": "master_multicolor_automatic_selected_MAA_transport",
+    "movement_miss_continues_after_owned_start_complete_trace_and_release": true,
+    "failed_layout_and_dispatch_not_relabelled_success": true,
+    "last_eight_miss_summaries_retained": true,
+    "no_rescue_down_or_path_replay": true,
+    "normal_owned_release_handoff_resumes_cancelled_capture_without_clearing_f10": true,
+    "only_verified_zero_hp_tips_defeat_adds_ms": 10,
+    "duplicate_defeat_or_route_misses_or_wins_do_not_adjust": true,
+    "correction_persisted_per_existing_device_controller_identity": true,
+    "victory_keeps_current_correction": true,
+    "extra_applied_after_sdk_corner_minimum": true,
+    "straight_sampling_unchanged": true,
+    "planner_and_worker_reserve_same_extra": true,
+    "four_second_reserve_kept_in_adaptive_fallback": true,
+    "unknown_or_insufficient_timer_does_not_grant_execution": true,
+    "transport_release_and_f10_errors_still_stop": true,
+    "windows_manual_and_other_modes_preserved": true,
+    "solver_models_party_stage_branch_data_unchanged": true
+  },
+  "known_limitation": {
+    "physical_windows_shell": "Physical Windows shell and MuMu not run",
+    "infeasible_budget": "If no verified route fits after keeping four seconds, preparation holds/stops rather than spending the reserve",
+    "root_input_issue": "Continuing and adding10ms is not proof the underlying native corner-consumption fault is eliminated",
+    "defeat_attribution": "Every verified dungeon defeat trains the wait as requested, including defeats that may have other causes"
+  },
+  "automatic_update_channel_changed": false,
+  "publication": {
+    "approved_release": true,
+    "source_pr_merged": true,
+    "source_main_commit": "e980bf96209a523989d6ca17ee56adac9fef5c13",
+    "source_tree_matches_tested_head": true,
+    "source_branch": "codex/v1-0-123-defeat-adaptive-retry",
+    "method": "Direct publication from Codex; no Actions run",
+    "artifact_storage": "immutable_repository_file"
+  }
+}
