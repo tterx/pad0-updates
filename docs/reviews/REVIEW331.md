@@ -45,3 +45,15 @@ bundled-source results, hashes and actual download/updater preservation checks
 are recorded in release_checks331.json. Windows/MuMu hardware is unverified.
 
 Validation: source 7362938cf34034752fa60a79d4795a2ab2349438;173 related tests in11 suites,94 bundled tests, no failures/errors/skips. Ten new regressions. No Actions executed.
+
+Publication verified: PR33 merged as 1a1183a23f986c8987038327e97b7ac2d73b3c64.
+Its tree matches the locally checked head. No source, build or publish Actions ran.
+The actual v1.0.122 ZIP downloaded from the immutable repository URL passed SHA256,
+ZIP CRC, version and updater-state checks; release v1.0.122 is stable latest.
+The release notes and root README point to that working repository ZIP URL;
+no attached release asset is claimed.
+The source matches the immutable payload and root update.json activates331.
+The unchanged launcher installed331 from the live manifest over v1.0.121 in an
+isolated installation at state330, preserving the backup, settings, inventory and
+four separate normal/starred/hidden stage/branch markers, and skipped a repeat.
+No PAD0 or physical game input was executed during updater verification.
