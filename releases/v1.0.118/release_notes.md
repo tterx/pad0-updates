@@ -1,3 +1,5 @@
+[**프로그램 ZIP 다운로드 · v1.0.118**](https://raw.githubusercontent.com/tterx/pad0-updates/8603e9ad5674f9db5ec1f8ad927fc0738a025c96/releases/v1.0.118/pad0_overlay_windows_v1_0_118.zip)
+
 달인다속의 반복 UI 지연과 잠입 버튼 표시를 보완했습니다.
 
 - 달인다속을 직접 선택한 경우, 모드 확인 때마다 사용하지 않는 파티 각성 이미지 비교를 다시 하던 작업을 제거했습니다. 등록 파티를 구성한 로컬 재현에서20회 확인이 약0.45초에서0.00012초로 줄었습니다.
@@ -7,3 +9,5 @@
 Codex에서 관련228개 검사와 실제 배포 코드44개 검사를 모두 통과했습니다. 새10개 재현 검사는 v117에서4개 실패하고 수정 후 모두 통과했습니다. GitHub Actions는 실행하지 않았습니다. 실제 사용자 Windows의 검은 화면 원인은 단정하지 않으며, Windows/MuMu 실기 확인은 미검증입니다. [변경·검증 범위](https://github.com/tterx/pad0-updates/blob/main/docs/reviews/REVIEW327.md)
 
 PAD0를 완전히 종료한 뒤 시작.vbs를 다시 실행하면 업데이트됩니다. 설정·수량·분기 기록은 유지됩니다.
+
+ZIP은 위의 저장소 고정 다운로드 주소에서 제공합니다.
