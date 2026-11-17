@@ -1,3 +1,5 @@
+[**프로그램 ZIP 다운로드 · v1.0.120**](https://raw.githubusercontent.com/tterx/pad0-updates/50a74da7690a326351a387eeed7c3e8981808eb9/releases/v1.0.120/pad0_overlay_windows_v1_0_120.zip)
+
 달인다속 경로 버튼은 전투를 확인한 뒤 결과창까지 유지합니다.
 
 - 스킬 연출·퍼즐판 판독 실패·F10 후에도 전투 표시를 유지합니다. 현재 퍼즐판을 매번 읽지 못했다는 이유로 버튼을 숨기지 않습니다.
@@ -8,3 +10,5 @@
 Codex에서 관련313개와 실제 배포 코드66개 검사를 모두 통과했습니다. 신규16개 검사와 v119에서 실패하는 두 재현을 포함합니다. Actions는 실행하지 않았으며 Windows/MuMu 실기는 미검증입니다. [변경·검증 범위](https://github.com/tterx/pad0-updates/blob/main/docs/reviews/REVIEW329.md)
 
 PAD0를 완전히 종료한 뒤 시작.vbs를 다시 실행하면 업데이트됩니다. 설정·수량·분기 기록은 유지됩니다.
+
+ZIP은 위의 저장소 고정 다운로드 주소에서 제공합니다.
