@@ -63,3 +63,15 @@ unresolved and is outside this manual-control patch. Supporting methods live in
 the program within the launcher's2MiB source limit.
 
 Local validation: source b1852f1bc09115d9618a58f6cbde660aa7f0082b;1,577 tests,144 suites;1 Windows-only DLL test skipped on Linux; all remaining tests passed. Bundle45 passed. No Actions executed.
+
+Publication verified: PR28 merged as c848dc06d44ed954cb566201937ee37e8b9aee4e.
+Its tree matches the locally checked head. No source, build or publish Actions ran.
+The actual v1.0.117 ZIP downloaded from the immutable repository URL passed SHA256,
+ZIP CRC, version and updater-state checks; release v1.0.117 is stable latest.
+The release notes and root README point to that working ZIP URL. uploads.github.com
+rejected asset authentication with401, so no attached release asset is claimed.
+The source matches the immutable payload and root update.json activates326.
+The genuine v1.0.115 launcher installed326 from the live manifest in an isolated
+installation at rollback state325, preserved the backup, settings, inventory and
+four separate normal/starred/hidden stage/branch markers, and skipped a repeat.
+No PAD0 or physical game input was executed during updater verification.

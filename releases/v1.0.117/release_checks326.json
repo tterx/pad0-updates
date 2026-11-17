@@ -1002,7 +1002,9 @@
     "asset_upload_status": "HTTP401 via uploads.github.com; no published asset replaced",
     "github_actions_executed": false,
     "stable_release_verified": true,
-    "zip_bytes_unchanged": true
+    "zip_bytes_unchanged": true,
+    "auto_update_verified": true,
+    "actions_runs_on_source_and_merge": 0
   },
   "public_download_verification": {
     "zip_url": "https://raw.githubusercontent.com/tterx/pad0-updates/60f6d48f949e85ba83374a4a1cca729da0acb85d/releases/v1.0.117/pad0_overlay_windows_v1_0_117.zip",
@@ -1030,7 +1032,20 @@
       "separate_starred_normal_hidden_records_preserved": true,
       "application_executed": false
     },
-    "live_status": "pending_post_activation_check",
-    "manifest_url": "https://raw.githubusercontent.com/tterx/pad0-updates/main/update.json"
+    "live_status": "success",
+    "manifest_url": "https://raw.githubusercontent.com/tterx/pad0-updates/main/update.json",
+    "live": {
+      "scope": "live_manifest_and_live_source",
+      "old_release": 325,
+      "new_release": 326,
+      "source_sha256": "68143b5f4c7ec73e55fbc3b44e6935d38725ad6accfb81facd824dbc75a336c9",
+      "source_bytes": 2092819,
+      "backup_preserved": true,
+      "personal_data_preserved": true,
+      "branch_history_preserved": true,
+      "repeat_update_skipped": true,
+      "separate_starred_normal_hidden_records_preserved": true,
+      "application_executed": false
+    }
   }
 }
