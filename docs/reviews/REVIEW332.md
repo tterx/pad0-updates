@@ -75,3 +75,15 @@ input-consumption issue, and all confirmed dungeon defeats train by user policy,
 including defeats that may have causes other than a route miss.
 
 Validation: source 5cfca49231ca9dac03370d997067c575e3854155;349 related tests in26 suites,153 bundled tests, no failures/errors/skips. Twenty-one new regressions. No Actions executed.
+
+Publication verified: PR34 merged as e980bf96209a523989d6ca17ee56adac9fef5c13.
+Its tree matches the locally checked head. No source, build or publish Actions ran.
+The actual v1.0.123 ZIP downloaded from the immutable repository URL passed SHA256,
+ZIP CRC, version and updater-state checks; release v1.0.123 is stable latest.
+The release notes and root README point to that working repository ZIP URL;
+no attached release asset is claimed.
+The source matches the immutable payload and root update.json activates332.
+The unchanged launcher installed332 from the live manifest over v1.0.122 in an
+isolated installation at state331, preserving the backup, settings, inventory and
+four separate normal/starred/hidden stage/branch markers, and skipped a repeat.
+No PAD0 or physical game input was executed during updater verification.
