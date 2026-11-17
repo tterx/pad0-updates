@@ -1,0 +1,286 @@
+{
+  "zip_sha256": "98c73d174421639dd581ab71905c4aeb1dfaf820a15106033637fa9d5b5f4a5c",
+  "source_sha256": "a20e17a8b73c2a298b2344db54002be32d0761bf48f106997a5bae4c83de88e1",
+  "source_bytes": 2094908,
+  "zip_bytes": 984327,
+  "release": 328,
+  "version": "v1.0.119",
+  "source_repo": "tterx/pad0-all-in-one",
+  "source_commit": "8c276fd581437391a322227a1f665e09700ffa69",
+  "source_pull_request": "https://github.com/tterx/pad0-all-in-one/pull/30",
+  "scope": {
+    "base": "92cf40b1f75cbdc9dc2b882bac7f9d0bd8a0fae5",
+    "changes": {
+      "pad0_overlay.py": {
+        "changed": [
+          "__init__",
+          "_master_path_button_board_visible",
+          "_on_goal_mode_changed",
+          "_present_master_manual_button"
+        ],
+        "added": []
+      },
+      "pad0_manual_controls.py": {
+        "changed": [
+          "_path_button_may_show"
+        ],
+        "added": [
+          "_migrate_master_overlay_policy",
+          "_prepare_master_path_overlay",
+          "_master_board_display_visible"
+        ]
+      },
+      "pad0_ui.py": {
+        "changed": [
+          "__init__",
+          "hide_for_playback",
+          "_present_path_button"
+        ],
+        "added": []
+      }
+    },
+    "unchanged_modules_sha256": {
+      "pad0_solver.py": "b86ef61e32cfdcaa651269f8ce0fb685b07a795e71cae653c492fe174f418036",
+      "pad0_input.py": "c0cee53f925c51923605cb3e5beda1912c45512473d99560039218c251f32539",
+      "pad0_ai.py": "30f46d4eda0dc49c0a825bfd2742cc7bba50b6bf33382ef6e86661ac0a8483a0",
+      "pad0_drop_learning.py": "3b5a714e752004fc414c5ec459db2f3d7d5accd2618e70c24ebcda8f8aad10b5",
+      "pad0_party.py": "8a35cc41dc816d3488846ff85c450bb80ce383003340749b499e1c114fcadfd2",
+      "pad0_battle.py": "d67894720d7d9fbb4cc0ff127bf628ab0151054c7613ae8c294b92b15817a496",
+      "pad0_crystal.py": "c59bee45cb4d27b8eec3764a562c97d044cfa5d274876b4cec9db53c92c09e2b",
+      "pad0_launcher.py": "24f0536b0326a206775b298d39a4a19da8958f280c31450de82d7f57626d6e7f",
+      "pad0_install.py": "1917d1fc368ff3848dc6b19d3c01bc32b6eb6a8cededa3aaf917a182c4345ba6"
+    }
+  },
+  "validation": {
+    "environment": "Codex Linux; real Tk and controlled Win32 window/style fixtures; isolated suite subprocesses",
+    "github_actions_executed": false,
+    "user_requested_local_execution": true,
+    "local": {
+      "suites": 25,
+      "tests": 297,
+      "skipped": 0,
+      "failed": [],
+      "rows": [
+        {
+          "file": "test_replay208.py",
+          "code": 0,
+          "tests": 9,
+          "skipped": 0
+        },
+        {
+          "file": "test_master_button304.py",
+          "code": 0,
+          "tests": 14,
+          "skipped": 0
+        },
+        {
+          "file": "test_locked_start311.py",
+          "code": 0,
+          "tests": 19,
+          "skipped": 0,
+          "final_recheck": "recheck328-test_locked_start311.py.log"
+        },
+        {
+          "file": "test_stage_number312.py",
+          "code": 0,
+          "tests": 13,
+          "skipped": 0
+        },
+        {
+          "file": "test_start_hud313.py",
+          "code": 0,
+          "tests": 15,
+          "skipped": 0,
+          "final_recheck": "recheck328-test_start_hud313.py.log"
+        },
+        {
+          "file": "test_catalog_scope313.py",
+          "code": 0,
+          "tests": 6,
+          "skipped": 0
+        },
+        {
+          "file": "test_entry_stage290.py",
+          "code": 0,
+          "tests": 12,
+          "skipped": 0
+        },
+        {
+          "file": "test_route_modes230.py",
+          "code": 0,
+          "tests": 15,
+          "skipped": 0
+        },
+        {
+          "file": "test_goal239.py",
+          "code": 0,
+          "tests": 3,
+          "skipped": 0
+        },
+        {
+          "file": "test_condition_recovery260.py",
+          "code": 0,
+          "tests": 10,
+          "skipped": 0
+        },
+        {
+          "file": "test_condition_delivery261.py",
+          "code": 0,
+          "tests": 11,
+          "skipped": 0
+        },
+        {
+          "file": "test_stable_hud265.py",
+          "code": 0,
+          "tests": 6,
+          "skipped": 0
+        },
+        {
+          "file": "test_execution_condition266.py",
+          "code": 0,
+          "tests": 12,
+          "skipped": 0
+        },
+        {
+          "file": "test_focus_search266.py",
+          "code": 0,
+          "tests": 8,
+          "skipped": 0
+        },
+        {
+          "file": "test_hud_paint271.py",
+          "code": 0,
+          "tests": 4,
+          "skipped": 0,
+          "final_recheck": "recheck328-test_hud_paint271.py.log"
+        },
+        {
+          "file": "test_party_ui315.py",
+          "code": 0,
+          "tests": 1,
+          "skipped": 0
+        },
+        {
+          "file": "test_party_archive316.py",
+          "code": 0,
+          "tests": 12,
+          "skipped": 0
+        },
+        {
+          "file": "test_manual_presence318.py",
+          "code": 0,
+          "tests": 21,
+          "skipped": 0,
+          "final_recheck": "recheck328-test_manual_presence318.py.log"
+        },
+        {
+          "file": "test_manual_context319.py",
+          "code": 0,
+          "tests": 21,
+          "skipped": 0,
+          "final_recheck": "recheck328-test_manual_context319.py.log"
+        },
+        {
+          "file": "test_manual_latency321.py",
+          "code": 0,
+          "tests": 15,
+          "skipped": 0
+        },
+        {
+          "file": "test_manual_capture322.py",
+          "code": 0,
+          "tests": 11,
+          "skipped": 0
+        },
+        {
+          "file": "test_manual_controls323.py",
+          "code": 0,
+          "tests": 9,
+          "skipped": 0
+        },
+        {
+          "file": "test_manual_pipeline326.py",
+          "code": 0,
+          "tests": 25,
+          "skipped": 0
+        },
+        {
+          "file": "test_ui_entry327.py",
+          "code": 0,
+          "tests": 10,
+          "skipped": 0
+        },
+        {
+          "file": "test_board_overlay328.py",
+          "code": 0,
+          "tests": 15,
+          "skipped": 0,
+          "final_recheck": "recheck328-test_board_overlay328.py.log"
+        }
+      ]
+    },
+    "additional": {
+      "bundle": {
+        "tests": 50,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0,
+        "seconds": 1.61,
+        "modules": [
+          "test_board_overlay328",
+          "test_manual_pipeline326",
+          "test_ui_entry327"
+        ]
+      }
+    },
+    "new_regression_count": 15,
+    "before_fix": {
+      "tests": 2,
+      "failures": 2,
+      "errors": 0,
+      "skipped": 0,
+      "seconds": 0.378,
+      "modules": [
+        "test_board_overlay328.BoardOverlay328Tests.test_normal_and_f10_master_huds_are_tools_before_every_native_map",
+        "test_board_overlay328.BoardOverlay328Tests.test_two_distinct_negative_frames_hide_without_counting_same_frame_twice"
+      ]
+    },
+    "physical_windows_shell_and_mumu_verified": false
+  },
+  "policy": {
+    "scope": "master_multicolor",
+    "toolwindow_before_mapping": true,
+    "appwindow_cleared": true,
+    "noactivate_and_owner_detach": true,
+    "tk_policy_persists_across_wrappers": true,
+    "main_root_native_style_never_changed": true,
+    "normal_and_f10_same_presenter": true,
+    "live_hud_never_remapped": true,
+    "old_always_option_disabled_once_for_master": true,
+    "diagnostic_always_option_can_be_explicitly_reenabled": true,
+    "single_miss_grace_for_existing_visible_hud_only": true,
+    "two_distinct_negative_frames_required": true,
+    "pixel_timestamp_never_refreshed": true,
+    "positive_reveal_age_seconds": 1.2,
+    "visible_grace_max_seconds": 2.5,
+    "hard_menu_and_native_invalidation": true,
+    "f9_capture_and_input_hides": true,
+    "readiness_and_input_not_granted_by_display": true,
+    "other_modes_preserved": true,
+    "v118_latency_and_entry_fixes_unchanged": true
+  },
+  "known_limitation": {
+    "physical_windows_shell": "Native taskbar behavior tested with controlled Win32 fixtures; physical Windows shell and MuMu not run",
+    "permanent_capture_block": "Existing bounded native reader/restart policy unchanged"
+  },
+  "automatic_update_channel_changed": false,
+  "publication": {
+    "approved_release": true,
+    "source_pr_merged": true,
+    "source_main_commit": "6b8b0ac67eef6d9eb30fea610b78f08799c0ec1b",
+    "source_tree_matches_tested_head": true,
+    "source_branch": "codex/v1-0-119-board-overlay",
+    "method": "Direct publication from Codex; no Actions run",
+    "artifact_storage": "immutable_repository_file"
+  }
+}
