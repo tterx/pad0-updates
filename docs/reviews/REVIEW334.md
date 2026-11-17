@@ -61,3 +61,15 @@ hashes, public ZIP/source checks and live isolated updater preservation are in
 release_checks334.json. Physical Windows/MuMu play is unverified.
 
 Validation: source 39ce5046308f885c8c7134cf3a56f715dfcb3ece;375 related tests in28 suites,179 bundled tests, no failures/errors/skips. Thirteen new regressions. No Actions executed.
+
+Publication verified: PR36 merged as 1c50cdf657eaccafa27e7e47ed6db7192764eaf8.
+Its tree matches the locally checked head. No source, build or publish Actions ran.
+The actual v1.0.125 ZIP downloaded from the immutable repository URL passed SHA256,
+ZIP CRC, version and updater-state checks; release v1.0.125 is stable latest.
+The release notes and root README point to that working repository ZIP URL;
+no attached release asset is claimed.
+The source matches the immutable payload and root update.json activates334.
+The unchanged launcher installed334 from the live manifest over v1.0.124 in an
+isolated installation at state333, preserving the backup, settings, inventory and
+four separate normal/starred/hidden stage/branch markers, and skipped a repeat.
+No PAD0 or physical game input was executed during updater verification.
