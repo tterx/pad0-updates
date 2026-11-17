@@ -58,3 +58,15 @@ are unchanged. Published metadata records final test counts, hashes, downloaded
 ZIP verification and the genuine launcher update with personal data preserved.
 
 Validation: source 8c276fd581437391a322227a1f665e09700ffa69;297 related tests in25 suites,50 bundled tests, no failures/errors/skips. Fifteen new regressions;two focused cases failed on v118 and passed after fix. No Actions executed.
+
+Publication verified: PR30 merged as 6b8b0ac67eef6d9eb30fea610b78f08799c0ec1b.
+Its tree matches the locally checked head. No source, build or publish Actions ran.
+The actual v1.0.119 ZIP downloaded from the immutable repository URL passed SHA256,
+ZIP CRC, version and updater-state checks; release v1.0.119 is stable latest.
+The release notes and root README point to that working repository ZIP URL;
+no attached release asset is claimed.
+The source matches the immutable payload and root update.json activates328.
+The unchanged launcher installed328 from the live manifest over v1.0.118 in an
+isolated installation at state327, preserving the backup, settings, inventory and
+four separate normal/starred/hidden stage/branch markers, and skipped a repeat.
+No PAD0 or physical game input was executed during updater verification.
