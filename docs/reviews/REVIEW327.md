@@ -41,3 +41,15 @@ are unchanged. Native calls that remain blocked are still subject to the existin
 bounded job policy; this patch does not kill Python threads or bypass visibility.
 
 Validation: source 243a219fd956d182fe778802b2c98dbfe670f255;228 related tests in20 suites,44 bundled tests, no failures/errors/skips. New10 regressions:4 failed on v117, all passed after fix. No Actions executed.
+
+Publication verified: PR29 merged as 92cf40b1f75cbdc9dc2b882bac7f9d0bd8a0fae5.
+Its tree matches the locally checked head. No source, build or publish Actions ran.
+The actual v1.0.118 ZIP downloaded from the immutable repository URL passed SHA256,
+ZIP CRC, version and updater-state checks; release v1.0.118 is stable latest.
+The release notes and root README point to that working repository ZIP URL;
+no attached release asset is claimed.
+The source matches the immutable payload and root update.json activates327.
+The unchanged launcher installed327 from the live manifest over v1.0.117 in an
+isolated installation at state326, preserving the backup, settings, inventory and
+four separate normal/starred/hidden stage/branch markers, and skipped a repeat.
+No PAD0 or physical game input was executed during updater verification.
