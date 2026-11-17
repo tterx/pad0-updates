@@ -64,3 +64,15 @@ publication verifies the real immutable ZIP and unchanged updater's preservation
 of settings, inventory and distinct starred/normal/hidden branch records.
 
 Validation: source e6983f230e08ab5ef9ee2edca907875c117eaf0b;377 related tests in32 suites,100 bundled tests, no failures/errors/skips. Eighteen new regressions. No Actions executed.
+
+Publication verified: PR32 merged as 4dfc32fe59f7510ab4356178c356690470d07739.
+Its tree matches the locally checked head. No source, build or publish Actions ran.
+The actual v1.0.121 ZIP downloaded from the immutable repository URL passed SHA256,
+ZIP CRC, version and updater-state checks; release v1.0.121 is stable latest.
+The release notes and root README point to that working repository ZIP URL;
+no attached release asset is claimed.
+The source matches the immutable payload and root update.json activates330.
+The unchanged launcher installed330 from the live manifest over v1.0.120 in an
+isolated installation at state329, preserving the backup, settings, inventory and
+four separate normal/starred/hidden stage/branch markers, and skipped a repeat.
+No PAD0 or physical game input was executed during updater verification.
