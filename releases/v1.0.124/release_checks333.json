@@ -1,0 +1,279 @@
+{
+  "zip_sha256": "7003db6a4adb1700dcc1370c540e4210bba27eae766a8923c40e28a233ebc927",
+  "source_sha256": "295f2d763dac76ec6da2eaa0d92f6c01207c6d8671ae44b43f08a75090d05871",
+  "source_bytes": 2095760,
+  "zip_bytes": 990827,
+  "release": 333,
+  "version": "v1.0.124",
+  "source_repo": "tterx/pad0-all-in-one",
+  "source_commit": "8d84ce3898818c2d9021f04e897054edc833ec57",
+  "source_pull_request": "https://github.com/tterx/pad0-all-in-one/pull/35",
+  "scope": {
+    "base": "e980bf96209a523989d6ca17ee56adac9fef5c13",
+    "changes": {
+      "pad0_overlay.py": {
+        "changed": [
+          "App._background_battle_turn"
+        ],
+        "added": [],
+        "removed": []
+      },
+      "pad0_retry.py": {
+        "changed": [],
+        "added": [
+          "available_progress_route"
+        ],
+        "removed": []
+      }
+    },
+    "unchanged_modules_sha256": {
+      "pad0_ui.py": "54c89fb6a18218db4d175bb6dea3b9a6a93a735eb0ae6b56beb8c7b4df49dcaa",
+      "pad0_solver.py": "b86ef61e32cfdcaa651269f8ce0fb685b07a795e71cae653c492fe174f418036",
+      "pad0_input.py": "f56d45037dc1af61a4998766c7379a5f248f9648a7321a3beaed1aa606cc3454",
+      "pad0_manual_controls.py": "11a9efd34ba0b50ad86e205eed69f77907e77c6747fc2e1d14e2a3e7c5ec3483",
+      "pad0_battle.py": "80601cdb596903d0cd69d7390978457534fb2593000d56c7028fcd5ee29d6de4",
+      "pad0_ai.py": "30f46d4eda0dc49c0a825bfd2742cc7bba50b6bf33382ef6e86661ac0a8483a0",
+      "pad0_drop_learning.py": "3b5a714e752004fc414c5ec459db2f3d7d5accd2618e70c24ebcda8f8aad10b5",
+      "pad0_party.py": "8a35cc41dc816d3488846ff85c450bb80ce383003340749b499e1c114fcadfd2",
+      "pad0_crystal.py": "c59bee45cb4d27b8eec3764a562c97d044cfa5d274876b4cec9db53c92c09e2b",
+      "pad0_launcher.py": "24f0536b0326a206775b298d39a4a19da8958f280c31450de82d7f57626d6e7f",
+      "pad0_install.py": "1917d1fc368ff3848dc6b19d3c01bc32b6eb6a8cededa3aaf917a182c4345ba6",
+      "tools/build_release_source.py": "d07999393e3b3e48b5b875a31e6330f4615acfbd6f3b75c950fcb7fa2e02befd"
+    },
+    "defeat_learning_and_input_timing_ast_unchanged": true
+  },
+  "validation": {
+    "environment": "Codex Linux; actual report227 board crop, real bounded combo search and automatic turn caller, controlled native/UI/defeat fixtures; isolated suite subprocesses",
+    "github_actions_executed": false,
+    "user_requested_local_execution": true,
+    "local": {
+      "suites": 27,
+      "tests": 362,
+      "skipped": 0,
+      "failed": [],
+      "rows": [
+        {
+          "file": "test_input_choice197.py",
+          "code": 0,
+          "tests": 12,
+          "skipped": 0
+        },
+        {
+          "file": "test_background_settings206.py",
+          "code": 0,
+          "tests": 5,
+          "skipped": 0
+        },
+        {
+          "file": "test_best_available207.py",
+          "code": 0,
+          "tests": 5,
+          "skipped": 0
+        },
+        {
+          "file": "test_recovery_hp132.py",
+          "code": 0,
+          "tests": 15,
+          "skipped": 0
+        },
+        {
+          "file": "test_replay208.py",
+          "code": 0,
+          "tests": 9,
+          "skipped": 0
+        },
+        {
+          "file": "test_sdk_corners282.py",
+          "code": 0,
+          "tests": 8,
+          "skipped": 0
+        },
+        {
+          "file": "test_upload_continuation302.py",
+          "code": 0,
+          "tests": 17,
+          "skipped": 0
+        },
+        {
+          "file": "test_master_button304.py",
+          "code": 0,
+          "tests": 14,
+          "skipped": 0
+        },
+        {
+          "file": "test_lock_handoff308.py",
+          "code": 0,
+          "tests": 17,
+          "skipped": 0
+        },
+        {
+          "file": "test_locked_start311.py",
+          "code": 0,
+          "tests": 19,
+          "skipped": 0
+        },
+        {
+          "file": "test_defeat296.py",
+          "code": 0,
+          "tests": 22,
+          "skipped": 0
+        },
+        {
+          "file": "test_defeat_result297.py",
+          "code": 0,
+          "tests": 16,
+          "skipped": 0
+        },
+        {
+          "file": "test_stage_continue283.py",
+          "code": 0,
+          "tests": 5,
+          "skipped": 0
+        },
+        {
+          "file": "test_held223.py",
+          "code": 0,
+          "tests": 5,
+          "skipped": 0
+        },
+        {
+          "file": "test_timer_fallback227.py",
+          "code": 0,
+          "tests": 16,
+          "skipped": 0
+        },
+        {
+          "file": "test_condition_recovery260.py",
+          "code": 0,
+          "tests": 10,
+          "skipped": 0
+        },
+        {
+          "file": "test_condition_delivery261.py",
+          "code": 0,
+          "tests": 11,
+          "skipped": 0
+        },
+        {
+          "file": "test_auto_repeat266.py",
+          "code": 0,
+          "tests": 17,
+          "skipped": 0
+        },
+        {
+          "file": "test_uploaded320.py",
+          "code": 0,
+          "tests": 11,
+          "skipped": 0
+        },
+        {
+          "file": "test_manual_pipeline326.py",
+          "code": 0,
+          "tests": 25,
+          "skipped": 0
+        },
+        {
+          "file": "test_ui_entry327.py",
+          "code": 0,
+          "tests": 10,
+          "skipped": 0
+        },
+        {
+          "file": "test_board_overlay328.py",
+          "code": 0,
+          "tests": 15,
+          "skipped": 0
+        },
+        {
+          "file": "test_combat_overlay329.py",
+          "code": 0,
+          "tests": 16,
+          "skipped": 0
+        },
+        {
+          "file": "test_feedback330.py",
+          "code": 0,
+          "tests": 18,
+          "skipped": 0
+        },
+        {
+          "file": "test_levelup331.py",
+          "code": 0,
+          "tests": 10,
+          "skipped": 0
+        },
+        {
+          "file": "test_retry332.py",
+          "code": 0,
+          "tests": 21,
+          "skipped": 0
+        },
+        {
+          "file": "test_search_progress333.py",
+          "code": 0,
+          "tests": 13,
+          "skipped": 0,
+          "final_recheck": "tests333-new-final.log"
+        }
+      ]
+    },
+    "additional": {
+      "bundle": {
+        "tests": 166,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0,
+        "seconds": 65.693,
+        "modules": [
+          "test_search_progress333",
+          "test_retry332",
+          "test_defeat296",
+          "test_defeat_result297",
+          "test_sdk_corners282",
+          "test_feedback330",
+          "test_manual_pipeline326",
+          "test_levelup331",
+          "test_combat_overlay329",
+          "test_upload_continuation302"
+        ]
+      }
+    },
+    "new_regression_count": 13,
+    "physical_windows_shell_and_mumu_verified": false
+  },
+  "policy": {
+    "scope": "master_multicolor_automatic_selected_MAA_transport",
+    "attack_goal_miss_and_search_budget_exhaustion_allow_progress": true,
+    "retained_and_fallback_candidates_compared": true,
+    "extra_combo_search_max_seconds": 0.75,
+    "extra_search_charged_to_overall_allowance": true,
+    "all_legal_one_edge_moves_considered": true,
+    "current_board_replayed_for_each_candidate": true,
+    "no_stationary_down_up": true,
+    "known_start_orthogonality_and_move_cap_required": true,
+    "existing_hazard_preferences_retained": true,
+    "original_attack_goal_result_recorded_honestly": true,
+    "fresh_board_timer_spikes_status_validation_retained": true,
+    "zero_combo_turn_progress_allowed": true,
+    "four_second_reserve_kept": true,
+    "search_miss_does_not_increment_corner_wait": true,
+    "defeat_only10ms_learning_unchanged": true,
+    "transport_release_and_f10_policy_unchanged": true,
+    "manual_and_other_modes_preserved": true
+  },
+  "known_limitation": {
+    "physical_windows_shell": "Physical Windows shell and MuMu not run",
+    "infeasible_budget": "No legal input can be granted with zero move cap or no observed starting drop",
+    "route_quality": "Best found bounded search; no globally optimal route or dungeon victory claimed"
+  },
+  "automatic_update_channel_changed": false,
+  "publication": {
+    "approved_release": true,
+    "source_pr_merged": true,
+    "source_main_commit": "48380ea94940caf1173eccd52b4b6e6692e1faae",
+    "source_tree_matches_tested_head": true,
+    "source_branch": "codex/v1-0-124-search-progress",
+    "method": "Direct publication from Codex; no Actions run",
+    "artifact_storage": "immutable_repository_file"
+  }
+}
