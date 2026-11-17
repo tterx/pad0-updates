@@ -1,0 +1,286 @@
+{
+  "zip_sha256": "c9dcd67246a90e0234b9d8bdfea1d46b4ed535dd09a6c3a7688dbbbb4668682e",
+  "source_sha256": "652af93d51342d3266d6695066e86e622e15d7f47657fb7ff025def9698688b5",
+  "source_bytes": 2095892,
+  "zip_bytes": 984867,
+  "release": 329,
+  "version": "v1.0.120",
+  "source_repo": "tterx/pad0-all-in-one",
+  "source_commit": "31be508011f210606377f955ceb92faefe4ff48f",
+  "source_pull_request": "https://github.com/tterx/pad0-all-in-one/pull/31",
+  "scope": {
+    "base": "6b8b0ac67eef6d9eb30fea610b78f08799c0ec1b",
+    "changes": {
+      "pad0_overlay.py": {
+        "changed": [
+          "_clear_live_board",
+          "_on_goal_mode_changed",
+          "_background_probe",
+          "_background_tick"
+        ],
+        "added": []
+      },
+      "pad0_manual_controls.py": {
+        "changed": [
+          "_migrate_master_overlay_policy",
+          "_master_board_display_visible",
+          "_save_master_control_diagnostic",
+          "_path_button_may_show"
+        ],
+        "added": [
+          "_master_combat_end_heading",
+          "_master_combat_overlay_active",
+          "_master_combat_heading_update"
+        ]
+      }
+    },
+    "unchanged_modules_sha256": {
+      "pad0_ui.py": "92327670f857b1c2eb54fbc8c936c22874a9f0d65e8c541c04dae2a48955d92e",
+      "pad0_solver.py": "b86ef61e32cfdcaa651269f8ce0fb685b07a795e71cae653c492fe174f418036",
+      "pad0_input.py": "c0cee53f925c51923605cb3e5beda1912c45512473d99560039218c251f32539",
+      "pad0_ai.py": "30f46d4eda0dc49c0a825bfd2742cc7bba50b6bf33382ef6e86661ac0a8483a0",
+      "pad0_drop_learning.py": "3b5a714e752004fc414c5ec459db2f3d7d5accd2618e70c24ebcda8f8aad10b5",
+      "pad0_party.py": "8a35cc41dc816d3488846ff85c450bb80ce383003340749b499e1c114fcadfd2",
+      "pad0_battle.py": "d67894720d7d9fbb4cc0ff127bf628ab0151054c7613ae8c294b92b15817a496",
+      "pad0_crystal.py": "c59bee45cb4d27b8eec3764a562c97d044cfa5d274876b4cec9db53c92c09e2b",
+      "pad0_launcher.py": "24f0536b0326a206775b298d39a4a19da8958f280c31450de82d7f57626d6e7f",
+      "pad0_install.py": "1917d1fc368ff3848dc6b19d3c01bc32b6eb6a8cededa3aaf917a182c4345ba6"
+    }
+  },
+  "validation": {
+    "environment": "Codex Linux; real Tk and controlled Win32/queue fixtures; isolated suite subprocesses",
+    "github_actions_executed": false,
+    "user_requested_local_execution": true,
+    "local": {
+      "suites": 26,
+      "tests": 313,
+      "skipped": 0,
+      "failed": [],
+      "rows": [
+        {
+          "file": "test_replay208.py",
+          "code": 0,
+          "tests": 9,
+          "skipped": 0
+        },
+        {
+          "file": "test_master_button304.py",
+          "code": 0,
+          "tests": 14,
+          "skipped": 0
+        },
+        {
+          "file": "test_locked_start311.py",
+          "code": 0,
+          "tests": 19,
+          "skipped": 0
+        },
+        {
+          "file": "test_stage_number312.py",
+          "code": 0,
+          "tests": 13,
+          "skipped": 0
+        },
+        {
+          "file": "test_start_hud313.py",
+          "code": 0,
+          "tests": 15,
+          "skipped": 0,
+          "final_recheck": "recheck329-test_start_hud313.py.log"
+        },
+        {
+          "file": "test_catalog_scope313.py",
+          "code": 0,
+          "tests": 6,
+          "skipped": 0
+        },
+        {
+          "file": "test_entry_stage290.py",
+          "code": 0,
+          "tests": 12,
+          "skipped": 0
+        },
+        {
+          "file": "test_route_modes230.py",
+          "code": 0,
+          "tests": 15,
+          "skipped": 0
+        },
+        {
+          "file": "test_goal239.py",
+          "code": 0,
+          "tests": 3,
+          "skipped": 0
+        },
+        {
+          "file": "test_condition_recovery260.py",
+          "code": 0,
+          "tests": 10,
+          "skipped": 0
+        },
+        {
+          "file": "test_condition_delivery261.py",
+          "code": 0,
+          "tests": 11,
+          "skipped": 0
+        },
+        {
+          "file": "test_stable_hud265.py",
+          "code": 0,
+          "tests": 6,
+          "skipped": 0
+        },
+        {
+          "file": "test_execution_condition266.py",
+          "code": 0,
+          "tests": 12,
+          "skipped": 0
+        },
+        {
+          "file": "test_focus_search266.py",
+          "code": 0,
+          "tests": 8,
+          "skipped": 0
+        },
+        {
+          "file": "test_hud_paint271.py",
+          "code": 0,
+          "tests": 4,
+          "skipped": 0
+        },
+        {
+          "file": "test_party_ui315.py",
+          "code": 0,
+          "tests": 1,
+          "skipped": 0
+        },
+        {
+          "file": "test_party_archive316.py",
+          "code": 0,
+          "tests": 12,
+          "skipped": 0
+        },
+        {
+          "file": "test_manual_presence318.py",
+          "code": 0,
+          "tests": 21,
+          "skipped": 0,
+          "final_recheck": "recheck329-test_manual_presence318.py.log"
+        },
+        {
+          "file": "test_manual_context319.py",
+          "code": 0,
+          "tests": 21,
+          "skipped": 0
+        },
+        {
+          "file": "test_manual_latency321.py",
+          "code": 0,
+          "tests": 15,
+          "skipped": 0
+        },
+        {
+          "file": "test_manual_capture322.py",
+          "code": 0,
+          "tests": 11,
+          "skipped": 0
+        },
+        {
+          "file": "test_manual_controls323.py",
+          "code": 0,
+          "tests": 9,
+          "skipped": 0
+        },
+        {
+          "file": "test_manual_pipeline326.py",
+          "code": 0,
+          "tests": 25,
+          "skipped": 0
+        },
+        {
+          "file": "test_ui_entry327.py",
+          "code": 0,
+          "tests": 10,
+          "skipped": 0
+        },
+        {
+          "file": "test_board_overlay328.py",
+          "code": 0,
+          "tests": 15,
+          "skipped": 0,
+          "final_recheck": "recheck329-test_board_overlay328.py.log"
+        },
+        {
+          "file": "test_combat_overlay329.py",
+          "code": 0,
+          "tests": 16,
+          "skipped": 0,
+          "final_recheck": "recheck329-test_combat_overlay329.py.log"
+        }
+      ]
+    },
+    "additional": {
+      "bundle": {
+        "tests": 66,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0,
+        "seconds": 2.004,
+        "modules": [
+          "test_combat_overlay329",
+          "test_board_overlay328",
+          "test_ui_entry327",
+          "test_manual_pipeline326"
+        ]
+      }
+    },
+    "new_regression_count": 16,
+    "before_fix": {
+      "tests": 2,
+      "failures": 2,
+      "errors": 0,
+      "skipped": 0,
+      "seconds": 0.147,
+      "modules": [
+        "test_combat_overlay329.CombatOverlay329Tests.test_thirty_seconds_of_missing_board_frames_do_not_end_combat",
+        "test_combat_overlay329.CombatOverlay329Tests.test_recognition_clear_and_f10_epoch_change_do_not_hide_combat_hud"
+      ]
+    },
+    "physical_windows_shell_and_mumu_verified": false
+  },
+  "policy": {
+    "scope": "master_multicolor",
+    "combat_phase_starts_from_fresh_host_scoped_puzzle": true,
+    "missing_board_and_capture_errors_do_not_end_battle": true,
+    "skill_popups_do_not_end_battle": true,
+    "f10_epoch_does_not_end_battle": true,
+    "current_result_or_definite_dungeon_exit_ends_display": true,
+    "stale_retired_foreign_results_rejected": true,
+    "result_messages_consumed_after_f10": true,
+    "slow_result_requires_new_capture_and_identical_title_pixels": true,
+    "pixel_timestamps_never_extended": true,
+    "display_does_not_grant_readiness_or_input": true,
+    "host_or_mode_change_discards_phase": true,
+    "phase_not_persisted_to_settings": true,
+    "old_always_preference_disabled_once": true,
+    "explicit_diagnostic_always_option_retained": true,
+    "taskbar_free_window_code_unchanged": true,
+    "f9_input_capture_hides_retained": true,
+    "v118_latency_fix_unchanged": true,
+    "other_modes_preserved": true
+  },
+  "known_limitation": {
+    "physical_windows_shell": "Physical Windows shell and MuMu not run",
+    "blocked_capture": "If no fresh result/exit evidence can be read, display is retained until exit is confirmed or host/mode changes; existing bounded reader/restart policy remains"
+  },
+  "automatic_update_channel_changed": false,
+  "publication": {
+    "approved_release": true,
+    "source_pr_merged": true,
+    "source_main_commit": "79210614601d32a908edf59383f0d5e407a17108",
+    "source_tree_matches_tested_head": true,
+    "source_branch": "codex/v1-0-120-combat-overlay",
+    "method": "Direct publication from Codex; no Actions run",
+    "artifact_storage": "immutable_repository_file"
+  }
+}

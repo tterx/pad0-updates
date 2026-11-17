@@ -1,12 +1,12 @@
 # 퍼드0 올인원
 
-[**프로그램 ZIP 다운로드 · v1.0.119**](https://raw.githubusercontent.com/tterx/pad0-updates/6296170b90f9d9f00d746680c61413026155225e/releases/v1.0.119/pad0_overlay_windows_v1_0_119.zip) · [전체 릴리스](https://github.com/tterx/pad0-updates/releases)
+프로그램 ZIP 다운로드 · v1.0.120 · 고정 다운로드 주소 검증 중
 
-현재 표시 버전은 **1.0.119**, 자동 업데이트 내부 순번은 **328**입니다.
+현재 표시 버전은 **1.0.120**, 자동 업데이트 내부 순번은 **329**입니다.
 
 새로 설치할 때는 ZIP을 풀고 `시작.vbs`를 실행하세요. 기존 설치는 PAD0를 완전히 종료한 뒤 `시작.vbs`를 다시 실행하면 업데이트됩니다.
 
-달인다속 경로 버튼은 작업표시줄 등록 없이 퍼즐판이 보이는 동안 유지하고 판이 끝나면 숨깁니다. 기존 항상 표시 설정은 한 번 해제합니다. [변경·검증 범위](docs/reviews/REVIEW328.md) · [검증 기록](releases/v1.0.119/release_checks328.json)
+달인다속 경로 버튼은 전투를 확인한 뒤 결과창까지 유지합니다. 판독 실패·스킬 연출·F10은 전투 표시를 종료하지 않습니다. [변경·검증 범위](docs/reviews/REVIEW329.md) · [검증 기록](releases/v1.0.120/release_checks329.json)
 
 ## 저장소 안내
 
