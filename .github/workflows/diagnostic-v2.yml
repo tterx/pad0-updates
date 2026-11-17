@@ -1,9 +1,6 @@
 name: Verify independent diagnostic v2 on Windows
 on:
   workflow_dispatch:
-  push:
-    branches: [main]
-    paths: [.github/workflows/diagnostic-v2.yml, tools/diagnostics/window-state-v2/**]
 permissions:
   contents: read
 jobs:

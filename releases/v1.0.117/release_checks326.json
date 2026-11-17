@@ -1,0 +1,999 @@
+{
+  "zip_sha256": "74674f7b5f6d1137c89e9edad5937704030af912c09a7c8ae521f3247507caf5",
+  "source_sha256": "68143b5f4c7ec73e55fbc3b44e6935d38725ad6accfb81facd824dbc75a336c9",
+  "source_bytes": 2092819,
+  "zip_bytes": 982751,
+  "release": 326,
+  "version": "v1.0.117",
+  "source_repo": "tterx/pad0-all-in-one",
+  "source_commit": "b1852f1bc09115d9618a58f6cbde660aa7f0082b",
+  "source_pull_request": "https://github.com/tterx/pad0-all-in-one/pull/28",
+  "validation": {
+    "environment": "Codex Linux; isolated subprocess per existing Windows-workflow suite",
+    "github_actions_executed": false,
+    "user_requested_local_execution": true,
+    "local": {
+      "suites": 144,
+      "tests": 1577,
+      "skipped": 1,
+      "failed": [],
+      "rows": [
+        {
+          "file": "test_skill_model_pipeline205.py",
+          "code": 0,
+          "tests": 25,
+          "skipped": 1
+        },
+        {
+          "file": "test_skill_confirm112.py",
+          "code": 0,
+          "tests": 4,
+          "skipped": 0
+        },
+        {
+          "file": "test_input_choice197.py",
+          "code": 0,
+          "tests": 12,
+          "skipped": 0
+        },
+        {
+          "file": "test_background_settings206.py",
+          "code": 0,
+          "tests": 5,
+          "skipped": 0
+        },
+        {
+          "file": "test_best_available207.py",
+          "code": 0,
+          "tests": 5,
+          "skipped": 0
+        },
+        {
+          "file": "test_recovery_hp132.py",
+          "code": 0,
+          "tests": 15,
+          "skipped": 0
+        },
+        {
+          "file": "test_replay208.py",
+          "code": 0,
+          "tests": 9,
+          "skipped": 0,
+          "final_recheck": "recheck326-replay208.log"
+        },
+        {
+          "file": "test_start209.py",
+          "code": 0,
+          "tests": 7,
+          "skipped": 0
+        },
+        {
+          "file": "test_jammer211.py",
+          "code": 0,
+          "tests": 10,
+          "skipped": 0
+        },
+        {
+          "file": "test_replay212.py",
+          "code": 0,
+          "tests": 4,
+          "skipped": 0
+        },
+        {
+          "file": "test_skill_fallback213.py",
+          "code": 0,
+          "tests": 8,
+          "skipped": 0
+        },
+        {
+          "file": "test_continuous215.py",
+          "code": 0,
+          "tests": 10,
+          "skipped": 0
+        },
+        {
+          "file": "test_sdk_corners282.py",
+          "code": 0,
+          "tests": 8,
+          "skipped": 0
+        },
+        {
+          "file": "test_held_jammer289.py",
+          "code": 0,
+          "tests": 16,
+          "skipped": 0
+        },
+        {
+          "file": "test_upload_feedback300.py",
+          "code": 0,
+          "tests": 14,
+          "skipped": 0
+        },
+        {
+          "file": "test_training_jammer301.py",
+          "code": 0,
+          "tests": 17,
+          "skipped": 0
+        },
+        {
+          "file": "test_upload_continuation302.py",
+          "code": 0,
+          "tests": 17,
+          "skipped": 0
+        },
+        {
+          "file": "test_combo_objective303.py",
+          "code": 0,
+          "tests": 22,
+          "skipped": 0
+        },
+        {
+          "file": "test_master_button304.py",
+          "code": 0,
+          "tests": 14,
+          "skipped": 0
+        },
+        {
+          "file": "test_branch_learning305.py",
+          "code": 0,
+          "tests": 18,
+          "skipped": 0
+        },
+        {
+          "file": "test_upload_followup305.py",
+          "code": 0,
+          "tests": 10,
+          "skipped": 0
+        },
+        {
+          "file": "test_party_stage306.py",
+          "code": 0,
+          "tests": 14,
+          "skipped": 0
+        },
+        {
+          "file": "test_bound_party307.py",
+          "code": 0,
+          "tests": 16,
+          "skipped": 0
+        },
+        {
+          "file": "test_lock_handoff308.py",
+          "code": 0,
+          "tests": 17,
+          "skipped": 0
+        },
+        {
+          "file": "test_master_handoff309.py",
+          "code": 0,
+          "tests": 22,
+          "skipped": 0
+        },
+        {
+          "file": "test_branch_source310.py",
+          "code": 0,
+          "tests": 14,
+          "skipped": 0
+        },
+        {
+          "file": "test_locked_start311.py",
+          "code": 0,
+          "tests": 19,
+          "skipped": 0
+        },
+        {
+          "file": "test_status_matrix311.py",
+          "code": 0,
+          "tests": 8,
+          "skipped": 0
+        },
+        {
+          "file": "test_stage_number312.py",
+          "code": 0,
+          "tests": 13,
+          "skipped": 0
+        },
+        {
+          "file": "test_start_hud313.py",
+          "code": 0,
+          "tests": 15,
+          "skipped": 0,
+          "final_recheck": "recheck326-start313.log"
+        },
+        {
+          "file": "test_catalog_scope313.py",
+          "code": 0,
+          "tests": 6,
+          "skipped": 0
+        },
+        {
+          "file": "test_entry_stage290.py",
+          "code": 0,
+          "tests": 12,
+          "skipped": 0
+        },
+        {
+          "file": "test_material_number291.py",
+          "code": 0,
+          "tests": 19,
+          "skipped": 0
+        },
+        {
+          "file": "test_completion_name292.py",
+          "code": 0,
+          "tests": 12,
+          "skipped": 0
+        },
+        {
+          "file": "test_search_portraits293.py",
+          "code": 0,
+          "tests": 21,
+          "skipped": 0
+        },
+        {
+          "file": "test_reward_frame294.py",
+          "code": 0,
+          "tests": 15,
+          "skipped": 0
+        },
+        {
+          "file": "test_breakthrough_owner294.py",
+          "code": 0,
+          "tests": 20,
+          "skipped": 0
+        },
+        {
+          "file": "test_creation_dark295.py",
+          "code": 0,
+          "tests": 12,
+          "skipped": 0
+        },
+        {
+          "file": "test_defeat296.py",
+          "code": 0,
+          "tests": 22,
+          "skipped": 0
+        },
+        {
+          "file": "test_defeat_result297.py",
+          "code": 0,
+          "tests": 16,
+          "skipped": 0
+        },
+        {
+          "file": "test_repeat_map299.py",
+          "code": 0,
+          "tests": 16,
+          "skipped": 0
+        },
+        {
+          "file": "test_short_recovery299.py",
+          "code": 0,
+          "tests": 16,
+          "skipped": 0
+        },
+        {
+          "file": "test_reward_scene298.py",
+          "code": 0,
+          "tests": 16,
+          "skipped": 0
+        },
+        {
+          "file": "test_background_search283.py",
+          "code": 0,
+          "tests": 12,
+          "skipped": 0
+        },
+        {
+          "file": "test_stage_continue283.py",
+          "code": 0,
+          "tests": 5,
+          "skipped": 0
+        },
+        {
+          "file": "test_skill_counter284.py",
+          "code": 0,
+          "tests": 8,
+          "skipped": 0
+        },
+        {
+          "file": "test_farming_order288.py",
+          "code": 0,
+          "tests": 14,
+          "skipped": 0
+        },
+        {
+          "file": "test_training_query288.py",
+          "code": 0,
+          "tests": 10,
+          "skipped": 0
+        },
+        {
+          "file": "test_initial_names285.py",
+          "code": 0,
+          "tests": 14,
+          "skipped": 0
+        },
+        {
+          "file": "test_material_ocr286.py",
+          "code": 0,
+          "tests": 12,
+          "skipped": 0
+        },
+        {
+          "file": "test_material_owner287.py",
+          "code": 0,
+          "tests": 11,
+          "skipped": 0
+        },
+        {
+          "file": "test_start_skill216.py",
+          "code": 0,
+          "tests": 11,
+          "skipped": 0
+        },
+        {
+          "file": "test_completion217.py",
+          "code": 0,
+          "tests": 4,
+          "skipped": 0
+        },
+        {
+          "file": "test_background_chime183.py",
+          "code": 0,
+          "tests": 2,
+          "skipped": 0
+        },
+        {
+          "file": "test_material_stage218.py",
+          "code": 0,
+          "tests": 10,
+          "skipped": 0
+        },
+        {
+          "file": "test_acquisition219.py",
+          "code": 0,
+          "tests": 4,
+          "skipped": 0
+        },
+        {
+          "file": "test_cloud220.py",
+          "code": 0,
+          "tests": 5,
+          "skipped": 0
+        },
+        {
+          "file": "test_cloud221.py",
+          "code": 0,
+          "tests": 4,
+          "skipped": 0
+        },
+        {
+          "file": "test_cooldown222.py",
+          "code": 0,
+          "tests": 5,
+          "skipped": 0
+        },
+        {
+          "file": "test_held223.py",
+          "code": 0,
+          "tests": 5,
+          "skipped": 0
+        },
+        {
+          "file": "test_spike_policy224.py",
+          "code": 0,
+          "tests": 6,
+          "skipped": 0
+        },
+        {
+          "file": "test_skill_policy179.py",
+          "code": 0,
+          "tests": 5,
+          "skipped": 0
+        },
+        {
+          "file": "test_cloud_policy226.py",
+          "code": 0,
+          "tests": 12,
+          "skipped": 0
+        },
+        {
+          "file": "test_development_models226.py",
+          "code": 0,
+          "tests": 7,
+          "skipped": 0
+        },
+        {
+          "file": "test_ai_layout133.py",
+          "code": 0,
+          "tests": 2,
+          "skipped": 0
+        },
+        {
+          "file": "test_timer_fallback227.py",
+          "code": 0,
+          "tests": 16,
+          "skipped": 0
+        },
+        {
+          "file": "test_thorn_start228.py",
+          "code": 0,
+          "tests": 8,
+          "skipped": 0
+        },
+        {
+          "file": "test_manual_spikes228.py",
+          "code": 0,
+          "tests": 9,
+          "skipped": 0
+        },
+        {
+          "file": "test_board_clear229.py",
+          "code": 0,
+          "tests": 15,
+          "skipped": 0
+        },
+        {
+          "file": "test_awakening230.py",
+          "code": 0,
+          "tests": 12,
+          "skipped": 0
+        },
+        {
+          "file": "test_route_modes230.py",
+          "code": 0,
+          "tests": 15,
+          "skipped": 0
+        },
+        {
+          "file": "test_skill_tactics230.py",
+          "code": 0,
+          "tests": 12,
+          "skipped": 0
+        },
+        {
+          "file": "test_quantity231.py",
+          "code": 0,
+          "tests": 15,
+          "skipped": 0
+        },
+        {
+          "file": "test_tpa232.py",
+          "code": 0,
+          "tests": 17,
+          "skipped": 0
+        },
+        {
+          "file": "test_manual_tpa233.py",
+          "code": 0,
+          "tests": 6,
+          "skipped": 0
+        },
+        {
+          "file": "test_tpa_seed234.py",
+          "code": 0,
+          "tests": 8,
+          "skipped": 0
+        },
+        {
+          "file": "test_tpa_prefind235.py",
+          "code": 0,
+          "tests": 12,
+          "skipped": 0
+        },
+        {
+          "file": "test_stage236.py",
+          "code": 0,
+          "tests": 3,
+          "skipped": 0
+        },
+        {
+          "file": "test_route237.py",
+          "code": 0,
+          "tests": 4,
+          "skipped": 0
+        },
+        {
+          "file": "test_fast_tpa238.py",
+          "code": 0,
+          "tests": 8,
+          "skipped": 0
+        },
+        {
+          "file": "test_tpa_joint239.py",
+          "code": 0,
+          "tests": 6,
+          "skipped": 0
+        },
+        {
+          "file": "test_goal239.py",
+          "code": 0,
+          "tests": 3,
+          "skipped": 0
+        },
+        {
+          "file": "test_quantity240.py",
+          "code": 0,
+          "tests": 5,
+          "skipped": 0
+        },
+        {
+          "file": "test_quantity241.py",
+          "code": 0,
+          "tests": 5,
+          "skipped": 0
+        },
+        {
+          "file": "test_quantity242.py",
+          "code": 0,
+          "tests": 4,
+          "skipped": 0
+        },
+        {
+          "file": "test_entry243.py",
+          "code": 0,
+          "tests": 8,
+          "skipped": 0
+        },
+        {
+          "file": "test_stage244.py",
+          "code": 0,
+          "tests": 10,
+          "skipped": 0
+        },
+        {
+          "file": "test_stage245.py",
+          "code": 0,
+          "tests": 8,
+          "skipped": 0
+        },
+        {
+          "file": "test_stage246.py",
+          "code": 0,
+          "tests": 12,
+          "skipped": 0
+        },
+        {
+          "file": "test_party247.py",
+          "code": 0,
+          "tests": 11,
+          "skipped": 0
+        },
+        {
+          "file": "test_turn248.py",
+          "code": 0,
+          "tests": 14,
+          "skipped": 0
+        },
+        {
+          "file": "test_skill249.py",
+          "code": 0,
+          "tests": 11,
+          "skipped": 0
+        },
+        {
+          "file": "test_start250.py",
+          "code": 0,
+          "tests": 14,
+          "skipped": 0
+        },
+        {
+          "file": "test_inventory251.py",
+          "code": 0,
+          "tests": 8,
+          "skipped": 0
+        },
+        {
+          "file": "test_quantity252.py",
+          "code": 0,
+          "tests": 8,
+          "skipped": 0
+        },
+        {
+          "file": "test_start253.py",
+          "code": 0,
+          "tests": 8,
+          "skipped": 0
+        },
+        {
+          "file": "test_retarget254.py",
+          "code": 0,
+          "tests": 8,
+          "skipped": 0
+        },
+        {
+          "file": "test_material_owner255.py",
+          "code": 0,
+          "tests": 10,
+          "skipped": 0
+        },
+        {
+          "file": "test_stage_medals256.py",
+          "code": 0,
+          "tests": 6,
+          "skipped": 0
+        },
+        {
+          "file": "test_manual_recovery257.py",
+          "code": 0,
+          "tests": 15,
+          "skipped": 0
+        },
+        {
+          "file": "test_condition_save258.py",
+          "code": 0,
+          "tests": 16,
+          "skipped": 0
+        },
+        {
+          "file": "test_recognition_save259.py",
+          "code": 0,
+          "tests": 12,
+          "skipped": 0
+        },
+        {
+          "file": "test_condition_recovery260.py",
+          "code": 0,
+          "tests": 10,
+          "skipped": 0
+        },
+        {
+          "file": "test_condition_delivery261.py",
+          "code": 0,
+          "tests": 11,
+          "skipped": 0
+        },
+        {
+          "file": "test_preparation_latency262.py",
+          "code": 0,
+          "tests": 9,
+          "skipped": 0
+        },
+        {
+          "file": "test_capture_wait263.py",
+          "code": 0,
+          "tests": 13,
+          "skipped": 0
+        },
+        {
+          "file": "test_confirmed_preview264.py",
+          "code": 0,
+          "tests": 8,
+          "skipped": 0
+        },
+        {
+          "file": "test_stable_hud265.py",
+          "code": 0,
+          "tests": 6,
+          "skipped": 0
+        },
+        {
+          "file": "test_execution_condition266.py",
+          "code": 0,
+          "tests": 12,
+          "skipped": 0
+        },
+        {
+          "file": "test_focus_search266.py",
+          "code": 0,
+          "tests": 8,
+          "skipped": 0
+        },
+        {
+          "file": "test_auto_repeat266.py",
+          "code": 0,
+          "tests": 17,
+          "skipped": 0
+        },
+        {
+          "file": "test_route_latency267.py",
+          "code": 0,
+          "tests": 9,
+          "skipped": 0
+        },
+        {
+          "file": "test_compact_solver268.py",
+          "code": 0,
+          "tests": 8,
+          "skipped": 0
+        },
+        {
+          "file": "test_readiness269.py",
+          "code": 0,
+          "tests": 4,
+          "skipped": 0
+        },
+        {
+          "file": "test_hazard_preparation270.py",
+          "code": 0,
+          "tests": 10,
+          "skipped": 0
+        },
+        {
+          "file": "test_hud_paint271.py",
+          "code": 0,
+          "tests": 4,
+          "skipped": 0
+        },
+        {
+          "file": "test_repeat_only272.py",
+          "code": 0,
+          "tests": 5,
+          "skipped": 0
+        },
+        {
+          "file": "test_star_label273.py",
+          "code": 0,
+          "tests": 4,
+          "skipped": 0
+        },
+        {
+          "file": "test_branch_stage274.py",
+          "code": 0,
+          "tests": 8,
+          "skipped": 0
+        },
+        {
+          "file": "test_return_route275.py",
+          "code": 0,
+          "tests": 10,
+          "skipped": 0
+        },
+        {
+          "file": "test_completion_route275.py",
+          "code": 0,
+          "tests": 4,
+          "skipped": 0
+        },
+        {
+          "file": "test_clear_confirm276.py",
+          "code": 0,
+          "tests": 6,
+          "skipped": 0
+        },
+        {
+          "file": "test_material_button277.py",
+          "code": 0,
+          "tests": 16,
+          "skipped": 0
+        },
+        {
+          "file": "test_material_match278.py",
+          "code": 0,
+          "tests": 9,
+          "skipped": 0
+        },
+        {
+          "file": "test_legacy_crystal279.py",
+          "code": 0,
+          "tests": 10,
+          "skipped": 0
+        },
+        {
+          "file": "test_creation_return280.py",
+          "code": 0,
+          "tests": 12,
+          "skipped": 0
+        },
+        {
+          "file": "test_return_menu281.py",
+          "code": 0,
+          "tests": 16,
+          "skipped": 0
+        },
+        {
+          "file": "test_all_drop_learning314.py",
+          "code": 0,
+          "tests": 9,
+          "skipped": 0
+        },
+        {
+          "file": "test_learned_start314.py",
+          "code": 0,
+          "tests": 11,
+          "skipped": 0
+        },
+        {
+          "file": "test_learned_presence314.py",
+          "code": 0,
+          "tests": 19,
+          "skipped": 0
+        },
+        {
+          "file": "test_party_geometry315.py",
+          "code": 0,
+          "tests": 11,
+          "skipped": 0
+        },
+        {
+          "file": "test_party_registration315.py",
+          "code": 0,
+          "tests": 9,
+          "skipped": 0
+        },
+        {
+          "file": "test_party_ui315.py",
+          "code": 0,
+          "tests": 1,
+          "skipped": 0
+        },
+        {
+          "file": "test_party_detail316.py",
+          "code": 0,
+          "tests": 12,
+          "skipped": 0
+        },
+        {
+          "file": "test_party_archive316.py",
+          "code": 0,
+          "tests": 12,
+          "skipped": 0
+        },
+        {
+          "file": "test_release_compaction316.py",
+          "code": 0,
+          "tests": 3,
+          "skipped": 0
+        },
+        {
+          "file": "test_farming_map317.py",
+          "code": 0,
+          "tests": 27,
+          "skipped": 0
+        },
+        {
+          "file": "test_manual_presence318.py",
+          "code": 0,
+          "tests": 21,
+          "skipped": 0
+        },
+        {
+          "file": "test_manual_context319.py",
+          "code": 0,
+          "tests": 21,
+          "skipped": 0
+        },
+        {
+          "file": "test_uploaded320.py",
+          "code": 0,
+          "tests": 11,
+          "skipped": 0
+        },
+        {
+          "file": "test_manual_latency321.py",
+          "code": 0,
+          "tests": 15,
+          "skipped": 0
+        },
+        {
+          "file": "test_manual_capture322.py",
+          "code": 0,
+          "tests": 11,
+          "skipped": 0
+        },
+        {
+          "file": "test_manual_controls323.py",
+          "code": 0,
+          "tests": 9,
+          "skipped": 0
+        },
+        {
+          "file": "test_manual_pipeline326.py",
+          "code": 0,
+          "tests": 25,
+          "skipped": 0
+        }
+      ],
+      "test_source_commit": "b1852f1bc09115d9618a58f6cbde660aa7f0082b",
+      "github_actions_executed": false
+    },
+    "additional": {
+      "new": {
+        "tests": 25,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0,
+        "seconds": 0.783,
+        "modules": [
+          "test_manual_pipeline326"
+        ]
+      },
+      "bundle": {
+        "tests": 45,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0,
+        "seconds": 4.592,
+        "modules": [
+          "test_manual_pipeline326",
+          "test_manual_controls323",
+          "test_manual_capture322"
+        ]
+      }
+    },
+    "windows_native_dll_test": "one pre-existing Windows-only official DLL/binding test skipped on Linux",
+    "physical_windows_mumu_verified": false
+  },
+  "new_regressions": 25,
+  "scope": {
+    "base": "311e048488b47a8bb428dbcf75843909c6bfdc07",
+    "unchanged_modules_sha256": {
+      "pad0_solver.py": "b86ef61e32cfdcaa651269f8ce0fb685b07a795e71cae653c492fe174f418036",
+      "pad0_input.py": "c0cee53f925c51923605cb3e5beda1912c45512473d99560039218c251f32539",
+      "pad0_ai.py": "30f46d4eda0dc49c0a825bfd2742cc7bba50b6bf33382ef6e86661ac0a8483a0",
+      "pad0_drop_learning.py": "3b5a714e752004fc414c5ec459db2f3d7d5accd2618e70c24ebcda8f8aad10b5",
+      "pad0_party.py": "8a35cc41dc816d3488846ff85c450bb80ce383003340749b499e1c114fcadfd2",
+      "pad0_battle.py": "d67894720d7d9fbb4cc0ff127bf628ab0151054c7613ae8c294b92b15817a496",
+      "pad0_crystal.py": "c59bee45cb4d27b8eec3764a562c97d044cfa5d274876b4cec9db53c92c09e2b",
+      "pad0_launcher.py": "24f0536b0326a206775b298d39a4a19da8958f280c31450de82d7f57626d6e7f",
+      "pad0_install.py": "1917d1fc368ff3848dc6b19d3c01bc32b6eb6a8cededa3aaf917a182c4345ba6"
+    },
+    "moved_methods": [
+      "_route_button_game_in_foreground",
+      "_v83_route_button_focus_tick",
+      "_save_master_control_diagnostic",
+      "poll_global_hotkeys",
+      "_begin_card_title_capture_session",
+      "_v67_poll_reward_watch_queue",
+      "_path_button_may_show",
+      "_prefind_wait_condition",
+      "_master_manual_roi_active"
+    ],
+    "exact_ast_moved_methods": [
+      "poll_global_hotkeys",
+      "_begin_card_title_capture_session",
+      "_v67_poll_reward_watch_queue",
+      "_prefind_wait_condition",
+      "_master_manual_roi_active"
+    ],
+    "changed_app_methods": [
+      "trigger_route",
+      "_wait_for_prepared_manual_route",
+      "_material_button_game_visible",
+      "_cloud_resolve_crop",
+      "_master_path_button_board_visible",
+      "_clear_live_board",
+      "_attribute_probe_game_visible",
+      "_attribute_probe_worker",
+      "_prefind_tick",
+      "_attribute_probe_tick",
+      "calculate_clicked",
+      "_background_probe",
+      "_background_tick"
+    ]
+  },
+  "policy": {
+    "scope": "master_multicolor",
+    "always_visible_opt_in": true,
+    "setting": "master_path_always_visible",
+    "f9_user_hide_retained": true,
+    "input_capture_hide_retained": true,
+    "button_visibility_grants_no_game_input": true,
+    "strict_native_read_and_final_execution_checks": true,
+    "owned_inventory_presence_screen_jobs": true,
+    "unfinished_jobs_per_role": 2,
+    "retired_results_rejected": true,
+    "native_capture_threads_not_force_killed": true,
+    "no_worker_tk_goals": true,
+    "whole_window_recheck_seconds": 3,
+    "maximum_combo_objective_unchanged": true,
+    "gesture_timing_unchanged": true,
+    "branch_records_unchanged": true,
+    "other_modes_original_behavior": true
+  },
+  "known_limitation": {
+    "physical_runtime": "No physical Windows/MuMu play performed. Controlled Win32 fixtures and real Tk UI tested locally; exact causes of all reported physical failures unconfirmed.",
+    "native_capture_hang": "Two permanently blocked native calls of one role require restarting the program; no unsafe Python thread termination.",
+    "report222_automatic_input_interruption": "Unresolved; outside this manual-control patch"
+  },
+  "automatic_update_channel_changed": false,
+  "publication": {
+    "approved_release": true,
+    "source_pr_merged": true,
+    "source_main_commit": "c848dc06d44ed954cb566201937ee37e8b9aee4e",
+    "source_tree_matches_tested_head": true,
+    "source_branch": "codex/v1-0-117-manual-state",
+    "method": "Direct publication from Codex; no Actions run"
+  }
+}
