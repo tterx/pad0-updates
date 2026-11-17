@@ -1,0 +1,352 @@
+{
+  "zip_sha256": "b5448108553ac287db3ff209e16b2881ec348721669fe85582069fbf6420636a",
+  "source_sha256": "0d1e4d7e2559fb3ae31129e926d1d7660157f501159e92dedf3dc8c29b6d5fb6",
+  "source_bytes": 2096396,
+  "zip_bytes": 986594,
+  "release": 330,
+  "version": "v1.0.121",
+  "source_repo": "tterx/pad0-all-in-one",
+  "source_commit": "e6983f230e08ab5ef9ee2edca907875c117eaf0b",
+  "source_pull_request": "https://github.com/tterx/pad0-all-in-one/pull/32",
+  "scope": {
+    "base": "79210614601d32a908edf59383f0d5e407a17108",
+    "changes": {
+      "pad0_overlay.py": {
+        "changed": [
+          "App._clear_live_board",
+          "App._validate_and_start_drag",
+          "App.stop_playback",
+          "_MaaNativeCapture.confirm_before_up",
+          "_MuMuNativeCapture.prepare_input_feedback",
+          "sdk_held_board_verification"
+        ],
+        "added": [],
+        "removed": [
+          "App._begin_route_ui_session",
+          "App._finish_playback",
+          "App._playback_countdown_tick",
+          "App._poll_playback_finish_queue",
+          "App._poll_route_ui_session",
+          "App._restore_ui_after_playback"
+        ]
+      },
+      "pad0_manual_controls.py": {
+        "changed": [
+          "ManualControlsMixin._path_button_may_show"
+        ],
+        "added": [
+          "ManualControlsMixin._begin_route_ui_session",
+          "ManualControlsMixin._finish_playback",
+          "ManualControlsMixin._master_playback_feedback_visible",
+          "ManualControlsMixin._playback_countdown_tick",
+          "ManualControlsMixin._poll_playback_finish_queue",
+          "ManualControlsMixin._poll_route_ui_session",
+          "ManualControlsMixin._restore_ui_after_playback",
+          "ManualControlsMixin._set_master_playback_feedback"
+        ],
+        "removed": []
+      },
+      "pad0_battle.py": {
+        "changed": [
+          "confirm_before_up"
+        ],
+        "added": [
+          "stationary_occlusion_proofs"
+        ],
+        "removed": []
+      },
+      "pad0_ui.py": {
+        "changed": [
+          "FloatingPathExecuteButton._start_drag"
+        ],
+        "added": [],
+        "removed": []
+      }
+    },
+    "unchanged_modules_sha256": {
+      "pad0_solver.py": "b86ef61e32cfdcaa651269f8ce0fb685b07a795e71cae653c492fe174f418036",
+      "pad0_input.py": "c0cee53f925c51923605cb3e5beda1912c45512473d99560039218c251f32539",
+      "pad0_ai.py": "30f46d4eda0dc49c0a825bfd2742cc7bba50b6bf33382ef6e86661ac0a8483a0",
+      "pad0_drop_learning.py": "3b5a714e752004fc414c5ec459db2f3d7d5accd2618e70c24ebcda8f8aad10b5",
+      "pad0_party.py": "8a35cc41dc816d3488846ff85c450bb80ce383003340749b499e1c114fcadfd2",
+      "pad0_crystal.py": "c59bee45cb4d27b8eec3764a562c97d044cfa5d274876b4cec9db53c92c09e2b",
+      "pad0_launcher.py": "24f0536b0326a206775b298d39a4a19da8958f280c31450de82d7f57626d6e7f",
+      "pad0_install.py": "1917d1fc368ff3848dc6b19d3c01bc32b6eb6a8cededa3aaf917a182c4345ba6"
+    },
+    "moved_methods_identical_ast": [
+      "_begin_route_ui_session",
+      "_playback_countdown_tick",
+      "_restore_ui_after_playback",
+      "_finish_playback",
+      "_poll_playback_finish_queue"
+    ],
+    "taskbar_native_policy_identical_ast": true
+  },
+  "validation": {
+    "environment": "Codex Linux; actual report223 cropped frames, real Tk and controlled Win32/queue fixtures; isolated suite subprocesses",
+    "github_actions_executed": false,
+    "user_requested_local_execution": true,
+    "local": {
+      "suites": 32,
+      "tests": 377,
+      "skipped": 0,
+      "failed": [],
+      "rows": [
+        {
+          "file": "test_replay208.py",
+          "code": 0,
+          "tests": 9,
+          "skipped": 0
+        },
+        {
+          "file": "test_sdk_corners282.py",
+          "code": 0,
+          "tests": 8,
+          "skipped": 0
+        },
+        {
+          "file": "test_upload_feedback300.py",
+          "code": 0,
+          "tests": 14,
+          "skipped": 0
+        },
+        {
+          "file": "test_master_button304.py",
+          "code": 0,
+          "tests": 14,
+          "skipped": 0
+        },
+        {
+          "file": "test_locked_start311.py",
+          "code": 0,
+          "tests": 19,
+          "skipped": 0
+        },
+        {
+          "file": "test_stage_number312.py",
+          "code": 0,
+          "tests": 13,
+          "skipped": 0
+        },
+        {
+          "file": "test_start_hud313.py",
+          "code": 0,
+          "tests": 15,
+          "skipped": 0,
+          "final_recheck": "recheck330-test_start_hud313.py.log"
+        },
+        {
+          "file": "test_catalog_scope313.py",
+          "code": 0,
+          "tests": 6,
+          "skipped": 0
+        },
+        {
+          "file": "test_entry_stage290.py",
+          "code": 0,
+          "tests": 12,
+          "skipped": 0
+        },
+        {
+          "file": "test_held223.py",
+          "code": 0,
+          "tests": 5,
+          "skipped": 0
+        },
+        {
+          "file": "test_route_modes230.py",
+          "code": 0,
+          "tests": 15,
+          "skipped": 0
+        },
+        {
+          "file": "test_goal239.py",
+          "code": 0,
+          "tests": 3,
+          "skipped": 0
+        },
+        {
+          "file": "test_condition_recovery260.py",
+          "code": 0,
+          "tests": 10,
+          "skipped": 0
+        },
+        {
+          "file": "test_condition_delivery261.py",
+          "code": 0,
+          "tests": 11,
+          "skipped": 0
+        },
+        {
+          "file": "test_stable_hud265.py",
+          "code": 0,
+          "tests": 6,
+          "skipped": 0
+        },
+        {
+          "file": "test_execution_condition266.py",
+          "code": 0,
+          "tests": 12,
+          "skipped": 0
+        },
+        {
+          "file": "test_focus_search266.py",
+          "code": 0,
+          "tests": 8,
+          "skipped": 0
+        },
+        {
+          "file": "test_compact_solver268.py",
+          "code": 0,
+          "tests": 8,
+          "skipped": 0
+        },
+        {
+          "file": "test_hud_paint271.py",
+          "code": 0,
+          "tests": 4,
+          "skipped": 0
+        },
+        {
+          "file": "test_party_ui315.py",
+          "code": 0,
+          "tests": 1,
+          "skipped": 0
+        },
+        {
+          "file": "test_party_archive316.py",
+          "code": 0,
+          "tests": 12,
+          "skipped": 0
+        },
+        {
+          "file": "test_manual_presence318.py",
+          "code": 0,
+          "tests": 21,
+          "skipped": 0
+        },
+        {
+          "file": "test_manual_context319.py",
+          "code": 0,
+          "tests": 21,
+          "skipped": 0
+        },
+        {
+          "file": "test_uploaded320.py",
+          "code": 0,
+          "tests": 11,
+          "skipped": 0
+        },
+        {
+          "file": "test_manual_latency321.py",
+          "code": 0,
+          "tests": 15,
+          "skipped": 0
+        },
+        {
+          "file": "test_manual_capture322.py",
+          "code": 0,
+          "tests": 11,
+          "skipped": 0
+        },
+        {
+          "file": "test_manual_controls323.py",
+          "code": 0,
+          "tests": 9,
+          "skipped": 0,
+          "final_recheck": "recheck330-test_manual_controls323.py.log"
+        },
+        {
+          "file": "test_manual_pipeline326.py",
+          "code": 0,
+          "tests": 25,
+          "skipped": 0,
+          "final_recheck": "recheck330-test_manual_pipeline326.py.log"
+        },
+        {
+          "file": "test_ui_entry327.py",
+          "code": 0,
+          "tests": 10,
+          "skipped": 0
+        },
+        {
+          "file": "test_board_overlay328.py",
+          "code": 0,
+          "tests": 15,
+          "skipped": 0,
+          "final_recheck": "recheck330-test_board_overlay328.py.log"
+        },
+        {
+          "file": "test_combat_overlay329.py",
+          "code": 0,
+          "tests": 16,
+          "skipped": 0,
+          "final_recheck": "recheck330-test_combat_overlay329.py.log"
+        },
+        {
+          "file": "test_feedback330.py",
+          "code": 0,
+          "tests": 18,
+          "skipped": 0,
+          "final_recheck": "recheck330-test_feedback330.py.log"
+        }
+      ]
+    },
+    "additional": {
+      "bundle": {
+        "tests": 100,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0,
+        "seconds": 30.943,
+        "modules": [
+          "test_feedback330",
+          "test_combat_overlay329",
+          "test_board_overlay328",
+          "test_ui_entry327",
+          "test_manual_pipeline326",
+          "test_held223",
+          "test_uploaded320"
+        ]
+      }
+    },
+    "new_regression_count": 18,
+    "physical_windows_shell_and_mumu_verified": false
+  },
+  "policy": {
+    "scope": "master_multicolor",
+    "pre_down_baseline_must_match_context": true,
+    "fixed_geometric_occlusion_mask": true,
+    "visible_texture_requires_three_region_agreement": true,
+    "no_blanket_neighbour_exclusion": true,
+    "two_stable_stationary_reads_required": true,
+    "raw_observations_preserved": true,
+    "actual_failed_report_not_relabelled_success": true,
+    "early_attack_still_rejected": true,
+    "dispatch_trace_release_held_and_post_up_checks_retained": true,
+    "no_extra_input_or_timing_change": true,
+    "manual_hud_visible_during_actual_mouse_movement": true,
+    "controls_disabled_until_session_ends": true,
+    "f10_restores_controls": true,
+    "unsafe_hud_geometry_stays_hidden": true,
+    "preflight_capture_and_f9_hides_retained": true,
+    "taskbar_and_combat_phase_policy_retained": true,
+    "display_does_not_grant_readiness_or_input": true,
+    "other_modes_and_farming_preserved": true
+  },
+  "known_limitation": {
+    "physical_windows_shell": "Physical Windows shell and MuMu not run",
+    "unsafe_hud_layout": "HUD remains hidden during movement if it would cover board/timer or host geometry cannot be confirmed",
+    "texture_proof": "Conservative visible-source proof; insufficient texture or time still stops without retry"
+  },
+  "automatic_update_channel_changed": false,
+  "publication": {
+    "approved_release": true,
+    "source_pr_merged": true,
+    "source_main_commit": "4dfc32fe59f7510ab4356178c356690470d07739",
+    "source_tree_matches_tested_head": true,
+    "source_branch": "codex/v1-0-121-playback-feedback",
+    "method": "Direct publication from Codex; no Actions run",
+    "artifact_storage": "immutable_repository_file"
+  }
+}
