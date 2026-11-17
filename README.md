@@ -1,12 +1,12 @@
 # 퍼드0 올인원
 
-[**프로그램 ZIP 다운로드 · v1.0.124**](https://raw.githubusercontent.com/tterx/pad0-updates/8443b22320352b439c5947517b97189395826584/releases/v1.0.124/pad0_overlay_windows_v1_0_124.zip) · [전체 릴리스](https://github.com/tterx/pad0-updates/releases)
+프로그램 ZIP 다운로드 · v1.0.125 · 고정 다운로드 주소 검증 중
 
-현재 표시 버전은 **1.0.124**, 자동 업데이트 내부 순번은 **333**입니다.
+현재 표시 버전은 **1.0.125**, 자동 업데이트 내부 순번은 **334**입니다.
 
 새로 설치할 때는 ZIP을 풀고 `시작.vbs`를 실행하세요. 기존 설치는 PAD0를 완전히 종료한 뒤 `시작.vbs`를 다시 실행하면 업데이트됩니다.
 
-달인다속은 탐색 목표 미달로도 중단하지 않고 현재 찾은 최선의 경로로 턴을 진행합니다. 4초 잔여·F10·실제 패배 때만 코너 +10ms를 유지합니다. [원인·검증 범위](docs/reviews/REVIEW333.md) · [검증 기록](releases/v1.0.124/release_checks333.json)
+달인다속은 이동 없는 시작 확인 실패도 손 떼기와 같은 판 원위치 복귀를 두 번 확인한 뒤 다른 시작점으로 이어갑니다. 4초 잔여·F10·실제 패배 때만 코너 +10ms를 유지합니다. [원인·검증 범위](docs/reviews/REVIEW334.md) · [검증 기록](releases/v1.0.125/release_checks334.json)
 
 ## 저장소 안내
 
