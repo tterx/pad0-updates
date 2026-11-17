@@ -304,7 +304,7 @@
     "root_input_issue": "Continuing and adding10ms is not proof the underlying native corner-consumption fault is eliminated",
     "defeat_attribution": "Every verified dungeon defeat trains the wait as requested, including defeats that may have other causes"
   },
-  "automatic_update_channel_changed": false,
+  "automatic_update_channel_changed": true,
   "publication": {
     "approved_release": true,
     "source_pr_merged": true,
@@ -315,6 +315,38 @@
     "artifact_storage": "immutable_repository_file",
     "payload_commit": "dc9f8dc1a04e0dba1f72724c5ba9c21842e28638",
     "immutable_source_url": "https://raw.githubusercontent.com/tterx/pad0-updates/dc9f8dc1a04e0dba1f72724c5ba9c21842e28638/releases/v1.0.123/pad0_overlay.py",
-    "zip_download_url": "https://raw.githubusercontent.com/tterx/pad0-updates/dc9f8dc1a04e0dba1f72724c5ba9c21842e28638/releases/v1.0.123/pad0_overlay_windows_v1_0_123.zip"
+    "zip_download_url": "https://raw.githubusercontent.com/tterx/pad0-updates/dc9f8dc1a04e0dba1f72724c5ba9c21842e28638/releases/v1.0.123/pad0_overlay_windows_v1_0_123.zip",
+    "stable_release_verified": true,
+    "zip_bytes_unchanged": true
+  },
+  "public_download_verification": {
+    "zip_url": "https://raw.githubusercontent.com/tterx/pad0-updates/dc9f8dc1a04e0dba1f72724c5ba9c21842e28638/releases/v1.0.123/pad0_overlay_windows_v1_0_123.zip",
+    "zip_sha256": "6995df1892cca757f705c355561c4da89fef7874d26ae9f6e38da673ea73bee8",
+    "source_sha256": "96cb4deefaf01e076e44dcbdbdc6704658cff3ebee6fe45a9111efea547c7c5d",
+    "zip_crc_verified": true,
+    "version_verified": true,
+    "updater_release": 332,
+    "source_download_matches_zip": true,
+    "stable_latest_verified": true,
+    "artifact_storage": "immutable_repository_file",
+    "application_executed": false
+  },
+  "auto_update_verification": {
+    "preview": {
+      "scope": "preview_manifest_with_live_source",
+      "old_release": 331,
+      "new_release": 332,
+      "source_sha256": "96cb4deefaf01e076e44dcbdbdc6704658cff3ebee6fe45a9111efea547c7c5d",
+      "source_bytes": 2093802,
+      "backup_preserved": true,
+      "personal_data_preserved": true,
+      "branch_history_preserved": true,
+      "repeat_update_skipped": true,
+      "separate_starred_normal_hidden_records_preserved": true,
+      "application_executed": false,
+      "adaptive_retry_profile_preserved": true
+    },
+    "live_status": "pending_post_activation_check",
+    "manifest_url": "https://raw.githubusercontent.com/tterx/pad0-updates/main/update.json"
   }
 }
