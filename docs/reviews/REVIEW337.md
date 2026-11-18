@@ -25,3 +25,15 @@ this change. Automated tests use simulated Android responses and actual worker
 logic. Physical MuMu recovery is unverified.
 
 Codex verification recorded for 63d81961e5cd5914070220b0bbd84dc4d7fdb451. 143 related tests and 55 bundled tests passed without skips. The worker recovery test used simulated device I/O without launching Android.
+
+Publication verified: PR39 merged as 5521bd4961a964c1fe4e70d6d7001398e31cdf9b.
+Its tree matches the locally checked head. No source, build or publish Actions ran.
+The actual v1.0.128 ZIP downloaded from the immutable repository URL passed SHA256,
+ZIP CRC, version and updater-state checks; release v1.0.128 is stable latest.
+The release notes and root README point to that working repository ZIP URL;
+no attached release asset is claimed.
+The source matches the immutable payload and root update.json activates337.
+The unchanged launcher installed337 from the live manifest over v1.0.127 in an
+isolated installation at state336, preserving the backup, settings, inventory and
+four separate normal/starred/hidden stage/branch markers, and skipped a repeat.
+No PAD0 or physical game input was executed during updater verification.
