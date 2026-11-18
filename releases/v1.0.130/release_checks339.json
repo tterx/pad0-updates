@@ -77,6 +77,9 @@
     "source_tree_matches_tested_head": true,
     "source_branch": "codex/v1-0-130-receipt-settle-manual-latency",
     "method": "Direct publication from Codex; no Actions run",
-    "artifact_storage": "immutable_repository_file"
+    "artifact_storage": "immutable_repository_file",
+    "payload_commit": "0ebd036c7cd4887dba922d1e564b833fbbcd9a65",
+    "immutable_source_url": "https://raw.githubusercontent.com/tterx/pad0-updates/0ebd036c7cd4887dba922d1e564b833fbbcd9a65/releases/v1.0.130/pad0_overlay.py",
+    "zip_download_url": "https://raw.githubusercontent.com/tterx/pad0-updates/0ebd036c7cd4887dba922d1e564b833fbbcd9a65/releases/v1.0.130/pad0_overlay_windows_v1_0_130.zip"
   }
 }
