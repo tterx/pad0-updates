@@ -1,12 +1,12 @@
 # 퍼드0 올인원
 
-[**프로그램 ZIP 다운로드 · v1.0.127**](https://raw.githubusercontent.com/tterx/pad0-updates/71f42154e4e071a3e6216d25dcef874d90545d76/releases/v1.0.127/pad0_overlay_windows_v1_0_127.zip) · [전체 릴리스](https://github.com/tterx/pad0-updates/releases)
+프로그램 ZIP 다운로드 · v1.0.128 · 고정 다운로드 주소 검증 중
 
-현재 표시 버전은 **1.0.127**, 자동 업데이트 내부 순번은 **336**입니다.
+현재 표시 버전은 **1.0.128**, 자동 업데이트 내부 순번은 **337**입니다.
 
 새로 설치할 때는 ZIP을 풀고 `시작.vbs`를 실행하세요. 기존 설치는 PAD0를 완전히 종료한 뒤 `시작.vbs`를 다시 실행하면 업데이트됩니다.
 
-달인다속 자동 파밍은 확인된 번호형 획득처에서 앞선 장과 스테이지를 선택합니다. [변경·검증 범위](docs/reviews/REVIEW336.md) · [검증 기록](releases/v1.0.127/release_checks336.json)
+달인다속 자동 파밍 중 Android 서비스가 잠시 응답하지 않으면 최대 45초 동안 확인한 뒤 현재 화면에서 복구합니다. [원인·검증 범위](docs/reviews/REVIEW337.md) · [검증 기록](releases/v1.0.128/release_checks337.json)
 
 ## 저장소 안내
 

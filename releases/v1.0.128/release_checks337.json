@@ -1,0 +1,76 @@
+{
+  "zip_sha256": "7597b2ace8b6b97fed3473b087e935b1dc108e986dc18f5033bd05df02b46526",
+  "source_sha256": "6c975d84949008941a08ce8309bf10214883fb4ff8a6d238520dd4b0e3656e3f",
+  "source_bytes": 2010727,
+  "zip_bytes": 992259,
+  "release": 337,
+  "version": "v1.0.128",
+  "source_repo": "tterx/pad0-all-in-one",
+  "source_commit": "63d81961e5cd5914070220b0bbd84dc4d7fdb451",
+  "source_pull_request": "https://github.com/tterx/pad0-all-in-one/pull/39",
+  "validation": {
+    "environment": "Codex Linux, actual report233 diagnostics and simulated Android service recovery through the active worker",
+    "github_actions_executed": false,
+    "user_requested_local_execution": true,
+    "local": {
+      "tests": 143,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "seconds": 92.342,
+      "modules": [
+        "test_android_service_recovery337",
+        "test_farming_relaunch335",
+        "test_early_farming_stage336",
+        "test_auto_repeat266",
+        "test_defeat296",
+        "test_stage_continue283",
+        "test_farming_order288",
+        "test_input_choice197",
+        "test_manual_pipeline326",
+        "test_farming_map317"
+      ]
+    },
+    "additional": {
+      "bundle": {
+        "tests": 55,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0,
+        "seconds": 36.193,
+        "modules": [
+          "test_android_service_recovery337",
+          "test_farming_relaunch335",
+          "test_early_farming_stage336",
+          "test_auto_repeat266",
+          "test_stage_continue283",
+          "test_input_choice197"
+        ]
+      }
+    },
+    "new_regression_count": 6,
+    "physical_windows_shell_and_mumu_verified": false
+  },
+  "policy": {
+    "scope": "master_multicolor_active_material_farming",
+    "android_read_wait_seconds": 45,
+    "fixed_read_only_commands": true,
+    "same_selected_android_device": true,
+    "two_foreground_reads": true,
+    "reverify_home_after_resolve": true,
+    "preserve_live_session_on_outer_capture_recovery": true,
+    "keep_existing_game_login_and_reentry": true,
+    "no_ambiguous_launch_or_tap_replay": true,
+    "f10_cancellable": true
+  },
+  "automatic_update_channel_changed": false,
+  "publication": {
+    "approved_release": true,
+    "source_pr_merged": true,
+    "source_main_commit": "5521bd4961a964c1fe4e70d6d7001398e31cdf9b",
+    "source_tree_matches_tested_head": true,
+    "source_branch": "codex/v1-0-128-android-service-recovery",
+    "method": "Direct publication from Codex; no Actions run",
+    "artifact_storage": "immutable_repository_file"
+  }
+}
