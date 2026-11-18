@@ -1,0 +1,95 @@
+{
+  "zip_sha256": "a237e392b7a1e109763b295f999fa175ae2b5f7e9e31de81d35094c2920f1aa5",
+  "source_sha256": "28488e2e4df717a7f8b26974422ac33c7aebc898fd75f7b670648f353e45c347",
+  "source_bytes": 2015761,
+  "zip_bytes": 994609,
+  "release": 338,
+  "version": "v1.0.129",
+  "source_repo": "tterx/pad0-all-in-one",
+  "source_commit": "4d44f59bfacb40dc9a16a7815535c900235bd552",
+  "source_pull_request": "https://github.com/tterx/pad0-all-in-one/pull/40",
+  "validation": {
+    "environment": "Codex Linux, actual report234 and 235 result frames, production OCR and capped receipt worker simulation",
+    "github_actions_executed": false,
+    "user_requested_local_execution": true,
+    "local": {
+      "tests": 160,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "seconds": 197.535,
+      "modules": [
+        "test_reward_capacity338",
+        "test_reward_frame294",
+        "test_reward_scene298",
+        "test_retarget254",
+        "test_stage_continue283",
+        "test_defeat296",
+        "test_defeat_result297",
+        "test_branch_learning305",
+        "test_branch_source310",
+        "test_farming_order288",
+        "test_auto_repeat266",
+        "test_farming_relaunch335"
+      ],
+      "initial_environment_error": "Xvfb not running for one real Tk test; that exact test passed with Xvfb restarted",
+      "gui_retry": {
+        "tests": 1,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0,
+        "seconds": 0.526,
+        "modules": [
+          "test_auto_repeat266.AutoRepeat266Tests.test_real_tk_repeat_button_is_beside_material_button_and_calls_dialog"
+        ]
+      }
+    },
+    "additional": {
+      "bundle": {
+        "tests": 75,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0,
+        "seconds": 62.631,
+        "modules": [
+          "test_reward_capacity338",
+          "test_reward_frame294",
+          "test_reward_scene298",
+          "test_stage_continue283",
+          "test_defeat_result297",
+          "test_branch_learning305"
+        ]
+      },
+      "actual_report_notice_scores": [
+        0.98758,
+        0.98802
+      ],
+      "marked_cards": 1,
+      "complete_cards": 10,
+      "normal_control_marked_cards": 0
+    },
+    "new_regression_count": 5,
+    "physical_windows_shell_and_mumu_verified": false
+  },
+  "policy": {
+    "scope": "master_multicolor_active_material_farming",
+    "capacity_limit": 999,
+    "capacity_notice_verified_twice": true,
+    "exclude_only_marked_cards": true,
+    "virtual_row_exclusion_survives_scroll": true,
+    "keep_normal_card_collection": true,
+    "skip_branch_miss_on_capped_receipts": true,
+    "verified_scroll_and_visible_next": true,
+    "f10_cancellable": true
+  },
+  "automatic_update_channel_changed": false,
+  "publication": {
+    "approved_release": true,
+    "source_pr_merged": true,
+    "source_main_commit": "a6627a3bcadf3f0a3d667443313ca13455b8eb77",
+    "source_tree_matches_tested_head": true,
+    "source_branch": "codex/v1-0-129-reward-capacity",
+    "method": "Direct publication from Codex; no Actions run",
+    "artifact_storage": "immutable_repository_file"
+  }
+}
