@@ -1,0 +1,366 @@
+{
+  "zip_sha256": "c0963c70201fd83b0fb1fc06389d500c4fbf02817b9709efebf59cf466f6d4b6",
+  "source_sha256": "20b261850da28e6cf109c2beeb4b8037275281089c96b6ba2eb3ccd6f2d85750",
+  "source_bytes": 2008421,
+  "zip_bytes": 991108,
+  "release": 335,
+  "version": "v1.0.126",
+  "source_repo": "tterx/pad0-all-in-one",
+  "source_commit": "10f7486679aebb08247889c4a7c6d3f60b3bf340",
+  "source_pull_request": "https://github.com/tterx/pad0-all-in-one/pull/37",
+  "validation": {
+    "environment": "Codex Linux, simulated startup screens and active-worker replay",
+    "github_actions_executed": false,
+    "user_requested_local_execution": true,
+    "local": {
+      "suites": 33,
+      "tests": 461,
+      "skipped": 0,
+      "failed": [],
+      "rows": [
+        {
+          "file": "test_input_choice197.py",
+          "code": 0,
+          "tests": 12,
+          "skipped": 0
+        },
+        {
+          "file": "test_background_settings206.py",
+          "code": 0,
+          "tests": 5,
+          "skipped": 0
+        },
+        {
+          "file": "test_best_available207.py",
+          "code": 0,
+          "tests": 5,
+          "skipped": 0
+        },
+        {
+          "file": "test_recovery_hp132.py",
+          "code": 0,
+          "tests": 15,
+          "skipped": 0
+        },
+        {
+          "file": "test_replay208.py",
+          "code": 0,
+          "tests": 9,
+          "skipped": 0
+        },
+        {
+          "file": "test_sdk_corners282.py",
+          "code": 0,
+          "tests": 8,
+          "skipped": 0
+        },
+        {
+          "file": "test_upload_feedback300.py",
+          "code": 0,
+          "tests": 14,
+          "skipped": 0
+        },
+        {
+          "file": "test_upload_continuation302.py",
+          "code": 0,
+          "tests": 17,
+          "skipped": 0
+        },
+        {
+          "file": "test_master_button304.py",
+          "code": 0,
+          "tests": 14,
+          "skipped": 0
+        },
+        {
+          "file": "test_lock_handoff308.py",
+          "code": 0,
+          "tests": 17,
+          "skipped": 0
+        },
+        {
+          "file": "test_locked_start311.py",
+          "code": 0,
+          "tests": 19,
+          "skipped": 0
+        },
+        {
+          "file": "test_search_portraits293.py",
+          "code": 0,
+          "tests": 21,
+          "skipped": 0
+        },
+        {
+          "file": "test_defeat296.py",
+          "code": 0,
+          "tests": 22,
+          "skipped": 0
+        },
+        {
+          "file": "test_defeat_result297.py",
+          "code": 0,
+          "tests": 16,
+          "skipped": 0
+        },
+        {
+          "file": "test_stage_continue283.py",
+          "code": 0,
+          "tests": 5,
+          "skipped": 0
+        },
+        {
+          "file": "test_farming_order288.py",
+          "code": 0,
+          "tests": 14,
+          "skipped": 0
+        },
+        {
+          "file": "test_held223.py",
+          "code": 0,
+          "tests": 5,
+          "skipped": 0
+        },
+        {
+          "file": "test_timer_fallback227.py",
+          "code": 0,
+          "tests": 16,
+          "skipped": 0
+        },
+        {
+          "file": "test_condition_recovery260.py",
+          "code": 0,
+          "tests": 10,
+          "skipped": 0
+        },
+        {
+          "file": "test_condition_delivery261.py",
+          "code": 0,
+          "tests": 11,
+          "skipped": 0
+        },
+        {
+          "file": "test_auto_repeat266.py",
+          "code": 0,
+          "tests": 17,
+          "skipped": 0
+        },
+        {
+          "file": "test_farming_map317.py",
+          "code": 0,
+          "tests": 27,
+          "skipped": 0
+        },
+        {
+          "file": "test_uploaded320.py",
+          "code": 0,
+          "tests": 11,
+          "skipped": 0
+        },
+        {
+          "file": "test_manual_pipeline326.py",
+          "code": 0,
+          "tests": 25,
+          "skipped": 0
+        },
+        {
+          "file": "test_ui_entry327.py",
+          "code": 0,
+          "tests": 10,
+          "skipped": 0
+        },
+        {
+          "file": "test_board_overlay328.py",
+          "code": 0,
+          "tests": 15,
+          "skipped": 0
+        },
+        {
+          "file": "test_combat_overlay329.py",
+          "code": 0,
+          "tests": 16,
+          "skipped": 0
+        },
+        {
+          "file": "test_feedback330.py",
+          "code": 0,
+          "tests": 18,
+          "skipped": 0
+        },
+        {
+          "file": "test_levelup331.py",
+          "code": 0,
+          "tests": 10,
+          "skipped": 0
+        },
+        {
+          "file": "test_retry332.py",
+          "code": 0,
+          "tests": 21,
+          "skipped": 0
+        },
+        {
+          "file": "test_search_progress333.py",
+          "code": 0,
+          "tests": 13,
+          "skipped": 0
+        },
+        {
+          "file": "test_start_recovery334.py",
+          "code": 0,
+          "tests": 13,
+          "skipped": 0
+        },
+        {
+          "file": "test_farming_relaunch335.py",
+          "code": 0,
+          "tests": 10,
+          "skipped": 0
+        }
+      ]
+    },
+    "additional": {
+      "bundle": {
+        "tests": 222,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0,
+        "seconds": 153.7,
+        "modules": [
+          "test_farming_relaunch335",
+          "test_farming_map317",
+          "test_farming_order288",
+          "test_search_portraits293",
+          "test_upload_feedback300",
+          "test_start_recovery334",
+          "test_search_progress333",
+          "test_retry332",
+          "test_defeat296",
+          "test_defeat_result297",
+          "test_manual_pipeline326",
+          "test_levelup331",
+          "test_combat_overlay329"
+        ]
+      },
+      "synthetic_startup_ocr": {
+        "logo": {
+          "ocr": [
+            [
+              "GungHo",
+              0.999
+            ]
+          ],
+          "action": [
+            "logo",
+            [
+              800.0,
+              563.5
+            ]
+          ]
+        },
+        "start": {
+          "ocr": [
+            [
+              "시작",
+              1.0
+            ]
+          ],
+          "action": [
+            "start",
+            [
+              801.0,
+              822.5
+            ]
+          ]
+        },
+        "save": {
+          "ocr": [
+            [
+              "어떤 저장 데이터로 플레이하시겠습니까?",
+              0.989
+            ],
+            [
+              "랭크 480",
+              0.987
+            ],
+            [
+              "1",
+              1.0
+            ],
+            [
+              "2026/11/18 11:36",
+              0.997
+            ],
+            [
+              "새로 시작하기",
+              0.966
+            ],
+            [
+              "새로 시작하기",
+              0.97
+            ]
+          ],
+          "action": [
+            "save",
+            [
+              800.5,
+              308.5
+            ]
+          ]
+        },
+        "resume": {
+          "ocr": [
+            [
+              "잠입 도중인 던전이 있습니다.",
+              0.999
+            ],
+            [
+              "다시 도전하시겠습니까?",
+              0.991
+            ],
+            [
+              "아니요",
+              1.0
+            ],
+            [
+              "네",
+              0.972
+            ]
+          ],
+          "action": [
+            "resume",
+            [
+              550.5,
+              719.0
+            ]
+          ]
+        }
+      }
+    },
+    "new_regression_count": 10,
+    "physical_windows_shell_and_mumu_verified": false
+  },
+  "policy": {
+    "scope": "master_multicolor_active_material_farming",
+    "selected_android_home_required": true,
+    "same_game_package_only": true,
+    "two_observations_per_startup_action": true,
+    "saved_data_slot": 1,
+    "decline_interrupted_dungeon_prompt": true,
+    "compact_korean_search": true,
+    "original_shortage_and_owner_identity_preserved": true,
+    "interrupted_attempt_no_new_reward_or_defeat": true,
+    "existing_receipts_preserved": true,
+    "f10_preserved": true,
+    "automatic_repeat_and_other_modes_preserved": true
+  },
+  "automatic_update_channel_changed": false,
+  "publication": {
+    "approved_release": true,
+    "source_pr_merged": true,
+    "source_main_commit": "a639799e8acd3134ff5bd59c856998f6839ace94",
+    "source_tree_matches_tested_head": true,
+    "source_branch": "codex/v1-0-126-farming-relaunch",
+    "method": "Direct publication from Codex; no Actions run",
+    "artifact_storage": "immutable_repository_file"
+  }
+}

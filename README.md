@@ -1,12 +1,12 @@
 # 퍼드0 올인원
 
-[**프로그램 ZIP 다운로드 · v1.0.125**](https://raw.githubusercontent.com/tterx/pad0-updates/a8f39ae5094ca27f5075dccd4060ecb92144451e/releases/v1.0.125/pad0_overlay_windows_v1_0_125.zip) · [전체 릴리스](https://github.com/tterx/pad0-updates/releases)
+프로그램 ZIP 다운로드 · v1.0.126 · 고정 다운로드 주소 검증 중
 
-현재 표시 버전은 **1.0.125**, 자동 업데이트 내부 순번은 **334**입니다.
+현재 표시 버전은 **1.0.126**, 자동 업데이트 내부 순번은 **335**입니다.
 
 새로 설치할 때는 ZIP을 풀고 `시작.vbs`를 실행하세요. 기존 설치는 PAD0를 완전히 종료한 뒤 `시작.vbs`를 다시 실행하면 업데이트됩니다.
 
-달인다속은 이동 없는 시작 확인 실패도 손 떼기와 같은 판 원위치 복귀를 두 번 확인한 뒤 다른 시작점으로 이어갑니다. 4초 잔여·F10·실제 패배 때만 코너 +10ms를 유지합니다. [원인·검증 범위](docs/reviews/REVIEW334.md) · [검증 기록](releases/v1.0.125/release_checks334.json)
+달인다속 재료 파밍 중 게임이 MuMu 홈으로 이탈하면 저장 데이터 1번으로 다시 접속해 기존 파밍을 이어갑니다. [원인·검증 범위](docs/reviews/REVIEW335.md) · [검증 기록](releases/v1.0.126/release_checks335.json)
 
 ## 저장소 안내
 
