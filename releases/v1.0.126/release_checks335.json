@@ -361,6 +361,9 @@
     "source_tree_matches_tested_head": true,
     "source_branch": "codex/v1-0-126-farming-relaunch",
     "method": "Direct publication from Codex; no Actions run",
-    "artifact_storage": "immutable_repository_file"
+    "artifact_storage": "immutable_repository_file",
+    "payload_commit": "2ca0695b0aa9ade5b59a34da4d2a67c784ebbe5b",
+    "immutable_source_url": "https://raw.githubusercontent.com/tterx/pad0-updates/2ca0695b0aa9ade5b59a34da4d2a67c784ebbe5b/releases/v1.0.126/pad0_overlay.py",
+    "zip_download_url": "https://raw.githubusercontent.com/tterx/pad0-updates/2ca0695b0aa9ade5b59a34da4d2a67c784ebbe5b/releases/v1.0.126/pad0_overlay_windows_v1_0_126.zip"
   }
 }
