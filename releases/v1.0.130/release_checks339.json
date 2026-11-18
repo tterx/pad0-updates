@@ -1,0 +1,82 @@
+{
+  "zip_sha256": "fbb137f3f95690fd3dca280f85b04781319a46262971883d4bc6c62e0236c703",
+  "source_sha256": "2023e192a1988d2f44a4a9f5756e23ca99bdf37e0153aafcebc0ab458b10d653",
+  "source_bytes": 2017418,
+  "zip_bytes": 995222,
+  "release": 339,
+  "version": "v1.0.130",
+  "source_repo": "tterx/pad0-all-in-one",
+  "source_commit": "1022ef6c6d660daead3ed9bcc4401550b3971e4b",
+  "source_pull_request": "https://github.com/tterx/pad0-all-in-one/pull/41",
+  "validation": {
+    "environment": "Codex Linux, actual report 236/237 frames and simulated receipt scroll tail",
+    "github_actions_executed": false,
+    "user_requested_local_execution": true,
+    "local": {
+      "tests": 186,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "seconds": 82.034,
+      "modules": [
+        "test_receipt_manual_latency339",
+        "test_reward_capacity338",
+        "test_reward_frame294",
+        "test_preparation_latency262",
+        "test_readiness269",
+        "test_execution_condition266",
+        "test_route_latency267",
+        "test_locked_start311",
+        "test_manual_context319",
+        "test_manual_latency321",
+        "test_manual_controls323",
+        "test_manual_pipeline326",
+        "test_combat_overlay329",
+        "test_feedback330"
+      ]
+    },
+    "bundle": {
+      "tests": 84,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "seconds": 5.728,
+      "modules": [
+        "test_receipt_manual_latency339",
+        "test_reward_capacity338",
+        "test_reward_frame294",
+        "test_execution_condition266",
+        "test_manual_controls323",
+        "test_manual_pipeline326",
+        "test_preparation_latency262"
+      ]
+    },
+    "new_regression_count": 9,
+    "physical_windows_shell_and_mumu_verified": false,
+    "actual_receipt_last_offset": 128.0,
+    "actual_receipt_last_scrollbar_midlist": true,
+    "manual_benchmark": {
+      "scope": "execution board recognition on an identical recorded crop, without capture I/O or drag",
+      "old_median_ms": 411.9,
+      "new_median_ms": 135.2,
+      "board_and_spikes_match": true
+    }
+  },
+  "policy": {
+    "scope": "master_multicolor",
+    "receipt_capacity_settle_seconds": 2.5,
+    "consecutive_still_receipt_frames": 3,
+    "new_board_observations": 2,
+    "f10_cancellable": true
+  },
+  "automatic_update_channel_changed": false,
+  "publication": {
+    "approved_release": true,
+    "source_pr_merged": true,
+    "source_main_commit": "2acf42ee23d55703da6d5b70efecb51b1598d31e",
+    "source_tree_matches_tested_head": true,
+    "source_branch": "codex/v1-0-130-receipt-settle-manual-latency",
+    "method": "Direct publication from Codex; no Actions run",
+    "artifact_storage": "immutable_repository_file"
+  }
+}

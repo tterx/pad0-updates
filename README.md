@@ -1,12 +1,12 @@
 # 퍼드0 올인원
 
-[**프로그램 ZIP 다운로드 · v1.0.129**](https://raw.githubusercontent.com/tterx/pad0-updates/103ab6d1814776d22ea79e0099078ef6f131aeb4/releases/v1.0.129/pad0_overlay_windows_v1_0_129.zip) · [전체 릴리스](https://github.com/tterx/pad0-updates/releases)
+프로그램 ZIP 다운로드 · v1.0.130 · 고정 다운로드 주소 검증 중
 
-현재 표시 버전은 **1.0.129**, 자동 업데이트 내부 순번은 **338**입니다.
+현재 표시 버전은 **1.0.130**, 자동 업데이트 내부 순번은 **339**입니다.
 
 새로 설치할 때는 ZIP을 풀고 `시작.vbs`를 실행하세요. 기존 설치는 PAD0를 완전히 종료한 뒤 `시작.vbs`를 다시 실행하면 업데이트됩니다.
 
-달인다속 자동 파밍은 크리스탈 보유 한도 경고가 붙은 카드를 제외하고 남은 보상을 집계한 뒤 계속 진행합니다. [원인·검증 범위](docs/reviews/REVIEW338.md) · [검증 기록](releases/v1.0.129/release_checks338.json)
+달인다속의 보유 한도 결과창 스크롤과 F10 수동 판독·이동 대기를 개선했습니다. [원인과 검증 범위](docs/reviews/REVIEW339.md) · [검증 기록](releases/v1.0.130/release_checks339.json)
 
 ## 저장소 안내
 
