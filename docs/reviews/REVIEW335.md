@@ -34,3 +34,15 @@ Builds and tests run in Codex. The package generator shortens only the generated
 statement indentation and checks AST equality to fit the existing updater limit.
 
 Codex verification recorded for 10f7486679aebb08247889c4a7c6d3f60b3bf340. 461 related tests and 222 bundled tests passed without skips. End-to-end work used simulated device I/O and real OCR on synthetic startup screens.
+
+Publication verified: PR37 merged as a639799e8acd3134ff5bd59c856998f6839ace94.
+Its tree matches the locally checked head. No source, build or publish Actions ran.
+The actual v1.0.126 ZIP downloaded from the immutable repository URL passed SHA256,
+ZIP CRC, version and updater-state checks; release v1.0.126 is stable latest.
+The release notes and root README point to that working repository ZIP URL;
+no attached release asset is claimed.
+The source matches the immutable payload and root update.json activates335.
+The unchanged launcher installed335 from the live manifest over v1.0.125 in an
+isolated installation at state334, preserving the backup, settings, inventory and
+four separate normal/starred/hidden stage/branch markers, and skipped a repeat.
+No PAD0 or physical game input was executed during updater verification.
