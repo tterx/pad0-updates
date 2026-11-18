@@ -26,3 +26,15 @@
 보상 수령 완료와 수동 이동 체감 시간은 확인하지 못했습니다.
 
 Codex 소스 검사 186개와 배포 코드 검사 84개를 통과했습니다. 같은 저장 판 이미지에서 실행 직전 판독 중앙값은 411.9ms에서 135.2ms로 줄었습니다. 이 측정에는 캡처 입출력과 실제 마우스 이동 시간이 포함되지 않습니다.
+
+Publication verified: PR41 merged as 2acf42ee23d55703da6d5b70efecb51b1598d31e.
+Its tree matches the locally checked head. No source, build or publish Actions ran.
+The actual v1.0.130 ZIP downloaded from the immutable repository URL passed SHA256,
+ZIP CRC, version and updater-state checks; release v1.0.130 is stable latest.
+The release notes and root README point to that working repository ZIP URL;
+no attached release asset is claimed.
+The source matches the immutable payload and root update.json activates339.
+The unchanged launcher installed339 from the live manifest over v1.0.129 in an
+isolated installation at state338, preserving the backup, settings, inventory and
+four separate normal/starred/hidden stage/branch markers, and skipped a repeat.
+No PAD0 or physical game input was executed during updater verification.
