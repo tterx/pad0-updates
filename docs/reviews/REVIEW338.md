@@ -29,3 +29,15 @@ scrolled receipt and controlled device input to exercise lower cards,
 deduplication and verified onward navigation. Physical MuMu is unverified.
 
 Codex verification recorded for 4d44f59bfacb40dc9a16a7815535c900235bd552. 160 related tests and 75 bundled tests passed without skips. The actual 234 report confirmed the notice and one marked card. The worker test used simulated scroll and device I/O.
+
+Publication verified: PR40 merged as a6627a3bcadf3f0a3d667443313ca13455b8eb77.
+Its tree matches the locally checked head. No source, build or publish Actions ran.
+The actual v1.0.129 ZIP downloaded from the immutable repository URL passed SHA256,
+ZIP CRC, version and updater-state checks; release v1.0.129 is stable latest.
+The release notes and root README point to that working repository ZIP URL;
+no attached release asset is claimed.
+The source matches the immutable payload and root update.json activates338.
+The unchanged launcher installed338 from the live manifest over v1.0.128 in an
+isolated installation at state337, preserving the backup, settings, inventory and
+four separate normal/starred/hidden stage/branch markers, and skipped a repeat.
+No PAD0 or physical game input was executed during updater verification.
