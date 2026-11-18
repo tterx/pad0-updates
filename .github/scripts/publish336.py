@@ -9,7 +9,7 @@ folder=Path('releases/v1.0.127')
 meta=json.loads((folder/'release_checks336.json').read_text())
 assert meta['version']=='v1.0.127' and meta['release']==336
 assert meta['validation']['github_actions_executed'] is False
-assert not meta['validation']['local']['failed']
+assert all(meta['validation']['local'][field] == 0 for field in ('failures', 'errors', 'skipped'))
 assert meta['validation']['additional']['bundle']['failures']==meta['validation']['additional']['bundle']['errors']==0
 assert meta['publication']['source_pr_merged'] is True
 stable=meta.get('publication',{}).get('approved_release') is True
