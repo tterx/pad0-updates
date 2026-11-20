@@ -24,3 +24,15 @@ OK 버튼이 연속 캡처에서 확인되면 크리스탈 0개를 기록한 뒤
 모의 화면과 연결로 검증했습니다. 실제 MuMu 연전과 재접속은 미검증입니다.
 
 Codex 소스 검사 156개와 배포 코드 검사 41개를 통과했습니다.
+
+Publication verified: PR42 merged as 017b4d7a7056f91a6a5023d3c2c883c5e76ee2e2.
+Its tree matches the locally checked head. No source, build or publish Actions ran.
+The actual v1.0.131 ZIP downloaded from the immutable repository URL passed SHA256,
+ZIP CRC, version and updater-state checks; release v1.0.131 is stable latest.
+The release notes and root README point to that working repository ZIP URL;
+no attached release asset is claimed.
+The source matches the immutable payload and root update.json activates340.
+The unchanged launcher installed340 from the live manifest over v1.0.130 in an
+isolated installation at state339, preserving the backup, settings, inventory and
+four separate normal/starred/hidden stage/branch markers, and skipped a repeat.
+No PAD0 or physical game input was executed during updater verification.
