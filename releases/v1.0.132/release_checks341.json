@@ -1,0 +1,94 @@
+{
+  "zip_sha256": "ef4ec7f2e1ce625cc00cc18b85dced05f4c56da557b347cd7ec6926d6f304e5d",
+  "source_sha256": "3707ece16cca6369e739bf0586e30aed00932adaffd42c3682c132b48a2cf9ef",
+  "source_bytes": 2020256,
+  "zip_bytes": 996451,
+  "release": 341,
+  "version": "v1.0.132",
+  "source_repo": "tterx/pad0-all-in-one",
+  "source_commit": "d4f9d39696e90d04d81e6f1b023825c62b362843",
+  "source_pull_request": "https://github.com/tterx/pad0-all-in-one/pull/43",
+  "validation": {
+    "environment": "Codex Linux, actual report 241 screenshot OCR and simulated Android startup",
+    "github_actions_executed": false,
+    "user_requested_local_execution": true,
+    "local": {
+      "tests": 57,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "seconds": 42.96,
+      "modules": [
+        "test_save_slot_relaunch341",
+        "test_farming_relaunch335",
+        "test_android_service_recovery337",
+        "test_replay_adb_recovery340",
+        "test_defeat_result297",
+        "test_stage_continue283",
+        "test_reward_capacity338"
+      ]
+    },
+    "bundle": {
+      "tests": 31,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "seconds": 17.587,
+      "modules": [
+        "test_save_slot_relaunch341",
+        "test_farming_relaunch335",
+        "test_android_service_recovery337",
+        "test_replay_adb_recovery340"
+      ]
+    },
+    "new_regression_count": 6,
+    "actual_save_slot_read": {
+      "prior_full_page_action": null,
+      "current_action": [
+        "save",
+        [
+          800.0,
+          410.0
+        ]
+      ],
+      "title_reads": [
+        {
+          "size": [
+            922,
+            92
+          ],
+          "confidence": 0.96356,
+          "verified": true
+        },
+        {
+          "size": [
+            1844,
+            184
+          ],
+          "confidence": 0.94507,
+          "verified": true
+        }
+      ],
+      "actual_capture": true,
+      "input_sent": false
+    },
+    "physical_windows_shell_and_mumu_verified": false
+  },
+  "policy": {
+    "scope": "master_multicolor_material_farming_relaunch",
+    "two_title_scales": true,
+    "top_card_must_be_populated": true,
+    "two_fresh_captures_before_tap": true,
+    "f10_cancellable": true
+  },
+  "automatic_update_channel_changed": false,
+  "publication": {
+    "approved_release": true,
+    "source_pr_merged": true,
+    "source_main_commit": "d49e5627507e23f4351d436f9c7dc8f6f5f48865",
+    "source_tree_matches_tested_head": true,
+    "source_branch": "codex/v1-0-132-save-slot-relaunch",
+    "method": "Direct publication from Codex; no Actions run",
+    "artifact_storage": "immutable_repository_file"
+  }
+}
