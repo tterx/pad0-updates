@@ -1,0 +1,90 @@
+{
+  "zip_sha256": "db60ddd6d56b598c60b342f26b32b5f29a40868fca9685fa2231bad750683874",
+  "source_sha256": "1008159c719c15e245706af65a0c5955bfb3c31e444766e76d7f4bed480ef4dd",
+  "source_bytes": 2019792,
+  "zip_bytes": 996161,
+  "release": 340,
+  "version": "v1.0.131",
+  "source_repo": "tterx/pad0-all-in-one",
+  "source_commit": "e65f2ffb2eaaa89c664baba1300fcb6b4b55bd39",
+  "source_pull_request": "https://github.com/tterx/pad0-all-in-one/pull/42",
+  "validation": {
+    "environment": "Codex Linux, report 239 lobby and prior reward with local production OCR, mocked result transition and ADB",
+    "github_actions_executed": false,
+    "user_requested_local_execution": true,
+    "local": {
+      "tests": 156,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "seconds": 125.755,
+      "modules": [
+        "test_replay_adb_recovery340",
+        "test_android_service_recovery337",
+        "test_farming_relaunch335",
+        "test_stage_continue283",
+        "test_defeat_result297",
+        "test_defeat296",
+        "test_auto_repeat266",
+        "test_reward_frame294",
+        "test_reward_scene298",
+        "test_reward_capacity338",
+        "test_receipt_manual_latency339",
+        "test_branch_learning305",
+        "test_retarget254"
+      ]
+    },
+    "bundle": {
+      "tests": 41,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "seconds": 41.123,
+      "modules": [
+        "test_replay_adb_recovery340",
+        "test_android_service_recovery337",
+        "test_defeat_result297",
+        "test_reward_capacity338",
+        "test_stage_continue283"
+      ]
+    },
+    "new_regression_count": 9,
+    "actual_lobby_read": {
+      "lobby_heading": "연전확인",
+      "stage": "11-2",
+      "ok": [
+        1000.0,
+        721.0
+      ],
+      "crystal_panel_from_prior_receipt": true,
+      "prior_receipt_mana_result": null,
+      "simulated_mana_on_real_lobby": {
+        "first_capture": false,
+        "second_capture": true,
+        "credited_inventory": false
+      }
+    },
+    "current_mana_frame_from_239_available": false,
+    "physical_windows_shell_and_mumu_verified": false
+  },
+  "policy": {
+    "scope": "master_multicolor_material_farming",
+    "same_session_verified_mana_next": true,
+    "two_consecutive_lobby_frames": true,
+    "visible_stage_match": true,
+    "known_crystal_result_is_counted": true,
+    "read_only_recovery": true,
+    "reconnects_only_selected_local_endpoint": true,
+    "f10_cancellable": true
+  },
+  "automatic_update_channel_changed": false,
+  "publication": {
+    "approved_release": true,
+    "source_pr_merged": true,
+    "source_main_commit": "017b4d7a7056f91a6a5023d3c2c883c5e76ee2e2",
+    "source_tree_matches_tested_head": true,
+    "source_branch": "codex/v1-0-131-replay-adb-recovery",
+    "method": "Direct publication from Codex; no Actions run",
+    "artifact_storage": "immutable_repository_file"
+  }
+}

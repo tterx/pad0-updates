@@ -1,12 +1,12 @@
 # 퍼드0 올인원
 
-[**프로그램 ZIP 다운로드 · v1.0.130**](https://raw.githubusercontent.com/tterx/pad0-updates/0ebd036c7cd4887dba922d1e564b833fbbcd9a65/releases/v1.0.130/pad0_overlay_windows_v1_0_130.zip) · [전체 릴리스](https://github.com/tterx/pad0-updates/releases)
+프로그램 ZIP 다운로드 · v1.0.131 · 고정 다운로드 주소 검증 중
 
-현재 표시 버전은 **1.0.130**, 자동 업데이트 내부 순번은 **339**입니다.
+현재 표시 버전은 **1.0.131**, 자동 업데이트 내부 순번은 **340**입니다.
 
 새로 설치할 때는 ZIP을 풀고 `시작.vbs`를 실행하세요. 기존 설치는 PAD0를 완전히 종료한 뒤 `시작.vbs`를 다시 실행하면 업데이트됩니다.
 
-달인다속의 보유 한도 결과창 스크롤과 F10 수동 판독·이동 대기를 개선했습니다. [원인과 검증 범위](docs/reviews/REVIEW339.md) · [검증 기록](releases/v1.0.130/release_checks339.json)
+달인다속의 연전확인 보상 처리와 MuMu 연결 복구를 개선했습니다. [원인과 검증 범위](docs/reviews/REVIEW340.md) · [검증 기록](releases/v1.0.131/release_checks340.json)
 
 ## 저장소 안내
 
