@@ -1,6 +1,6 @@
 # 퍼드0 올인원
 
-프로그램 ZIP 다운로드 · v1.0.131 · 고정 다운로드 주소 검증 중
+[**프로그램 ZIP 다운로드 · v1.0.131**](https://raw.githubusercontent.com/tterx/pad0-updates/7533dbdae12ac40600c8dcdd79fa91949ba49729/releases/v1.0.131/pad0_overlay_windows_v1_0_131.zip) · [전체 릴리스](https://github.com/tterx/pad0-updates/releases)
 
 현재 표시 버전은 **1.0.131**, 자동 업데이트 내부 순번은 **340**입니다.
 

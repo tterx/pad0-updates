@@ -85,6 +85,9 @@
     "source_tree_matches_tested_head": true,
     "source_branch": "codex/v1-0-131-replay-adb-recovery",
     "method": "Direct publication from Codex; no Actions run",
-    "artifact_storage": "immutable_repository_file"
+    "artifact_storage": "immutable_repository_file",
+    "payload_commit": "7533dbdae12ac40600c8dcdd79fa91949ba49729",
+    "immutable_source_url": "https://raw.githubusercontent.com/tterx/pad0-updates/7533dbdae12ac40600c8dcdd79fa91949ba49729/releases/v1.0.131/pad0_overlay.py",
+    "zip_download_url": "https://raw.githubusercontent.com/tterx/pad0-updates/7533dbdae12ac40600c8dcdd79fa91949ba49729/releases/v1.0.131/pad0_overlay_windows_v1_0_131.zip"
   }
 }
