@@ -18,3 +18,15 @@
 확인 실패입니다. 이번 수정 범위는 저장 데이터 선택입니다.
 
 Codex 소스 검사 57개와 배포 코드 검사 31개를 통과했습니다.
+
+Publication verified: PR43 merged as d49e5627507e23f4351d436f9c7dc8f6f5f48865.
+Its tree matches the locally checked head. No source, build or publish Actions ran.
+The actual v1.0.132 ZIP downloaded from the immutable repository URL passed SHA256,
+ZIP CRC, version and updater-state checks; release v1.0.132 is stable latest.
+The release notes and root README point to that working repository ZIP URL;
+no attached release asset is claimed.
+The source matches the immutable payload and root update.json activates341.
+The unchanged launcher installed341 from the live manifest over v1.0.131 in an
+isolated installation at state340, preserving the backup, settings, inventory and
+four separate normal/starred/hidden stage/branch markers, and skipped a repeat.
+No PAD0 or physical game input was executed during updater verification.
