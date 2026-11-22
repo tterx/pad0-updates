@@ -1,0 +1,95 @@
+{
+  "zip_sha256": "e7cce472dbae214d9a141601ac3c996b3f4505f1abb227c3a4b7453c81eab1cb",
+  "source_sha256": "fb0b7ff6fc87086df3f17c6e01b55d7af136fb89359d62d88e641c0efdd64d1c",
+  "source_bytes": 2022773,
+  "zip_bytes": 997947,
+  "release": 342,
+  "version": "v1.0.133",
+  "source_repo": "tterx/pad0-all-in-one",
+  "source_commit": "f7e8eb4e524283cf5f9d8b417d75fc280591fd9b",
+  "source_pull_request": "https://github.com/tterx/pad0-all-in-one/pull/44",
+  "validation": {
+    "environment": "Codex Linux, real reports 243 and 245, simulated video skip, real report 244 board with simulated cap",
+    "github_actions_executed": false,
+    "user_requested_local_execution": true,
+    "local": {
+      "tests": 91,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "seconds": 52.441,
+      "modules": [
+        "test_startup_transition342",
+        "test_save_slot_relaunch341",
+        "test_farming_relaunch335",
+        "test_android_service_recovery337",
+        "test_replay_adb_recovery340",
+        "test_retry332",
+        "test_search_progress333",
+        "test_start_recovery334",
+        "test_reward_capacity338"
+      ]
+    },
+    "bundle": {
+      "tests": 35,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "seconds": 13.363,
+      "modules": [
+        "test_startup_transition342",
+        "test_save_slot_relaunch341",
+        "test_farming_relaunch335",
+        "test_android_service_recovery337",
+        "test_reward_capacity338"
+      ]
+    },
+    "observations": {
+      "243": {
+        "action": "start",
+        "point": [
+          800.0,
+          738.5
+        ],
+        "input_sent": false
+      },
+      "245": {
+        "action": "loading",
+        "point": [
+          793.5,
+          493.0
+        ],
+        "input_sent": false
+      },
+      "244": {
+        "reported_route_moves": 23,
+        "test_move_cap": 19,
+        "new_route_moves": 17,
+        "attributes": 5,
+        "combos": 6,
+        "test_cap_simulated": true
+      }
+    },
+    "new_regression_count": 8,
+    "physical_windows_shell_and_mumu_verified": false
+  },
+  "policy": {
+    "scope": "master_multicolor_material_farming",
+    "intro_tap_cap": 6,
+    "intro_tap_spacing_seconds": 1.5,
+    "two_fresh_frames": true,
+    "skip_click_has_visible_label": true,
+    "four_second_reserve": true,
+    "f10_cancellable": true
+  },
+  "automatic_update_channel_changed": false,
+  "publication": {
+    "approved_release": true,
+    "source_pr_merged": true,
+    "source_main_commit": "67843850169a69974f365e1465c1c16f4a75b006",
+    "source_tree_matches_tested_head": true,
+    "source_branch": "codex/v1-0-133-startup-transition",
+    "method": "Direct publication from Codex; no Actions run",
+    "artifact_storage": "immutable_repository_file"
+  }
+}
