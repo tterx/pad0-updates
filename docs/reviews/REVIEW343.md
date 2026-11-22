@@ -21,3 +21,15 @@ Codex에서 246번 검은 캡처, 243번 실제 시작 화면, 245번 실제 크
 F10 취소는 모의 환경에서 검증했습니다. 실제 MuMu 입력은 미검증입니다.
 
 Codex 소스 검사 58개와 배포 코드 검사 36개를 통과했습니다.
+
+Publication verified: PR45 merged as 438138e41f85487b53a148947e3a21f27cab5e78.
+Its tree matches the locally checked head. No source, build or publish Actions ran.
+The actual v1.0.134 ZIP downloaded from the immutable repository URL passed SHA256,
+ZIP CRC, version and updater-state checks; release v1.0.134 is stable latest.
+The release notes and root README point to that working repository ZIP URL;
+no attached release asset is claimed.
+The source matches the immutable payload and root update.json activates343.
+The unchanged launcher installed343 from the live manifest over v1.0.133 in an
+isolated installation at state342, preserving the backup, settings, inventory and
+four separate normal/starred/hidden stage/branch markers, and skipped a repeat.
+No PAD0 or physical game input was executed during updater verification.
