@@ -71,7 +71,21 @@
       }
     },
     "new_regression_count": 8,
-    "physical_windows_shell_and_mumu_verified": false
+    "physical_windows_shell_and_mumu_verified": false,
+    "linux_tk_startup": {
+      "fresh": {
+        "window_visible": true,
+        "verified_release": 342,
+        "ledger_preserved": true,
+        "preferences_preserved": true
+      },
+      "upgrade": {
+        "window_visible": true,
+        "verified_release": 342,
+        "ledger_preserved": true,
+        "preferences_preserved": true
+      }
+    }
   },
   "policy": {
     "scope": "master_multicolor_material_farming",
@@ -95,7 +109,9 @@
     "immutable_source_url": "https://raw.githubusercontent.com/tterx/pad0-updates/e22f2dabb4ff2030d4bd6bf0df356ccf5db9e8c5/releases/v1.0.133/pad0_overlay.py",
     "zip_download_url": "https://raw.githubusercontent.com/tterx/pad0-updates/e22f2dabb4ff2030d4bd6bf0df356ccf5db9e8c5/releases/v1.0.133/pad0_overlay_windows_v1_0_133.zip",
     "stable_release_verified": true,
-    "zip_bytes_unchanged": true
+    "zip_bytes_unchanged": true,
+    "auto_update_verified": true,
+    "actions_runs_on_source_and_merge": 0
   },
   "public_download_verification": {
     "zip_url": "https://raw.githubusercontent.com/tterx/pad0-updates/e22f2dabb4ff2030d4bd6bf0df356ccf5db9e8c5/releases/v1.0.133/pad0_overlay_windows_v1_0_133.zip",
@@ -124,7 +140,21 @@
       "application_executed": false,
       "adaptive_retry_profile_preserved": true
     },
-    "live_status": "pending_post_activation_check",
-    "manifest_url": "https://raw.githubusercontent.com/tterx/pad0-updates/main/update.json"
+    "live_status": "success",
+    "manifest_url": "https://raw.githubusercontent.com/tterx/pad0-updates/main/update.json",
+    "live": {
+      "scope": "live_manifest_and_live_source",
+      "old_release": 341,
+      "new_release": 342,
+      "source_sha256": "fb0b7ff6fc87086df3f17c6e01b55d7af136fb89359d62d88e641c0efdd64d1c",
+      "source_bytes": 2022773,
+      "backup_preserved": true,
+      "personal_data_preserved": true,
+      "branch_history_preserved": true,
+      "repeat_update_skipped": true,
+      "separate_starred_normal_hidden_records_preserved": true,
+      "application_executed": false,
+      "adaptive_retry_profile_preserved": true
+    }
   }
 }

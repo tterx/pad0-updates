@@ -23,3 +23,15 @@ F10은 클릭 전에 확인합니다.
 실제 MuMu 실행과 클릭 결과는 미검증입니다.
 
 Codex 소스 검사 91개와 배포 코드 검사 35개를 통과했습니다.
+
+Publication verified: PR44 merged as 67843850169a69974f365e1465c1c16f4a75b006.
+Its tree matches the locally checked head. No source, build or publish Actions ran.
+The actual v1.0.133 ZIP downloaded from the immutable repository URL passed SHA256,
+ZIP CRC, version and updater-state checks; release v1.0.133 is stable latest.
+The release notes and root README point to that working repository ZIP URL;
+no attached release asset is claimed.
+The source matches the immutable payload and root update.json activates342.
+The unchanged launcher installed342 from the live manifest over v1.0.132 in an
+isolated installation at state341, preserving the backup, settings, inventory and
+four separate normal/starred/hidden stage/branch markers, and skipped a repeat.
+No PAD0 or physical game input was executed during updater verification.
