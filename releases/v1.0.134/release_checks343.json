@@ -99,6 +99,9 @@
     "source_tree_matches_tested_head": true,
     "source_branch": "codex/v1-0-134-relaunch-skip",
     "method": "Direct publication from Codex; no Actions run",
-    "artifact_storage": "immutable_repository_file"
+    "artifact_storage": "immutable_repository_file",
+    "payload_commit": "263d9f82913ccf8dfcaf5a0ada1cc36997743b86",
+    "immutable_source_url": "https://raw.githubusercontent.com/tterx/pad0-updates/263d9f82913ccf8dfcaf5a0ada1cc36997743b86/releases/v1.0.134/pad0_overlay.py",
+    "zip_download_url": "https://raw.githubusercontent.com/tterx/pad0-updates/263d9f82913ccf8dfcaf5a0ada1cc36997743b86/releases/v1.0.134/pad0_overlay_windows_v1_0_134.zip"
   }
 }
