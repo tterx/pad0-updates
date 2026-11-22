@@ -22,3 +22,15 @@ Codex의 50,000회 마나 집계 비교에서 추적된 보관 메모리는
 장시간 메모리와 네이티브 보조 프로세스 종료는 미검증입니다.
 
 Codex 소스 검사 99개와 배포 코드 검사 55개를 통과했습니다.
+
+Publication verified: PR46 merged as 912ac44a07047d76ebd8aa808f16cac9e4464320.
+Its tree matches the locally checked head. No source, build or publish Actions ran.
+The actual v1.0.135 ZIP downloaded from the immutable repository URL passed SHA256,
+ZIP CRC, version and updater-state checks; release v1.0.135 is stable latest.
+The release notes and root README point to that working repository ZIP URL;
+no attached release asset is claimed.
+The source matches the immutable payload and root update.json activates344.
+The unchanged launcher installed344 from the live manifest over v1.0.134 in an
+isolated installation at state343, preserving the backup, settings, inventory and
+four separate normal/starred/hidden stage/branch markers, and skipped a repeat.
+No PAD0 or physical game input was executed during updater verification.
