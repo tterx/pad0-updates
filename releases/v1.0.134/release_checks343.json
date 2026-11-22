@@ -1,0 +1,104 @@
+{
+  "zip_sha256": "ddb7eae550cca819ec0a92599bade0b5ec6bcf7fb54e18661011cfeab7cfc9e3",
+  "source_sha256": "4dfdfb360bf95df46525a284be0e4f7321218cc7eed199396c143eb6b967be49",
+  "source_bytes": 2023165,
+  "zip_bytes": 998200,
+  "release": 343,
+  "version": "v1.0.134",
+  "source_repo": "tterx/pad0-all-in-one",
+  "source_commit": "46ca371b11be93be5f6a2f7cb0511e3c19a3aeda",
+  "source_pull_request": "https://github.com/tterx/pad0-all-in-one/pull/45",
+  "validation": {
+    "environment": "Codex Linux, actual 246 black capture, 243 title, 245 creature, and simulated skip and ADB",
+    "github_actions_executed": false,
+    "user_requested_local_execution": true,
+    "local": {
+      "tests": 58,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "seconds": 35.251,
+      "modules": [
+        "test_relaunch_skip343",
+        "test_startup_transition342",
+        "test_save_slot_relaunch341",
+        "test_farming_relaunch335",
+        "test_android_service_recovery337",
+        "test_replay_adb_recovery340",
+        "test_search_progress333"
+      ]
+    },
+    "bundle": {
+      "tests": 36,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "seconds": 24.163,
+      "modules": [
+        "test_relaunch_skip343",
+        "test_startup_transition342",
+        "test_save_slot_relaunch341",
+        "test_farming_relaunch335",
+        "test_android_service_recovery337"
+      ]
+    },
+    "observations": {
+      "246": {
+        "black_fraction": 1.0,
+        "blank": true,
+        "input_sent": false
+      },
+      "243": {
+        "action": "start",
+        "point": [
+          800.0,
+          738.5
+        ]
+      },
+      "245": {
+        "action": "loading",
+        "point": [
+          793.5,
+          493.0
+        ]
+      },
+      "simulated_skip": {
+        "action": "skip",
+        "point": [
+          1440.5,
+          101.5
+        ],
+        "title_reads": [
+          {
+            "text": "건너뛰기",
+            "confidence": 0.99943
+          },
+          {
+            "text": "건너뛰기",
+            "confidence": 0.99945
+          }
+        ]
+      }
+    },
+    "new_regression_count": 6,
+    "physical_windows_shell_and_mumu_verified": false
+  },
+  "policy": {
+    "scope": "master_multicolor_material_farming_relaunch",
+    "early_poll_seconds": 0.25,
+    "exact_skip_button_text": true,
+    "two_fresh_frames": true,
+    "independent_adb_on_black": true,
+    "f10_cancellable": true
+  },
+  "automatic_update_channel_changed": false,
+  "publication": {
+    "approved_release": true,
+    "source_pr_merged": true,
+    "source_main_commit": "438138e41f85487b53a148947e3a21f27cab5e78",
+    "source_tree_matches_tested_head": true,
+    "source_branch": "codex/v1-0-134-relaunch-skip",
+    "method": "Direct publication from Codex; no Actions run",
+    "artifact_storage": "immutable_repository_file"
+  }
+}
