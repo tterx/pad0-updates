@@ -1,0 +1,114 @@
+{
+  "zip_sha256": "50b3f3dfa59aa33f1341a92e65680628d39ee87e04b27f2718b81202c93978c1",
+  "source_sha256": "976936fa6a3b97159b3f231eb78276166a46866e4c4f28b91451a01c10f8a63d",
+  "source_bytes": 2023521,
+  "zip_bytes": 998728,
+  "release": 344,
+  "version": "v1.0.135",
+  "source_repo": "tterx/pad0-all-in-one",
+  "source_commit": "1f51fe7bfe4f3da45c3c0a54112e2c6949b6a993",
+  "source_pull_request": "https://github.com/tterx/pad0-all-in-one/pull/46",
+  "validation": {
+    "environment": "Codex Linux, 50000 simulated receipts and real local command cancellation, Win32 API simulation",
+    "github_actions_executed": false,
+    "user_requested_local_execution": true,
+    "local": {
+      "tests": 99,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "seconds": 27.959,
+      "modules": [
+        "test_long_run_cleanup344",
+        "test_replay_adb_recovery340",
+        "test_capture_wait263",
+        "test_input_choice197",
+        "test_master_handoff309",
+        "test_reward_frame294",
+        "test_reward_capacity338",
+        "test_startup_transition342",
+        "test_relaunch_skip343",
+        "test_release_compaction316"
+      ]
+    },
+    "bundle": {
+      "tests": 55,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "seconds": 12.638,
+      "modules": [
+        "test_long_run_cleanup344",
+        "test_replay_adb_recovery340",
+        "test_capture_wait263",
+        "test_master_handoff309",
+        "test_reward_capacity338"
+      ]
+    },
+    "memory_benchmark": {
+      "baseline": {
+        "version": "v1.0.134",
+        "counts": {
+          "total": 520000,
+          "unknown": 10000
+        },
+        "measurements": {
+          "1000": {
+            "retained_bytes": 284024,
+            "receipts": 1000
+          },
+          "10000": {
+            "retained_bytes": 2779076,
+            "receipts": 10000
+          },
+          "50000": {
+            "retained_bytes": 14774216,
+            "receipts": 50000
+          }
+        },
+        "max_rss_kib": 75992
+      },
+      "updated": {
+        "version": "v1.0.135",
+        "counts": {
+          "total": 520000,
+          "unknown": 10000
+        },
+        "measurements": {
+          "1000": {
+            "retained_bytes": 40464,
+            "receipts": 128
+          },
+          "10000": {
+            "retained_bytes": 40904,
+            "receipts": 128
+          },
+          "50000": {
+            "retained_bytes": 41152,
+            "receipts": 128
+          }
+        },
+        "max_rss_kib": 46136
+      }
+    },
+    "new_regression_count": 6,
+    "physical_windows_shell_and_mumu_verified": false
+  },
+  "policy": {
+    "scope": "application_shutdown_and_farming_memory",
+    "retained_mana_details": 128,
+    "cumulative_totals_unchanged": true,
+    "owned_child_processes_only": true,
+    "release_before_exit": true
+  },
+  "automatic_update_channel_changed": false,
+  "publication": {
+    "approved_release": true,
+    "source_pr_merged": true,
+    "source_main_commit": "912ac44a07047d76ebd8aa808f16cac9e4464320",
+    "source_tree_matches_tested_head": true,
+    "source_branch": "codex/v1-0-135-long-run-cleanup",
+    "method": "Direct publication from Codex; no Actions run",
+    "artifact_storage": "immutable_repository_file"
+  }
+}
