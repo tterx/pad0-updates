@@ -136,6 +136,9 @@
     "source_tree_matches_tested_head": true,
     "source_branch": "codex/v1-0-137-start-label",
     "method": "Direct publication from Codex without Actions",
-    "artifact_storage": "immutable_repository_file"
+    "artifact_storage": "immutable_repository_file",
+    "payload_commit": "bf420e1f3f1d78775229320d1a847408e6469f17",
+    "immutable_source_url": "https://raw.githubusercontent.com/tterx/pad0-updates/bf420e1f3f1d78775229320d1a847408e6469f17/releases/v1.0.137/pad0_overlay.py",
+    "zip_download_url": "https://raw.githubusercontent.com/tterx/pad0-updates/bf420e1f3f1d78775229320d1a847408e6469f17/releases/v1.0.137/pad0_overlay_windows_v1_0_137.zip"
   }
 }
