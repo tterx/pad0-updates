@@ -1,0 +1,141 @@
+{
+  "zip_sha256": "2e12732305555ee550ca715185a831fcd521766eeaf294e24dccf7ccbefecb56",
+  "source_sha256": "5704cbd6581b62fc94fc2800d27898f294bdab236772097b99d421d0ae0343ca",
+  "source_bytes": 2027949,
+  "zip_bytes": 1000075,
+  "release": 346,
+  "version": "v1.0.137",
+  "source_repo": "tterx/pad0-all-in-one",
+  "source_commit": "fa10a8d48f3948dcc472729d64cfab0a79f17dd4",
+  "source_pull_request": "https://github.com/tterx/pad0-all-in-one/pull/48",
+  "validation": {
+    "environment": "Codex Linux, original diagnostic screen recognition and simulated startup timing",
+    "github_actions_executed": false,
+    "user_requested_local_execution": true,
+    "local": {
+      "tests": 63,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "seconds": 51.299,
+      "modules": [
+        "test_start_label346",
+        "test_farming_relaunch335",
+        "test_android_service_recovery337",
+        "test_replay_adb_recovery340",
+        "test_save_slot_relaunch341",
+        "test_startup_transition342",
+        "test_relaunch_skip343",
+        "test_long_run_cleanup344",
+        "test_ledger_replay345",
+        "test_release_compaction316"
+      ]
+    },
+    "bundle": {
+      "tests": 60,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "seconds": 51.53,
+      "modules": [
+        "test_start_label346",
+        "test_farming_relaunch335",
+        "test_android_service_recovery337",
+        "test_replay_adb_recovery340",
+        "test_save_slot_relaunch341",
+        "test_startup_transition342",
+        "test_relaunch_skip343",
+        "test_long_run_cleanup344",
+        "test_ledger_replay345"
+      ]
+    },
+    "reports": {
+      "243": {
+        "previous": [
+          "start",
+          [
+            800.0,
+            738.5
+          ]
+        ],
+        "updated": [
+          "start",
+          [
+            800.0,
+            738.5
+          ]
+        ]
+      },
+      "245": {
+        "previous": [
+          "loading",
+          [
+            793.5,
+            493.0
+          ]
+        ],
+        "updated": [
+          "loading",
+          [
+            793.5,
+            493.0
+          ]
+        ]
+      },
+      "246": {
+        "previous": null,
+        "updated": null
+      },
+      "249": {
+        "previous": [
+          "start",
+          [
+            800.0,
+            738.5
+          ]
+        ],
+        "updated": [
+          "start",
+          [
+            800.0,
+            738.5
+          ]
+        ],
+        "recorded_clicks": [
+          "logo"
+        ]
+      },
+      "250": {
+        "previous": null,
+        "updated": [
+          "start",
+          [
+            800.0,
+            740.0
+          ]
+        ],
+        "recorded_clicks": [
+          "logo"
+        ]
+      }
+    },
+    "physical_windows_and_mumu_verified": false
+  },
+  "policy": {
+    "scope": "master_multicolor_material_farming_relaunch",
+    "startup_polling_seconds": 0.25,
+    "startup_confirmation_frames": 2,
+    "centered_start_label_two_scales": true,
+    "startup_timing_logged": true
+  },
+  "automatic_update_channel_changed": false,
+  "publication": {
+    "approved_release": true,
+    "source_pr_merged": true,
+    "source_main_commit": "403f9ef4ffeee240623525ade57d89f0e06cc62d",
+    "source_tree_matches_tested_head": true,
+    "source_branch": "codex/v1-0-137-start-label",
+    "method": "Direct publication from Codex without Actions",
+    "artifact_storage": "immutable_repository_file"
+  }
+}
