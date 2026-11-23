@@ -1,12 +1,12 @@
 # 퍼드0 올인원
 
-[**프로그램 ZIP 다운로드 · v1.0.135**](https://raw.githubusercontent.com/tterx/pad0-updates/b5c842806d4e7aec83ef4438d5140b6b274ff9c7/releases/v1.0.135/pad0_overlay_windows_v1_0_135.zip) · [전체 릴리스](https://github.com/tterx/pad0-updates/releases)
+프로그램 ZIP 다운로드 · v1.0.136 · 고정 다운로드 주소 검증 중
 
-현재 표시 버전은 **1.0.135**, 자동 업데이트 내부 순번은 **344**입니다.
+현재 표시 버전은 **1.0.136**, 자동 업데이트 내부 순번은 **345**입니다.
 
 새로 설치할 때는 ZIP을 풀고 `시작.vbs`를 실행하세요. 기존 설치는 PAD0를 완전히 종료한 뒤 `시작.vbs`를 다시 실행하면 업데이트됩니다.
 
-장시간 파밍 메모리 사용과 PAD0 종료 시 프로세스 정리를 개선했습니다. [원인과 검증 범위](docs/reviews/REVIEW344.md) · [검증 기록](releases/v1.0.135/release_checks344.json)
+달인 다색 재료 파밍에서 보상 집계 저장과 연전 확인 복구를 개선했습니다. [원인과 검증 범위](docs/reviews/REVIEW345.md) · [검증 기록](releases/v1.0.136/release_checks345.json)
 
 ## 저장소 안내
 

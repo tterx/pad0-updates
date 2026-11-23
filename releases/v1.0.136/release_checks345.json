@@ -1,0 +1,94 @@
+{
+  "zip_sha256": "198987c63bb539ebd8d169c672e304e573c2a5795753b46af85a4e2643229e05",
+  "source_sha256": "90f132d1d562acfb58734aa480a174f876a0579d7ebabac6065ebe12599fc9aa",
+  "source_bytes": 2027703,
+  "zip_bytes": 999864,
+  "release": 345,
+  "version": "v1.0.136",
+  "source_repo": "tterx/pad0-all-in-one",
+  "source_commit": "1b6537e4396b30f1bb198d82bec198c1383d729c",
+  "source_pull_request": "https://github.com/tterx/pad0-all-in-one/pull/47",
+  "validation": {
+    "environment": "Codex Linux, original diagnostic screen recognition and WinError/replay simulations",
+    "github_actions_executed": false,
+    "user_requested_local_execution": true,
+    "local": {
+      "tests": 130,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "seconds": 67.29,
+      "modules": [
+        "test_ledger_replay345",
+        "test_long_run_cleanup344",
+        "test_replay_adb_recovery340",
+        "test_stage_continue283",
+        "test_reward_capacity338",
+        "test_reward_frame294",
+        "test_auto_repeat266",
+        "test_replay208",
+        "test_replay212",
+        "test_retarget254",
+        "test_defeat_result297",
+        "test_farming_map317",
+        "test_release_compaction316"
+      ]
+    },
+    "bundle": {
+      "tests": 127,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "seconds": 66.94,
+      "modules": [
+        "test_ledger_replay345",
+        "test_long_run_cleanup344",
+        "test_replay_adb_recovery340",
+        "test_stage_continue283",
+        "test_reward_capacity338",
+        "test_reward_frame294",
+        "test_auto_repeat266",
+        "test_replay208",
+        "test_replay212",
+        "test_retarget254",
+        "test_defeat_result297",
+        "test_farming_map317"
+      ]
+    },
+    "reports": {
+      "247": {
+        "scene": "연전확인",
+        "stage": "8-3",
+        "button": "OK",
+        "previous_down_up_confirmed": true,
+        "supported_retry_taps": 1,
+        "starred_stage_blocked": true
+      },
+      "248": {
+        "scene": "결과",
+        "capacity_warning": true,
+        "failed_operation": "ledger_replace",
+        "winerror": 5,
+        "prior_credited_receipt_is_distinct": true
+      }
+    },
+    "physical_windows_and_mumu_verified": false
+  },
+  "policy": {
+    "scope": "master_multicolor_material_farming",
+    "atomic_reward": true,
+    "replace_retry_max_seconds": 1.2,
+    "maximum_replay_retries": 1,
+    "same_stage_and_party_required": true
+  },
+  "automatic_update_channel_changed": false,
+  "publication": {
+    "approved_release": true,
+    "source_pr_merged": true,
+    "source_main_commit": "4391d4fae44dd8ff49d46d33bd53d74efc15feba",
+    "source_tree_matches_tested_head": true,
+    "source_branch": "codex/v1-0-136-ledger-replay-recovery",
+    "method": "Direct publication from Codex without Actions",
+    "artifact_storage": "immutable_repository_file"
+  }
+}
