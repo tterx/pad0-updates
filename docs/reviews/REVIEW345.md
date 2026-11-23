@@ -27,3 +27,17 @@
 플레이는 미검증입니다.
 
 Codex 소스 검사 130개와 배포 코드 검사 127개를 통과했습니다.
+
+Publication verified: PR47 merged as 4391d4fae44dd8ff49d46d33bd53d74efc15feba.
+Its tree matches the locally checked head. No source, build or publish Actions ran.
+The actual v1.0.136 ZIP downloaded from the immutable repository URL passed SHA256,
+ZIP CRC, version and updater-state checks; release v1.0.136 is stable latest.
+The release notes and root README point to that working repository ZIP URL;
+no attached release asset is claimed.
+The source matches the immutable payload and root update.json activates345.
+The unchanged launcher installed345 from the live manifest over v1.0.135 in an
+isolated installation at state344, preserving the backup, settings, inventory and
+four separate normal/starred/hidden stage/branch markers, and skipped a repeat.
+No PAD0 or physical game input was executed during updater verification.
+
+Codex의 격리 설치에서 실시간 업데이트를 거쳐 v1.0.136 메인 창이 열렸습니다. 기존 장부와 설정이 보존됐습니다.
