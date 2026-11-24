@@ -69,7 +69,12 @@
         "actual_battle_verified": false
       }
     },
-    "physical_windows_and_mumu_verified": false
+    "physical_windows_and_mumu_verified": false,
+    "codex_live_startup": {
+      "visible_main_window": true,
+      "ledger_preserved": true,
+      "settings_preserved": true
+    }
   },
   "policy": {
     "scope": "master_multicolor_material_farming_relaunch",
@@ -91,7 +96,10 @@
     "immutable_source_url": "https://raw.githubusercontent.com/tterx/pad0-updates/d92c8f4714a49720dfa3d9909ca78bf9217f234f/releases/v1.0.138/pad0_overlay.py",
     "zip_download_url": "https://raw.githubusercontent.com/tterx/pad0-updates/d92c8f4714a49720dfa3d9909ca78bf9217f234f/releases/v1.0.138/pad0_overlay_windows_v1_0_138.zip",
     "stable_release_verified": true,
-    "zip_bytes_unchanged": true
+    "zip_bytes_unchanged": true,
+    "auto_update_verified": true,
+    "actions_runs_on_source_and_merge": 0,
+    "actions_runs_on_release_content_commits": 0
   },
   "public_download_verification": {
     "zip_url": "https://raw.githubusercontent.com/tterx/pad0-updates/d92c8f4714a49720dfa3d9909ca78bf9217f234f/releases/v1.0.138/pad0_overlay_windows_v1_0_138.zip",
@@ -120,7 +128,21 @@
       "application_executed": false,
       "adaptive_retry_profile_preserved": true
     },
-    "live_status": "pending_post_activation_check",
-    "manifest_url": "https://raw.githubusercontent.com/tterx/pad0-updates/main/update.json"
+    "live_status": "success",
+    "manifest_url": "https://raw.githubusercontent.com/tterx/pad0-updates/main/update.json",
+    "live": {
+      "scope": "live_manifest_and_live_source",
+      "old_release": 346,
+      "new_release": 347,
+      "source_sha256": "aad6a14ffbc3b3399ee2ce7d1ad9488bd5f969d93f178aed7273d1839ac7337d",
+      "source_bytes": 2030060,
+      "backup_preserved": true,
+      "personal_data_preserved": true,
+      "branch_history_preserved": true,
+      "repeat_update_skipped": true,
+      "separate_starred_normal_hidden_records_preserved": true,
+      "application_executed": false,
+      "adaptive_retry_profile_preserved": true
+    }
   }
 }

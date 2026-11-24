@@ -19,3 +19,17 @@ Codex에서 251번 실제 화면의 ‘네’ 위치를 판독했습니다. 모�
 검증했습니다. 실제 Windows와 MuMu 재접속은 미검증입니다.
 
 Codex 소스 검사 87개와 배포 코드 검사 84개를 통과했습니다.
+
+Publication verified: PR49 merged as d158c18b9c8d1153f819e2432f6fa33e9fb4c806.
+Its tree matches the locally checked head. No source, build or publish Actions ran.
+The actual v1.0.138 ZIP downloaded from the immutable repository URL passed SHA256,
+ZIP CRC, version and updater-state checks; release v1.0.138 is stable latest.
+The release notes and root README point to that working repository ZIP URL;
+no attached release asset is claimed.
+The source matches the immutable payload and root update.json activates347.
+The unchanged launcher installed347 from the live manifest over v1.0.137 in an
+isolated installation at state346, preserving the backup, settings, inventory and
+four separate normal/starred/hidden stage/branch markers, and skipped a repeat.
+No PAD0 or physical game input was executed during updater verification.
+
+Codex의 격리 설치에서 v1.0.137이 v1.0.138로 자동 업데이트됐으며, 기존 장부와 설정을 유지한 채 메인 창이 열렸습니다.
