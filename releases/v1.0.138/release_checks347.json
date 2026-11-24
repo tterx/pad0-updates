@@ -86,6 +86,9 @@
     "source_tree_matches_tested_head": true,
     "source_branch": "codex/v1-0-138-resume-dungeon",
     "method": "Direct publication from Codex without Actions",
-    "artifact_storage": "immutable_repository_file"
+    "artifact_storage": "immutable_repository_file",
+    "payload_commit": "d92c8f4714a49720dfa3d9909ca78bf9217f234f",
+    "immutable_source_url": "https://raw.githubusercontent.com/tterx/pad0-updates/d92c8f4714a49720dfa3d9909ca78bf9217f234f/releases/v1.0.138/pad0_overlay.py",
+    "zip_download_url": "https://raw.githubusercontent.com/tterx/pad0-updates/d92c8f4714a49720dfa3d9909ca78bf9217f234f/releases/v1.0.138/pad0_overlay_windows_v1_0_138.zip"
   }
 }
