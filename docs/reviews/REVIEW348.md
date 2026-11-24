@@ -22,3 +22,17 @@ Codex에서 252번의 두 화면과 마나 보상 화면을 판독했습니다.
 미검증입니다.
 
 Codex 소스 검사 77개와 배포 코드 검사 74개를 통과했습니다.
+
+Publication verified: PR50 merged as ef3c7ee2a9f7550f28a750ace1521379415afe1f.
+Its tree matches the locally checked head. No source, build or publish Actions ran.
+The actual v1.0.139 ZIP downloaded from the immutable repository URL passed SHA256,
+ZIP CRC, version and updater-state checks; release v1.0.139 is stable latest.
+The release notes and root README point to that working repository ZIP URL;
+no attached release asset is claimed.
+The source matches the immutable payload and root update.json activates348.
+The unchanged launcher installed348 from the live manifest over v1.0.138 in an
+isolated installation at state347, preserving the backup, settings, inventory and
+four separate normal/starred/hidden stage/branch markers, and skipped a repeat.
+No PAD0 or physical game input was executed during updater verification.
+
+Codex의 격리 설치에서 v1.0.138이 v1.0.139로 자동 업데이트됐으며, 기존 장부와 설정을 유지한 채 메인 창이 열렸습니다.
