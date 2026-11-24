@@ -1,12 +1,12 @@
 # 퍼드0 올인원
 
-[**프로그램 ZIP 다운로드 · v1.0.137**](https://raw.githubusercontent.com/tterx/pad0-updates/bf420e1f3f1d78775229320d1a847408e6469f17/releases/v1.0.137/pad0_overlay_windows_v1_0_137.zip) · [전체 릴리스](https://github.com/tterx/pad0-updates/releases)
+프로그램 ZIP 다운로드 · v1.0.138 · 고정 다운로드 주소 검증 중
 
-현재 표시 버전은 **1.0.137**, 자동 업데이트 내부 순번은 **346**입니다.
+현재 표시 버전은 **1.0.138**, 자동 업데이트 내부 순번은 **347**입니다.
 
 새로 설치할 때는 ZIP을 풀고 `시작.vbs`를 실행하세요. 기존 설치는 PAD0를 완전히 종료한 뒤 `시작.vbs`를 다시 실행하면 업데이트됩니다.
 
-달인 다색 재접속의 시작 버튼 인식을 보정하고 클릭 시각을 기록합니다. [원인과 검증 범위](docs/reviews/REVIEW346.md) · [검증 기록](releases/v1.0.137/release_checks346.json)
+달인 다색 재접속에서 네를 누르고 기존 던전을 이어갑니다. [원인과 검증 범위](docs/reviews/REVIEW347.md) · [검증 기록](releases/v1.0.138/release_checks347.json)
 
 ## 저장소 안내
 

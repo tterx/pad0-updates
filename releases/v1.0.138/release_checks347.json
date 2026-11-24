@@ -1,0 +1,91 @@
+{
+  "zip_sha256": "db4dadd925a225318557a97c241f3d25ec378bd931ed63c02d44f4f2946fca82",
+  "source_sha256": "aad6a14ffbc3b3399ee2ce7d1ad9488bd5f969d93f178aed7273d1839ac7337d",
+  "source_bytes": 2030060,
+  "zip_bytes": 1000824,
+  "release": 347,
+  "version": "v1.0.138",
+  "source_repo": "tterx/pad0-all-in-one",
+  "source_commit": "34aa20c907a381c42a7ef27a5be62bd715107868",
+  "source_pull_request": "https://github.com/tterx/pad0-all-in-one/pull/49",
+  "validation": {
+    "environment": "Codex Linux, report251 dialog recognition and simulated resume with existing receipt",
+    "github_actions_executed": false,
+    "user_requested_local_execution": true,
+    "local": {
+      "tests": 87,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "seconds": 58.836,
+      "modules": [
+        "test_farming_relaunch335",
+        "test_android_service_recovery337",
+        "test_replay_adb_recovery340",
+        "test_save_slot_relaunch341",
+        "test_startup_transition342",
+        "test_relaunch_skip343",
+        "test_ledger_replay345",
+        "test_start_label346",
+        "test_farming_map317",
+        "test_release_compaction316"
+      ]
+    },
+    "bundle": {
+      "tests": 84,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "seconds": 59.317,
+      "modules": [
+        "test_farming_relaunch335",
+        "test_android_service_recovery337",
+        "test_replay_adb_recovery340",
+        "test_save_slot_relaunch341",
+        "test_startup_transition342",
+        "test_relaunch_skip343",
+        "test_ledger_replay345",
+        "test_start_label346",
+        "test_farming_map317"
+      ]
+    },
+    "reports": {
+      "251": {
+        "confirmed_prior_actions": [
+          "logo",
+          "start",
+          "save"
+        ],
+        "prior_confirmed_resume": false,
+        "reading_scope": "dialog_crops",
+        "updated_action": [
+          "resume",
+          [
+            1020.0,
+            672.5
+          ]
+        ],
+        "click": "네",
+        "actual_battle_verified": false
+      }
+    },
+    "physical_windows_and_mumu_verified": false
+  },
+  "policy": {
+    "scope": "master_multicolor_material_farming_relaunch",
+    "startup_confirmation_frames": 2,
+    "saved_dungeon_button": "네",
+    "preserved_session": true,
+    "check_party_before_battle_input": true
+  },
+  "automatic_update_channel_changed": false,
+  "publication": {
+    "approved_release": true,
+    "source_pr_merged": true,
+    "source_main_commit": "d158c18b9c8d1153f819e2432f6fa33e9fb4c806",
+    "source_tree_matches_tested_head": true,
+    "source_branch": "codex/v1-0-138-resume-dungeon",
+    "method": "Direct publication from Codex without Actions",
+    "artifact_storage": "immutable_repository_file"
+  }
+}
