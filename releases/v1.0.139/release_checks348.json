@@ -1,0 +1,86 @@
+{
+  "zip_sha256": "6fd3d38eae83b7a6ad00ee7c04e9dd99525d054d580dee1f4bd689fa1587c683",
+  "source_sha256": "e9ca4e93cdfc3fa2e32f96682cf33218bce314c24c7f142f11382063efd46af7",
+  "source_bytes": 2033455,
+  "zip_bytes": 1001580,
+  "release": 348,
+  "version": "v1.0.139",
+  "source_repo": "tterx/pad0-all-in-one",
+  "source_commit": "7225c4468b3cdb19aa05e30707c7182b81622774",
+  "source_pull_request": "https://github.com/tterx/pad0-all-in-one/pull/50",
+  "validation": {
+    "environment": "Codex Linux, actual report252 receipt and simulated acknowledged Next with scroll reset",
+    "github_actions_executed": false,
+    "user_requested_local_execution": true,
+    "local": {
+      "tests": 77,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "seconds": 54.658,
+      "modules": [
+        "test_reward_next348",
+        "test_reward_capacity338",
+        "test_reward_frame294",
+        "test_stage_continue283",
+        "test_retarget254",
+        "test_auto_repeat266",
+        "test_ledger_replay345",
+        "test_farming_relaunch335",
+        "test_release_compaction316"
+      ]
+    },
+    "bundle": {
+      "tests": 74,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "seconds": 55.137,
+      "modules": [
+        "test_reward_next348",
+        "test_reward_capacity338",
+        "test_reward_frame294",
+        "test_stage_continue283",
+        "test_retarget254",
+        "test_auto_repeat266",
+        "test_ledger_replay345",
+        "test_farming_relaunch335"
+      ]
+    },
+    "reports": {
+      "252": {
+        "version_in_log": "v1.0.137",
+        "prior_acknowledged_button": [
+          800.0,
+          792.5
+        ],
+        "receipt_committed": true,
+        "scroll_from_bottom_to_top_pixels": -167.5,
+        "verified_retry_point": [
+          800.0,
+          792.5
+        ],
+        "white_mana_rejected": true,
+        "original_credited_amounts": {}
+      }
+    },
+    "physical_windows_and_mumu_verified": false
+  },
+  "policy": {
+    "scope": "master_multicolor_material_farming",
+    "crystal_next_retry_delay_seconds": 3,
+    "maximum_next_retries_per_result": 1,
+    "same_open_committed_session_required": true,
+    "check_visible_button_before_retry": true
+  },
+  "automatic_update_channel_changed": false,
+  "publication": {
+    "approved_release": true,
+    "source_pr_merged": true,
+    "source_main_commit": "ef3c7ee2a9f7550f28a750ace1521379415afe1f",
+    "source_tree_matches_tested_head": true,
+    "source_branch": "codex/v1-0-139-reward-next-retry",
+    "method": "Direct publication from Codex without Actions",
+    "artifact_storage": "immutable_repository_file"
+  }
+}
