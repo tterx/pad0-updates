@@ -1,0 +1,80 @@
+{
+  "zip_sha256": "b82886045e0bded15cf3ee0d6f36a40b17bbc7a4934d12c6f2623fa4a4d0d9ed",
+  "source_sha256": "af1aef432b7aaf99b3396a771c30c188b1b28d5ab9b10755f3ef408c7bfc4c26",
+  "source_bytes": 2041164,
+  "zip_bytes": 1003262,
+  "release": 350,
+  "version": "v1.0.141",
+  "source_repo": "tterx/pad0-all-in-one",
+  "source_commit": "c70347472457072d244ed1c1813db50f2bf1279a",
+  "source_pull_request": "https://github.com/tterx/pad0-all-in-one/pull/52",
+  "validation": {
+    "environment": "Codex Linux, report255 diagnosis and simulated single and multiple material receipts",
+    "github_actions_executed": false,
+    "user_requested_local_execution": true,
+    "local": {
+      "tests": 84,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "seconds": 71.367,
+      "modules": [
+        "test_material_finish349",
+        "test_stage_continue283",
+        "test_farming_order288",
+        "test_retarget254",
+        "test_farming_map317",
+        "test_reward_next348",
+        "test_auto_repeat266",
+        "test_release_compaction316"
+      ]
+    },
+    "bundle": {
+      "tests": 81,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "seconds": 66.459,
+      "modules": [
+        "test_material_finish349",
+        "test_stage_continue283",
+        "test_farming_order288",
+        "test_retarget254",
+        "test_farming_map317",
+        "test_reward_next348",
+        "test_auto_repeat266"
+      ]
+    },
+    "reports": {
+      "255": {
+        "version_in_report": "v1.0.140",
+        "stage": "5-4",
+        "selected_count": 1,
+        "owned": 11,
+        "required": 90,
+        "deficit": 79,
+        "purpose": "completion_check",
+        "quit_acknowledged": true,
+        "stopped_at_card_revalidation": true,
+        "stage_switch_due": false
+      }
+    },
+    "regression_reproduced_on_previous_version": true,
+    "physical_windows_and_mumu_verified": false
+  },
+  "policy": {
+    "scope": "master_multicolor_material_farming",
+    "periodic_live_check_minimum_selected_materials": 2,
+    "single_material_completion_basis": "F7_and_credited_receipts"
+  },
+  "automatic_update_channel_changed": false,
+  "publication": {
+    "approved_release": true,
+    "source_pr_merged": true,
+    "source_main_commit": "ced6d41f940fe7158003630ef0bb91412ca91ba3",
+    "source_tree_matches_tested_head": true,
+    "source_branch": "codex/v1-0-141-single-material-repeat",
+    "method": "Direct publication from Codex without Actions",
+    "artifact_storage": "immutable_repository_file"
+  }
+}
