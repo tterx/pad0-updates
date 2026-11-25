@@ -17,3 +17,17 @@ Codex에서 한 재료와 여러 재료의 일반 연전을 각각 11회 진행�
 자동 파밍은 미검증입니다.
 
 Codex 소스 검사 80개와 배포 코드 검사 77개를 통과했습니다.
+
+Publication verified: PR53 merged as 4fce9a1715b0f0ba97330e1951c093240690d670.
+Its tree matches the locally checked head. No source, build or publish Actions ran.
+The actual v1.0.142 ZIP downloaded from the immutable repository URL passed SHA256,
+ZIP CRC, version and updater-state checks; release v1.0.142 is stable latest.
+The release notes and root README point to that working repository ZIP URL;
+no attached release asset is claimed.
+The source matches the immutable payload and root update.json activates351.
+The unchanged launcher installed351 from the live manifest over v1.0.141 in an
+isolated installation at state350, preserving the backup, settings, inventory and
+four separate normal/starred/hidden stage/branch markers, and skipped a repeat.
+No PAD0 or physical game input was executed during updater verification.
+
+Codex의 격리 설치에서 v1.0.141이 v1.0.142로 자동 업데이트됐습니다. 기존 장부와 설정을 유지한 채 메인 창이 열렸습니다.
