@@ -64,6 +64,9 @@
     "source_tree_matches_tested_head": true,
     "source_branch": "codex/v1-0-142-branch-only-ten-misses",
     "method": "Direct publication from Codex without Actions",
-    "artifact_storage": "immutable_repository_file"
+    "artifact_storage": "immutable_repository_file",
+    "payload_commit": "bbb6a981817beb1e847f133c4fe8a499e3b58605",
+    "immutable_source_url": "https://raw.githubusercontent.com/tterx/pad0-updates/bbb6a981817beb1e847f133c4fe8a499e3b58605/releases/v1.0.142/pad0_overlay.py",
+    "zip_download_url": "https://raw.githubusercontent.com/tterx/pad0-updates/bbb6a981817beb1e847f133c4fe8a499e3b58605/releases/v1.0.142/pad0_overlay_windows_v1_0_142.zip"
   }
 }
