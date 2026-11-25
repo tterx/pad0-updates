@@ -23,3 +23,17 @@ Codex에서 254번의 실제 보유 수량 31·45·70·75·7과 오른쪽 카드
 장시간 파밍은 미검증입니다.
 
 Codex 소스 검사 91개와 배포 코드 검사 88개를 통과했습니다.
+
+Publication verified: PR51 merged as 6d4b3d3f7b9101374489fcd89114bd536be81d6c.
+Its tree matches the locally checked head. No source, build or publish Actions ran.
+The actual v1.0.140 ZIP downloaded from the immutable repository URL passed SHA256,
+ZIP CRC, version and updater-state checks; release v1.0.140 is stable latest.
+The release notes and root README point to that working repository ZIP URL;
+no attached release asset is claimed.
+The source matches the immutable payload and root update.json activates349.
+The unchanged launcher installed349 from the live manifest over v1.0.139 in an
+isolated installation at state348, preserving the backup, settings, inventory and
+four separate normal/starred/hidden stage/branch markers, and skipped a repeat.
+No PAD0 or physical game input was executed during updater verification.
+
+Codex의 격리 설치에서 v1.0.139가 v1.0.140으로 자동 업데이트됐습니다. 기존 장부와 설정을 유지한 채 메인 창이 열렸습니다.
