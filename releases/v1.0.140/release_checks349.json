@@ -1,0 +1,93 @@
+{
+  "zip_sha256": "e080a0b9533176c3f517e84eac7d679bcab864a9f1683a943887deff464497eb",
+  "source_sha256": "bed026e203284f228461d866995db7882426e579315af55d02e3cf258bec4683",
+  "source_bytes": 2041017,
+  "zip_bytes": 1003229,
+  "release": 349,
+  "version": "v1.0.140",
+  "source_repo": "tterx/pad0-all-in-one",
+  "source_commit": "6ca378da82a07029256b3b4600c66319786c80e1",
+  "source_pull_request": "https://github.com/tterx/pad0-all-in-one/pull/51",
+  "validation": {
+    "environment": "Codex Linux, original report254 material panel OCR and simulated receipt completion",
+    "github_actions_executed": false,
+    "user_requested_local_execution": true,
+    "local": {
+      "tests": 91,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "seconds": 59.102,
+      "modules": [
+        "test_material_finish349",
+        "test_farming_order288",
+        "test_retarget254",
+        "test_farming_map317",
+        "test_stage_continue283",
+        "test_farming_relaunch335",
+        "test_reward_next348",
+        "test_completion_route275",
+        "test_inventory251",
+        "test_release_compaction316"
+      ]
+    },
+    "bundle": {
+      "tests": 88,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "seconds": 58.94,
+      "modules": [
+        "test_material_finish349",
+        "test_farming_order288",
+        "test_retarget254",
+        "test_farming_map317",
+        "test_stage_continue283",
+        "test_farming_relaunch335",
+        "test_reward_next348",
+        "test_completion_route275",
+        "test_inventory251"
+      ]
+    },
+    "reports": {
+      "report254_old_card_count": 3,
+      "report254_new_card_count": 5,
+      "owned_counts": [
+        31,
+        45,
+        70,
+        75,
+        7
+      ],
+      "last_card_center_x": 959.0,
+      "last_material_deficit": 83,
+      "completion_blocked_when_missing": true,
+      "selected_subset_sufficient": true,
+      "wrong_owner_rejected": true,
+      "report253_phase": "background_skill_confirm",
+      "target_selected_in_simulation": "C0143",
+      "simulated_tap": [
+        959.0,
+        399.5
+      ]
+    },
+    "physical_windows_and_mumu_verified": false
+  },
+  "policy": {
+    "scope": "master_multicolor_material_farming",
+    "crystal_receipts_between_completion_checks": 10,
+    "consistent_frames_required": 2,
+    "preserve_original_f7_basis": true,
+    "preserve_reward_history": true
+  },
+  "automatic_update_channel_changed": false,
+  "publication": {
+    "approved_release": true,
+    "source_pr_merged": true,
+    "source_main_commit": "6d4b3d3f7b9101374489fcd89114bd536be81d6c",
+    "source_tree_matches_tested_head": true,
+    "source_branch": "codex/v1-0-140-farming-material-finish",
+    "method": "Direct publication from Codex without Actions",
+    "artifact_storage": "immutable_repository_file"
+  }
+}

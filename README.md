@@ -1,12 +1,12 @@
 # 퍼드0 올인원
 
-[**프로그램 ZIP 다운로드 · v1.0.139**](https://raw.githubusercontent.com/tterx/pad0-updates/cddc64fe37d40d960ffc5677ade09bfe29a38d10/releases/v1.0.139/pad0_overlay_windows_v1_0_139.zip) · [전체 릴리스](https://github.com/tterx/pad0-updates/releases)
+프로그램 ZIP 다운로드 · v1.0.140 · 고정 다운로드 주소 검증 중
 
-현재 표시 버전은 **1.0.139**, 자동 업데이트 내부 순번은 **348**입니다.
+현재 표시 버전은 **1.0.140**, 자동 업데이트 내부 순번은 **349**입니다.
 
 새로 설치할 때는 ZIP을 풀고 `시작.vbs`를 실행하세요. 기존 설치는 PAD0를 완전히 종료한 뒤 `시작.vbs`를 다시 실행하면 업데이트됩니다.
 
-달인 다색 집계 후 같은 크리스탈 화면에서 다음을 한 번 더 누릅니다. [원인과 검증 범위](docs/reviews/REVIEW348.md) · [검증 기록](releases/v1.0.139/release_checks348.json)
+달인 다색의 마지막 재료 선택과 파밍 완료를 확인합니다. [원인과 검증 범위](docs/reviews/REVIEW349.md) · [검증 기록](releases/v1.0.140/release_checks349.json)
 
 ## 저장소 안내
 
