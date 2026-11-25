@@ -19,3 +19,17 @@ Codex에서 재료 두 개를 등록하고 하나만 선택한 모의 실행이 
 진행했습니다. 실제 Windows와 MuMu 연전은 미검증입니다.
 
 Codex 소스 검사 84개와 배포 코드 검사 81개를 통과했습니다.
+
+Publication verified: PR52 merged as ced6d41f940fe7158003630ef0bb91412ca91ba3.
+Its tree matches the locally checked head. No source, build or publish Actions ran.
+The actual v1.0.141 ZIP downloaded from the immutable repository URL passed SHA256,
+ZIP CRC, version and updater-state checks; release v1.0.141 is stable latest.
+The release notes and root README point to that working repository ZIP URL;
+no attached release asset is claimed.
+The source matches the immutable payload and root update.json activates350.
+The unchanged launcher installed350 from the live manifest over v1.0.140 in an
+isolated installation at state349, preserving the backup, settings, inventory and
+four separate normal/starred/hidden stage/branch markers, and skipped a repeat.
+No PAD0 or physical game input was executed during updater verification.
+
+Codex의 격리 설치에서 v1.0.140이 v1.0.141로 자동 업데이트됐습니다. 기존 장부와 설정을 유지한 채 메인 창이 열렸습니다.
