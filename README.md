@@ -1,12 +1,12 @@
 # 퍼드0 올인원
 
-[**프로그램 ZIP 다운로드 · v1.0.141**](https://raw.githubusercontent.com/tterx/pad0-updates/c9fac46b3baa8ed78a2de8b3a28ae5dd768b39aa/releases/v1.0.141/pad0_overlay_windows_v1_0_141.zip) · [전체 릴리스](https://github.com/tterx/pad0-updates/releases)
+프로그램 ZIP 다운로드 · v1.0.142 · 고정 다운로드 주소 검증 중
 
-현재 표시 버전은 **1.0.141**, 자동 업데이트 내부 순번은 **350**입니다.
+현재 표시 버전은 **1.0.142**, 자동 업데이트 내부 순번은 **351**입니다.
 
 새로 설치할 때는 ZIP을 풀고 `시작.vbs`를 실행하세요. 기존 설치는 PAD0를 완전히 종료한 뒤 `시작.vbs`를 다시 실행하면 업데이트됩니다.
 
-달인 다색에서 한 재료를 선택하면 목표까지 같은 스테이지를 연전합니다. [원인과 검증 범위](docs/reviews/REVIEW350.md) · [검증 기록](releases/v1.0.141/release_checks350.json)
+달인 다색의 10회 기준은 분기 선택지 변경에 적용합니다. [원인과 검증 범위](docs/reviews/REVIEW351.md) · [검증 기록](releases/v1.0.142/release_checks351.json)
 
 ## 저장소 안내
 

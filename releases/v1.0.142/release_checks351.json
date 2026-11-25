@@ -1,0 +1,69 @@
+{
+  "zip_sha256": "04a5d2631e1590a37a1bb9d027f4fd58b2f43368f905997c75b8061d7cceb9ad",
+  "source_sha256": "77cf1b51248ea382c98fedc636a05fae2071895a207d9836fb88b2955344dc20",
+  "source_bytes": 2039734,
+  "zip_bytes": 1002890,
+  "release": 351,
+  "version": "v1.0.142",
+  "source_repo": "tterx/pad0-all-in-one",
+  "source_commit": "2799831df9ec4151b6e8b5732264405f72f73e4f",
+  "source_pull_request": "https://github.com/tterx/pad0-all-in-one/pull/53",
+  "validation": {
+    "environment": "Codex Linux, ordinary and branch farming simulations",
+    "github_actions_executed": false,
+    "user_requested_local_execution": true,
+    "local": {
+      "tests": 80,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "seconds": 103.671,
+      "modules": [
+        "test_material_finish349",
+        "test_branch_learning305",
+        "test_branch_source310",
+        "test_branch_stage274",
+        "test_farming_order288",
+        "test_retarget254",
+        "test_stage_continue283",
+        "test_reward_next348",
+        "test_release_compaction316"
+      ]
+    },
+    "bundle": {
+      "tests": 77,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "seconds": 100.506,
+      "modules": [
+        "test_material_finish349",
+        "test_branch_learning305",
+        "test_branch_source310",
+        "test_branch_stage274",
+        "test_farming_order288",
+        "test_retarget254",
+        "test_stage_continue283",
+        "test_reward_next348"
+      ]
+    },
+    "regression_reproduced_on_previous_version": true,
+    "physical_windows_and_mumu_verified": false
+  },
+  "policy": {
+    "scope": "master_multicolor_material_farming",
+    "periodic_stock_check": false,
+    "verified_misses_before_changing_branch": 10,
+    "confirmed_branch_saved_per_stage_and_material": true
+  },
+  "automatic_update_channel_changed": false,
+  "publication": {
+    "approved_release": true,
+    "source_pr_merged": true,
+    "source_main_commit": "4fce9a1715b0f0ba97330e1951c093240690d670",
+    "source_tree_matches_tested_head": true,
+    "source_branch": "codex/v1-0-142-branch-only-ten-misses",
+    "method": "Direct publication from Codex without Actions",
+    "artifact_storage": "immutable_repository_file"
+  }
+}
