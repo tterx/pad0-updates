@@ -100,6 +100,9 @@
     "source_tree_matches_tested_head": true,
     "source_branch": "codex/v1-0-144-reward-count",
     "method": "Direct publication from Codex without Actions",
-    "artifact_storage": "immutable_repository_file"
+    "artifact_storage": "immutable_repository_file",
+    "payload_commit": "bca1608b42bedeb32378362a15bb3880132c7da1",
+    "immutable_source_url": "https://raw.githubusercontent.com/tterx/pad0-updates/bca1608b42bedeb32378362a15bb3880132c7da1/releases/v1.0.144/pad0_overlay.py",
+    "zip_download_url": "https://raw.githubusercontent.com/tterx/pad0-updates/bca1608b42bedeb32378362a15bb3880132c7da1/releases/v1.0.144/pad0_overlay_windows_v1_0_144.zip"
   }
 }
