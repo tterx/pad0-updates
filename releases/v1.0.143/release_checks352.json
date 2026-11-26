@@ -174,7 +174,9 @@
     "immutable_source_url": "https://raw.githubusercontent.com/tterx/pad0-updates/6825f73577f8da87166cc1ac2e79af20cafe2ca0/releases/v1.0.143/pad0_overlay.py",
     "zip_download_url": "https://raw.githubusercontent.com/tterx/pad0-updates/6825f73577f8da87166cc1ac2e79af20cafe2ca0/releases/v1.0.143/pad0_overlay_windows_v1_0_143.zip",
     "stable_release_verified": true,
-    "zip_bytes_unchanged": true
+    "zip_bytes_unchanged": true,
+    "auto_update_verified": true,
+    "actions_runs_on_source_and_merge": 0
   },
   "public_download_verification": {
     "zip_url": "https://raw.githubusercontent.com/tterx/pad0-updates/6825f73577f8da87166cc1ac2e79af20cafe2ca0/releases/v1.0.143/pad0_overlay_windows_v1_0_143.zip",
@@ -203,7 +205,30 @@
       "application_executed": false,
       "adaptive_retry_profile_preserved": true
     },
-    "live_status": "pending_post_activation_check",
-    "manifest_url": "https://raw.githubusercontent.com/tterx/pad0-updates/main/update.json"
+    "live_status": "success",
+    "manifest_url": "https://raw.githubusercontent.com/tterx/pad0-updates/main/update.json",
+    "live": {
+      "scope": "live_manifest_and_live_source",
+      "old_release": 351,
+      "new_release": 352,
+      "source_sha256": "2b9b7118a527caa3ab117d174536752544ce1cbc6ec1f316077fe8de011791a0",
+      "source_bytes": 2040966,
+      "backup_preserved": true,
+      "personal_data_preserved": true,
+      "branch_history_preserved": true,
+      "repeat_update_skipped": true,
+      "separate_starred_normal_hidden_records_preserved": true,
+      "application_executed": false,
+      "adaptive_retry_profile_preserved": true
+    },
+    "codex_tk_startup_from_v142": {
+      "window": "0x200011 \"퍼드0 경로 오버레이 v1.0.143\": (\"tk\" \"Tk\")  1030x860+0+0  +0+0",
+      "status": null,
+      "startup_log": "Known obsolete program files removed; personal and unknown files retained.\nUpdate release 352 installed.\n이 시험판은 Windows 전용입니다.\n",
+      "installed_release": 352,
+      "target_matches_release": true,
+      "ledger_preserved": true,
+      "preferences_preserved": true
+    }
   }
 }

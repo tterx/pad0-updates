@@ -16,3 +16,18 @@ Codex에서 256·257번의 저장 화면으로 도전 입력 직전까지 재현
 자동반복은 검증 범위에 포함되지 않았습니다.
 
 Codex 소스 검사 268개와 배포 코드 검사 265개를 통과했습니다.
+
+Publication verified: PR54 merged as f2374601b694c5d397e12ae30442ec3cc14c573c.
+Its tree matches the locally checked head. No source, build or publish Actions ran.
+The actual v1.0.143 ZIP downloaded from the immutable repository URL passed SHA256,
+ZIP CRC, version and updater-state checks; release v1.0.143 is stable latest.
+The release notes and root README point to that working repository ZIP URL;
+no attached release asset is claimed.
+The source matches the immutable payload and root update.json activates352.
+The unchanged launcher installed352 from the live manifest over v1.0.142 in an
+isolated installation at state351, preserving the backup, settings, inventory and
+four separate normal/starred/hidden stage/branch markers, and skipped a repeat.
+No PAD0 or physical game input was executed during updater verification.
+
+별도의 Codex 시작 검사에서 v1.0.142가 공개 자동 업데이트를 설치하고,
+v1.0.143 Tk 창을 표시했으며 사용자 설정과 재료 장부를 보존했습니다.
