@@ -169,6 +169,9 @@
     "source_tree_matches_tested_head": true,
     "source_branch": "codex/v1-0-143-stage-map-overlay",
     "method": "Direct publication from Codex without Actions",
-    "artifact_storage": "immutable_repository_file"
+    "artifact_storage": "immutable_repository_file",
+    "payload_commit": "6825f73577f8da87166cc1ac2e79af20cafe2ca0",
+    "immutable_source_url": "https://raw.githubusercontent.com/tterx/pad0-updates/6825f73577f8da87166cc1ac2e79af20cafe2ca0/releases/v1.0.143/pad0_overlay.py",
+    "zip_download_url": "https://raw.githubusercontent.com/tterx/pad0-updates/6825f73577f8da87166cc1ac2e79af20cafe2ca0/releases/v1.0.143/pad0_overlay_windows_v1_0_143.zip"
   }
 }
