@@ -19,3 +19,18 @@ Codex에서는 저장된 SP20 화면의 실제 카드 두 장을 각각 대조�
 모의 흐름에서 검증했습니다. Windows와 MuMu 실기 자동파밍은 미검증입니다.
 
 Codex 소스 검사 182개와 배포 코드 검사 179개를 통과했습니다.
+
+Publication verified: PR55 merged as d9bdc34207d23bf83e7190a2cb8bc782402aca31.
+Its tree matches the locally checked head. No source, build or publish Actions ran.
+The actual v1.0.144 ZIP downloaded from the immutable repository URL passed SHA256,
+ZIP CRC, version and updater-state checks; release v1.0.144 is stable latest.
+The release notes and root README point to that working repository ZIP URL;
+no attached release asset is claimed.
+The source matches the immutable payload and root update.json activates353.
+The unchanged launcher installed353 from the live manifest over v1.0.143 in an
+isolated installation at state352, preserving the backup, settings, inventory and
+four separate normal/starred/hidden stage/branch markers, and skipped a repeat.
+No PAD0 or physical game input was executed during updater verification.
+
+별도의 Codex 시작 검사에서 v1.0.143이 공개 자동 업데이트를 설치하고,
+v1.0.144 Tk 창을 표시했으며 사용자 설정과 재료 장부를 보존했습니다.
