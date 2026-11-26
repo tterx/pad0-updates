@@ -1,12 +1,12 @@
 # 퍼드0 올인원
 
-[**프로그램 ZIP 다운로드 · v1.0.143**](https://raw.githubusercontent.com/tterx/pad0-updates/6825f73577f8da87166cc1ac2e79af20cafe2ca0/releases/v1.0.143/pad0_overlay_windows_v1_0_143.zip) · [전체 릴리스](https://github.com/tterx/pad0-updates/releases)
+프로그램 ZIP 다운로드 · v1.0.144 · 고정 다운로드 주소 검증 중
 
-현재 표시 버전은 **1.0.143**, 자동 업데이트 내부 순번은 **352**입니다.
+현재 표시 버전은 **1.0.144**, 자동 업데이트 내부 순번은 **353**입니다.
 
 새로 설치할 때는 ZIP을 풀고 `시작.vbs`를 실행하세요. 기존 설치는 PAD0를 완전히 종료한 뒤 `시작.vbs`를 다시 실행하면 업데이트됩니다.
 
-달인 다색 자동반복의 파티 확인과 스테이지 지도의 경로 계산창 표시를 수정했습니다. [원인과 검증 범위](docs/reviews/REVIEW352.md) · [검증 기록](releases/v1.0.143/release_checks352.json)
+달인 다색 보상 집계와 차콜·챠콜 생성 검색을 수정했습니다. [원인과 검증 범위](docs/reviews/REVIEW353.md) · [검증 기록](releases/v1.0.144/release_checks353.json)
 
 ## 저장소 안내
 
